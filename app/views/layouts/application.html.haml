@@ -28,11 +28,9 @@
           .container.nav-collapse
             %ul.nav
               - if current_user
-                %li= link_to "Logout", destroy_user_session_path
-                %li= link_to "Password", edit_user_password_path
-                %li= link_to "Neuen Nutzer anlegen", ""
-              - else
-                %li= link_to "Login", new_user_session_path
+                %li= link_to "Logout", logout_path
+                %li= link_to "Password", edit_current_user_path
+                %li= link_to "New User", new_user_path
 
     .container
 
@@ -41,8 +39,4 @@
           .span12
             = yield
 
-    /
-      Le javascript
-      \==================================================
-    / Placed at the end of the document so the pages load faster
     = javascript_include_tag "application"

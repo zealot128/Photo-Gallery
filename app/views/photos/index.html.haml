@@ -1,15 +1,28 @@
 %h1 Photos
 - @groups.each do |date,items|
   %h2=date.strftime("%d.%m.%Y")
-  - items.each do |item|
-    .photo
-      = link_to item.file.url(:large) do
-        = image_tag item.file.url(:preview)
-      .wrapper
-        .options
-          = link_to photo_path(item), method: "delete", title: "Delete", confirm: "Really delete?", class: "delete" do
-            = image_tag "img_trans.gif"
-          = link_to photo_share_path(item.share_hash), title: "Share", class: "share" do
-            = image_tag "img_trans.gif"
-          = link_to item.file.url(:original), title: "Download", class: "download" do
-            = image_tag "img_trans.gif"
+  = render items
+
+- if @groups.length == 0
+  .hint
+    Usage:
+    %ul
+      %li
+        Download
+        = link_to "Autoshare App", "https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result"
+        for your Android
+      %li
+        Configuration: "Webserver"
+        %ul
+          %li Active YES
+          %li
+            Server Address:
+            = photos_url
+          %li
+            Username:
+            = current_user.username
+          %li
+            Password: ****
+      %li
+        Upload some photos with Autoshare or configure it for auto-upload for new images
+

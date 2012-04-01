@@ -1,0 +1,11 @@
+.photo
+  = link_to photo.file.url(:large) do
+    = image_tag photo.file.url(:preview)
+  .wrapper
+    .options
+      = link_to photo_path(photo), method: "delete", title: "Delete", confirm: "Really delete?", class: "delete" do
+        = image_tag "img_trans.gif"
+      = link_to photo_share_path(photo.share_hash), title: "Share", class: "share" do
+        = image_tag "img_trans.gif"
+      = link_to photo.file.url(:original), title: "Download", class: "download" do
+        = image_tag "img_trans.gif"

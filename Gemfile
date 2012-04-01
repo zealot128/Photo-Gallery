@@ -28,3 +28,7 @@ end
 
 gem 'jquery-rails'
 
+
+gem "bcrypt-ruby", :require => "bcrypt"
+
+gem "mocha", :group => :test

@@ -29,6 +29,7 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
+    bcrypt-ruby (3.0.1)
     builder (3.0.0)
     cocaine (0.2.1)
     coderay (1.0.5)
@@ -72,6 +73,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.7.1)
     mime-types (1.18)
+    mocha (0.9.12)
     multi_json (1.2.0)
     nifty-generators (0.4.6)
     paperclip (3.0.0)
@@ -148,10 +150,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt-ruby
   coffee-rails (~> 3.2.1)
   exifr
   haml-rails
   jquery-rails
+  mocha
   nifty-generators
   paperclip
   pry
