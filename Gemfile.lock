@@ -31,6 +31,13 @@ GEM
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
+    capistrano (2.11.2)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
+    capistrano_colors (0.5.5)
     cocaine (0.2.1)
     coderay (1.0.5)
     coffee-rails (3.2.2)
@@ -53,6 +60,7 @@ GEM
       activesupport (~> 3.0)
       haml (~> 3.0)
       railties (~> 3.0)
+    highline (1.6.11)
     hike (1.2.1)
     i18n (0.6.0)
     journey (1.0.3)
@@ -75,6 +83,13 @@ GEM
     mime-types (1.18)
     mocha (0.9.12)
     multi_json (1.2.0)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.3.0)
+    net-ssh-gateway (1.1.0)
+      net-ssh (>= 1.99.1)
     nifty-generators (0.4.6)
     paperclip (3.0.0)
       activemodel (>= 3.0.0)
@@ -151,6 +166,8 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby
+  capistrano
+  capistrano_colors
   coffee-rails (~> 3.2.1)
   exifr
   haml-rails

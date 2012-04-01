@@ -11,6 +11,10 @@ gem "simple_form"
 gem "haml-rails"
 gem "thin"
 
+  gem 'capistrano'
+    gem 'capistrano_colors'
+
+
 group :development do
   gem "pry"
   gem "nifty-generators"
