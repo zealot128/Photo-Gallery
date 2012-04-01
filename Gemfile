@@ -7,12 +7,13 @@ gem 'exifr'
 
 gem "twitter-bootstrap-rails"
 gem 'paperclip'
-gem 'devise'
 gem "simple_form"
 gem "haml-rails"
 gem "thin"
+
 group :development do
   gem "pry"
+  gem "nifty-generators"
 end
 
 group :assets do
