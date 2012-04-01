@@ -4,7 +4,7 @@ class PhotosController < ApplicationController
   before_filter :login_required
 
   def index
-    @groups = Photo.all.group_by{|i|i.shot_at}.sort_by{|a,b| -a.to_i}
+    @groups = Photo.grouped
   end
 
   def destroy
@@ -24,11 +24,7 @@ class PhotosController < ApplicationController
 
   protect_from_forgery except: :create
   def create
-    photo = Photo.new
-    photo.shot_at = EXIFR::JPEG.new(params[:userfile].path).exif[:date_time].to_date
-    photo.user = current_user
-    photo.file = params[:userfile]
-    photo.save
+    Photo.create_from_upload(params[:userfile], current_user)
     render :text => "OK"
   end
 

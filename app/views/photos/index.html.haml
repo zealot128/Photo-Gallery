@@ -1,7 +1,10 @@
 %h1 Photos
-- @groups.each do |date,items|
-  %h2=date.strftime("%d.%m.%Y")
-  = render items
+- @groups.each do |month,items|
+  %h2.month=l month, format: "%B %Y"
+  - items.each do |date, photos|
+
+    %h2=date.strftime("%d.%m.%Y")
+    = render photos
 
 - if @groups.length == 0
   .hint
