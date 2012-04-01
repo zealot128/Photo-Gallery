@@ -14,13 +14,6 @@ class Photo < ActiveRecord::Base
     self.share_hash = SecureRandom.hex(24)
   end
 
-  def exif
-    meta_data.exif.inject({}) {|a,e| a.merge e}
-  end
-
-  def meta_data
-    @meta_data ||= EXIFR::JPEG.new(file.path)
-  end
 
   def self.create_from_upload(file, current_user)
 
@@ -46,6 +39,30 @@ class Photo < ActiveRecord::Base
     photo.user = current_user
     photo.file = file
     photo.save
+  end
+
+  after_create :reverse_geocode
+  reverse_geocoded_by :lat, :lng do |obj,results|
+    if geo = results.first
+      obj.update_attribute(:location, geo.city)
+    end
+  end
+
+  def exif
+    meta_data.exif.inject({}) {|a,e| a.merge e}
+  end
+
+  def meta_data
+    @meta_data ||= EXIFR::JPEG.new(file.path)
+  end
+
+  def update_gps
+    if gps = meta_data.gps
+      self.lat = gps.latitude
+      self.lng = gps.longitude
+      self.save
+      reverse_geocode
+    end
   end
 
   def self.grouped

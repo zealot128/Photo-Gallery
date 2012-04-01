@@ -3,9 +3,12 @@
   %h2.month=l month, format: "%B %Y"
   - items.each do |date, photos|
 
-    %h2=date.strftime("%d.%m.%Y")
+    %h2
+      = date.strftime("%d.%m.")
+      = photos.map{|i|i.location}.uniq.join(", ")
     = render photos
 
+  .clear
 - if @groups.length == 0
   .hint
     Usage:

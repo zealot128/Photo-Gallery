@@ -5,8 +5,11 @@ $img-size: 300px
   display: block
   background-image: image-url("onebit/onebit_#{$icon}.png")
   float: left
+.clear
+  clear: both
 h2
   clear: both
+  margin-top: 20px
 .photo
   background: none repeat scroll 0 0 #EEEEEE
   border: 1px solid #CCCCCC
@@ -41,6 +44,16 @@ h2
 
 h2.month
   color: #666666
-  font-size: 30px
+  font-size: 25px
+  width: 120px
   left: 10px
   position: absolute
+  &:before
+    clear: both
+.container
+  width: auto
+  padding-left: 125px
+.navbar .container
+  padding-left: 10px
+  width: auto
+
