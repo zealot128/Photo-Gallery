@@ -6,4 +6,5 @@ environment: production
 pid: tmp/pids/thin.pid
 servers: 1
 onebyone: true
+wait: 60
 
