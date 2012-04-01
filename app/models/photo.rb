@@ -14,12 +14,17 @@ class Photo < ActiveRecord::Base
     self.share_hash = SecureRandom.hex(24)
   end
 
-
-  def self.create_from_upload(file, current_user)
-
-    photo = Photo.new
+  def self.parse_date(file)
     meta = EXIFR::JPEG.new(file.path)
-    date = meta.exif[:date_time] || meta.exif[:date_time_original]
+    date = meta.exif[:date_time] || meta.exif[:date_time_original] rescue nil
+    if not date
+      if file.original_filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
+        date = Date.parse "#$1-#$2-#$3"
+      else
+        Rails.logger.warn "No Date found for file #{file.original_filename}"
+        date = Date.today
+      end
+    end
     if date.is_a? String
       case date
       # correction for exif from hd cam
@@ -29,7 +34,17 @@ class Photo < ActiveRecord::Base
         date = Date.parse(date)
       end
     end
+    date
+  end
 
+
+  def self.create_from_upload(file, current_user)
+
+    photo = Photo.new
+
+    date = Photo.parse_date(file)
+
+    meta = EXIFR::JPEG.new(file.path)
     if meta.gps
       photo.lat = meta.gps.latitude
       photo.lng = meta.gps.longitude
@@ -39,12 +54,15 @@ class Photo < ActiveRecord::Base
     photo.user = current_user
     photo.file = file
     photo.save
+    photo.reverse_geocode
   end
 
-  after_create :reverse_geocode
   reverse_geocoded_by :lat, :lng do |obj,results|
     if geo = results.first
-      obj.update_attribute(:location, geo.city)
+      parts = [geo.city]
+      parts << geo.address_components_of_type("establishment").first["short_name"]  rescue nil
+      parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
+      obj.update_attribute(:location, parts.join(" - "))
     end
   end
 
@@ -60,7 +78,6 @@ class Photo < ActiveRecord::Base
     if gps = meta_data.gps
       self.lat = gps.latitude
       self.lng = gps.longitude
-      self.save
       reverse_geocode
     end
   end

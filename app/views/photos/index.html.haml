@@ -5,7 +5,7 @@
 
     %h2
       = date.strftime("%d.%m.")
-      = photos.map{|i|i.location}.uniq.join(", ")
+      = photos.map{|i|i.location}.reject(&:blank?).uniq.join(", ")
     = render photos
 
   .clear
