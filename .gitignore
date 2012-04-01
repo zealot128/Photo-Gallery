@@ -13,3 +13,8 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+.sass-cache
+*swp
+public/photos
+public/system

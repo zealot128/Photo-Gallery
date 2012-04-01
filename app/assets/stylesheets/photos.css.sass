@@ -1,0 +1,41 @@
+$img-size: 300px
+@mixin onebit-icon($icon)
+  width: 48px
+  height: 48px
+  display: block
+  background-image: image-url("onebit/onebit_#{$icon}.png")
+  float: left
+h2
+  clear: both
+.photo
+  background: none repeat scroll 0 0 #EEEEEE
+  border: 1px solid #CCCCCC
+  border-radius: 10px
+  float: left
+  height: $img-size
+  line-height: $img-size
+  width: $img-size
+  margin-left: 10px
+  padding: 10px
+  text-align: center
+  vertical-align: middle
+  > a > img
+    border: 1px solid #666666
+    border-radius: 10px 10px 10px 10px
+  .wrapper
+    position: absolute
+  .options
+    display: none
+    position: relative
+    bottom: 50px
+    line-height: 48px
+  &:hover .options
+    display: block
+  .share
+    +onebit-icon(17)
+  .delete
+    +onebit-icon(33)
+  .download
+    +onebit-icon(11)
+
+

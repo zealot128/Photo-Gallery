@@ -29,7 +29,7 @@
             %ul.nav
               - if current_user
                 %li= link_to "Logout", destroy_user_session_path
-                %li= link_to "Passwort aendern", ""
+                %li= link_to "Password", edit_user_password_path
                 %li= link_to "Neuen Nutzer anlegen", ""
               - else
                 %li= link_to "Login", new_user_session_path
