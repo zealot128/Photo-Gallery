@@ -41,8 +41,9 @@ namespace :thin do
       cd #{current_path}; bundle exec thin restart -C config/thin.yml
     CMD
   end
-
 end
+
+after "deploy", "thin:restart"
 
 namespace :deploy do
   namespace :assets do
@@ -68,7 +69,7 @@ end
 after "deploy:setup", "setup"
 task :symlink_db do
   run "ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/production.sqlite3"
-  run "ln -nfs #{shared_path}/public/photos #{release_path}/photos"
+  run "ln -nfs #{shared_path}/photos #{release_path}/public/photos"
 
 end
 after "deploy:update_code", :symlink_db

@@ -1,13 +1,9 @@
 ---
-user: empfehlungsbund
-group: empfehlungsbund
-chdir: /var/www/vhosts/empfehlungsbund.de/httpdocs/current
+chdir: /var/www/vhosts/stefanwienert.net/sub/pics/current/
 log: log/thin.log
 port: 5000
 environment: production
 pid: tmp/pids/thin.pid
 servers: 1
 onebyone: true
-wait: 30
-
 
