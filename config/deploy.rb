@@ -65,12 +65,13 @@ task :setup, :roles => [:app, :db, :web] do
     touch #{shared_path}/db/production.sqlite3
   CMD
 end
+after "deploy:setup", "setup"
 task :symlink_db do
   run "ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/production.sqlite3"
-  run "ln -nfs #{shared_path}/public/photos #{release_path}/public/photos"
+  run "ln -nfs #{shared_path}/public/photos #{release_path}/photos"
 
 end
 after "deploy:update_code", :symlink_db
-after 'bundle:install', 'deploy:migrate'
+after 'deploy:update_code', 'deploy:migrate'
 
 
