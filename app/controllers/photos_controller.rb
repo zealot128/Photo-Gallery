@@ -25,6 +25,9 @@ class PhotosController < ApplicationController
   protect_from_forgery except: :create
   def create
     Photo.create_from_upload(params[:userfile], current_user)
+
+    current_user.enable_ip_based_login request
+
     render :text => "OK"
   end
 
@@ -33,9 +36,14 @@ class PhotosController < ApplicationController
     return true if current_user
 
     authenticate_or_request_with_http_basic do |username, password|
-      if user = User.authenticate(username, password)
+      by_username = User.authenticate(username, password)
+      by_ip       = User.authenticate_by_ip(request)
+      p by_username
+      p by_ip
+
+      if ( user = by_username || by_ip )
         session[:user_id] = user.id
-        binding.pry
+        p user
         true
       else
         false

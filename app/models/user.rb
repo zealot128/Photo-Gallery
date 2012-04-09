@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   # new columns need to be added here to be writable through mass assignment
-  attr_accessible :username, :email, :password, :password_confirmation
+  attr_accessible :username, :email, :password, :password_confirmation, :last_ip, :last_upload
 
   attr_accessor :password
   before_save :prepare_password
@@ -21,8 +21,18 @@ class User < ActiveRecord::Base
     return user if user && user.password_hash == user.encrypt_password(pass)
   end
 
+  def self.authenticate_by_ip(request)
+    user = find_by_last_ip(request.env["REMOTE_ADDR"])
+    user if user and user.last_upload > 15.minues.ago
+  end
+
   def encrypt_password(pass)
     BCrypt::Engine.hash_secret(pass, password_salt)
+  end
+
+  def enable_ip_based_login(request)
+    update_attributes last_ip: request.env["REMOTE_ADDR"],
+      last_upload: Time.now
   end
 
   private

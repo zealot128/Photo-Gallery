@@ -74,6 +74,7 @@ class Photo < ActiveRecord::Base
     @meta_data ||= EXIFR::JPEG.new(file.path)
   end
 
+
   def update_gps
     if gps = meta_data.gps
       self.lat = gps.latitude
