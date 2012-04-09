@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120401222430) do
+ActiveRecord::Schema.define(:version => 20120409211444) do
 
   create_table "photos", :force => true do |t|
     t.datetime "shot_at"
@@ -35,8 +35,11 @@ ActiveRecord::Schema.define(:version => 20120401222430) do
     t.string   "email"
     t.string   "password_hash"
     t.string   "password_salt"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "last_ip"
+    t.datetime "last_upload"
+    t.boolean  "allowed_ip_storing"
   end
 
 end

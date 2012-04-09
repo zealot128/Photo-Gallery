@@ -20,6 +20,11 @@ group :development do
   gem 'capistrano_colors'
 end
 
+group :test do
+  gem "rspec-rails"
+  gem "guard-rspec"
+end
+
 gem "geocoder"
 
 group :assets do

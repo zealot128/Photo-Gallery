@@ -35,6 +35,7 @@ class PhotosController < ApplicationController
     authenticate_or_request_with_http_basic do |username, password|
       if user = User.authenticate(username, password)
         session[:user_id] = user.id
+        binding.pry
         true
       else
         false
