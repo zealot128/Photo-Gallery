@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120409211444) do
+ActiveRecord::Schema.define(:version => 20120409224635) do
 
   create_table "photos", :force => true do |t|
     t.datetime "shot_at"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20120409211444) do
     t.datetime "file_updated_at"
     t.string   "share_hash"
     t.string   "location"
+    t.string   "md5"
   end
 
   add_index "photos", ["share_hash"], :name => "index_photos_on_share_hash"

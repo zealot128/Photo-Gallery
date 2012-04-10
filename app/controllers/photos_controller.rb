@@ -10,7 +10,12 @@ class PhotosController < ApplicationController
   def destroy
     @photo = current_user.photos.find(params[:id])
     @photo.destroy
-    redirect_to photos_path
+    respond_to do |f|
+      f.html {
+        redirect_to photos_path
+      }
+      f.js
+    end
   end
 
   def shared
@@ -35,15 +40,14 @@ class PhotosController < ApplicationController
   def http_basic_auth
     return true if current_user
 
-    authenticate_or_request_with_http_basic do |username, password|
-      by_username = User.authenticate(username, password)
-      by_ip       = User.authenticate_by_ip(request)
-      p by_username
-      p by_ip
+    if by_ip       = User.authenticate_by_ip(request)
+      session[:user_id] = by_ip.id
+      return true
+    end
 
-      if ( user = by_username || by_ip )
-        session[:user_id] = user.id
-        p user
+    authenticate_or_request_with_http_basic do |username, password|
+      if by_username = User.authenticate(username, password)
+        session[:user_id] = by_username.id
         true
       else
         false

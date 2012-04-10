@@ -1,12 +1,20 @@
 %h1 Photos
 - @groups.each do |month,items|
   %h2.month=l month, format: "%B %Y"
-  - items.each do |date, photos|
+  .groups
+    - items.each do |date, photos|
 
-    %h2
-      = date.strftime("%d.%m.")
-      = photos.map{|i|i.location}.reject(&:blank?).uniq.join(", ")
-    = render photos
+      .group
+        %h2.toggler
+          = date.strftime("%d.%m.")
+          = photos.map{|i|i.location}.reject(&:blank?).uniq.join(", ")
+          - photos.each do |photo|
+            = image_tag photo.file.url(:thumb), alt: ""
+          = link_to "#toggle", class: "handle" do
+            = image_tag "img_trans.gif"
+
+        .body
+          = render photos
 
   .clear
 - if @groups.length == 0
