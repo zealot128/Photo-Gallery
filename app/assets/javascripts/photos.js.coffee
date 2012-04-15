@@ -10,3 +10,15 @@ jQuery ->
     hidden.find("img.lazy").each ->
       $(this).attr("src",  $(this).data("original"))
     false
+  $('.photo > a').fancybox
+    closeBtn: false
+    helpers:
+      title:
+        type : 'inside'
+      overlay:
+        opacity: 0.8
+        css:
+          'background-color': '#000'
+      thumbs:
+        width: 50
+        height: 50

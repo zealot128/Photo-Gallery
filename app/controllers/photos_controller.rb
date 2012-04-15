@@ -23,8 +23,10 @@ class PhotosController < ApplicationController
     response.headers['Content-Type'] = 'image/jpeg'
     response.headers['Content-Disposition'] = 'inline'
 
-    path = Photo.find_by_share_hash!(params[:hash]).path(:large)
-    render :text => open(path, "rb").read
+    path = Photo.find_by_share_hash!(params[:hash]).file.path(:large)
+    #render :text => open(path, "rb").read
+    self.response_body = open(path, "rb")
+
   end
 
   protect_from_forgery except: :create

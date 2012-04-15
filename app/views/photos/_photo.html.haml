@@ -1,5 +1,5 @@
 .photo{:id => "photo-#{photo.id}"}
-  = link_to photo.file.url(:large) do
+  = link_to photo.file.url(:large), rel: photo.modal_group  do
     = image_tag "img_trans.gif", data: {original: photo.file.url(:preview)}, class: "lazy"
   .wrapper
     .options

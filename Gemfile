@@ -28,6 +28,7 @@ group :test do
 end
 
 gem "geocoder"
+gem 'fancybox-rails', :git => 'https://github.com/sverigemeny/fancybox-rails'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

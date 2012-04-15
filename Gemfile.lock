@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/sverigemeny/fancybox-rails
+  revision: 17db886581f38fbcd4b0ac0349fc9493554ee261
+  specs:
+    fancybox-rails (0.1.4)
+      railties (>= 3.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -191,6 +198,7 @@ DEPENDENCIES
   capistrano_colors
   coffee-rails (~> 3.2.1)
   exifr
+  fancybox-rails!
   geocoder
   guard-rspec
   haml-rails

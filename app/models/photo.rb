@@ -77,6 +77,10 @@ class Photo < ActiveRecord::Base
     meta_data.exif.inject({}) {|a,e| a.merge e}
   end
 
+  def modal_group
+    shot_at.strftime("d%Y%m%d")
+  end
+
   def meta_data
     @meta_data ||= EXIFR::JPEG.new(file.path)
   end
