@@ -9,9 +9,8 @@ SimpleGallery::Application.routes.draw do
   match 'login' => 'sessions#new', :as => :login
 
   resources :sessions
-
   resources :users
-
+  resources :shares
   get "photos/:hash.jpg", to: "photos#shared", as: "photo_share"
   resources :photos
 

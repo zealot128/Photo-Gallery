@@ -22,3 +22,19 @@ jQuery ->
       thumbs:
         width: 50
         height: 50
+  $('.photo .options .share').fancybox
+    fitToView: false
+    width: '300px'
+    height: '70%'
+    autoSize: false
+    closeClick: false
+    openEffect: 'none'
+    closeEffect: 'none'
+    type: 'ajax'
+    afterShow: ->
+      console.log("after load")
+      element = $(".fancybox-inner form")
+      element.bind "ajax:complete", ->
+        console.log "ajax success"
+        $.fancybox.close()
+

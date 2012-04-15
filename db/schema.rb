@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120409224635) do
+ActiveRecord::Schema.define(:version => 20120415221643) do
 
   create_table "photos", :force => true do |t|
     t.datetime "shot_at"
@@ -30,6 +30,24 @@ ActiveRecord::Schema.define(:version => 20120409224635) do
   end
 
   add_index "photos", ["share_hash"], :name => "index_photos_on_share_hash"
+
+  create_table "photos_shares", :id => false, :force => true do |t|
+    t.integer "share_id"
+    t.integer "photo_id"
+  end
+
+  add_index "photos_shares", ["share_id", "photo_id"], :name => "index_photos_shares_on_share_id_and_photo_id", :unique => true
+
+  create_table "shares", :force => true do |t|
+    t.string   "name"
+    t.string   "type"
+    t.string   "token"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "shares", ["token"], :name => "index_shares_on_token", :unique => true
+  add_index "shares", ["type"], :name => "index_shares_on_type"
 
   create_table "users", :force => true do |t|
     t.string   "username"

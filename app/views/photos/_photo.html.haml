@@ -3,9 +3,10 @@
     = image_tag "img_trans.gif", data: {original: photo.file.url(:preview)}, class: "lazy"
   .wrapper
     .options
-      = link_to photo_path(photo), title: "Delete", data: {confirm: "Really delete?", method: "delete", remote: true}, class: "delete" do
-        = image_tag "img_trans.gif"
-      = link_to photo_share_path(photo.share_hash), title: "Share", class: "share" do
-        = image_tag "img_trans.gif"
+      - if logged_in?
+        = link_to photo_path(photo), title: "Delete", data: {confirm: "Really delete?", method: "delete", remote: true}, class: "delete" do
+          = image_tag "img_trans.gif"
+        = link_to edit_photo_path(photo), title: "Share", class: "share" do
+          = image_tag "img_trans.gif"
       = link_to photo.file.url(:original), title: "Download", class: "download" do
         = image_tag "img_trans.gif"

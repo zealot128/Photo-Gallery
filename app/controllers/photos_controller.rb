@@ -38,6 +38,22 @@ class PhotosController < ApplicationController
     render :text => "OK"
   end
 
+  def edit
+    @photo = Photo.find(params[:id])
+    render layout: !request.xhr?
+  end
+
+  def update
+    @photo = Photo.find(params[:id])
+    @photo.share_ids = params[:photo][:share_ids]
+
+    if request.xhr?
+      render json: { status: "OK"}
+    else
+      redirect_to photos_path
+    end
+  end
+
   protected
   def http_basic_auth
     return true if current_user

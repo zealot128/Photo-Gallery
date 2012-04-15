@@ -10,6 +10,7 @@ class Photo < ActiveRecord::Base
   convert_options: { all: '-auto-orient' }
 
   belongs_to :user
+  has_and_belongs_to_many :shares, :join_table => "photos_shares"
 
   before_save do
     self.share_hash = SecureRandom.hex(24)
@@ -92,6 +93,15 @@ class Photo < ActiveRecord::Base
       self.lng = gps.longitude
       reverse_geocode
     end
+  end
+
+  def self.grouped_by_day_and_month
+
+    days = all.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse
+    #  [datum, [items]] ...
+    #  [month, [ [datum, items], ...
+
+    days.group_by{|day, items| Date.parse day.strftime("%Y-%m-01")}
   end
 
   def self.grouped

@@ -1,0 +1,7 @@
+%h1=@share.name
+
+- if @share.photos.count == 0
+  %p No Photos here up to now
+
+- else
+  = render "photos/groups", groups: @share.grouped_photos

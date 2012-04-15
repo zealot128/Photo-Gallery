@@ -1,0 +1,10 @@
+%h1 Shares
+
+%ul
+  - @shares.each do |share|
+    %li{:id => "share-#{share.id}"}
+      = link_to share.name, share
+      = link_to "[DELETE]", share, data: {method: "delete", remote: true, confirm: "Really?"}
+
+
+= render template: "shares/new"
