@@ -1,6 +1,7 @@
 class Photo < ActiveRecord::Base
   has_attached_file :file, styles: {
     preview:  "300x300",
+    thumb:  "30x30",
     medium: "500x500>",
     large:  "1000x1000>"
   },
@@ -13,6 +14,11 @@ class Photo < ActiveRecord::Base
   before_save do
     self.share_hash = SecureRandom.hex(24)
   end
+
+  before_validation on: :create do
+    self.md5 = Digest::MD5.hexdigest(file.to_file.read)
+  end
+  validates :md5, :uniqueness => true
 
   def self.parse_date(file)
     meta = EXIFR::JPEG.new(file.path)
@@ -55,6 +61,7 @@ class Photo < ActiveRecord::Base
     photo.file = file
     photo.save
     photo.reverse_geocode
+    photo
   end
 
   reverse_geocoded_by :lat, :lng do |obj,results|
@@ -92,4 +99,5 @@ class Photo < ActiveRecord::Base
   end
 
   scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
+  private
 end

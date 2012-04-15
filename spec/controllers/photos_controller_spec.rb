@@ -66,5 +66,6 @@ describe PhotosController do
       response.status.should == 200
     end
 
+
   end
 end

@@ -12,9 +12,11 @@ gem "haml-rails"
 gem "thin"
 
 
+group :development, :test do
+  gem "pry"
+end
 
 group :development do
-  gem "pry"
   gem "nifty-generators"
   gem 'capistrano'
   gem 'capistrano_colors'

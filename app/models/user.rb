@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
 
   def self.authenticate_by_ip(request)
     user = find_by_last_ip(request.env["REMOTE_ADDR"])
-    user if user and user.last_upload > 15.minues.ago
+    user if user and user.last_upload > 15.minutes.ago
   end
 
   def encrypt_password(pass)
@@ -31,8 +31,8 @@ class User < ActiveRecord::Base
   end
 
   def enable_ip_based_login(request)
-    update_attributes last_ip: request.env["REMOTE_ADDR"],
-      last_upload: Time.now
+    update_attributes :last_ip => request.env["REMOTE_ADDR"],
+      :last_upload => Time.now
   end
 
   private
