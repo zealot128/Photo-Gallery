@@ -43,4 +43,19 @@ class SharesController < ApplicationController
       f.js
     end
   end
+
+
+  def bulk_add
+    from = Date.parse params[:date]
+    to   = from + 1
+    @photos = Photo.where(shot_at: from..to)
+    render  layout: false
+  end
+
+  def bulk_update
+    @share = Share.find(params["bulk"]["share_id"])
+    photo_ids = Photo.where :id => params["photos"]
+    @share.photos += photo_ids
+    render json: {status: "OK"}
+  end
 end

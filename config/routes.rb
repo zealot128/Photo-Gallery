@@ -10,7 +10,12 @@ SimpleGallery::Application.routes.draw do
 
   resources :sessions
   resources :users
-  resources :shares
+  resources :shares do
+    collection do
+      get "bulk_add"
+      post "bulk_update"
+    end
+  end
   get "photos/:hash.jpg", to: "photos#shared", as: "photo_share"
   resources :photos
 

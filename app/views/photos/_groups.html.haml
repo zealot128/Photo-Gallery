@@ -10,6 +10,8 @@
             = image_tag photo.file.url(:thumb), alt: ""
           = link_to "#toggle", class: "handle" do
             = image_tag "img_trans.gif"
+          = link_to bulk_add_shares_path(date: date), class: "share_day" do
+            = image_tag "img_trans.gif"
         .body
           = render photos
 

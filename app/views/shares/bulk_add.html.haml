@@ -1,0 +1,10 @@
+= simple_form_for "bulk", url: bulk_update_shares_path, remote: true do |f|
+  - @photos.each do |photo|
+    = hidden_field_tag "photos[]", photo.id
+    = image_tag photo.file.url(:thumb)
+  .clear
+
+  = f.collection_select :share_id, Share.all, :id, :name
+  .clear
+  = f.submit
+
