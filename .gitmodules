@@ -1,0 +1,3 @@
+[submodule "app/assets/javascripts/file-uploader"]
+	path = app/assets/javascripts/file-uploader
+	url = git://github.com/pludoni/file-uploader.git

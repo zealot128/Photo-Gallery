@@ -12,6 +12,9 @@ end
 module SimpleGallery
   class Application < Rails::Application
     config.autoload_paths << "#{config.root}/lib"    # Settings in config/environments/* take precedence over those specified here.
+
+    config.middleware.use 'Rack::RawUpload', :paths => ['/photos/upload']
+
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
