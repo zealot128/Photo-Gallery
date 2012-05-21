@@ -10,6 +10,8 @@ gem "simple_form"
 gem "haml-rails"
 gem "thin"
 
+gem "ruby-progressbar"
+
 
 group :development, :test do
   gem "pry"

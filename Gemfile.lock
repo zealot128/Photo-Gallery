@@ -157,6 +157,7 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.6.0)
+    ruby-progressbar (0.0.10)
     sass (3.1.15)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
@@ -212,6 +213,7 @@ DEPENDENCIES
   rack-raw-upload
   rails (= 3.2.2)
   rspec-rails
+  ruby-progressbar
   sass-rails (~> 3.2.3)
   simple_form
   sqlite3

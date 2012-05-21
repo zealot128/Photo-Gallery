@@ -15,6 +15,12 @@ set :deploy_to, "/var/www/vhosts/stefanwienert.net/sub/pics"
 set :use_sudo, false
 # https://github.com/capistrano/capistrano/issues/79
 set :normalize_asset_timestamps, false
+set :git_enable_submodules, 1
+set :git_shallow_clone, 1
+
+
+
+
  role :web, "localhost"                          # Your HTTP server, Apache/etc
  role :app, "localhost"                          # This may be the same as your `Web` server
  role :db,  "localhost", :primary => true # This is where Rails migrations will run
