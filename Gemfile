@@ -8,7 +8,6 @@ gem 'exifr'
 gem 'paperclip'
 gem "simple_form"
 gem "haml-rails"
-gem "unicorn"
 
 gem "ruby-progressbar"
 
@@ -21,6 +20,8 @@ group :development do
   gem "nifty-generators"
   gem 'capistrano'
   gem 'capistrano_colors'
+  gem "unicorn"
+  gem "rvm-capistrano"
 end
 
 group :test do
