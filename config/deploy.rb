@@ -9,9 +9,9 @@ set :scm, :git
 set :repository, "git://github.com/zealot128/AutoShare-Gallery.git"
 set :local_repository, "file://."
 
-set :application, "Empfehlungsbund.de"
-set :user, "root"
-set :deploy_to, "/var/www/vhosts/stefanwienert.net/sub/pics"
+set :application, "Simple Gallery"
+set :user, "stefan"
+set :deploy_to, "/apps/pics/prod"
 set :use_sudo, false
 # https://github.com/capistrano/capistrano/issues/79
 set :normalize_asset_timestamps, false
@@ -21,35 +21,35 @@ set :git_shallow_clone, 1
 
 
 
- role :web, "localhost"                          # Your HTTP server, Apache/etc
- role :app, "localhost"                          # This may be the same as your `Web` server
- role :db,  "localhost", :primary => true # This is where Rails migrations will run
+role :web, "localhost"                          # Your HTTP server, Apache/etc
+role :app, "localhost"                          # This may be the same as your `Web` server
+role :db,  "localhost", :primary => true # This is where Rails migrations will run
 #
  #
-namespace :thin do
-  desc "Start the Thin processes"
-  task :start do
-    run  <<-CMD
-      cd #{current_path}; bundle exec thin start -C config/thin.yml
-    CMD
-  end
 
-  desc "Stop the Thin processes"
-  task :stop do
-    run <<-CMD
-      cd #{current_path}; bundle exec thin stop -C config/thin.yml
-    CMD
-  end
+set :rails_env, :production
+set :unicorn_binary, "/usr/bin/unicorn"
+set :unicorn_config, "#{current_path}/config/unicorn.rb"
+set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
 
-  desc "Restart the Thin processes"
-  task :restart do
-    run <<-CMD
-      cd #{current_path}; bundle exec thin restart -C config/thin.yml
-    CMD
+namespace :deploy do
+  task :start, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path} && #{try_sudo} #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
+  end
+  task :stop, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} kill `cat #{unicorn_pid}`"
+  end
+  task :graceful_stop, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} kill -s QUIT `cat #{unicorn_pid}`"
+  end
+  task :reload, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} kill -s USR2 `cat #{unicorn_pid}`"
+  end
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    stop
+    start
   end
 end
-
-after "deploy", "thin:restart"
 
 namespace :deploy do
   namespace :assets do

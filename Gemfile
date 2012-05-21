@@ -8,7 +8,7 @@ gem 'exifr'
 gem 'paperclip'
 gem "simple_form"
 gem "haml-rails"
-gem "thin"
+gem "unicorn"
 
 gem "ruby-progressbar"
 
