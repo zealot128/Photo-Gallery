@@ -28,8 +28,8 @@ class Photo < ActiveRecord::Base
       if file.original_filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
         date = Date.parse "#$1-#$2-#$3"
       else
-        Rails.logger.warn "No Date found for file #{file.original_filename}"
-        date = Date.today
+        Rails.logger.warn "No Date found for file #{file.original_filename}. taking mtime"
+        date = file.mtime rescue Date.today
       end
     end
     if date.is_a? String
