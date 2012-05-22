@@ -16,7 +16,8 @@ group :development, :test do
   gem "pry"
 end
 
-gem "unicorn"
+#gem "unicorn"
+gem "thin"
 group :development do
   gem "nifty-generators"
   gem 'capistrano'
