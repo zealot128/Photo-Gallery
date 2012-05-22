@@ -49,7 +49,13 @@ namespace :deploy do
     start
   end
 end
-
+#namespace :deploy do
+  #namespace :assets do
+    #task :precompile, on_error: :continue do
+      #run "cp -r #{release_path} #{release_path}/../bblarg"
+    #end
+  #end
+#end
 
 
 task :setup, :roles => [:app, :db, :web] do

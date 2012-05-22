@@ -16,11 +16,11 @@ group :development, :test do
   gem "pry"
 end
 
+gem "unicorn"
 group :development do
   gem "nifty-generators"
   gem 'capistrano'
   gem 'capistrano_colors'
-  gem "unicorn"
   gem "rvm-capistrano"
 end
 
