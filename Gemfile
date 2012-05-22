@@ -11,6 +11,7 @@ gem "haml-rails"
 
 gem "ruby-progressbar", :require => "progressbar"
 
+gem 'yaml_db'
 
 group :development, :test do
   gem "pry"

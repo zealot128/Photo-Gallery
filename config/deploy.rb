@@ -109,7 +109,7 @@ task :symlink_db do
   run "ln -nfs #{shared_path}/photos #{release_path}/public/photos"
 end
 task :copy_database_yml do
-  run "cp -f #{shared_path}/database.yml #{release_path}/config/database.yml"
+  #run "cp -f #{shared_path}/database.yml #{release_path}/config/database.yml"
 end
 after "deploy:update_code", :symlink_db
 before "deploy:migrate", :copy_database_yml
