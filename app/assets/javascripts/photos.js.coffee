@@ -1,6 +1,11 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
+update_toc = ->
+  $('#toc').toc
+    selectors: '.year > h2'
+    smoothScrolling: false
+    container: '.row .span12'
 
 jQuery ->
   window.uploader = new qq.FileUploader
@@ -55,11 +60,9 @@ jQuery ->
           year_body.html ret
           year_body.show()
         dataType: "html"
+    update_toc()
     false
-  $('#toc').toc
-    selectors: 'h2,h3'
-    smoothScrolling: false
-    container: '.row .span12'
 
+  update_toc()
 
 
