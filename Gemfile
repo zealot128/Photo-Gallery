@@ -5,7 +5,7 @@ gem 'rails', '3.2.2'
 gem 'sqlite3'
 gem 'exifr'
 
-gem 'paperclip'
+gem 'paperclip', '~> 2.3'
 gem "simple_form"
 gem "haml-rails"
 

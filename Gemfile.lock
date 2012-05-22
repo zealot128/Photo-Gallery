@@ -105,10 +105,9 @@ GEM
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
     nifty-generators (0.4.6)
-    paperclip (3.0.4)
-      activemodel (>= 3.0.0)
-      activerecord (>= 3.0.0)
-      activesupport (>= 3.0.0)
+    paperclip (2.7.0)
+      activerecord (>= 2.3.0)
+      activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
     polyglot (0.3.3)
@@ -210,7 +209,7 @@ DEPENDENCIES
   jquery-rails
   mocha
   nifty-generators
-  paperclip
+  paperclip (~> 2.3)
   pry
   rack-raw-upload
   rails (= 3.2.2)
