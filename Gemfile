@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
 
-gem 'sqlite3'
 gem 'exifr'
 
 gem 'paperclip', '~> 2.3'
@@ -13,8 +12,13 @@ gem "ruby-progressbar", :require => "progressbar"
 
 gem 'yaml_db'
 
+
+group :production do
+  gem 'mysql2', '~> 0.3.7'
+end
 group :development, :test do
   gem "pry"
+  gem 'sqlite3'
 end
 
 #gem "unicorn"
