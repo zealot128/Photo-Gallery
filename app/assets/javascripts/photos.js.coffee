@@ -47,16 +47,19 @@ jQuery ->
   $('.year-switch').click ->
     elem = $(this)
     year_body = elem.parent().parent().find(".year-body")
+    year_body.toggle()
     if year_body.html().length == 0
       $.ajax
         url: elem.attr("href")
         success: (ret) ->
           year_body.html ret
+          year_body.show()
         dataType: "html"
     false
   $('#toc').toc
     selectors: 'h2,h3'
     smoothScrolling: false
+    container: '.row .span12'
 
 
 
