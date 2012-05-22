@@ -1,5 +1,3 @@
-
-
 require 'bundler/capistrano'
 require "rvm/capistrano"                  # Load RVM's capistrano plugin.
 require 'capistrano_colors'
@@ -16,6 +14,7 @@ set :use_sudo, false
 set :normalize_asset_timestamps, false
 set :git_enable_submodules, 1
 set :git_shallow_clone, 1
+deployment_type = :thin
 
 
 
@@ -24,37 +23,74 @@ role :web, "localhost"                          # Your HTTP server, Apache/etc
 role :app, "localhost"                          # This may be the same as your `Web` server
 role :db,  "localhost", :primary => true # This is where Rails migrations will run
 #
- #
+#
 
 set :rails_env, :production
-set :unicorn_binary, "bundle exec unicorn"
-set :unicorn_config, "#{current_path}/config/unicorn.rb"
-set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
 
-namespace :deploy do
-  task :start, :roles => :app, :except => { :no_release => true } do
-    run "cd #{current_path} && #{try_sudo} #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
+
+case deployment_type
+when :unicorn
+  set :unicorn_binary, "bundle exec unicorn"
+  set :unicorn_config, "#{current_path}/config/unicorn.rb"
+  set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
+
+  namespace :deploy do
+    task :start, :roles => :app, :except => { :no_release => true } do
+      run "cd #{current_path} && #{try_sudo} #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
+    end
+    task :stop, :roles => :app, :except => { :no_release => true }, on_error: :continue  do
+      run "#{try_sudo} kill `cat #{unicorn_pid}`"
+    end
+    task :graceful_stop, :roles => :app, :except => { :no_release => true } do
+      run "#{try_sudo} kill -s QUIT `cat #{unicorn_pid}`"
+    end
+    task :reload, :roles => :app, :except => { :no_release => true } do
+      run "#{try_sudo} kill -s USR2 `cat #{unicorn_pid}`"
+    end
+    task :restart, :roles => :app, :except => { :no_release => true } do
+      stop
+      start
+    end
   end
-  task :stop, :roles => :app, :except => { :no_release => true }, on_error: :continue  do
-    run "#{try_sudo} kill `cat #{unicorn_pid}`"
+when :thin
+  namespace :thin do
+    desc "Start the Thin processes"
+    task :start do
+      run  <<-CMD
+      cd #{current_path}; bundle exec thin start -C config/thin.yml
+      CMD
+    end
+
+    desc "Stop the Thin processes"
+    task :stop do
+      run <<-CMD
+      cd #{current_path}; bundle exec thin stop -C config/thin.yml
+      CMD
+    end
+
+    desc "Restart the Thin processes"
+    task :restart do
+      run <<-CMD
+      cd #{current_path}; bundle exec thin restart -C config/thin.yml
+      CMD
+    end
   end
-  task :graceful_stop, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} kill -s QUIT `cat #{unicorn_pid}`"
-  end
-  task :reload, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} kill -s USR2 `cat #{unicorn_pid}`"
-  end
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    stop
-    start
+  after 'deploy', "thin:restart"
+when :passenger
+  namespace :deploy do
+    task :start do ; end
+    task :stop do ; end
+    task :restart, :roles => :app, :except => { :no_release => true } do
+      run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+    end
   end
 end
 #namespace :deploy do
-  #namespace :assets do
-    #task :precompile, on_error: :continue do
-      #run "cp -r #{release_path} #{release_path}/../bblarg"
-    #end
-  #end
+#namespace :assets do
+#task :precompile, on_error: :continue do
+#run "cp -r #{release_path} #{release_path}/../bblarg"
+#end
+#end
 #end
 
 
@@ -73,5 +109,15 @@ task :symlink_db do
 end
 after "deploy:update_code", :symlink_db
 after 'deploy:update_code', 'deploy:migrate'
+
+
+#  Paperclip Attachments neu bauen, falls welche fehlen
+namespace :deploy do
+  desc "build missing paperclip styles"
+  task :build_missing_paperclip_styles, :roles => :app do
+    run "cd #{release_path}; RAILS_ENV=production bundle exec rake paperclip:refresh:missing_styles"
+  end
+end
+after "deploy:update_code", "deploy:build_missing_paperclip_styles"
 
 

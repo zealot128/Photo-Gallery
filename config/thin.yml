@@ -1,10 +1,10 @@
 ---
-chdir: /var/www/vhosts/stefanwienert.net/sub/pics/current/
+chdir: /apps/pics/prod/current
 log: log/thin.log
-port: 5000
+port: 9001
 environment: production
 pid: tmp/pids/thin.pid
-servers: 1
+servers: 4
 onebyone: true
 wait: 60
 

@@ -20,6 +20,10 @@ class Photo < ActiveRecord::Base
     self.md5 = Digest::MD5.hexdigest(file.to_file.read)
   end
   validates :md5, :uniqueness => true
+  before_post_process :check_uniqueness
+  def check_uniqueness
+    valid?
+  end
 
   def self.parse_date(file)
     meta = EXIFR::JPEG.new(file.path)
