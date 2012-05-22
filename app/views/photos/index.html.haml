@@ -1,29 +1,18 @@
 %h1 Photos
+#toc
 #file-uploader
 
-= render "groups", groups: @groups
+-#= render "groups", groups: @groups
+- @years.each do |year,count|
+  .year
+    %h2
+      = link_to photos_ajax_year_path(:year => year), :class => "year-switch" do
+        = year
+        = "(#{count})"
+    .year-body
+
+
 
 .clear
-- if @groups.length == 0
-  .hint
-    Usage:
-    %ul
-      %li
-        Download
-        = link_to "Autoshare App", "https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result"
-        for your Android
-      %li
-        Configuration: "Webserver"
-        %ul
-          %li Active YES
-          %li
-            Server Address:
-            = photos_url
-          %li
-            Username:
-            = current_user.username
-          %li
-            Password: ****
-      %li
-        Upload some photos with Autoshare or configure it for auto-upload for new images
-
+- if @years.length == 0
+  = render "layouts/manual"

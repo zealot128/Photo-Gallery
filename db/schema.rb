@@ -11,15 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120522190253) do
+ActiveRecord::Schema.define(:version => 20120522212755) do
 
   create_table "photos", :force => true do |t|
     t.datetime "shot_at"
     t.decimal  "lat"
     t.decimal  "lng"
     t.integer  "user_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.string   "file_file_name"
     t.string   "file_content_type"
     t.integer  "file_file_size"
@@ -27,11 +27,15 @@ ActiveRecord::Schema.define(:version => 20120522190253) do
     t.string   "share_hash"
     t.string   "location"
     t.string   "md5"
+    t.integer  "year",              :limit => 2
+    t.integer  "month",             :limit => 2
   end
 
   add_index "photos", ["md5"], :name => "index_photos_on_md5", :unique => true
+  add_index "photos", ["month"], :name => "index_photos_on_month"
   add_index "photos", ["share_hash"], :name => "index_photos_on_share_hash"
   add_index "photos", ["shot_at"], :name => "index_photos_on_shot_at"
+  add_index "photos", ["year"], :name => "index_photos_on_year"
 
   create_table "photos_shares", :id => false, :force => true do |t|
     t.integer "share_id"

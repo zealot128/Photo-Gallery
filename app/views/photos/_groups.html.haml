@@ -1,5 +1,5 @@
 - groups.each do |month,items|
-  %h2.month=l month, format: "%B %Y"
+  %h2.month=@month_names[month]
   .groups
     - items.each do |date, photos|
       .group

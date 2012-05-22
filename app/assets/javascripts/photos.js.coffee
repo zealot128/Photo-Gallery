@@ -11,7 +11,7 @@ jQuery ->
       'authenticity_token': $('meta[name="csrf-token"]').attr('content')
     onComplete:(id, filename, json) ->
       console.log json
-  $('.group .toggler').click (bla)->
+  $('body').on "click" ,'.group .toggler', (bla)->
     if bla.target.className == "share_day"
       return true
     $(this).toggleClass("open")
@@ -44,4 +44,19 @@ jQuery ->
       thumbs:
         width: 50
         height: 50
+  $('.year-switch').click ->
+    elem = $(this)
+    year_body = elem.parent().parent().find(".year-body")
+    if year_body.html().length == 0
+      $.ajax
+        url: elem.attr("href")
+        success: (ret) ->
+          year_body.html ret
+        dataType: "html"
+    false
+  $('#toc').toc
+    selectors: 'h2,h3'
+    smoothScrolling: false
+
+
 

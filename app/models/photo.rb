@@ -115,6 +115,16 @@ class Photo < ActiveRecord::Base
 
     days.group_by{|day, items| Date.parse day.strftime("%Y-%m-01")}
   end
+  def self.days_of_year(year)
+    days = Photo.where(:year => year).
+      group_by{|i|i.shot_at.to_date}.
+      sort_by{|a,b| a}.reverse
+    days.group_by{|day, items| day.month}
+  end
+
+  def self.years
+    Photo.uniq.order("year desc").pluck(:year)
+  end
 
   scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
   private

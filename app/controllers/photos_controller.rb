@@ -4,7 +4,8 @@ class PhotosController < ApplicationController
   before_filter :login_required
 
   def index
-    @groups = Photo.grouped
+    #@groups = Photo.grouped
+    @years = Photo.uniq.group(:year).count.sort_by{|a,b|-a}
   end
 
   def destroy
@@ -57,6 +58,15 @@ class PhotosController < ApplicationController
     else
       redirect_to photos_path
     end
+  end
+
+  def ajax_year
+    @year = params[:year]
+    @groups = Photo.days_of_year(@year)
+
+    @month_names = ["","Jan","Feb","Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Nov", "Dez"]
+    render :partial => "photos/groups", :locals => { groups: @groups}
+
   end
 
   protected
