@@ -30,7 +30,7 @@ class PhotosController < ApplicationController
   protect_from_forgery except: :create
 
   def create
-    Photo.create_from_upload(params[:userfile], current_user)
+    @photo = Photo.create_from_upload(params[:userfile], current_user)
     current_user.enable_ip_based_login request
     render :text => "OK"
   end

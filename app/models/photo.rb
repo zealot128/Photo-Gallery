@@ -17,7 +17,7 @@ class Photo < ActiveRecord::Base
   end
 
   before_validation on: :create do
-    self.md5 = Digest::MD5.hexdigest(file.to_file.read)
+    self.md5 = Digest::MD5.hexdigest(File.open(file.path).read)
   end
   validates :md5, :uniqueness => true
 
