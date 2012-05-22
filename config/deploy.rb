@@ -94,6 +94,8 @@ end
 #end
 
 
+
+
 task :setup, :roles => [:app, :db, :web] do
   run <<-CMD
     mkdir -p -m 775 #{release_path} #{shared_path}/system #{shared_path}/db #{shared_path}/photos &&
@@ -105,9 +107,12 @@ after "deploy:setup", "setup"
 task :symlink_db do
   run "ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/production.sqlite3"
   run "ln -nfs #{shared_path}/photos #{release_path}/public/photos"
-
+end
+task :copy_database_yml do
+  run "cp -f #{shared_path}/database.yml #{release_path}/config/database.yml"
 end
 after "deploy:update_code", :symlink_db
+before "deploy:migrate", :copy_database_yml
 after 'deploy:update_code', 'deploy:migrate'
 
 
