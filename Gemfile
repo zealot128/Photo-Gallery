@@ -9,7 +9,7 @@ gem 'paperclip'
 gem "simple_form"
 gem "haml-rails"
 
-gem "ruby-progressbar"
+gem "ruby-progressbar", :require => "progressbar"
 
 
 group :development, :test do
