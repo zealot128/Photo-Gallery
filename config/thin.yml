@@ -7,4 +7,6 @@ pid: tmp/pids/thin.pid
 servers: 4
 onebyone: true
 wait: 60
+timeout: 600
+max_persistent_conns: 512
 
