@@ -14,6 +14,8 @@ class Photo < ActiveRecord::Base
 
   before_save do
     self.share_hash = SecureRandom.hex(24)
+    self.year = self.shot_at.year
+    self.month = self.shot_at.month
   end
 
   before_validation on: :create do
