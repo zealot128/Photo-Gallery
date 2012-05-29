@@ -33,7 +33,10 @@ class PhotosController < ApplicationController
   def create
     @photo = Photo.create_from_upload(params[:userfile], current_user)
     current_user.enable_ip_based_login request
+    raise ActiveRecord::RecordNotUnique if @photo.new_record?
     render :text => "OK"
+  rescue ActiveRecord::RecordNotUnique
+    render text: "Photo already uploaded"
   end
 
   def upload
