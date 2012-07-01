@@ -1,6 +1,9 @@
 - groups.each do |month,items|
-  %h2.month=@month_names[month]
-  .groups
+  - if month.kind_of? Date
+    %h2=month.strftime("%B %Y")
+  - else
+    %h2.month=@month_names[month]
+  .groups.open
     - items.each do |date, photos|
       .group
         %h2.toggler

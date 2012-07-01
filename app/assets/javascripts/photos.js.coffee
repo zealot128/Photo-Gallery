@@ -8,14 +8,15 @@ update_toc = ->
     container: '.row .span12'
 
 jQuery ->
-  window.uploader = new qq.FileUploader
-    element: document.getElementById('file-uploader')
-    action: '/photos/upload'
-    allowedExtensions: ["jpg","png","gif","jpeg"]
-    params:
-      'authenticity_token': $('meta[name="csrf-token"]').attr('content')
-    onComplete:(id, filename, json) ->
-      console.log json
+  $('#file-uploader').each ->
+    window.uploader = new qq.FileUploader
+      element: document.getElementById('file-uploader')
+      action: '/photos/upload'
+      allowedExtensions: ["jpg","png","gif","jpeg"]
+      params:
+        'authenticity_token': $('meta[name="csrf-token"]').attr('content')
+      onComplete:(id, filename, json) ->
+        console.log json
   $('body').on "click" ,'.group .toggler', (bla)->
     if bla.target.className == "share_day"
       return true
@@ -25,6 +26,7 @@ jQuery ->
     hidden.find("img.lazy").each ->
       $(this).attr("src",  $(this).data("original"))
     false
+  $('.open .group .toggler').click()
 
   $('.photo .options .share, .toggler .share_day').fancybox
     fitToView: false

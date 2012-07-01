@@ -69,7 +69,6 @@ class PhotosController < ApplicationController
 
     @month_names = ["","Jan","Feb","Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Nov", "Dez"]
     render :partial => "photos/groups", :locals => { groups: @groups}
-
   end
 
   protected

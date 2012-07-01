@@ -29,6 +29,7 @@ class SharesController < ApplicationController
 
   def show
     @share = Share.find_by_token(params[:id])
+    @month_names = ["","Jan","Feb","Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Nov", "Dez"]
     raise ActiveRecord::RecordNotFound if @share.nil?
   end
 
