@@ -56,6 +56,9 @@ jQuery ->
     year_body = elem.parent().parent().find(".year-body")
     year_body.toggle()
     if year_body.html().length == 0
+      loader = $('#loader').html()
+      year_body.html(loader)
+      year_body.find("#loader").show()
       $.ajax
         url: elem.attr("href")
         success: (ret) ->

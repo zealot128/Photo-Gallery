@@ -39,5 +39,7 @@
         .row
           .span12
             = yield
+    #loader(style="display: none;")
+      = image_tag "loader.gif"
 
     = javascript_include_tag "application"
