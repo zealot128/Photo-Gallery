@@ -65,10 +65,15 @@ class PhotosController < ApplicationController
 
   def ajax_year
     @year = params[:year]
-    @groups = Photo.days_of_year(@year)
+    @months_and_days = Day.grouped_by_day_and_month @year
 
     @month_names = ["","Jan","Feb","Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Nov", "Dez"]
-    render :partial => "photos/groups", :locals => { groups: @groups}
+    render :partial => "photos/groups", :locals => { months_and_days: @months_and_days}
+  end
+
+  def ajax_photos
+    @photos = Day.find(params[:id]).photos
+    render partial: "photos/photo", collection: @photos, layout: false
   end
 
   protected

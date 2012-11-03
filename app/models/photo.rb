@@ -10,12 +10,23 @@ class Photo < ActiveRecord::Base
   convert_options: { all: '-auto-orient' }
 
   belongs_to :user
+  belongs_to :day
   has_and_belongs_to_many :shares, :join_table => "photos_shares"
 
   before_save do
     self.share_hash = SecureRandom.hex(24)
     self.year = self.shot_at.year
     self.month = self.shot_at.month
+  end
+  before_save do
+    self.day = Day.date self.shot_at
+  end
+
+  SLOW_CALLBACKS = true if !defined? SLOW_CALLBACKS
+  if SLOW_CALLBACKS
+    after_save do
+      self.day.update_me
+    end
   end
 
   before_validation on: :create do
@@ -117,6 +128,8 @@ class Photo < ActiveRecord::Base
 
     days.group_by{|day, items| Date.parse day.strftime("%Y-%m-01")}
   end
+
+  # @deprecated
   def self.days_of_year(year)
     days = Photo.where(:year => year).
       group_by{|i|i.shot_at.to_date}.

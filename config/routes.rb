@@ -16,6 +16,7 @@ SimpleGallery::Application.routes.draw do
   get "photos/:hash.jpg", to: "photos#shared", as: "photo_share"
   post "photos/upload"
   get "photos/ajax_year"
+  get "photos/ajax_photos"
   resources :photos
 
   root to: "photos#index"

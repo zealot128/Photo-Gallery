@@ -14,7 +14,7 @@ class SharesController < ApplicationController
   def create
     if @share = Share.create(params[:share])
       if request.xhr?
-        render json: {status: "OK"}
+        render json: {status: "OK", data: @share}
       else
         redirect_to shares_path
       end
@@ -57,6 +57,6 @@ class SharesController < ApplicationController
     @share = Share.find(params["bulk"]["share_id"])
     photo_ids = Photo.where :id => params["photos"]
     @share.photos += photo_ids
-    render json: {status: "OK"}
+    render json: {status: "OK", url: share_url(@share)}
   end
 end

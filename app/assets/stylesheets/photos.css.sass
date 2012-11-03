@@ -34,8 +34,6 @@ h2
     line-height: 48px
   &:hover .options
     display: block
-  .share
-    +onebit-icon(17)
   .delete
     +onebit-icon(33)
   .download
@@ -47,13 +45,12 @@ h2.month
   color: #666666
   font-size: 25px
   width: 120px
-  left: 100px
-  position: absolute
+  margin-bottom: -20px
+  margin-top: 10px
   &:before
     clear: both
 .container
   width: auto
-  padding-left: 125px
 .navbar .container
   padding-left: 10px
   width: auto
@@ -76,11 +73,39 @@ form.edit_photo
 
 h2.toggler
   .share_day
-    +onebit-icon(17)
     display: none
     float: right
+    line-height: 40px
+    vertical-align: middle
 
   &:hover
     background: #eee
     .share_day
       display: block
+
+#sidebar
+  top: 70px
+  position: fixed
+  width: 180px
+
+
+#sidebar-spanner
+  width: 190px
+  height: 1px
+
+.bs-docs-sidenav > li:first-child > a
+  border-radius: 6px 6px 0 0
+
+.bs-docs-sidenav > li > a
+  border: 1px solid #E5E5E5
+  display: block
+  margin: 0 0 -1px
+  padding: 8px 14px
+
+h2.year-title
+  font-size: 30px
+  a
+    text-decoration: none
+    color: #333
+    &:hover
+      color: #555

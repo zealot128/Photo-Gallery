@@ -11,7 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120522212755) do
+ActiveRecord::Schema.define(:version => 20121103200015) do
+
+  create_table "days", :force => true do |t|
+    t.date     "date"
+    t.integer  "year"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.string   "montage_file_name"
+    t.string   "montage_content_type"
+    t.integer  "montage_file_size"
+    t.datetime "montage_updated_at"
+    t.string   "locations"
+  end
+
+  add_index "days", ["date"], :name => "index_days_on_date"
 
   create_table "photos", :force => true do |t|
     t.datetime "shot_at"
@@ -29,8 +43,10 @@ ActiveRecord::Schema.define(:version => 20120522212755) do
     t.string   "md5"
     t.integer  "year",              :limit => 2
     t.integer  "month",             :limit => 2
+    t.integer  "day_id"
   end
 
+  add_index "photos", ["day_id"], :name => "index_photos_on_day_id"
   add_index "photos", ["md5"], :name => "index_photos_on_md5", :unique => true
   add_index "photos", ["month"], :name => "index_photos_on_month"
   add_index "photos", ["share_hash"], :name => "index_photos_on_share_hash"

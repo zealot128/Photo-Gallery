@@ -1,20 +1,15 @@
-- groups.each do |month,items|
-  - if month.kind_of? Date
-    %h2=month.strftime("%B %Y")
-  - else
-    %h2.month=@month_names[month]
+- months_and_days.each do |month,days|
+  %h2.month=@month_names[month]
   .groups.open
-    - items.each do |date, photos|
+    - days.each do |day|
       .group
-        %h2.toggler
-          = date.strftime("%d.%m.")
-          = photos.map{|i|i.location}.reject(&:blank?).uniq.join(", ")
-          - photos.each do |photo|
-            = image_tag photo.file.url(:thumb), alt: ""
+        %h2.toggler{data: {id: day.id}}
+          = day.date.strftime("%d.%m.")
+          = day.locations
+          = image_tag day.montage.url
           = link_to "#toggle", class: "handle" do
             = image_tag "img_trans.gif"
-          = link_to bulk_add_shares_path(date: date), class: "share_day" do
-            = image_tag "img_trans.gif"
-        .body
-          = render photos
+          = link_to bulk_add_shares_path(date: day.date), class: "share_day", title: "Add images to a Share" do
+            %i.icon-share
+        .body.unloaded
 

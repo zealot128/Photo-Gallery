@@ -1,17 +1,21 @@
-%h1 Photos
-#toc
-#file-uploader
+- content_for :sidebar do
+  #messages
+  #file-uploader
+  #yearbar
+    %ul.nav.nav-list.bs-docs-sidenav
+      - @years.each do |year,count|
+        %li
+          %a{href: "#year-#{year}"}
+            %i.icon-chevron-right
+            = year
 
--#= render "groups", groups: @groups
 - @years.each do |year,count|
   .year
-    %h2
+    %h2.year-title{id: "year-#{year}"}
       = link_to photos_ajax_year_path(:year => year), :class => "year-switch" do
         = year
         = "(#{count})"
     .year-body
-
-
 
 .clear
 - if @years.length == 0

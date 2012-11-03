@@ -1,3 +1,4 @@
+%p Add all images of that day to a Share. You can remove individual images from that share later
 = simple_form_for "bulk", url: bulk_update_shares_path, remote: true do |f|
   - @photos.each do |photo|
     = hidden_field_tag "photos[]", photo.id
@@ -6,5 +7,5 @@
 
   = f.collection_select :share_id, Share.all, :id, :name
   .clear
-  = f.submit
+  = f.submit "Add Images"
 

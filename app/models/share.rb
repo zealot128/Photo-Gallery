@@ -13,4 +13,8 @@ class Share < ActiveRecord::Base
   def grouped_photos
     photos.grouped_by_day_and_month
   end
+
+  def to_s
+    name
+  end
 end

@@ -1,15 +1,17 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.2'
+gem 'rails', '~>3.2.2'
 
+gem "bcrypt-ruby", :require => "bcrypt"
 gem 'exifr'
-
-gem 'paperclip', '~> 2.3'
-gem "simple_form"
+gem "geocoder"
 gem "haml-rails"
-
+gem 'paperclip', '~> 2.3'
+gem "rack-raw-upload"
 gem "ruby-progressbar", :require => "progressbar"
-
+gem "simple_form"
+gem 'sqlite3'
+gem "thin"
 gem 'yaml_db'
 
 
@@ -18,11 +20,8 @@ group :production do
 end
 group :development, :test do
   gem "pry"
+  gem 'rb-inotify', '~> 0.8.8'
 end
-gem 'sqlite3'
-
-#gem "unicorn"
-gem "thin"
 group :development do
   gem "nifty-generators"
   gem 'capistrano'
@@ -36,22 +35,15 @@ group :test do
   gem "mocha"
 end
 
-gem "geocoder"
-
-gem "rack-raw-upload"
 
 group :assets do
-  gem "twitter-bootstrap-rails"
-  gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer'
-
   gem 'fancybox-rails', :git => 'https://github.com/sverigemeny/fancybox-rails'
-  gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem "twitter-bootstrap-rails"
+  gem 'uglifier', '>= 1.0.3'
+  gem "less-rails"
 end
 
-gem "bcrypt-ruby", :require => "bcrypt"
 

@@ -1,12 +1,5 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
-update_toc = ->
-  $('#toc').toc
-    selectors: '.year > h2'
-    smoothScrolling: false
-    container: '.row .span12'
-
+refresh_sidebar = ->
+  $('body').scrollspy("refresh")
 jQuery ->
   $('#file-uploader').each ->
     window.uploader = new qq.FileUploader
@@ -15,16 +8,19 @@ jQuery ->
       allowedExtensions: ["jpg","png","gif","jpeg"]
       params:
         'authenticity_token': $('meta[name="csrf-token"]').attr('content')
-      onComplete:(id, filename, json) ->
-        console.log json
+      #onComplete:(id, filename, json) ->
+    $(".qq-upload-button").addClass("btn btn-primary")
   $('body').on "click" ,'.group .toggler', (bla)->
-    if bla.target.className == "share_day"
+    if bla.target.className == "icon-share"
       return true
-    $(this).toggleClass("open")
-    hidden = $(this).parent().find(".body")
+    el = $(this)
+    el.toggleClass("open")
+    hidden = el.parent().find(".body")
+    if hidden.hasClass("unloaded")
+      hidden.load("/photos/ajax_photos?id=#{el.data("id")}")
+      hidden.removeClass("unloaded")
     hidden.toggle()
-    hidden.find("img.lazy").each ->
-      $(this).attr("src",  $(this).data("original"))
+    refresh_sidebar()
     false
   $('.open .group .toggler').click()
 
@@ -37,8 +33,12 @@ jQuery ->
     type: 'ajax'
     afterShow: ->
       element = $(".fancybox-inner form")
-      element.bind "ajax:complete", ->
+      element.bind "ajax:complete", (a,b)->
         $.fancybox.close()
+        data = $.parseJSON b.responseText
+        message = $("<div class='alert fade in alert-info'>Images added to <a href='#{data.url}'>Share</a> <a class='close' data-dismiss='alert' href='#'>&times;</a> </div>")
+        $('#messages').append(message)
+
   $('.photo > a').fancybox
     closeBtn: false
     helpers:
@@ -63,11 +63,15 @@ jQuery ->
         url: elem.attr("href")
         success: (ret) ->
           year_body.html ret
-          year_body.show()
+          year_body.show ->
+            refresh_sidebar()
+          refresh_sidebar()
         dataType: "html"
-    update_toc()
+
+    refresh_sidebar()
     false
 
-  update_toc()
 
+  $('.dropdown-toggle').dropdown()
+  $('.affix').affix()
 

@@ -16,7 +16,7 @@
     %link{:href => "images/apple-touch-icon-114x114.png", :rel => "apple-touch-icon", :sizes => "114x114"}/
 
 
-  %body
+  %body(data-target="#yearbar" data-spy="scroll")
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
@@ -28,16 +28,15 @@
           .container.nav-collapse
             %ul.nav
               - if current_user
-                %li= link_to "Logout", logout_path
-                %li= link_to "Password", edit_current_user_path
-                %li= link_to "New User", new_user_path
-                %li= link_to "Shares", shares_path
-
+                = render "layouts/nav"
     .container
-
       .content
         .row
-          .span12
+          .span3
+            #sidebar
+              = yield :sidebar
+            .clear#sidebar-spanner
+          .span9
             = yield
     #loader(style="display: none;")
       = image_tag "loader.gif"
