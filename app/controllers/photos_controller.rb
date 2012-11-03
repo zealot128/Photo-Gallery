@@ -67,7 +67,7 @@ class PhotosController < ApplicationController
     @year = params[:year]
     @months_and_days = Day.grouped_by_day_and_month @year
 
-    @month_names = ["","Jan","Feb","Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Nov", "Dez"]
+    @month_names = ["","Jan","Feb","Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep","Okt", "Nov", "Dez"]
     render :partial => "photos/groups", :locals => { months_and_days: @months_and_days}
   end
 
