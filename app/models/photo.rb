@@ -22,9 +22,9 @@ class Photo < ActiveRecord::Base
     self.day = Day.date self.shot_at
   end
 
-  SLOW_CALLBACKS = true if !defined? SLOW_CALLBACKS
-  if SLOW_CALLBACKS
-    after_save do
+  SLOW_CALLBACKS = true # override in migration script
+  after_save do
+    if SLOW_CALLBACKS
       self.day.update_me
     end
   end
