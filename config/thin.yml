@@ -9,4 +9,5 @@ onebyone: true
 wait: 60
 timeout: 600
 max_persistent_conns: 512
+address: 127.0.0.1
 
