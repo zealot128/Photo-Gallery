@@ -54,6 +54,3 @@ end
 
 gem "sass"
 gem "haml-rails"
-#gem "serialize-rails"
-gem "multi_json"
-gem "yajl-ruby"
