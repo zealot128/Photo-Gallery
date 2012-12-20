@@ -6,6 +6,6 @@ end
 
 class EXIFR::TIFF::Degrees
   def to_json(options={})
-    to_a.to_json(options)
+    to_a.map{|i|i.to_f}.to_json
   end
 end
