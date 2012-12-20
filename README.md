@@ -22,7 +22,7 @@ AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/d
 * being able to share individual photos or whole days via a "Share", which is a random URL which contains all the shared info. In this way, there are no limit, which photos too share to whome. A share is like a gallery
 ![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot5.jpg?1356009448)
 * a share "Public" is automatically created, and all containing photos are displayed in a blogy fashion on the home page (Feed subcription possible, endless scrolling enabled)
-![](http://pics.stefanwienert.de/photos/medium/2012-12-19/sho1.jpg?1356009370)
+  ![](http://pics.stefanwienert.de/photos/medium/2012-12-19/sho1.jpg?1356009370)
 * Using Twitter Bootstrap
 * Internal private gallery: This is more or less the core feature and been used by me for a while now.
 ![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot4.jpg?1356009376)
@@ -49,4 +49,25 @@ Configuration for AutoShare is explained after login.
 * Change/Correct image dates
 * Notes/Tagging of picture
 * other image formats than jpeg should not work, because on the liability of exif-informations
+
+## Notes
+
+* Using Twitter Bootstrap and Font Awesome for icons
+* jquery fileuploader for drag-drop field and ajaxified uploads
+* Several font-packages from Fontsquirrel
+* Rails 3.2
+* Some specs
+
+
+## License
+
+
+
+Copyright (c) 2012 Stefan Wienert
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
