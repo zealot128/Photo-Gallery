@@ -34,14 +34,27 @@ AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/d
 
 ## Install
 
+**Prerequisites:**
+
+* Ruby 1.9 and bundler
+* imagemagick
+* file-storage -> all pictures are stored inside public/photos directory
+  * Image uploads are handled by [Paperclip](https://github.com/thoughtbot/paperclip#storage), so with a little configuration S3, Fog, Dropbox or azure should be possible.
+* sqlite3 for development, mysql by default for production.
+
 ```
-git clone THIS
+git clone https://github.com/zealot128/AutoShare-Gallery.git
 bundle
-rake db:setup  # migrate and create a new user
+rake db:setup  # migrate and create a new user "share" with password "password"
+rails s
+# server is started on port 3000
+# edit config/locales/en.yml and change settings
 ```
 
 This will also create a new user with name "share" and password "password". This can be changed later.
 Configuration for AutoShare is explained after login.
+
+Deployment is handled through capistrano; have a look at ``config/deplog.rb`` for the settings.
 
 ## Todo
 
