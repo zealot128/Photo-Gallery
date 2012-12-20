@@ -3,3 +3,9 @@ class Rational
     to_s.to_json(options)
   end
 end
+
+class XIFR::TIFF::Degrees
+  def to_json(options={})
+    to_a.to_json(options)
+  end
+end
