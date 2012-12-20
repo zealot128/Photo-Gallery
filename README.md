@@ -11,15 +11,21 @@ I liked the way the google+ app uploaded any new images to picasa. I didn't like
 
 AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/details?id=com.dngames.autoshare)
 
+[Some Screenshots/Demo using sharing feature](http://pics.stefanwienert.de/shares/adfb45830b436150cc5e15e4b95db599136f568fb1b80afd)
+
 
 ## More Features:
 
 * Works as API for other applications too: just POST the picture content to /photos with credentials as HTTP Basic authentication
 * Reads EXIF information for date of photo, GPS and camera information
+![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot6.jpg?1356009448)
 * being able to share individual photos or whole days via a "Share", which is a random URL which contains all the shared info. In this way, there are no limit, which photos too share to whome. A share is like a gallery
+![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot5.jpg?1356009448)
 * a share "Public" is automatically created, and all containing photos are displayed in a blogy fashion on the home page (Feed subcription possible, endless scrolling enabled)
+![](http://pics.stefanwienert.de/photos/medium/2012-12-19/sho1.jpg?1356009370)
 * Using Twitter Bootstrap
-* Internal private gallery:
+* Internal private gallery: This is more or less the core feature and been used by me for a while now.
+![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot4.jpg?1356009376)
   * All images are sorted and grouped by date. For performance reasons, whole years are foldable and folded by default.
   * days are automatically montage'd into a big preview thumbnail, so even if you took 100's of shots on one day, it will load fastly (because you save 99 HTTP-Requests)
   * Bulk upload with ajax possible, just drop your picture folder into the app
@@ -41,4 +47,6 @@ Configuration for AutoShare is explained after login.
 
 * Being able to rotate images from the interface
 * Change/Correct image dates
+* Notes/Tagging of picture
+* other image formats than jpeg should not work, because on the liability of exif-informations
 
