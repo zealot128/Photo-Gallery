@@ -12,11 +12,11 @@
     border-radius: 10px 10px 10px 10px
     box-shadow: 0 1px 4px #333333
   .wrapper
-    position: absolute
+    position: relative
   .options
     display: none
-    position: relative
-    bottom: 80px
+    position: absolute
+    bottom: 20px
     left: 72px
     line-height: 20px
     background: rgba(0,0,0,0.5)
@@ -45,6 +45,7 @@ h3.month
   font-size: 25px
   margin-bottom: -15px
   margin-top: 10px
+  clear: both
   &:before
     clear: both
 
@@ -56,8 +57,12 @@ h3.month
     display: none
 
 h4.toggler
+  min-height: 35px
   color: #555
+  position: relative
   .share_day
+    position: absolute
+    right: 0
     display: none
     float: right
     vertical-align: middle
@@ -79,3 +84,4 @@ h2.year-title
     text-decoration: none
 
 #sidebar
+  max-width: 175px

@@ -34,6 +34,7 @@ class Day < ActiveRecord::Base
   end
 
   def update_me
+    return destroy if self.photos.count == 0
     make_montage
     self.update_attribute :locations, photos.pluck(:location).reject(&:blank?).uniq.join(", ")
   end

@@ -3,4 +3,5 @@
 //= require file-uploader/client/fileuploader.js
 //= require twitter/bootstrap
 //= require fancybox
+//= require endless-scroll
 //= require photos

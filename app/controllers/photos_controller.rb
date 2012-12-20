@@ -10,7 +10,10 @@ class PhotosController < ApplicationController
 
   def destroy
     @photo = current_user.photos.find(params[:id])
+    d = @photo.day
     @photo.destroy
+    #Day.joins("left join `photos` ON `photos`.`day_id` = `days`.`id`").group("days.id").having("count(day_id) = 0").map{|i|i.destroy}
+    d.updateme
     respond_to do |f|
       f.html {
         redirect_to photos_path
