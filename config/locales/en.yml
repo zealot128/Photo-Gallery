@@ -2,5 +2,12 @@ en:
   simple_form:
     labels:
     buttons:
+  pages:
+    index:
+      title: "Photo-Blog"
+      intro: "This is my photo publishing and archiving app. Here are some of the public shots"
+
+  title: "Photo-Blog"
+  twitter: "https://www.twitter.com/stefanwienert"
 
 

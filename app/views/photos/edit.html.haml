@@ -1,3 +1,6 @@
-= simple_form_for @photo, remote: true do |f|
-  = f.association :shares, as: :check_boxes
-  = f.submit
+.row
+  .span4
+    = simple_form_for @photo, remote: true do |f|
+      = f.association :shares, as: :check_boxes
+      .clear
+      = f.submit class: "btn-primary btn"

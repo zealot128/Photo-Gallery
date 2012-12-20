@@ -2,7 +2,7 @@
 %html{:lang => "en"}
   %head
     %meta{:charset => "utf-8"}/
-    %title= content_for?(:title) ? yield(:title) : "SimpleGallery"
+    %title= content_for?(:title) ? yield(:title) : I18n.t("title")
     = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
@@ -24,20 +24,22 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          %a.brand{:href => "/"}SimpleGallery
+          %a.brand{:href => "/"}=I18n.t "title"
           .container.nav-collapse
             %ul.nav
               - if current_user
                 = render "layouts/nav"
+              - else
+                %li=link_to "Login", login_path
+                %li=link_to "Impressum", "http://stefanwienert.net/impressum/"
     .container
-      .content
-        .row
-          .span3
-            #sidebar
-              = yield :sidebar
-            .clear#sidebar-spanner
-          .span9
-            = yield
+      .row
+        .span2
+          #sidebar
+            = yield :sidebar
+          .clear#sidebar-spanner
+        .span10
+          = yield
     #loader(style="display: none;")
       = image_tag "loader.gif"
 

@@ -1,0 +1,23 @@
+%a.fork-me(href="https://github.com/zealot128/AutoShare-Gallery")
+  %img(src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on Github")
+.hero-unit
+  %h1=t ".title"
+  %p= t ".intro"
+  = link_to "http://creativecommons.org/licenses/by/2.0/de/" do
+    = image_tag "http://i.creativecommons.org/l/by/3.0/88x31.png", alt: "CC BY"
+  = link_to pages_index_path(format: :atom), class: "btn" do
+    %i.icon-rss
+    Feed
+  = link_to I18n.t("twitter"), class: "btn" do
+    %i.icon-twitter
+    Twitter
+= render @photos
+
+
+
+= will_paginate(@photos, :renderer => WillPaginate::ActionView::LinkRenderer)
+
+
+
+
+

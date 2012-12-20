@@ -54,9 +54,14 @@ class SharesController < ApplicationController
   end
 
   def bulk_update
-    @share = Share.find(params["bulk"]["share_id"])
-    photo_ids = Photo.where :id => params["photos"]
-    @share.photos += photo_ids
+    if params["new_share_name"].present?
+      @share = Share.create! name: params["new_share_name"]
+    else
+      @share = Share.find(params["bulk"]["share_id"])
+    end
+    photo_ids = Photo.where(:id => params["photos"]).pluck :id
+    @share.photo_ids = (@share.photo_ids + photo_ids).uniq
+    @share.save!
     render json: {status: "OK", url: share_url(@share)}
   end
 end

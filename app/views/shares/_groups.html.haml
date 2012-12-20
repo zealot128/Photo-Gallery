@@ -1,12 +1,12 @@
 - groups.each do |month,items|
   - if month.kind_of? Date
-    %h2=month.strftime("%B %Y")
+    %h3=month.strftime("%B %Y")
   - else
-    %h2.month=@month_names[month]
+    %h3.month=@month_names[month]
   .groups.open
     - items.each do |date, photos|
       .group
-        %h2.toggler
+        %h4.toggler
           = date.strftime("%d.%m.")
           = photos.map{|i|i.location}.reject(&:blank?).uniq.join(", ")
           - photos.each do |photo|

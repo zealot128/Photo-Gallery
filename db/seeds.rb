@@ -8,3 +8,4 @@
 
 
 User.create! email: "admin@example.com", password: "password", password_confirmation: "password", username: "share"
+Share.create! name: "Public"

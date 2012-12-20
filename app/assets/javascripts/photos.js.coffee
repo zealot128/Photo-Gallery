@@ -11,7 +11,8 @@ jQuery ->
       #onComplete:(id, filename, json) ->
     $(".qq-upload-button").addClass("btn btn-primary")
   $('body').on "click" ,'.group .toggler', (bla)->
-    if bla.target.className == "icon-share"
+    console.log bla.target.className
+    if /share_day|icon-share/.test bla.target.className
       return true
     el = $(this)
     el.toggleClass("open")

@@ -12,6 +12,10 @@ class Photo < ActiveRecord::Base
   belongs_to :user
   belongs_to :day
   has_and_belongs_to_many :shares, :join_table => "photos_shares"
+  serialize :exif_info, JSON
+  scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
+  validates :md5, :uniqueness => true
+  before_post_process :check_uniqueness
 
   before_save do
     self.share_hash = SecureRandom.hex(24)
@@ -21,7 +25,9 @@ class Photo < ActiveRecord::Base
   before_save do
     self.day = Day.date self.shot_at
   end
-
+  before_validation on: :create do
+    self.md5 = Digest::MD5.hexdigest(file.to_file.read)
+  end
   SLOW_CALLBACKS = true # override in migration script
   after_save do
     if SLOW_CALLBACKS
@@ -29,11 +35,6 @@ class Photo < ActiveRecord::Base
     end
   end
 
-  before_validation on: :create do
-    self.md5 = Digest::MD5.hexdigest(file.to_file.read)
-  end
-  validates :md5, :uniqueness => true
-  before_post_process :check_uniqueness
   def check_uniqueness
     valid?
   end
@@ -61,9 +62,7 @@ class Photo < ActiveRecord::Base
     date
   end
 
-
   def self.create_from_upload(file, current_user)
-
     photo = Photo.new
 
     date = Photo.parse_date(file)
@@ -92,7 +91,11 @@ class Photo < ActiveRecord::Base
   end
 
   def exif
-    meta_data.exif.inject({}) {|a,e| a.merge e}
+    self.exif_info || begin
+    self.exif_info = meta_data.exif.inject({}) {|a,e| a.merge e} rescue {}
+    self.save
+    self.exif_info
+    end
   end
 
   def modal_group
@@ -141,6 +144,4 @@ class Photo < ActiveRecord::Base
     Photo.uniq.order("year desc").pluck(:year)
   end
 
-  scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
-  private
 end
