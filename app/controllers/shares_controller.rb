@@ -45,6 +45,12 @@ class SharesController < ApplicationController
     end
   end
 
+  def remove_image
+    @share = Share.find_by_token(params[:id])
+    @share.photo_ids = @share.photo_ids - [params[:photo_id].to_i]
+    render json: "success"
+
+  end
 
   def bulk_add
     from = Date.parse params[:date]

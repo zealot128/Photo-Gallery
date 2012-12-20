@@ -14,6 +14,9 @@ SimpleGallery::Application.routes.draw do
       get "bulk_add"
       post "bulk_update"
     end
+    member do
+      post "remove_image"
+    end
   end
   get "photos/:hash.jpg", to: "photos#shared", as: "photo_share"
   post "photos/upload"

@@ -12,11 +12,26 @@ body
 @import photos
 @import toc
 
-h1,h2,h3
+h1,h2
   font-family: "GoblinRegular", sans-serif
+h3,h4,h5
+  font-family: "DejaVuSerifBook", serif
+h2
+  clear: both
+  text-decoration: none
+  text-shadow: 1px 1px 1px white, -1px -1px #222222
+  a
+    color: #555
+    &:hover
+      color: #999
+h2,h3,h4
+  color: #333
+h4
+  clear: both
+  margin-top: 20px
+
 .clear
   clear: both
-
 .bs-docs-sidenav > li:first-child > a
   border-radius: 6px 6px 0 0
 

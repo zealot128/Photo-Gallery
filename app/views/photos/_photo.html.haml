@@ -10,8 +10,11 @@
           %i.icon-share
       = link_to photo.file.url(:original), title: "Download", class: "download" do
         %i.icon-download-alt
+      - if @share
+        = link_to remove_image_share_path(@share, photo_id: photo.id), title: "Remove from share", class: "remove-share" do
+          %i.icon-remove
       .info
-        .entry= "Camera: #{photo.exif["make"]} #{photo.exif["model"]}"
+        .entry= truncate "Camera: #{photo.exif["make"]} #{photo.exif["model"]}", length: 30
         .entry= "Aperture #{photo.exif["aperture_value"]} Exposure #{photo.exif["exposure_time"]} ISO #{photo.exif["iso_speed_ratings"]}"
         .entry= "Shot at: #{l(photo.shot_at, format: :short)}"
       .clearfix

@@ -35,7 +35,7 @@
     .container
       .row
         .span2
-          #sidebar
+          #sidebar{data: { spy: "affix", "offset-top" => "10"}}
             = yield :sidebar
           .clear#sidebar-spanner
         .span10

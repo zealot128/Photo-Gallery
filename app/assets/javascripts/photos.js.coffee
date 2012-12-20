@@ -73,6 +73,16 @@ jQuery ->
     false
 
 
+  $('.remove-share').click ->
+    elem = $(this)
+    $.ajax
+      url: elem.attr("href")
+      type: "post"
+      complete: (ret) ->
+        elem.closest(".photo").remove()
+    false
+
+
   $('.dropdown-toggle').dropdown()
   $('.affix').affix()
 
