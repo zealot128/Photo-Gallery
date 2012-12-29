@@ -6,6 +6,16 @@
   text-decoration: none
   text-shadow: 1px 1px 3px black
   width: 48px
+= hover-bg
+  display: none
+  position: absolute
+  bottom: 20px
+  left: 72px
+  line-height: 20px
+  background: rgba(0,0,0,0.5)
+  padding: 5px
+  +clearfix
+
 .photo
   float: left
   height: $img-size
@@ -21,14 +31,7 @@
   .wrapper
     position: relative
   .options
-    display: none
-    position: absolute
-    bottom: 20px
-    left: 72px
-    line-height: 20px
-    background: rgba(0,0,0,0.5)
-    padding: 5px
-    +clearfix
+    +hover-bg
     .info
       color: #BBBBBB
       font-size: 11px
@@ -88,11 +91,14 @@ h2.year-title
   max-width: 175px
 
 .edit-options
+  +hover-bg
   color: black
   display: block
   overflow: visible
   position: relative
-  top: -20px
+  top: -30px
   z-index: 1004
+  width: 125px
+  height: 20px
   a
     +hover-option

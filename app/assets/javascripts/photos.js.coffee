@@ -59,6 +59,8 @@ jQuery ->
       inner = $(".fancybox-inner")
       inner.append $(@element).parent().find(".edit").html()
 
+  $("body").on "ajax:beforeSend", ".edit-options a", ->
+    loader.show()
 
   $('.year-switch').click ->
     elem = $(this)
@@ -79,7 +81,6 @@ jQuery ->
     refresh_sidebar()
     false
 
-
   $('.remove-share').click ->
     elem = $(this)
     $.ajax
@@ -88,7 +89,6 @@ jQuery ->
       complete: (ret) ->
         elem.closest(".photo").remove()
     false
-
 
   $('.dropdown-toggle').dropdown()
   $('.affix').affix()

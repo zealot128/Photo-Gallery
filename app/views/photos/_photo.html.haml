@@ -5,9 +5,9 @@
     - if logged_in?
       .edit-options
         = link_to rotate_photo_path(photo, direction: :left), title: "Rotate left", data: {method: :post, remote: true} do
-          %i.icon-hand-left
+          %i.icon-undo
         = link_to rotate_photo_path(photo, direction: :right), title: "Rotate right", data: {method: :post, remote: true} do
-          %i.icon-hand-right
+          %i.icon-repeat
 
   .wrapper
     .options
