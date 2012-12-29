@@ -1,0 +1,14 @@
+var large=<%=json @photo.file.url(:large) %>;
+var preview=<%=json @photo.file.url(:preview) %>;
+var id="#photo-" + <%=json @photo.id %>;
+
+$('.fancybox-image').attr("src", large).css("width","auto").css("margin", "0 auto");
+console.log($(id))
+$(id).find("img").attr("src", preview);
+$(id).find("a").attr("href", large)
+
+
+var day = $('h4[data-id=<%= @photo.day.id %>]');
+var day_image = <%= json @photo.day.montage.url %>;
+day.find("img").attr("src", day_image)
+$('#loader').hide()

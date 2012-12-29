@@ -1,4 +1,11 @@
-
+= hover-option
+  color: white
+  display: block
+  float: left
+  font-size: 20px
+  text-decoration: none
+  text-shadow: 1px 1px 3px black
+  width: 48px
 .photo
   float: left
   height: $img-size
@@ -30,13 +37,7 @@
       text-shadow: 1px 1px 1px black
       clear: both
     .delete, .download, .share, .remove-share
-      color: white
-      display: block
-      float: left
-      font-size: 20px
-      text-decoration: none
-      text-shadow: 1px 1px 3px black
-      width: 48px
+      +hover-option
   &:hover .options
     display: block
 
@@ -85,3 +86,13 @@ h2.year-title
 
 #sidebar
   max-width: 175px
+
+.edit-options
+  color: black
+  display: block
+  overflow: visible
+  position: relative
+  top: -20px
+  z-index: 1004
+  a
+    +hover-option

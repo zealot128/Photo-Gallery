@@ -106,6 +106,17 @@ class Photo < ActiveRecord::Base
     @meta_data ||= EXIFR::JPEG.new(file.path)
   end
 
+  def rotate!(direction)
+    degrees = if direction == :left
+                -90
+              else
+                90
+              end
+    cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path(:original))}"
+    `#{cmd}`
+    file.reprocess!
+  end
+
 
   def update_gps
     if gps = meta_data.gps

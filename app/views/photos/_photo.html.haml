@@ -1,6 +1,14 @@
 .photo{:id => "photo-#{photo.id}"}
   = link_to photo.file.url(:large), rel: photo.modal_group  do
     = image_tag photo.file.url(:preview)
+  .edit(style="display: none;")
+    - if logged_in?
+      .edit-options
+        = link_to rotate_photo_path(photo, direction: :left), title: "Rotate left", data: {method: :post, remote: true} do
+          %i.icon-hand-left
+        = link_to rotate_photo_path(photo, direction: :right), title: "Rotate right", data: {method: :post, remote: true} do
+          %i.icon-hand-right
+
   .wrapper
     .options
       - if logged_in?

@@ -66,6 +66,13 @@ class PhotosController < ApplicationController
     end
   end
 
+  def rotate
+    @photo = Photo.find(params[:id])
+    direction = params[:direction] == "left" ? :left : :right
+    @photo.rotate! direction
+    @photo.save
+  end
+
   def ajax_year
     @year = params[:year]
     @months_and_days = Day.grouped_by_day_and_month @year

@@ -1,6 +1,7 @@
 refresh_sidebar = ->
   $('body').scrollspy("refresh")
 jQuery ->
+  window.loader = $('#loader')
   $('#file-uploader').each ->
     window.uploader = new qq.FileUploader
       element: document.getElementById('file-uploader')
@@ -11,18 +12,20 @@ jQuery ->
       #onComplete:(id, filename, json) ->
     $(".qq-upload-button").addClass("btn btn-primary")
   $('body').on "click" ,'.group .toggler', (bla)->
-    console.log bla.target.className
     if /share_day|icon-share/.test bla.target.className
       return true
     el = $(this)
     el.toggleClass("open")
     hidden = el.parent().find(".body")
     if hidden.hasClass("unloaded")
-      hidden.load("/photos/ajax_photos?id=#{el.data("id")}")
+      loader.show()
+      hidden.load "/photos/ajax_photos?id=#{el.data("id")}", ->
+        loader.hide()
       hidden.removeClass("unloaded")
     hidden.toggle()
     refresh_sidebar()
     false
+
   $('.open .group .toggler').click()
 
   $('.photo .options .share, .toggler .share_day').fancybox
@@ -52,14 +55,17 @@ jQuery ->
       thumbs:
         width: 50
         height: 50
+    afterShow: ->
+      inner = $(".fancybox-inner")
+      inner.append $(@element).parent().find(".edit").html()
+
+
   $('.year-switch').click ->
     elem = $(this)
     year_body = elem.parent().parent().find(".year-body")
     year_body.toggle()
     if year_body.html().length == 0
-      loader = $('#loader').html()
-      year_body.html(loader)
-      year_body.find("#loader").show()
+      loader.show()
       $.ajax
         url: elem.attr("href")
         success: (ret) ->
@@ -67,6 +73,7 @@ jQuery ->
           year_body.show ->
             refresh_sidebar()
           refresh_sidebar()
+          loader.hide()
         dataType: "html"
 
     refresh_sidebar()

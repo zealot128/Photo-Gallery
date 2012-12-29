@@ -22,7 +22,11 @@ SimpleGallery::Application.routes.draw do
   post "photos/upload"
   get "photos/ajax_year"
   get "photos/ajax_photos"
-  resources :photos
+  resources :photos do
+    member do
+      post :rotate
+    end
+  end
 
   root to: "pages#index"
 end
