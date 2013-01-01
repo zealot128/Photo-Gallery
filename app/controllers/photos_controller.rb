@@ -6,6 +6,8 @@ class PhotosController < ApplicationController
   def index
     #@groups = Photo.grouped
     @years = Photo.uniq.group(:year).count.sort_by{|a,b|-a}
+    @recent = Photo.order("created_at desc").limit(20)
+    @last_upload = @recent.first.created_at rescue false
   end
 
   def destroy

@@ -8,6 +8,19 @@
           %a{href: "#year-#{year}"}
             %i.icon-chevron-right
             = year
+#recent.year
+  %h2.year-title
+    = link_to "#", class: "year-switch" do
+      =t ".recently_uploaded"
+      - if @last_upload
+        .ago
+          = t ".last_upload", time: time_ago_in_words(@last_upload)
+
+  .year-body(style="display: none;")
+    - @recent.each do |photo|
+      = render photo
+
+
 
 - @years.each do |year,count|
   .year

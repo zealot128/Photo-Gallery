@@ -9,5 +9,10 @@ en:
 
   title: "Photo-Blog"
   twitter: "https://www.twitter.com/stefanwienert"
+  photos:
+    index:
+      last_upload: "%{time} ago"
+      recently_uploaded: Recently Uploaded
+
 
 
