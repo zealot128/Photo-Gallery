@@ -1,5 +1,8 @@
 //= require jquery
 //= require jquery_ujs
+//= require jquery
+//= require jquery.mousewheel.js
+//= require will_pickdate.js
 //= require file-uploader/client/fileuploader.js
 //= require twitter/bootstrap
 //= require fancybox

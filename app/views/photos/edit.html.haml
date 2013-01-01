@@ -1,6 +1,15 @@
 .row
   .span4
     = simple_form_for @photo, remote: true do |f|
+      = f.input :caption
+      = f.input :shot_at, as: :string
       = f.association :shares, as: :check_boxes
       .clear
       = f.submit class: "btn-primary btn"
+
+:javascript
+  $('#photo_shot_at').will_pickdate({
+    format: 'Y-m-d H:i:s',
+    timePicker: true,
+    inputOutputFormat: 'Y-m-d H:i:s'
+  });

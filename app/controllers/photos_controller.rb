@@ -33,6 +33,7 @@ class PhotosController < ApplicationController
     self.response_body = open(path, "rb")
   end
 
+
   protect_from_forgery except: :create
 
   def create
