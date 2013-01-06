@@ -3,6 +3,7 @@
     = simple_form_for @photo, remote: true do |f|
       = f.input :caption
       = f.input :shot_at, as: :string
+      = f.input :tag_list, input_html: { autocomplete: "off"}
       = f.association :shares, as: :check_boxes
       .clear
       = f.submit class: "btn-primary btn"
@@ -13,4 +14,13 @@
     timePicker: true,
     militaryTime: true,
     inputOutputFormat: 'Y-m-d H:i:s'
+  });
+
+  $('#photo_tag_list').typeahead({
+    matcher: function(candidate) {
+      q = this.query;
+      element = $.trim(q.split(",").pop().toLowerCase());
+      return  ( candidate.indexOf( element ) !== -1) && element.length > 1
+    },
+    source: #{raw ActsAsTaggableOn::Tag.order(:name).pluck(:name).to_json }
   });

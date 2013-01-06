@@ -12,6 +12,7 @@ class Photo < ActiveRecord::Base
   belongs_to :user
   belongs_to :day
   has_and_belongs_to_many :shares, :join_table => "photos_shares"
+  acts_as_taggable
   serialize :exif_info, JSON
   scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
   validates :md5, :uniqueness => true

@@ -54,3 +54,4 @@ end
 
 gem "sass"
 gem "haml-rails"
+gem 'acts-as-taggable-on'
