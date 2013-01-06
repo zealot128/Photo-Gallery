@@ -48,4 +48,16 @@ describe Photo do
     photo.day.should == d
     photo.reload.day.should == d
   end
+
+  specify "Changing the date should move the file" do
+    photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    day = photo.day
+    day.should_receive(:update_me)
+    photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
+    photo.reload
+    File.exists?(photo.file.path).should be_true
+    Day.where(date: "2012-10-01").first.tap do |d|
+      d.photos.should == [photo]
+    end
+  end
 end

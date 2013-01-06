@@ -14,8 +14,7 @@ class PhotosController < ApplicationController
     @photo = current_user.photos.find(params[:id])
     d = @photo.day
     @photo.destroy
-    #Day.joins("left join `photos` ON `photos`.`day_id` = `days`.`id`").group("days.id").having("count(day_id) = 0").map{|i|i.destroy}
-    d.updateme
+    d.update_me
     respond_to do |f|
       f.html {
         redirect_to photos_path
@@ -62,6 +61,7 @@ class PhotosController < ApplicationController
   def update
     @photo = Photo.find(params[:id])
     @photo.share_ids = params[:photo][:share_ids]
+    @photo.update_attributes!(params[:photo])
     if request.xhr?
       render json: { status: "OK"}
     else

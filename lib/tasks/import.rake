@@ -15,3 +15,8 @@ task :import => :environment do
   end
   pbar.finish
 end
+
+
+task :tidy_up => :environment do
+  Day.joins("left join `photos` ON `photos`.`day_id` = `days`.`id`").group("days.id").having("count(day_id) = 0").map{|i|i.destroy}
+end

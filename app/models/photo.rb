@@ -23,6 +23,18 @@ class Photo < ActiveRecord::Base
     self.month = self.shot_at.month
   end
   before_save do
+    if self.shot_at_changed? and self.shot_at_was.present?
+      @old_day = self.day
+      old = shot_at_was.strftime("%Y-%m-%d")
+      new = shot_at.strftime("%Y-%m-%d")
+      file.styles.each do |name, style|
+        from = style.attachment.path(name).gsub(new, old)
+        to   = style.attachment.path(name)
+        Rails.logger.info "Moving #{from} -> #{to}"
+        FileUtils.mkdir_p File.dirname(to)
+        FileUtils.move from, to
+      end
+    end
     self.day = Day.date self.shot_at
   end
   before_validation on: :create do
@@ -32,6 +44,7 @@ class Photo < ActiveRecord::Base
   after_save do
     if SLOW_CALLBACKS
       self.day.update_me
+      @old_day.update_me if @old_day
     end
   end
 
