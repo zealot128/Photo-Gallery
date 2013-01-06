@@ -1,5 +1,5 @@
 .photo{:id => "photo-#{photo.id}"}
-  = link_to photo.file.url(:large), rel: photo.modal_group  do
+  = link_to photo.file.url(:large), rel: photo.modal_group, title: photo.caption  do
     = image_tag photo.file.url(:preview)
 
   .wrapper
