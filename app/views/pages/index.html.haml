@@ -1,4 +1,4 @@
-#images{data: {url: pages_index_path(format: "json"), start: params[:page] || 1}}
+#start
   %a.fork-me(href="https://github.com/zealot128/AutoShare-Gallery")
     %img(src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on Github")
   .hero-unit
@@ -12,13 +12,5 @@
     = link_to I18n.t("twitter"), class: "btn" do
       %i.icon-twitter
       Twitter
-  = render @photos
 
-
-
-= will_paginate @photos
-
-
-
-
-
+= render "endless_pagination", path: pages_index_path(format: "json"), photos: @photos

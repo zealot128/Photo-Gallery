@@ -27,3 +27,14 @@
     - Share.find_each do |share|
       %li= link_to share, share
 
+%li.dropdown
+  %a.dropdown-toggle{data: { toggle: "dropdown", target: "#"} }
+    %i.icon-tag
+    Tags
+    %b.caret
+  %ul.dropdown-menu(role="menu")
+    - Photo.tag_counts.each do |tag|
+      %li
+        = link_to "/tag/#{tag.id}" do
+          = tag.name
+          (#{tag.count})

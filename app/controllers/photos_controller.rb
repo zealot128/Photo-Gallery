@@ -33,8 +33,8 @@ class PhotosController < ApplicationController
   end
 
 
-  protect_from_forgery except: :create
 
+  protect_from_forgery except: :create
   def create
     @photo = Photo.create_from_upload(params[:userfile], current_user)
     current_user.enable_ip_based_login request

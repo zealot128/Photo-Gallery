@@ -27,6 +27,7 @@ SimpleGallery::Application.routes.draw do
       post :rotate
     end
   end
+  get "tag/:id",  to: "pages#tag"
 
   root to: "pages#index"
 end

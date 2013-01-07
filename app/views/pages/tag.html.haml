@@ -1,0 +1,4 @@
+%h1
+  %i.icon-tag
+  =@tag.name.capitalize
+= render "endless_pagination", path: "/tag/#{params[:id]}.json", photos: @photos

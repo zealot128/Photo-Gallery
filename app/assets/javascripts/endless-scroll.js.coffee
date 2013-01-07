@@ -12,10 +12,11 @@ class Scroller
           if resp.html.length > 5
             target.append resp.html
             el.tick()
+          else
+            $('.pagination').slideToggle()
     else
       @tick()
   tick: ->
-    console.log "tick"
     el = @
     setTimeout ->
       el.checkScroll()
@@ -32,7 +33,6 @@ $ ->
   $('#images').each ->
     el = $(@)
     scroller = new Scroller(el.data("url"), el, el.data("start"))
-    console.log scroller
     scroller.checkScroll()
 
 

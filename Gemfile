@@ -26,6 +26,7 @@ end
 group :development do
   gem "nifty-generators"
   gem 'fontsquirrel-download'
+  gem 'quiet_assets'
 end
 
 group :just_for_having_cli do
