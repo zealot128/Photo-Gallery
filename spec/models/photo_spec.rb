@@ -50,6 +50,7 @@ describe Photo do
   end
 
   specify "Changing the date should move the file" do
+    Photo.slow_callbacks = true
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     day = photo.day
     day.should_receive(:update_me)

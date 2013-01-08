@@ -38,10 +38,13 @@ jQuery ->
     afterShow: ->
       element = $(".fancybox-inner form")
       element.bind "ajax:complete", (a,b)->
-        $.fancybox.close()
         data = $.parseJSON b.responseText
-        message = $("<div class='alert fade in alert-info'>Images added to <a href='#{data.url}'>Share</a> <a class='close' data-dismiss='alert' href='#'>&times;</a> </div>")
-        $('#messages').append(message)
+        if data.status == "OK"
+          $.fancybox.close()
+          message = $("<div class='alert fade in alert-info'>Images added to <a href='#{data.url}'>Share/Tag</a> <a class='close' data-dismiss='alert' href='#'>&times;</a> </div>")
+          $('#messages').append(message)
+        else
+          $('form.bulk').prepend("<div class='alert'>#{data.message}</div>")
 
   $('.photo > a').fancybox
     closeBtn: false

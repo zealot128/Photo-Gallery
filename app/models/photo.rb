@@ -17,6 +17,8 @@ class Photo < ActiveRecord::Base
   scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
   validates :md5, :uniqueness => true
   before_post_process :check_uniqueness
+  cattr_accessor :slow_callbacks
+  self.slow_callbacks = true
 
   before_save do
     self.share_hash = SecureRandom.hex(24)
@@ -41,9 +43,8 @@ class Photo < ActiveRecord::Base
   before_validation on: :create do
     self.md5 = Digest::MD5.hexdigest(file.to_file.read)
   end
-  SLOW_CALLBACKS = true # override in migration script
   after_save do
-    if SLOW_CALLBACKS
+    if Photo.slow_callbacks
       self.day.update_me
       @old_day.update_me if @old_day
     end
