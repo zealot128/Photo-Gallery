@@ -29,6 +29,7 @@ group :development do
   gem 'quiet_assets'
 end
 
+gem "font-awesome-rails"
 group :just_for_having_cli do
   gem 'capistrano'
   gem 'capistrano_colors'

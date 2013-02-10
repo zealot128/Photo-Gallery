@@ -79,6 +79,8 @@ GEM
       multi_json (~> 1.0)
     exifr (1.1.2)
     ffi (1.1.5)
+    font-awesome-rails (3.0.2.0)
+      railties (>= 3.1)
     fontsquirrel-download (0.0.1)
       rails (>= 3.1)
       rubyzip
@@ -225,6 +227,7 @@ DEPENDENCIES
   compass-rails
   exifr
   fancybox-rails!
+  font-awesome-rails
   fontsquirrel-download
   geocoder
   guard-rspec
