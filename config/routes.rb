@@ -25,6 +25,7 @@ SimpleGallery::Application.routes.draw do
   resources :photos do
     member do
       post :rotate
+      post :ocr
     end
   end
   get "tag/:id",  to: "pages#tag", as: "pages_tag"

@@ -122,11 +122,14 @@ class Photo < ActiveRecord::Base
   end
 
   def rotate!(direction)
-    degrees = if direction == :left
-                -90
-              else
-                90
-              end
+    degrees =  case direction.to_sym
+               when :left
+                 -90
+               when :flip
+                 180
+               else
+                 90
+               end
     cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path(:original))}"
     `#{cmd}`
     file.reprocess!

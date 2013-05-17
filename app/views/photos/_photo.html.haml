@@ -12,10 +12,15 @@
         - if @share
           = link_to remove_image_share_path(@share, photo_id: photo.id), title: "Remove from share", class: "remove-share" do
             %i.icon-remove
+        = link_to ocr_photo_path(photo), title: "OCR", data: {method: :post, remote: true} do
+          %i.icon-search
+        %br
         = link_to rotate_photo_path(photo, direction: :left), title: "Rotate left", data: {method: :post, remote: true} do
           %i.icon-undo
         = link_to rotate_photo_path(photo, direction: :right), title: "Rotate right", data: {method: :post, remote: true} do
           %i.icon-repeat
+        = link_to rotate_photo_path(photo, direction: :flip), title: "Rotate 180 degrees", data: {method: :post, remote: true} do
+          %i.icon-refresh
       = link_to photo.file.url(:original), title: "Download", class: "download" do
         %i.icon-download-alt
       .info

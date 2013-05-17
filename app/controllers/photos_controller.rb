@@ -71,9 +71,13 @@ class PhotosController < ApplicationController
 
   def rotate
     @photo = Photo.find(params[:id])
-    direction = params[:direction] == "left" ? :left : :right
-    @photo.rotate! direction
+    @photo.rotate! params[:direction]
     @photo.save
+  end
+
+  def ocr
+    @photo = Photo.find(params[:id])
+    @photo.ocr
   end
 
   def ajax_year
