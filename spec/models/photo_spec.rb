@@ -61,4 +61,11 @@ describe Photo do
       d.photos.should == [photo]
     end
   end
+
+  specify "OCR" do
+    photo = Photo.create_from_upload(File.open("spec/fixtures/text.jpg"), user)
+    photo.ocr
+    photo.description.should include "Mietsteigerung"
+
+  end
 end

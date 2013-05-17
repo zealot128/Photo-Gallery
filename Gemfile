@@ -13,6 +13,7 @@ gem 'sqlite3'
 gem "thin"
 gem 'yaml_db'
 gem 'bootstrap-will_paginate'
+gem "tesseract-ocr", require: false
 
 
 group :production do
@@ -21,7 +22,7 @@ end
 group :development, :test do
   gem "better_errors"
   gem "pry"
-  gem 'rb-inotify', '~> 0.8.8'
+  gem 'rb-inotify', '~> 0.9'
 end
 group :development do
   gem "nifty-generators"
@@ -39,7 +40,6 @@ end
 group :test do
   gem "rspec-rails"
   gem "guard-rspec"
-  gem "mocha"
 end
 
 
@@ -52,7 +52,6 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem "compass-rails"
 end
-
 
 gem "sass"
 gem "haml-rails"

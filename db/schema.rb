@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130106200657) do
+ActiveRecord::Schema.define(:version => 20130517180022) do
 
   create_table "days", :force => true do |t|
     t.date     "date"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20130106200657) do
     t.integer  "day_id"
     t.text     "exif_info"
     t.string   "caption"
+    t.text     "description"
   end
 
   add_index "photos", ["day_id"], :name => "index_photos_on_day_id"

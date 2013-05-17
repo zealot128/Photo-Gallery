@@ -132,6 +132,22 @@ class Photo < ActiveRecord::Base
     file.reprocess!
   end
 
+  def ocr
+    path = Shellwords.escape file.path(:original)
+    t = Tempfile.new( [File.basename(path), ".tif"] )
+
+    Rails.logger.info `convert -depth 8 -colorspace Gray -auto-orient #{path} #{t.path}`
+    unless $?.success?
+      raise Exception.new("Error with converting grayscale image")
+    end
+    Rails.logger.info `tesseract #{t.path} #{t.path} -l deu 2>&1`
+    unless $?.success?
+      raise Exception.new("Error with tesseract-ocr")
+    end
+    self.description = File.read(t.path + ".txt")
+    self.save
+  end
+
 
   def update_gps
     if gps = meta_data.gps
