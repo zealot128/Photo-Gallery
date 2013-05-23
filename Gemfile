@@ -44,6 +44,7 @@ end
 
 
 group :assets do
+  gem 'turbo-sprockets-rails3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'fancybox-rails', :git => 'https://github.com/sverigemeny/fancybox-rails'
   gem 'jquery-rails'
