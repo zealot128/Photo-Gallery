@@ -30,5 +30,6 @@ SimpleGallery::Application.routes.draw do
   end
   get "tag/:id",  to: "pages#tag", as: "pages_tag"
 
-  root to: "pages#index"
+  get "/", to: "pages#index", as: "root"
+  post "/", to: "photos#create"
 end
