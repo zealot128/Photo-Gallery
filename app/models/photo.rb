@@ -107,7 +107,7 @@ class Photo < ActiveRecord::Base
 
   def exif
     self.exif_info || begin
-    self.exif_info = meta_data.exif.inject({}) {|a,e| a.merge e} rescue {}
+    self.exif_info = meta_data.exif.inject({}) {|a,e| a.merge e}.except(:user_comment) rescue {}
     self.save
     self.exif_info
     end
