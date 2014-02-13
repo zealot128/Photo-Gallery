@@ -1,10 +1,10 @@
-- groups.each do |month,items|
+- groups.to_a.reverse.each do |month,items|
   - if month.kind_of? Date
     %h3=month.strftime("%B %Y")
   - else
     %h3.month=@month_names[month]
   .groups.open
-    - items.each do |date, photos|
+    - items.to_a.reverse.each do |date, photos|
       .group
         %h4.toggler
           = date.strftime("%d.%m.")
