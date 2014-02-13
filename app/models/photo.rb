@@ -88,7 +88,7 @@ class Photo < ActiveRecord::Base
       photo.lng = meta.gps.longitude
     end
 
-    photo.shot_at = date.to_date
+    photo.shot_at = date
     photo.user = current_user
     photo.file = file
     photo.save

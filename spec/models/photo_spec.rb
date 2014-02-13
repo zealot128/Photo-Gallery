@@ -5,6 +5,7 @@ describe Photo do
   let :picture do
     Rails.root.join("spec/fixtures/tiger.jpg")
   end
+
   let :other_picture do
     Rails.root.join("spec/fixtures/somestuff.jpg")
   end
@@ -60,6 +61,18 @@ describe Photo do
     Day.where(date: "2012-10-01").first.tap do |d|
       d.photos.should == [photo]
     end
+  end
+
+  specify 'EOS600d date format' do
+    picture = "spec/fixtures/eos600.jpg"
+    photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    photo.shot_at.should ==  DateTime.parse("2014-02-05T14:17:42+01:00")
+  end
+
+  specify 'geocoding' do
+    picture = "spec/fixtures/geocode.jpg"
+    photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    photo.location.should == 'Hofheim - Wallau'
   end
 
   specify "OCR" do
