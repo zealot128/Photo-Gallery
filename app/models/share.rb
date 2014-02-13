@@ -11,7 +11,7 @@ class Share < ActiveRecord::Base
   end
 
   def grouped_photos
-    photos.grouped_by_day_and_month.reverse
+    Hash[photos.grouped_by_day_and_month.to_a.reverse]
   end
 
   def to_s
