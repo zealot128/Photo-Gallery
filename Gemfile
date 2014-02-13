@@ -15,13 +15,13 @@ gem 'yaml_db'
 gem 'bootstrap-will_paginate'
 gem "tesseract-ocr", require: false
 
+gem "pry-rails"
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
 end
 group :development, :test do
   gem "better_errors"
-  gem "pry"
   gem 'rb-inotify', '~> 0.9'
 end
 group :development do

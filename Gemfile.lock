@@ -117,7 +117,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    method_source (0.7.1)
+    method_source (0.8.2)
     mime-types (1.21)
     multi_json (1.7.2)
     mysql2 (0.3.11)
@@ -135,10 +135,12 @@ GEM
       cocaine (>= 0.0.2)
       mime-types
     polyglot (0.3.3)
-    pry (0.9.8.4)
-      coderay (~> 1.0.5)
-      method_source (~> 0.7.1)
-      slop (>= 2.4.4, < 3)
+    pry (0.9.12.4)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    pry-rails (0.3.2)
+      pry (>= 0.9.10)
     quiet_assets (1.0.1)
       railties (~> 3.1)
     rack (1.4.5)
@@ -196,7 +198,7 @@ GEM
     simple_form (2.0.1)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
-    slop (2.4.4)
+    slop (3.4.7)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -251,7 +253,7 @@ DEPENDENCIES
   mysql2 (~> 0.3.7)
   nifty-generators
   paperclip (~> 2.3)
-  pry
+  pry-rails
   quiet_assets
   rack-raw-upload
   rails (~> 3.2.2)
