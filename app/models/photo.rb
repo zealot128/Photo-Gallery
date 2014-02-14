@@ -30,9 +30,9 @@ class Photo < ActiveRecord::Base
       @old_day = self.day
       old = shot_at_was.strftime("%Y-%m-%d")
       new = shot_at.strftime("%Y-%m-%d")
-      file.styles.each do |name, style|
-        from = style.attachment.path(name).gsub(new, old)
-        to   = style.attachment.path(name)
+      (file.styles.keys + [:original]).each do |name, style|
+        from = file.path(name).gsub(new, old)
+        to   = file.path(name)
         Rails.logger.info "Moving #{from} -> #{to}"
         puts "Moving #{from} -> #{to}"
         puts "#{from} exists? -> #{File.exists?(from)}"
