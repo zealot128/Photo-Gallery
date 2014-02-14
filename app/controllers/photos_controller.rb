@@ -89,7 +89,7 @@ class PhotosController < ApplicationController
   end
 
   def ajax_photos
-    @photos = Day.find(params[:id]).photos
+    @photos = Day.find(params[:id]).photos.order('shot_at asc')
     render partial: "photos/photo", collection: @photos, layout: false
   end
 
