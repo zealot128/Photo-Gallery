@@ -34,8 +34,11 @@ class Photo < ActiveRecord::Base
         from = style.attachment.path(name).gsub(new, old)
         to   = style.attachment.path(name)
         Rails.logger.info "Moving #{from} -> #{to}"
+        puts "Moving #{from} -> #{to}"
+        puts "#{from} exists? -> #{File.exists?(from)}"
+        puts "#{to}   exists? -> #{File.exists?(to)}"
         FileUtils.mkdir_p File.dirname(to)
-        FileUtils.move from, to
+        FileUtils.move from, to rescue false
       end
     end
     self.day = Day.date self.shot_at
@@ -150,7 +153,6 @@ class Photo < ActiveRecord::Base
     self.description = File.read(t.path + ".txt")
     self.save
   end
-
 
   def update_gps
     if gps = meta_data.gps
