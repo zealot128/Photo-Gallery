@@ -14,6 +14,7 @@ gem "thin"
 gem 'yaml_db'
 gem 'bootstrap-will_paginate'
 gem "tesseract-ocr", require: false
+gem 'slim-rails'
 
 
 group :production do

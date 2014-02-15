@@ -94,7 +94,7 @@ class Photo < ActiveRecord::Base
     photo.shot_at = date
     photo.user = current_user
     photo.file = file
-    photo.save
+    photo.exif # precache exif
     photo.reverse_geocode
     photo
   end
