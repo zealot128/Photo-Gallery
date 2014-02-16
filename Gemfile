@@ -64,4 +64,5 @@ end
 gem 'sass'
 gem 'grape'
 gem 'haml-rails'
+gem 'zipline'
 gem 'acts-as-taggable-on'

@@ -1,0 +1,20 @@
+h1=@share.name
+
+- if @share.photos.count == 0
+  p No Photos here up to now
+- else
+  = render "shares/groups", groups: @share.grouped_photos
+.row
+  .col-lg-12 style='margin-top: 50px; margin-bottom: 50px'
+    a.btn.btn-default type='button' data-loading-text="Loading..." href=download_share_path(id: @share.token) Download All
+
+javascript:
+  jQuery('[data-loading-text]').click(function() {
+    var btn = $(this);
+    btn.text(btn.data('loading-text'));
+    btn.addClass('disabled')
+    btn.click(function(e) { e.preventDefault(); return false; })
+  })
+
+
+

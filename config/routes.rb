@@ -1,6 +1,6 @@
 SimpleGallery::Application.routes.draw do
 
-  get "pages/index"
+  get 'pages/index'
 
   match 'user/edit' => 'users#edit', :as => :edit_current_user
   match 'signup' => 'users#new', :as => :signup
@@ -11,25 +11,26 @@ SimpleGallery::Application.routes.draw do
   resources :users
   resources :shares do
     collection do
-      get "bulk_add"
-      post "bulk_update"
+      get 'bulk_add'
+      post 'bulk_update'
     end
     member do
-      post "remove_image"
+      post 'remove_image'
     end
   end
-  get "photos/:hash.jpg", to: "photos#shared", as: "photo_share"
-  post "photos/upload"
-  get "photos/ajax_year"
-  get "photos/ajax_photos"
+  get '/shares/:id/download' => 'zip#share', as: 'download_share'
+  get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'
+  post 'photos/upload'
+  get 'photos/ajax_year'
+  get 'photos/ajax_photos'
   resources :photos do
     member do
       post :rotate
       post :ocr
     end
   end
-  get "tag/:id",  to: "pages#tag", as: "pages_tag"
+  get 'tag/:id',  to: 'pages#tag', as: 'pages_tag'
 
-  get "/", to: "pages#index", as: "root"
-  post "/", to: "photos#create"
+  get '/', to: 'pages#index', as: 'root'
+  post '/', to: 'photos#create'
 end

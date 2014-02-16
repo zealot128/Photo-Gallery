@@ -6,6 +6,7 @@
 //= require bootstrap/modal
 //= require bootstrap/collapse
 //= require bootstrap/dropdown
+//= require bootstrap/button
 //= require bootstrap-modal-2.2.4
 //= require bootstrap-modalmanager-2.2.4
 //= require _modal-ajax

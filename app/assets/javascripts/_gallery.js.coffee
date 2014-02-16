@@ -86,7 +86,8 @@ $ ->
       </div>
     """
     $('.js-controls').html list
-    $('.js-controls').append actions
+    if $('meta[name=user]').length > 0
+      $('.js-controls').append actions
 
 $("body").on "ajax:beforeSend", -> loader.show()
 $("body").on "ajax:complete", -> loader.hide()
@@ -97,7 +98,6 @@ $('body').on 'modal-changed', '#js-modal', ->
     timePicker: true,
     militaryTime: true,
     inputOutputFormat: 'Y-m-d H:i:s'
-
   # disable keyboard navigation
   if gallery = $('.blueimp-gallery').data('gallery')
     if !blueimp.Gallery.prototype.onkeydown_fallback

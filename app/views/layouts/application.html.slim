@@ -8,6 +8,9 @@ html lang="en"
       = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
     = stylesheet_link_tag "application", :media => "all"
     link href="images/favicon.ico" rel=("shortcut icon") /
+    - if current_user
+      meta name='user' value=current_user.username
+    = javascript_include_tag "application"
 
   body
     nav.navbar.navbar-default role='navigation'
@@ -51,4 +54,3 @@ html lang="en"
       a.play-pause
       ol.indicator
 
-    = javascript_include_tag "application"

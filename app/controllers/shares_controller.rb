@@ -52,6 +52,9 @@ class SharesController < ApplicationController
 
   end
 
+  def download
+  end
+
   def bulk_add
     from = Date.parse params[:date]
     to   = from + 1
