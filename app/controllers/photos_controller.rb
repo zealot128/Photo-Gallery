@@ -46,7 +46,7 @@ class PhotosController < ApplicationController
 
   def upload
     photo = Photo.create_from_upload(params[:file], current_user)
-    render json: photo.attributes.merge(
+    render json: photo.attributes.except('exif_info').merge(
       valid: photo.valid?,
       errors: photo.errors,
       success: photo.valid?

@@ -19,6 +19,12 @@
         span.label.label-default< = count
     .year-body
 
+= form_tag '/photos/upload', class: 'dropzone' do
+  .fallback
+    | Your browser does not support Javascript Uploads
+
+
 .clear
 - if @years.length == 0
   = render "layouts/manual"
+

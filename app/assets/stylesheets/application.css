@@ -2,6 +2,6 @@
  *= require_self
  *= require will_pickdate
  *= require blueimp-gallery
+ *= require dropzone
  *= require theme
- *= require file-uploader/client/fileuploader.css
 */

@@ -56,6 +56,7 @@ group :assets do
   gem 'bootstrap-sass'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-bootstrap-modal'
+  gem 'rails-assets-dropzone'
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails'
 end

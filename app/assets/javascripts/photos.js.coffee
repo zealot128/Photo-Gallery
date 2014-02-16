@@ -1,14 +1,5 @@
 jQuery ->
   window.loader = $('#loader')
-  $('#file-uploader').each ->
-    window.uploader = new qq.FileUploader
-      element: document.getElementById('file-uploader')
-      action: '/photos/upload'
-      allowedExtensions: ["jpg","png","gif","jpeg"]
-      params:
-        'authenticity_token': $('meta[name="csrf-token"]').attr('content')
-      #onComplete:(id, filename, json) ->
-    $(".qq-upload-button").addClass("btn btn-primary")
 
   $('body').on "click" ,'.group .toggler', (bla)->
     if /share_day|fa-share/.test bla.target.className
@@ -53,5 +44,13 @@ jQuery ->
 
   $('.dropdown-toggle').dropdown()
 
+
+  setTimeout ->
+    dropzone = $('.dropzone')[0].dropzone
+    dropzone.on 'success', (file,json)->
+      if !json.valid
+        messages = (attribute + ' ' + message for attribute,message of json.errors)
+        this.defaultOptions.error(file, messages.join(', '))
+  , 200
 
 
