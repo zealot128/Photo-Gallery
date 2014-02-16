@@ -77,7 +77,7 @@ $ ->
           <li><a href="/photos/#{photo.id}/rotate?direction=right" data-remote='true' data-method='post'>
             <span class='fa fa-fw fa-rotate-right'></span> Rotate right</a>
           </li>
-          <li><a href="/photos/#{photo.id}/edit">
+          <li><a href="/photos/#{photo.id}/edit" class='js-modal'>
             <span class='fa fa-fw fa-edit'></span> Edit/Share</a></li>
           <li><a href="/photos/#{photo.id}" data-method='delete' data-confirm='Really delete?'>
             <span class='fa fa-fw fa-trash-o'></span> Delete</a>
@@ -88,5 +88,23 @@ $ ->
     $('.js-controls').html list
     $('.js-controls').append actions
 
-$("body").on "ajax:beforeSend", ->
-  loader.show()
+$("body").on "ajax:beforeSend", -> loader.show()
+$("body").on "ajax:complete", -> loader.hide()
+
+$('body').on 'modal-changed', '#js-modal', ->
+  $('#photo_shot_at').will_pickdate
+    format: 'Y-m-d H:i:s',
+    timePicker: true,
+    militaryTime: true,
+    inputOutputFormat: 'Y-m-d H:i:s'
+
+  # disable keyboard navigation
+  if gallery = $('.blueimp-gallery').data('gallery')
+    if !blueimp.Gallery.prototype.onkeydown_fallback
+      blueimp.Gallery.prototype.onkeydown_fallback = blueimp.Gallery.prototype.onkeydown
+    blueimp.Gallery.prototype.onkeydown = -> true
+
+# reanable keyboard navigation
+$('body').on 'hidden', '.modal', ->
+  if blueimp.Gallery.prototype.onkeydown_fallback
+    blueimp.Gallery.prototype.onkeydown = blueimp.Gallery.prototype.onkeydown_fallback

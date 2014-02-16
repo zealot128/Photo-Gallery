@@ -184,6 +184,7 @@ GEM
       bundler (~> 1.0)
       railties (= 3.2.16)
     rails-assets-blueimp-gallery (2.13.1)
+    rails-assets-bootstrap-modal (2.1.0)
     railties (3.2.16)
       actionpack (= 3.2.16)
       activesupport (= 3.2.16)
@@ -297,6 +298,7 @@ DEPENDENCIES
   rack-raw-upload
   rails (~> 3.2.2)
   rails-assets-blueimp-gallery
+  rails-assets-bootstrap-modal
   rb-inotify (~> 0.9)
   rspec-rails
   ruby-progressbar

@@ -3,16 +3,10 @@ $color2: darken($color1, 20%)
 .wpd
   position: absolute
   width: 208px
+  z-index: 20000000
   padding: 5px
   height: 221px
   background: $color1
-  -moz-border-radius: 10px
-  -khtml-border-radius: 10px
-  -webkit-border-radius: 10px
-  border-radius: 10px
-  -webkit-box-shadow: 0 0 10px #999
-  -moz-box-shadow: 0 0 10px #999
-  box-shadow: -1px -1px 2px #666, 1px 1px 2px #aaa
   input[type=text]
     height: auto
 
@@ -22,90 +16,40 @@ $color2: darken($color1, 20%)
     .next, .previous
       display: block
       white-space: nowrap
-      background-image: -webkit-gradient(linear, left top, left bottom, from($color1), to($color2))
-      background-image: -webkit-linear-gradient(top, $color1, $color2)
-      background-image: -moz-linear-gradient(top, $color1, $color2)
-      background-image: -ms-linear-gradient(top, $color1, $color2)
-      background-image: -o-linear-gradient(top, $color1, $color2)
-      background-image: linear-gradient(top, $color1, $color2)
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='$color1', EndColorStr='$color2')
       text-decoration: none
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8)
       height: 22px
-      -moz-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
-      -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
-      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
     .title
       display: block
       white-space: nowrap
-      background-image: -webkit-gradient(linear, left top, left bottom, from($color1), to($color2))
-      background-image: -webkit-linear-gradient(top, $color1, $color2)
-      background-image: -moz-linear-gradient(top, $color1, $color2)
-      background-image: -ms-linear-gradient(top, $color1, $color2)
-      background-image: -o-linear-gradient(top, $color1, $color2)
-      background-image: linear-gradient(top, $color1, $color2)
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='$color1', EndColorStr='$color2')
       text-decoration: none
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8)
       height: 22px
-      -moz-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
-      -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
-      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
       text-align: center
       margin: 0px 33px
       padding: 3px 0 2px
     .next
-      -moz-border-radius: 0 10px 10px 0
-      -khtml-border-radius: 0 10px 10px 0
-      -webkit-border-radius: 0 10px 10px 0
-      border-radius: 0 10px 10px 0
       padding: 1px 5px 1px 4px
     .previous
-      -moz-border-radius: 10px 0 0 10px
-      -khtml-border-radius: 10px 0 0 10px
-      -webkit-border-radius: 10px 0 0 10px
-      border-radius: 10px 0 0 10px
       padding: 1px 3px 1px 6px
     .disabled, .title.disabled:hover, .previous.disabled:hover
       color: #233610
       background: $color2
       cursor: default
       text-shadow: none
-      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
     .next
       &.disabled:hover
         color: #233610
         background: $color2
         cursor: default
         text-shadow: none
-        box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 0 rgba(0, 0, 0, 0.3)
       &:hover
         background-color: #ddd
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#dddddd))
-        background-image: -webkit-linear-gradient(top, #fafafa, #dddddd)
-        background-image: -moz-linear-gradient(top, #fafafa, #dddddd)
-        background-image: -ms-linear-gradient(top, #fafafa, #dddddd)
-        background-image: -o-linear-gradient(top, #fafafa, #dddddd)
-        background-image: linear-gradient(top, #fafafa, #dddddd)
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#fafafa', EndColorStr='#dddddd')
     .previous:hover, .title:hover
       background-color: #ddd
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#dddddd))
-      background-image: -webkit-linear-gradient(top, #fafafa, #dddddd)
-      background-image: -moz-linear-gradient(top, #fafafa, #dddddd)
-      background-image: -ms-linear-gradient(top, #fafafa, #dddddd)
-      background-image: -o-linear-gradient(top, #fafafa, #dddddd)
-      background-image: linear-gradient(top, #fafafa, #dddddd)
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#fafafa', EndColorStr='#dddddd')
     .next:active, .previous:active
-      -moz-box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3) inset
-      -webkit-box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3) inset
-      box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3) inset
     .title
       &:active
-        -moz-box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3) inset
-        -webkit-box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3) inset
-        box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3) inset
       &:focus
         outline: 0
         background: #fafafa
@@ -152,10 +96,6 @@ $color2: darken($color1, 20%)
       text-align: center
       padding: 2px
     .hour, .minutes, .ampm
-      -moz-border-radius: 10px
-      -khtml-border-radius: 10px
-      -webkit-border-radius: 10px
-      border-radius: 10px
     .hour
       left: 10px
     .separator
@@ -230,10 +170,6 @@ $color2: darken($color1, 20%)
   .selected
     background: #000 !important
     color: #fff !important
-    -moz-border-radius: 10px
-    -khtml-border-radius: 10px
-    -webkit-border-radius: 10px
-    border-radius: 10px
   .unavailable
     background: #edd !important
     color: #b88 !important
@@ -241,7 +177,3 @@ $color2: darken($color1, 20%)
   .days .week .day:hover, .months .month:hover, .years .year:hover
     background: #fff !important
     color: #000 !important
-    -moz-border-radius: 10px
-    -khtml-border-radius: 10px
-    -webkit-border-radius: 10px
-    border-radius: 10px

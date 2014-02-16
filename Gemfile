@@ -49,13 +49,14 @@ end
 
 group :assets do
   gem 'turbo-sprockets-rails3'
-  gem 'rails-assets-blueimp-gallery'
   gem 'font-awesome-rails'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'fancybox-rails', git: 'https://github.com/sverigemeny/fancybox-rails'
   gem 'jquery-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'bootstrap-sass'
+  gem 'rails-assets-blueimp-gallery'
+  gem 'rails-assets-bootstrap-modal'
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails'
 end

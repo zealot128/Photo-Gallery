@@ -41,8 +41,7 @@ html lang="en"
     #loader(style="display: none;")
       = image_tag "loader.gif"
 
-    = javascript_include_tag "application"
-    #blueimp-gallery.blueimp-gallery.blueimp-gallery-controls  data-display-transition="false" data-transition-speed="100" data-full-screen='true'
+    #blueimp-gallery.blueimp-gallery.blueimp-gallery-controls  data-display-transition="false" data-transition-speed="100"
       .slides
       h3.title
       .title.js-controls
@@ -50,5 +49,6 @@ html lang="en"
       a.next ›
       a.close ×
       a.play-pause
-      .info
       ol.indicator
+
+    = javascript_include_tag "application"

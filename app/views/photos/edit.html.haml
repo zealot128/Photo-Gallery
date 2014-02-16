@@ -1,26 +1,10 @@
-.row
-  .span4
-    = simple_form_for @photo, remote: true do |f|
-      = f.input :caption
-      = f.input :shot_at, as: :string
-      = f.input :tag_list, input_html: { autocomplete: "off"}
-      = f.association :shares, as: :check_boxes
-      .clear
+= simple_form_for @photo, remote: true, html: { class: "form-horizontal"} do |f|
+  = f.input :caption
+  = f.input :shot_at, as: :string
+  = f.input :tag_list, input_html: { autocomplete: "off"}
+  = f.association :shares, as: :check_boxes
+  .clear
+  .form-group
+    .col-sm-3
+    .col-sm-7
       = f.submit class: "btn-primary btn"
-
-:javascript
-  $('#photo_shot_at').will_pickdate({
-    format: 'Y-m-d H:i:s',
-    timePicker: true,
-    militaryTime: true,
-    inputOutputFormat: 'Y-m-d H:i:s'
-  });
-
-  $('#photo_tag_list').typeahead({
-    matcher: function(candidate) {
-      q = this.query;
-      element = $.trim(q.split(",").pop().toLowerCase());
-      return  ( candidate.indexOf( element ) !== -1) && element.length > 1
-    },
-    source: #{raw ActsAsTaggableOn::Tag.order(:name).pluck(:name).to_json }
-  });

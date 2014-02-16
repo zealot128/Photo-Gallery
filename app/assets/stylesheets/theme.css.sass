@@ -2,13 +2,13 @@ $linkColor: #8013AE
 $img-size: 300px
 @import bootstrap
 @import bootstrap/theme
+@import bootstrap-modal-bs3patch
+@import bootstrap-modal
 @import font-awesome
 @import fonts
 @import compass/css3/images
 @import compass/utilities/general/clearfix
-
 @import photos
-@import toc
 
 h1,h2,h3,h4,h5
   font-family: "DejaVuSerifBook", serif
@@ -28,14 +28,6 @@ h4
 
 .clear
   clear: both
-.bs-docs-sidenav > li:first-child > a
-  border-radius: 6px 6px 0 0
-
-.bs-docs-sidenav > li > a
-  border: 1px solid #E5E5E5
-  display: block
-  margin: 0 0 -1px
-  padding: 8px 14px
 
 span.checkbox
   display: block
@@ -56,6 +48,12 @@ span.checkbox
   left: 50%
   position: fixed
   top: 50%
-  z-index: 10000
-.wpd
-  z-index: 2000
+  z-index: 99999999
+
+.modal, .modal-scrollable
+  z-index: 9999999
+
+.blueimp-gallery, .blueimp-gallery > .slides > .slide > .slide-content
+  transition: none !important
+.blueimp-gallery
+  opacity: 0.99
