@@ -2,9 +2,11 @@ var large=<%=json @photo.file.url(:large) %>;
 var preview=<%=json @photo.file.url(:preview) %>;
 var id="#photo-" + <%=json @photo.id %>;
 
-$('.fancybox-image').attr("src", large).css("width","auto").css("margin", "0 auto");
-$(id).find("img").attr("src", preview);
-$(id).find("> a").attr("href", large)
+if (window.current_slide) {
+  $(window.current_slide).find('img').attr('src', large)
+}
+$(id).find("img").each(function() { $(this).attr("src", preview) });
+$(id).find("> a").each(function() { $(this).attr("href", large) });
 
 
 var day = $('h4[data-id=<%= @photo.day.id %>]');

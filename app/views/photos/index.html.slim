@@ -1,0 +1,24 @@
+#recent.year
+  h2.year-title
+    a.js-year-switch href='#'
+      = t ".recently_uploaded"
+      - if @last_upload
+        .ago = t ".last_upload", time: time_ago_in_words(@last_upload)
+
+  .year-body(style="display: none;")
+    - @recent.each do |photo|
+      = render photo
+
+
+
+- @years.each do |year,count|
+  .year
+    h2.year-title id="year-#{year}"
+      = link_to photos_ajax_year_path(year: year), class: "js-year-switch" do
+        = year
+        span.label.label-default< = count
+    .year-body
+
+.clear
+- if @years.length == 0
+  = render "layouts/manual"

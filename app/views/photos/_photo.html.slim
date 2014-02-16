@@ -1,0 +1,6 @@
+.photo id="photo-#{photo.id}"
+  a(href=(photo.file.url(:large)) title=photo.caption data-gallery="#gallery-#{photo.year}"  data-options=photo.to_json data-thumbnail=photo.file.url(:thumb))
+    = image_tag photo.file.url(:preview), data: { bla: 'foo' }
+
+
+

@@ -1,5 +1,3 @@
-refresh_sidebar = ->
-  $('body').scrollspy("refresh")
 jQuery ->
   window.loader = $('#loader')
   $('#file-uploader').each ->
@@ -11,8 +9,9 @@ jQuery ->
         'authenticity_token': $('meta[name="csrf-token"]').attr('content')
       #onComplete:(id, filename, json) ->
     $(".qq-upload-button").addClass("btn btn-primary")
+
   $('body').on "click" ,'.group .toggler', (bla)->
-    if /share_day|icon-share/.test bla.target.className
+    if /share_day|fa-share/.test bla.target.className
       return true
     el = $(this)
     el.toggleClass("open")
@@ -23,51 +22,14 @@ jQuery ->
         loader.hide()
       hidden.removeClass("unloaded")
     hidden.toggle()
-    refresh_sidebar()
     false
 
   $('.open .group .toggler').click()
 
-  $('.photo .options .share, .toggler .share_day').fancybox
-    fitToView: false
-    autoSize: true
-    closeClick: false
-    openEffect: 'none'
-    closeEffect: 'none'
-    type: 'ajax'
-    afterShow: ->
-      element = $(".fancybox-inner form")
-      element.bind "ajax:complete", (a,b)->
-        data = $.parseJSON b.responseText
-        if data.status == "OK"
-          $.fancybox.close()
-          message = $("<div class='alert fade in alert-info'>Images added to <a href='#{data.url}'>Share/Tag</a> <a class='close' data-dismiss='alert' href='#'>&times;</a> </div>")
-          $('#messages').append(message)
-        else
-          $('form.bulk').prepend("<div class='alert'>#{data.message}</div>")
 
-  $('.photo > a').fancybox
-    closeBtn: false
-    helpers:
-      title:
-        type : 'inside'
-      overlay:
-        opacity: 0.8
-        css:
-          'background-color': '#000'
-      thumbs:
-        width: 50
-        height: 50
-    afterShow: ->
-      inner = $(".fancybox-inner")
-      inner.append $(@element).parent().find(".edit").html()
-
-  $("body").on "ajax:beforeSend", ".edit-options a", ->
-    loader.show()
-
-  $('.year-switch').click ->
+  $('.js-year-switch').click ->
     elem = $(this)
-    year_body = elem.parent().parent().find(".year-body")
+    year_body = elem.parent().parent().find('.year-body')
     year_body.toggle()
     if year_body.html().length == 0
       loader.show()
@@ -75,13 +37,9 @@ jQuery ->
         url: elem.attr("href")
         success: (ret) ->
           year_body.html ret
-          year_body.show ->
-            refresh_sidebar()
-          refresh_sidebar()
+          year_body.show()
           loader.hide()
         dataType: "html"
-
-    refresh_sidebar()
     false
 
   $('.remove-share').click ->
@@ -94,6 +52,6 @@ jQuery ->
     false
 
   $('.dropdown-toggle').dropdown()
-  $('.affix').affix()
+
 
 

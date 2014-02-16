@@ -191,4 +191,20 @@ class Photo < ActiveRecord::Base
     Photo.uniq.order("year desc").pluck(:year)
   end
 
+  include ActionView::Helpers::NumberHelper
+
+  def as_json(op={})
+    {
+      id: id,
+      location: location,
+      shot_at: shot_at,
+      shot_at_formatted: I18n.l(shot_at, format: :short),
+      original: file.url(:original),
+      file_size: file_file_size,
+      file_size_formatted: number_to_human_size(file_file_size),
+      caption: caption,
+      description: description,
+      exif: exif
+    }
+  end
 end

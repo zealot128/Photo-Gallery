@@ -1,10 +1,13 @@
 //= require jquery
 //= require jquery_ujs
-//= require jquery
 //= require jquery.mousewheel.js
 //= require will_pickdate.js
 //= require file-uploader/client/fileuploader.js
-//= require twitter/bootstrap
-//= require fancybox
+//= require bootstrap/modal
+//= require bootstrap/collapse
+//= require bootstrap/dropdown
+//= require blueimp-gallery
+//= require blueimp-gallery/jquery.blueimp-gallery.js
 //= require endless-scroll
 //= require photos
+//= require _gallery
