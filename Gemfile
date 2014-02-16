@@ -1,8 +1,6 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org'
 
-
-
 gem 'rails', '~>3.2.2'
 
 gem 'bcrypt-ruby', require: 'bcrypt'
@@ -18,7 +16,10 @@ gem 'yaml_db'
 gem 'bootstrap-will_paginate'
 gem 'tesseract-ocr', require: false
 gem 'slim-rails'
-
+gem 'sass'
+gem 'grape'
+gem 'haml-rails'
+gem 'acts-as-taggable-on'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
@@ -30,7 +31,6 @@ group :development, :test do
   gem 'rb-inotify', '~> 0.9'
 end
 group :development do
-  gem 'nifty-generators'
   gem 'fontsquirrel-download'
   gem 'quiet_assets'
 end
@@ -51,7 +51,6 @@ group :assets do
   gem 'turbo-sprockets-rails3'
   gem 'font-awesome-rails'
   gem 'coffee-rails', '~> 3.2.1'
-  gem 'fancybox-rails', git: 'https://github.com/sverigemeny/fancybox-rails'
   gem 'jquery-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'bootstrap-sass'
@@ -61,7 +60,3 @@ group :assets do
   gem 'compass-rails'
 end
 
-gem 'sass'
-gem 'grape'
-gem 'haml-rails'
-gem 'acts-as-taggable-on'
