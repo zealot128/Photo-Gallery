@@ -130,7 +130,7 @@ task :console, :roles => :app do
   hostname = find_servers_for_task(current_task).first
   exec "ssh -l #{user} #{hostname} -t '/bin/bash --login \"source ~/.bashrc &&
     source ~/.bashrc  &&
-    rvm use 2.0.0-p0 &&
+    rvm use 2.1.1 &&
     cd #{current_path} &&
     bundle exec rails c #{rails_env}\"'"
 end
@@ -140,7 +140,7 @@ task :bash, :roles => :app do
   exec "ssh -l #{user} #{hostname} -t 'source ~/.bashrc &&
     source ~/.profile  &&
     export RAILS_ENV=#{rails_env}
-    rvm use 2.0.0-p0 &&
+    rvm use 2.1.1 &&
     cd #{current_path} &&
     bash'"
 end
