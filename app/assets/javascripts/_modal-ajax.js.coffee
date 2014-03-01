@@ -31,7 +31,6 @@ $ ->
         $('#js-modal').modal(show: true, backdrop: false)
       else
         $('#js-modal').html modal.html()
-      console.log 'CHANGED!'
       $('#js-modal').trigger('modal-changed', self.attr('href'))
 
       if !$('#js-modal').is(':visible')

@@ -1,21 +1,19 @@
 window.Pics =
   gallery: -> $('.blueimp-gallery').data('gallery')
   current_item: ->
-    g = this.gallery()
+    g = Pics.gallery()
     $(g.slides[g.getIndex()]) if g?
 
   maybe_remove_image: (id, dom_id)->
     $(dom_id).remove()
-    console.log id
-    console.log Pics.current_item().find('img').data('options').id
 
     if id == parseInt(Pics.current_item().find('img').data('options').id)
-      this.gallery().next()
+      Pics.gallery().next()
 
   disable_keyboard_nav: ->
-    this.gallery().options.enableKeyboardNavigation = false
+    Pics.gallery().options.enableKeyboardNavigation = false
   enable_keyboard_nav: ->
-    this.gallery().options.enableKeyboardNavigation = true
+    Pics.gallery().options.enableKeyboardNavigation = true
 
 
 blueimp.Gallery.prototype.imageFactory = (obj, callback) ->
@@ -56,7 +54,6 @@ blueimp.Gallery.prototype.imageFactory = (obj, callback) ->
     img.draggable = false
   element.title = title  if title
   if options = $(obj).data('options')
-    console.log options
     element.options = options
     $(img).data('options', options)
   $(img).on "load error", callbackWrapper
@@ -94,7 +91,6 @@ blueimp.Gallery.prototype.onkeydown =  (event)->
       , 150
 
     else
-      console.log event.which || event.keyCode
 
 
 
