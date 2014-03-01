@@ -1,1 +1,1 @@
-$('#photo-<%= @photo.id %>').remove()
+Pics.maybe_remove_image(<%= @photo.id %>, ".<%= dom_id(@photo) %>")

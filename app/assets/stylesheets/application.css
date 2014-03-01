@@ -1,7 +1,8 @@
 /*
  *= require_self
- *= require will_pickdate
  *= require blueimp-gallery
+ *= require select2
+ *= require eonasdan-bootstrap-datetimepicker
  *= require dropzone
  *= require theme
 */

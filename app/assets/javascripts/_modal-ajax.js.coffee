@@ -31,11 +31,11 @@ $ ->
         $('#js-modal').modal(show: true, backdrop: false)
       else
         $('#js-modal').html modal.html()
+      console.log 'CHANGED!'
       $('#js-modal').trigger('modal-changed', self.attr('href'))
 
       if !$('#js-modal').is(':visible')
         $('#js-modal').modal(show: true)
-
     return false
 
   $(document).on 'submit', '#js-modal form', (e)->
@@ -52,6 +52,8 @@ $ ->
           jsonResult = $.parseJSON(d.responseText)
           if jsonResult.status == 'OK' or jsonResult.status == 'success'
             $('#js-modal').modal('hide')
+            $('#js-modal').trigger('modal-closed', jsonResult)
+            return false
           else
             $('#js-modal').find('.modal-body').html d.jsonResult
             $('#js-modal').trigger('modal-response-error', jsonResult)

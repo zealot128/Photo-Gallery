@@ -20,6 +20,15 @@ class Photo < ActiveRecord::Base
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
 
+  attr_accessor :new_share
+
+  before_validation do
+    if new_share.present?
+      share = Share.where(name: new_share).first_or_create
+      self.shares << share unless self.shares.include?(share)
+    end
+  end
+
   before_save do
     self.share_hash = SecureRandom.hex(24)
     self.year = self.shot_at.year

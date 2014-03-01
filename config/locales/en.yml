@@ -1,7 +1,12 @@
 en:
   simple_form:
     labels:
-    buttons:
+    hints:
+      photo:
+        tag_list: Tags are for categorizing content in private
+        shares: Intended to be shared securely to other people. Everythin in Public will be shown on the home-page
+        new_share: Ad-Hoc creation of a new share
+
   pages:
     index:
       title: "Photo-Blog"

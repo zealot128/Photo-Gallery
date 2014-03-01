@@ -17,7 +17,6 @@ jQuery ->
 
   $('.open .group .toggler').click()
 
-
   $('.js-year-switch').click ->
     elem = $(this)
     year_body = elem.parent().parent().find('.year-body')
@@ -44,13 +43,13 @@ jQuery ->
 
   $('.dropdown-toggle').dropdown()
 
-
   setTimeout ->
-    dropzone = $('.dropzone')[0].dropzone
-    dropzone.on 'success', (file,json)->
-      if !json.valid
-        messages = (attribute + ' ' + message for attribute,message of json.errors)
-        this.defaultOptions.error(file, messages.join(', '))
+    if $('.dropzone').length > 0
+      dropzone = $('.dropzone')[0].dropzone
+      dropzone.on 'success', (file,json)->
+        if !json.valid
+          messages = (attribute + ' ' + message for attribute,message of json.errors)
+          this.defaultOptions.error(file, messages.join(', '))
   , 200
 
 

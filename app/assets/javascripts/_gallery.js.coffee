@@ -1,3 +1,23 @@
+window.Pics =
+  gallery: -> $('.blueimp-gallery').data('gallery')
+  current_item: ->
+    g = this.gallery()
+    $(g.slides[g.getIndex()]) if g?
+
+  maybe_remove_image: (id, dom_id)->
+    $(dom_id).remove()
+    console.log id
+    console.log Pics.current_item().find('img').data('options').id
+
+    if id == parseInt(Pics.current_item().find('img').data('options').id)
+      this.gallery().next()
+
+  disable_keyboard_nav: ->
+    this.gallery().options.enableKeyboardNavigation = false
+  enable_keyboard_nav: ->
+    this.gallery().options.enableKeyboardNavigation = true
+
+
 blueimp.Gallery.prototype.imageFactory = (obj, callback) ->
   that = this
   img = @imagePrototype.cloneNode(false)
@@ -36,11 +56,46 @@ blueimp.Gallery.prototype.imageFactory = (obj, callback) ->
     img.draggable = false
   element.title = title  if title
   if options = $(obj).data('options')
+    console.log options
     element.options = options
     $(img).data('options', options)
   $(img).on "load error", callbackWrapper
   img.src = url
   element
+
+
+blueimp.Gallery.prototype.onkeydown =  (event)->
+  return if not this.options.enableKeyboardNavigation
+  switch  event.which || event.keyCode
+    when 13
+      if (this.options.toggleControlsOnReturn)
+        this.preventDefault(event)
+        this.toggleControls()
+    when 27
+      if (this.options.closeOnEscape)
+        this.close()
+    when 32
+      if (this.options.toggleSlideshowOnSpace)
+        this.preventDefault(event)
+        this.toggleSlideshow()
+    when 37
+      if (this.options.enableKeyboardNavigation)
+        this.preventDefault(event)
+        this.prev()
+    when 39
+      if (this.options.enableKeyboardNavigation)
+        this.preventDefault(event)
+        this.next()
+    when 84 # 't'
+      $('[data-keycode=t]').each ->
+        $(this).click()
+      setTimeout ->
+        $('#photo_tag_list').focus()
+      , 150
+
+    else
+      console.log event.which || event.keyCode
+
 
 
 
@@ -77,9 +132,9 @@ $ ->
           <li><a href="/photos/#{photo.id}/rotate?direction=right" data-remote='true' data-method='post'>
             <span class='fa fa-fw fa-rotate-right'></span> Rotate right</a>
           </li>
-          <li><a href="/photos/#{photo.id}/edit" class='js-modal'>
+          <li><a href="/photos/#{photo.id}/edit" data-keycode='t' class='js-modal'>
             <span class='fa fa-fw fa-edit'></span> Edit/Share</a></li>
-          <li><a href="/photos/#{photo.id}" data-method='delete' data-confirm='Really delete?'>
+          <li><a href="/photos/#{photo.id}.js" data-method='delete' data-remote='true' data-confirm='Really delete?'>
             <span class='fa fa-fw fa-trash-o'></span> Delete</a>
           </li>
         </ul>
@@ -89,22 +144,11 @@ $ ->
     if $('meta[name=user]').length > 0
       $('.js-controls').append actions
 
-$("body").on "ajax:beforeSend", -> loader.show()
-$("body").on "ajax:complete", -> loader.hide()
+  $("body").on "ajax:beforeSend", -> loader.show()
+  $("body").on "ajax:complete", -> loader.hide()
 
-$('body').on 'modal-changed', '#js-modal', ->
-  $('#photo_shot_at').will_pickdate
-    format: 'Y-m-d H:i:s',
-    timePicker: true,
-    militaryTime: true,
-    inputOutputFormat: 'Y-m-d H:i:s'
-  # disable keyboard navigation
-  if gallery = $('.blueimp-gallery').data('gallery')
-    if !blueimp.Gallery.prototype.onkeydown_fallback
-      blueimp.Gallery.prototype.onkeydown_fallback = blueimp.Gallery.prototype.onkeydown
-    blueimp.Gallery.prototype.onkeydown = -> true
+  #disable keyboard navigation
+  $('body').on 'modal-changed', '#js-modal', Pics.disable_keyboard_nav
 
-# reanable keyboard navigation
-$('body').on 'hidden', '.modal', ->
-  if blueimp.Gallery.prototype.onkeydown_fallback
-    blueimp.Gallery.prototype.onkeydown = blueimp.Gallery.prototype.onkeydown_fallback
+  # reanable keyboard navigation
+  $('body').on 'hidden modal:closed', '.modal', Pics.enable_keyboard_nav

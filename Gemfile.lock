@@ -176,8 +176,18 @@ GEM
       bundler (~> 1.0)
       railties (= 3.2.16)
     rails-assets-blueimp-gallery (2.13.1)
+    rails-assets-bootstrap (3.1.1)
+      rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-modal (2.1.0)
     rails-assets-dropzone (3.8.4)
+    rails-assets-eonasdan-bootstrap-datetimepicker (2.1.30)
+      rails-assets-bootstrap (>= 3.0)
+      rails-assets-jquery (>= 1.8.3)
+      rails-assets-moment (>= 2.3.1)
+    rails-assets-jquery (2.0.3)
+    rails-assets-moment (2.5.1)
+    rails-assets-select2 (3.4.5)
+      rails-assets-jquery (>= 1.7.1)
     railties (3.2.16)
       actionpack (= 3.2.16)
       activesupport (= 3.2.16)
@@ -291,6 +301,8 @@ DEPENDENCIES
   rails-assets-blueimp-gallery
   rails-assets-bootstrap-modal
   rails-assets-dropzone
+  rails-assets-eonasdan-bootstrap-datetimepicker
+  rails-assets-select2
   rb-inotify (~> 0.9)
   rspec-rails
   ruby-progressbar

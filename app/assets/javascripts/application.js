@@ -1,7 +1,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.mousewheel.js
-//= require will_pickdate.js
 //= require bootstrap/modal
 //= require bootstrap/collapse
 //= require bootstrap/dropdown
@@ -9,9 +8,12 @@
 //= require bootstrap-modal-2.2.4
 //= require bootstrap-modalmanager-2.2.4
 //= require dropzone
+//= require moment
+//= require eonasdan-bootstrap-datetimepicker
 //= require _modal-ajax
 //= require blueimp-gallery
 //= require blueimp-gallery/jquery.blueimp-gallery.js
+//= require select2
 //= require endless-scroll
 //= require photos
 //= require _gallery
