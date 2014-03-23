@@ -38,10 +38,12 @@ group :development do
   gem 'quiet_assets'
 end
 
-group :just_for_having_cli do
-  gem 'capistrano'
-  gem 'capistrano_colors'
-  gem 'rvm-capistrano'
+group :capistrano do
+  gem 'capistrano', '~> 3.0.1'
+  gem 'capistrano-rvm', github: 'capistrano/rvm'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails', '~> 1.1.0'
+  gem 'capistrano-rails-console'
 end
 
 group :test do
