@@ -74,6 +74,9 @@ GEM
     daemons (1.1.9)
     descendants_tracker (0.0.3)
     diff-lcs (1.1.3)
+    dotenv (0.9.0)
+    dotenv-rails (0.9.0)
+      dotenv (= 0.9.0)
     equalizer (0.0.9)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -132,7 +135,6 @@ GEM
     mime-types (1.25.1)
     multi_json (1.8.4)
     multi_xml (0.5.5)
-    mysql2 (0.3.11)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -145,6 +147,7 @@ GEM
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
+    pg (0.17.1)
     polyglot (0.3.3)
     pry (0.9.12.4)
       coderay (~> 1.0)
@@ -284,6 +287,7 @@ DEPENDENCIES
   capistrano_colors
   coffee-rails (~> 3.2.1)
   compass-rails
+  dotenv-rails
   exifr
   font-awesome-rails
   fontsquirrel-download
@@ -292,8 +296,8 @@ DEPENDENCIES
   guard-rspec
   haml-rails
   jquery-rails
-  mysql2 (~> 0.3.7)
   paperclip (~> 2.3)
+  pg
   pry-rails
   quiet_assets
   rack-raw-upload

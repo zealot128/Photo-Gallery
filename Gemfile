@@ -21,8 +21,11 @@ gem 'grape'
 gem 'haml-rails'
 gem 'acts-as-taggable-on'
 
+gem 'pg'
+gem 'dotenv-rails'
+
 group :production do
-  gem 'mysql2', '~> 0.3.7'
+  # gem 'mysql2', '~> 0.3.7'
 end
 
 group :development, :test do
