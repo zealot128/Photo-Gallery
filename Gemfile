@@ -24,10 +24,6 @@ gem 'acts-as-taggable-on'
 gem 'pg'
 gem 'dotenv-rails'
 
-group :production do
-  # gem 'mysql2', '~> 0.3.7'
-end
-
 group :development, :test do
   gem 'better_errors'
   gem 'pry-rails'
@@ -50,7 +46,6 @@ group :test do
   gem 'rspec-rails'
   gem 'guard-rspec'
 end
-
 
 group :assets do
   gem 'turbo-sprockets-rails3'
