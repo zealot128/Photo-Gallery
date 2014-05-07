@@ -7,6 +7,6 @@ server 'localhost',
   ssh_options: {
     user: 'stefan', # overrides user setting above
     keys: %w(~/.ssh/id_rsa),
-    forward_agent: false,
-    auth_methods: %w(publickey password)
+    forward_agent: true,
+    auth_methods: %w(publickey)
   }
