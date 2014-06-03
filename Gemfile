@@ -42,6 +42,8 @@ group :capistrano do
   gem 'capistrano-rails-console'
 end
 
+gem 'rubyzip'
+
 group :test do
   gem 'rspec-rails'
   gem 'guard-rspec'

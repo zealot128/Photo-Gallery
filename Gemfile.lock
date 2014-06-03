@@ -326,6 +326,7 @@ DEPENDENCIES
   rb-inotify (~> 0.9)
   rspec-rails
   ruby-progressbar
+  rubyzip
   sass
   sass-rails (~> 3.2.3)
   simple_form
