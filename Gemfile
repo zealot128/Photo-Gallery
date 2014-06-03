@@ -42,7 +42,8 @@ group :capistrano do
   gem 'capistrano-rails-console'
 end
 
-gem 'rubyzip'
+gem 'rubyzip', '>= 1.0.0'
+gem 'zip-zip'
 
 group :test do
   gem 'rspec-rails'

@@ -1,3 +1,4 @@
+require 'zip'
 class ZipController < ApplicationController
 
   def share
