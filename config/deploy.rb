@@ -15,7 +15,7 @@ set :pty, true
 set :linked_files, %w{config/database.yml .env}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/photos}
 
-set :keep_releases, 5
+set :keep_releases, 2
 
 namespace :deploy do
 
