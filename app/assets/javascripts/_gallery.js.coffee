@@ -63,6 +63,8 @@ blueimp.Gallery.prototype.imageFactory = (obj, callback) ->
 
 blueimp.Gallery.prototype.onkeydown =  (event)->
   return if not this.options.enableKeyboardNavigation
+  console.log event.which || event.keyCode
+
   switch  event.which || event.keyCode
     when 13
       if (this.options.toggleControlsOnReturn)
@@ -83,6 +85,12 @@ blueimp.Gallery.prototype.onkeydown =  (event)->
       if (this.options.enableKeyboardNavigation)
         this.preventDefault(event)
         this.next()
+
+    when 46, 68 # entf, d
+      if (this.options.enableKeyboardNavigation)
+        $('[data-keycode=del]').each ->
+          $(this).click()
+
     when 84 # 't'
       $('[data-keycode=t]').each ->
         $(this).click()
@@ -130,7 +138,7 @@ $ ->
           </li>
           <li><a href="/photos/#{photo.id}/edit" data-keycode='t' class='js-modal'>
             <span class='fa fa-fw fa-edit'></span> Edit/Share</a></li>
-          <li><a href="/photos/#{photo.id}.js" data-method='delete' data-remote='true' data-confirm='Really delete?'>
+          <li><a href="/photos/#{photo.id}.js" data-keycode='del' data-method='delete' data-remote='true' data-confirm='Really delete?'>
             <span class='fa fa-fw fa-trash-o'></span> Delete</a>
           </li>
         </ul>
