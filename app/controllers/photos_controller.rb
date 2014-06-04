@@ -11,7 +11,7 @@ class PhotosController < ApplicationController
   end
 
   def destroy
-    @photo = current_user.photos.find(params[:id])
+    @photo = Photo.find(params[:id])
     d = @photo.day
     @photo.destroy
     d.update_me
