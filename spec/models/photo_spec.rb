@@ -74,11 +74,12 @@ describe Photo do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     photo.location.should == 'Hofheim - Wallau'
   end
+  if Rails.application.config.features.ocr
+    specify "OCR" do
+      photo = Photo.create_from_upload(File.open("spec/fixtures/text.jpg"), user)
+      photo.ocr
+      photo.description.should include "Mietsteigerung"
 
-  specify "OCR" do
-    photo = Photo.create_from_upload(File.open("spec/fixtures/text.jpg"), user)
-    photo.ocr
-    photo.description.should include "Mietsteigerung"
-
+    end
   end
 end

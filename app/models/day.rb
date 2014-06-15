@@ -1,11 +1,12 @@
 class Day < ActiveRecord::Base
-  attr_accessible :date, :year
   validates_presence_of :date
   has_many :photos
   has_attached_file :montage
   before_save do
     self.year ||= date.year
   end
+
+  do_not_validate_attachment_file_type :montage
 
   def make_montage
     images = photos.order("shot_at asc").map{|i|i.file.path(:thumb)}
@@ -20,7 +21,7 @@ class Day < ActiveRecord::Base
   end
 
   def self.date(datetime)
-    find_or_create_by_date datetime.to_date
+    where(date: datetime.to_date).first_or_create
   end
 
   def self.grouped_days(days)

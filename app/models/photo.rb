@@ -1,4 +1,5 @@
 class Photo < ActiveRecord::Base
+  include PhotoMetadata
   has_attached_file :file, styles: {
     preview:  "300x300",
     thumb:  "30x30",
@@ -16,9 +17,19 @@ class Photo < ActiveRecord::Base
   serialize :exif_info, JSON
   scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
   validates :md5, :uniqueness => true
+  do_not_validate_attachment_file_type :file
   before_post_process :check_uniqueness
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
+
+  if Rails.application.config.features.elasticsearch
+    searchkick
+
+    def search_data
+      as_json.except(:exif).merge(exif).merge(top_colors: top_colors, fingerprint: fingerprint)
+    end
+  end
+
 
   attr_accessor :new_share
 
@@ -34,27 +45,18 @@ class Photo < ActiveRecord::Base
     self.year = self.shot_at.year
     self.month = self.shot_at.month
   end
+
   before_save do
     if self.shot_at_changed? and self.shot_at_was.present?
-      @old_day = self.day
-      old = shot_at_was.strftime("%Y-%m-%d")
-      new = shot_at.strftime("%Y-%m-%d")
-      (file.styles.keys + [:original]).each do |name, style|
-        from = file.path(name).gsub(new, old)
-        to   = file.path(name)
-        Rails.logger.info "Moving #{from} -> #{to}"
-        puts "Moving #{from} -> #{to}"
-        puts "#{from} exists? -> #{File.exists?(from)}"
-        puts "#{to}   exists? -> #{File.exists?(to)}"
-        FileUtils.mkdir_p File.dirname(to)
-        FileUtils.move from, to rescue false
-      end
+      move_file_after_shot_at_changed
     end
     self.day = Day.date self.shot_at
   end
+
   before_validation on: :create do
-    self.md5 = Digest::MD5.hexdigest(file.to_file.read)
+    self.md5 = Digest::MD5.hexdigest(Paperclip.io_adapters.for(file).read)
   end
+
   after_save do
     if Photo.slow_callbacks
       self.day.update_me
@@ -91,15 +93,12 @@ class Photo < ActiveRecord::Base
 
   def self.create_from_upload(file, current_user)
     photo = Photo.new
-
     date = Photo.parse_date(file)
-
     meta = EXIFR::JPEG.new(file.path)
     if meta.gps
       photo.lat = meta.gps.latitude
       photo.lng = meta.gps.longitude
     end
-
     photo.shot_at = date
     photo.user = current_user
     photo.file = file
@@ -118,20 +117,8 @@ class Photo < ActiveRecord::Base
     end
   end
 
-  def exif
-    self.exif_info || begin
-    self.exif_info = meta_data.exif.inject({}) {|a,e| a.merge e}.except(:user_comment) rescue {}
-    self.save
-    self.exif_info
-    end
-  end
-
   def modal_group
     shot_at.strftime("d%Y%m%d")
-  end
-
-  def meta_data
-    @meta_data ||= EXIFR::JPEG.new(file.path)
   end
 
   def rotate!(direction)
@@ -145,31 +132,9 @@ class Photo < ActiveRecord::Base
                end
     cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path(:original))}"
     `#{cmd}`
+    self.exif_info['fingerprint'] = nil
+    self.fingerprint
     file.reprocess!
-  end
-
-  def ocr
-    path = Shellwords.escape file.path(:original)
-    t = Tempfile.new( [File.basename(path), ".tif"] )
-
-    Rails.logger.info `convert -depth 8 -colorspace Gray -auto-orient #{path} #{t.path}`
-    unless $?.success?
-      raise Exception.new("Error with converting grayscale image")
-    end
-    Rails.logger.info `tesseract #{t.path} #{t.path} -l deu 2>&1`
-    unless $?.success?
-      raise Exception.new("Error with tesseract-ocr")
-    end
-    self.description = File.read(t.path + ".txt")
-    self.save
-  end
-
-  def update_gps
-    if gps = meta_data.gps
-      self.lat = gps.latitude
-      self.lng = gps.longitude
-      reverse_geocode
-    end
   end
 
   def self.grouped_by_day_and_month
@@ -216,5 +181,23 @@ class Photo < ActiveRecord::Base
       description: description,
       exif: exif
     }
+  end
+
+  private
+
+  def move_file_after_shot_at_changed
+    @old_day = self.day
+    old = shot_at_was.strftime("%Y-%m-%d")
+    new = shot_at.strftime("%Y-%m-%d")
+    (file.styles.keys + [:original]).each do |name, style|
+      from = file.path(name).gsub(new, old)
+      to   = file.path(name)
+      Rails.logger.info "Moving #{from} -> #{to}"
+      puts "Moving #{from} -> #{to}"
+      puts "#{from} exists? -> #{File.exists?(from)}"
+      puts "#{to}   exists? -> #{File.exists?(to)}"
+      FileUtils.mkdir_p File.dirname(to)
+      FileUtils.move from, to rescue false
+    end
   end
 end

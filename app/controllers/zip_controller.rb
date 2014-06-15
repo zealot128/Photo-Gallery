@@ -13,10 +13,12 @@ class ZipController < ApplicationController
       files = @share.photos.order('shot_at asc').map{|i| i.file}
       Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zipfile|
         files.each do |file|
-          next unless file.to_file
+          to_file = Paperclip.io_adapters.for(file)
+
+          next unless to_file
           name = file.path.split('/')[-2..-1].join('_')
           zipfile.get_output_stream(name) { |f|
-            f.write file.to_file.read
+            f.write to_file.read
           }
         end
       end

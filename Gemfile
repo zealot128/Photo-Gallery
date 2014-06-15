@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org'
 
-gem 'rails', '~>3.2.2'
+gem 'rails', '~>4.1.0'
 
 gem 'bcrypt-ruby', require: 'bcrypt'
 gem 'exifr'
 gem 'geocoder'
-gem 'paperclip', '~> 2.3'
+gem 'paperclip'
 gem 'rack-raw-upload'
-gem 'ruby-progressbar', require: 'progressbar'
+gem 'ruby-progressbar'
 gem 'simple_form'
 gem 'sqlite3'
 gem 'thin'
@@ -23,6 +23,8 @@ gem 'acts-as-taggable-on'
 
 gem 'pg'
 gem 'dotenv-rails'
+
+gem 'phashion'
 
 group :development, :test do
   gem 'better_errors'
@@ -46,16 +48,14 @@ gem 'rubyzip', '>= 1.0.0'
 gem 'zip-zip'
 
 group :test do
-  gem 'rspec-rails'
-  gem 'guard-rspec'
+  gem 'rspec-rails', '~> 2.0'
 end
 
 group :assets do
-  gem 'turbo-sprockets-rails3'
   gem 'font-awesome-rails'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'coffee-rails' #'~> 3.2.1'
   gem 'jquery-rails'
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails'   #'~> 3.2.3'
   gem 'bootstrap-sass'
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails'
@@ -66,3 +66,4 @@ gem 'rails-assets-bootstrap-modal'
 gem 'rails-assets-select2'
 gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
 
+gem 'searchkick'
