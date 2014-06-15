@@ -71,7 +71,7 @@ class SharesController < ApplicationController
         i.tag_list << tag
         i.slow_callbacks = false
         i.save! validate: false
-        i.slow_callbacks = true
+        I.slow_callbacks = true
       }
       tag = ActsAsTaggableOn::Tag.where(name: tag).first
       render json: {status: "OK", url: pages_tag_path(tag)}

@@ -43,9 +43,9 @@ describe Photo do
   specify "Reusing created date" do
     d = Day.create date: Date.parse("2004-09-11")
     photo = nil
-    lambda {
+    expect {
       photo = Photo.create_from_upload(File.open(other_picture), user)
-    }.should_not change(Day, :count)
+    }.to_not change(Day, :count)
     photo.day.should == d
     photo.reload.day.should == d
   end

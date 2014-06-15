@@ -70,7 +70,7 @@ class Photo < ActiveRecord::Base
 
   def self.parse_date(file)
     meta = EXIFR::JPEG.new(file.path)
-    date = meta.exif[:date_time] || meta.exif[:date_time_original] rescue nil
+    date = meta.exif[:date_time_original] || meta.exif[:date_time] rescue nil
     if not date
       if file.original_filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
         date = Date.parse "#$1-#$2-#$3"
