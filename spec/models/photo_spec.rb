@@ -22,16 +22,16 @@ describe Photo do
   it "should validate by uniqness" do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
 
-    lambda {
+    expect {
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    }.should_not change(Photo, :count)
+    }.to_not change(Photo, :count)
   end
 
   specify "after saving should create or initialize respective day" do
     photo = nil
-    lambda {
+    expect {
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    }.should change(Day, :count)
+    }.to change(Day, :count)
 
     photo.day.should be_present
     Day.last.tap do |day|
@@ -41,7 +41,7 @@ describe Photo do
   end
 
   specify "Reusing created date" do
-    d = Day.create date: Date.parse("2004-09-11")
+    d = Day.create date: Date.parse("2004-09-12")
     photo = nil
     expect {
       photo = Photo.create_from_upload(File.open(other_picture), user)
@@ -69,17 +69,23 @@ describe Photo do
     photo.shot_at.should ==  DateTime.parse("2014-02-05T14:17:42+01:00")
   end
 
+  specify 'Metadata' do
+    picture = "spec/fixtures/eos600.jpg"
+    photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    binding.pry
+  end
+
   specify 'geocoding' do
     picture = "spec/fixtures/geocode.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     photo.location.should == 'Hofheim - Wallau'
   end
+
   if Rails.application.config.features.ocr
     specify "OCR" do
       photo = Photo.create_from_upload(File.open("spec/fixtures/text.jpg"), user)
       photo.ocr
       photo.description.should include "Mietsteigerung"
-
     end
   end
 end

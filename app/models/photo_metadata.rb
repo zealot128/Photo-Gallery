@@ -2,38 +2,47 @@ module PhotoMetadata
   extend ActiveSupport::Concern
 
   included do
-  end
+    after_create :set_metadata
+    store_accessor :meta_data, :fingerprint
+    store_accessor :meta_data, :top_colors
 
-  def top_colors
-    self.exif_info['top_colors'] ||= begin
-                                  r = `convert #{file.path} -posterize 5 -define histogram:unique-colors=true -colorspace HSL -format %c histogram:info:- | sort -n -r | head`
-                                  hash = r.split("\n").map{|i|
-                                    Hash[
-                                      [:h,:s,:l].zip( i[/\(([^\)]*)\)/, 1].strip.split(/[, ]+/).map(&:to_i) )
-                                    ]
-                                  }
-                                  self.exif_info['top_colors'] = hash
-                                  self.update_attribute :exif_info, exif_info
-                                  hash
-                                end
-  end
-  def fingerprint
-    self.exif_info['fingerprint'] ||= begin
-                                        self.exif_info['fingerprint'] = Phashion::Image.new(file.path).fingerprint
-
-                                        self.update_attribute :exif_info, exif_info
-                                        self.exif_info['fingerprint']
-                                      end
-  end
-  def exif
-    self.exif_info || begin
-    self.exif_info = meta_data.exif.inject({}) {|a,e| a.merge e}.except(:user_comment) rescue {}
-    self.save
-    self.exif_info
+    def top_colors
+      JSON.load(super) rescue []
     end
+
+    def top_colors=(val)
+      super val.to_json
+    end
+
+    reverse_geocoded_by :lat, :lng do |obj,results|
+      if geo = results.first
+        parts = [geo.city]
+        parts << geo.address_components_of_type("establishment").first["short_name"]  rescue nil
+        parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
+        obj.update_attribute(:location, parts.join(" - "))
+      end
+    end
+
   end
-  def meta_data
-    @meta_data ||= EXIFR::JPEG.new(file.path)
+
+
+  def set_metadata
+    self.top_colors =  begin
+                         r = `convert #{file.path} -posterize 5 -define histogram:unique-colors=true -colorspace HSL -format %c histogram:info:- | sort -n -r | head`
+                         r.split("\n").map{|i|
+                           Hash[
+                             [:h,:s,:l].zip( i[/\(([^\)]*)\)/, 1].strip.split(/[, ]+/).map(&:to_i) )
+                           ]
+                         }
+                       end
+    # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
+    self.meta_data = self.meta_data.merge(exif)
+    save
+  end
+
+  def exif
+    meta_data = EXIFR::JPEG.new(file.path)
+    meta_data.exif.inject({}) {|a,e| a.merge e}.except(:user_comment) rescue {}
   end
 
   def update_gps

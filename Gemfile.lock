@@ -68,11 +68,11 @@ GEM
       capistrano-bundler (>= 1.0.0)
     capistrano-rails-console (0.1.1)
       capistrano (>= 3.0.0)
+    carrierwave (0.9.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
     chunky_png (1.3.1)
-    climate_control (0.0.3)
-      activesupport (>= 3.0)
-    cocaine (0.5.4)
-      climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -158,6 +158,8 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25.1)
+    mini_magick (3.7.0)
+      subexec (~> 0.2.1)
     minitest (5.3.4)
     multi_json (1.10.1)
     multi_xml (0.5.5)
@@ -165,11 +167,6 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    paperclip (4.1.1)
-      activemodel (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      cocaine (~> 0.5.3)
-      mime-types
     pg (0.17.1)
     phashion (1.1.1)
     polyglot (0.3.5)
@@ -271,6 +268,7 @@ GEM
       colorize
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    subexec (0.2.3)
     temple (0.6.7)
     tesseract-ocr (0.1.6)
       call-me
@@ -316,6 +314,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.1.0)
   capistrano-rails-console
   capistrano-rvm!
+  carrierwave
   coffee-rails
   compass-rails
   dotenv-rails
@@ -326,7 +325,7 @@ DEPENDENCIES
   grape
   haml-rails
   jquery-rails
-  paperclip
+  mini_magick
   pg
   phashion
   pry-rails

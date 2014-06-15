@@ -1,17 +1,19 @@
 class Day < ActiveRecord::Base
   validates_presence_of :date
   has_many :photos
-  has_attached_file :montage
+
+  mount_uploader :montage, MontageUploader
+
   before_save do
     self.year ||= date.year
   end
 
-  do_not_validate_attachment_file_type :montage
 
   def make_montage
-    images = photos.order("shot_at asc").map{|i|i.file.path(:thumb)}
+    images = photos.order("shot_at asc").map{|i|i.file.versions[:thumb].path }
     image_args = Shellwords.shelljoin images
     width = [images.count, 30].min
+    # TODO Tempfile
     out_file = Rails.root.join("tmp/", SecureRandom.hex(16) + ".jpg")
     command = "montage -geometry +0+0 -tile #{width}x #{image_args} #{out_file}"
     system command

@@ -1,14 +1,14 @@
 class Photo < ActiveRecord::Base
-  include PhotoMetadata
-  has_attached_file :file, styles: {
-    preview:  "300x300",
-    thumb:  "30x30",
-    medium: "500x500>",
-    large:  "1000x1000>"
-  },
-  path:   ":rails_root/public/photos/:style/:date/:basename.:extension",
-  url:    "/photos/:style/:date/:basename.:extension",
-  convert_options: { all: '-auto-orient' }
+  mount_uploader :file, ImageUploader
+  # has_attached_file :file, styles: {
+  #   preview:  "300x300",
+  #   thumb:  "30x30",
+  #   medium: "500x500>",
+  #   large:  "1000x1000>"
+  # },
+  # path:   ":rails_root/public/photos/:style/:date/:basename.:extension",
+  # url:    "/photos/:style/:date/:basename.:extension",
+  # convert_options: { all: '-auto-orient' }
 
   belongs_to :user
   belongs_to :day
@@ -17,14 +17,13 @@ class Photo < ActiveRecord::Base
   serialize :exif_info, JSON
   scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
   validates :md5, :uniqueness => true
-  do_not_validate_attachment_file_type :file
-  before_post_process :check_uniqueness
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
 
+  include PhotoMetadata
+
   if Rails.application.config.features.elasticsearch
     searchkick
-
     def search_data
       as_json.except(:exif).merge(exif).merge(top_colors: top_colors, fingerprint: fingerprint)
     end
@@ -54,7 +53,7 @@ class Photo < ActiveRecord::Base
   end
 
   before_validation on: :create do
-    self.md5 = Digest::MD5.hexdigest(Paperclip.io_adapters.for(file).read)
+    self.md5 = Digest::MD5.hexdigest(file.read)
   end
 
   after_save do
@@ -70,7 +69,7 @@ class Photo < ActiveRecord::Base
 
   def self.parse_date(file)
     meta = EXIFR::JPEG.new(file.path)
-    date = meta.exif[:date_time_original] || meta.exif[:date_time] rescue nil
+    date = meta.exif[:date_time] || meta.exif[:date_time_original] rescue nil
     if not date
       if file.original_filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
         date = Date.parse "#$1-#$2-#$3"
@@ -104,17 +103,7 @@ class Photo < ActiveRecord::Base
     photo.file = file
     photo.reverse_geocode
     photo.save
-    photo.exif # precache exif
     photo
-  end
-
-  reverse_geocoded_by :lat, :lng do |obj,results|
-    if geo = results.first
-      parts = [geo.city]
-      parts << geo.address_components_of_type("establishment").first["short_name"]  rescue nil
-      parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
-      obj.update_attribute(:location, parts.join(" - "))
-    end
   end
 
   def modal_group
@@ -189,9 +178,9 @@ class Photo < ActiveRecord::Base
     @old_day = self.day
     old = shot_at_was.strftime("%Y-%m-%d")
     new = shot_at.strftime("%Y-%m-%d")
-    (file.styles.keys + [:original]).each do |name, style|
-      from = file.path(name).gsub(new, old)
-      to   = file.path(name)
+    file.versions.each do |key,version|
+      from = version.path.gsub(new, old)
+      to   = version.path
       Rails.logger.info "Moving #{from} -> #{to}"
       puts "Moving #{from} -> #{to}"
       puts "#{from} exists? -> #{File.exists?(from)}"
