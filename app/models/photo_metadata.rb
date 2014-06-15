@@ -27,6 +27,7 @@ module PhotoMetadata
 
 
   def set_metadata
+    return if !file.present?
     self.top_colors =  begin
                          r = `convert #{file.path} -posterize 5 -define histogram:unique-colors=true -colorspace HSL -format %c histogram:info:- | sort -n -r | head`
                          r.split("\n").map{|i|
@@ -36,17 +37,21 @@ module PhotoMetadata
                          }
                        end
     # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
-    self.meta_data = self.meta_data.merge(exif)
-    save
+    self.meta_data = self.meta_data.merge(get_exif) rescue {}
+    exif = get_exif
+    self.meta_date.merge! exif.exif.inject({}) {|a,e| a.merge e}.except(:user_comment) rescue {}
+  end
+
+  def get_exif
+    @_exif ||= file.path && EXIFR::JPEG.new(file.path)
   end
 
   def exif
-    meta_data = EXIFR::JPEG.new(file.path)
-    meta_data.exif.inject({}) {|a,e| a.merge e}.except(:user_comment) rescue {}
+    self.meta_data.except('fingerprint', 'top_colors')
   end
 
   def update_gps
-    if gps = meta_data.gps
+    if gps = get_exif.gps
       self.lat = gps.latitude
       self.lng = gps.longitude
       reverse_geocode

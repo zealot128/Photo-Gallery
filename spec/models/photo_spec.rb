@@ -72,7 +72,9 @@ describe Photo do
   specify 'Metadata' do
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    binding.pry
+    photo.as_json.should be_present
+    photo.search_data.should be_present
+    photo.exif['model'].should == 'GT-N7100'
   end
 
   specify 'geocoding' do
