@@ -10,10 +10,19 @@ class ImageUploader < CarrierWave::Uploader::Base
   storage :file
   # storage :fog
 
+  def auto_orient
+    `mogrify -auto-orient #{Shellwords.escape current_path}`
+  end
+
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "photos/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    store_dir_version('original')
+  end
+
+  def store_dir_version(version)
+    "photos/#{version}/#{model.shot_at.year}/#{model.shot_at.to_date.to_s}"
+
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -33,16 +42,32 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :preview do
+    process :auto_orient
     process :resize_to_fill => [300,300]
+    def store_dir
+      store_dir_version('preview')
+    end
   end
   version :thumb do
+    process :auto_orient
     process :resize_to_fill => [30,30]
+    def store_dir
+      store_dir_version('thumb')
+    end
   end
   version :medium do
+    process :auto_orient
     process :resize_to_fill => [500,500]
+    def store_dir
+      store_dir_version('medium')
+    end
   end
   version :large do
+    process :auto_orient
     process :resize_to_fill => [1200,1000]
+    def store_dir
+      store_dir_version('large')
+    end
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

@@ -37,9 +37,8 @@ module PhotoMetadata
                          }
                        end
     # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
-    self.meta_data = self.meta_data.merge(get_exif) rescue {}
-    exif = get_exif
-    self.meta_date.merge! exif.exif.inject({}) {|a,e| a.merge e}.except(:user_comment) rescue {}
+    self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
+    self.reverse_geocode
   end
 
   def get_exif

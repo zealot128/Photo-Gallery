@@ -14,8 +14,7 @@ class Photo < ActiveRecord::Base
   belongs_to :day
   has_and_belongs_to_many :shares, :join_table => "photos_shares"
   acts_as_taggable
-  serialize :exif_info, JSON
-  scope :dates, group(:shot_at).select(:shot_at).order("shot_at desc")
+  scope :dates, -> { group(:shot_at).select(:shot_at).order("shot_at desc") }
   validates :md5, :uniqueness => true
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
@@ -101,7 +100,7 @@ class Photo < ActiveRecord::Base
     photo.shot_at = date
     photo.user = current_user
     photo.file = file
-    photo.reverse_geocode
+    photo.update_gps
     photo.save
     photo
   end
@@ -178,13 +177,12 @@ class Photo < ActiveRecord::Base
     @old_day = self.day
     old = shot_at_was.strftime("%Y-%m-%d")
     new = shot_at.strftime("%Y-%m-%d")
-    file.versions.each do |key,version|
-      from = version.path.gsub(new, old)
-      to   = version.path
-      Rails.logger.info "Moving #{from} -> #{to}"
-      puts "Moving #{from} -> #{to}"
-      puts "#{from} exists? -> #{File.exists?(from)}"
-      puts "#{to}   exists? -> #{File.exists?(to)}"
+    ( [[:original, file]] + file.versions.to_a).each do |key,version|
+      from = version.path
+      to   = version.path.gsub(old, new).gsub(shot_at_was.year.to_s, shot_at.year.to_s)
+      Rails.logger.info "[photo] Moving #{from} -> #{to}"
+      Rails.logger.info "  #{from} exists? -> #{File.exists?(from)}"
+      Rails.logger.info "  #{to}   exists? -> #{File.exists?(to)}"
       FileUtils.mkdir_p File.dirname(to)
       FileUtils.move from, to rescue false
     end
