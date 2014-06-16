@@ -38,7 +38,7 @@ module PhotoMetadata
                        end
     # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
     self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
-    self.reverse_geocode
+    self.save
   end
 
   def get_exif
@@ -46,7 +46,7 @@ module PhotoMetadata
   end
 
   def exif
-    self.meta_data.except('fingerprint', 'top_colors')
+    (self.meta_data || {}).except('fingerprint', 'top_colors')
   end
 
   def update_gps

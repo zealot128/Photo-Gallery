@@ -118,11 +118,12 @@ class Photo < ActiveRecord::Base
                else
                  90
                end
-    cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path(:original))}"
+    cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path)}"
     `#{cmd}`
-    self.exif_info['fingerprint'] = nil
-    self.fingerprint
-    file.reprocess!
+    self.fingerprint = nil
+    file.recreate_versions!
+    save
+
   end
 
   def self.grouped_by_day_and_month

@@ -9,7 +9,6 @@
 //= require bootstrap-modalmanager-2.2.4
 //= require dropzone
 //= require moment
-//= require eonasdan-bootstrap-datetimepicker
 //= require _modal-ajax
 //= require blueimp-gallery
 //= require blueimp-gallery/jquery.blueimp-gallery.js
