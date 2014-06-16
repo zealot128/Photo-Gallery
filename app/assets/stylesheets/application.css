@@ -3,5 +3,6 @@
  *= require blueimp-gallery
  *= require select2
  *= require dropzone
+ *= require bootstrap-datetimepicker.min.css
  *= require theme
 */

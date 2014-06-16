@@ -24,7 +24,13 @@ class Photo < ActiveRecord::Base
   if Rails.application.config.features.elasticsearch
     searchkick
     def search_data
-      as_json.except(:exif).merge(exif).merge(top_colors: top_colors, fingerprint: fingerprint)
+      as_json.except(:exif).merge(exif).merge(
+        top_colors: top_colors,
+        fingerprint: fingerprint,
+        tags: tag_list,
+        share_ids: share_ids,
+        location: [lat, lng]
+      )
     end
   end
 
@@ -39,7 +45,6 @@ class Photo < ActiveRecord::Base
   end
 
   before_save do
-    self.share_hash = SecureRandom.hex(24)
     self.year = self.shot_at.year
     self.month = self.shot_at.month
   end
@@ -123,7 +128,13 @@ class Photo < ActiveRecord::Base
     self.fingerprint = nil
     file.recreate_versions!
     save
+  end
 
+  def self.search_with_query_syntax(q, opts={})
+    r = Photo.search q, opts.merge(execute: false)
+    r.body[:query][:dis_max][:queries] << { query_string: {:fields=>["_all"], :query=> q} }
+    r.execute
+    r
   end
 
   def self.grouped_by_day_and_month

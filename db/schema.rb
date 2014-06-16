@@ -14,14 +14,14 @@
 ActiveRecord::Schema.define(version: 20140615233904) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
   enable_extension "hstore"
+  enable_extension "plpgsql"
 
   create_table "days", force: true do |t|
     t.date     "date"
     t.integer  "year"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "locations"
     t.string   "montage"
   end
@@ -33,13 +33,13 @@ ActiveRecord::Schema.define(version: 20140615233904) do
     t.float    "lat"
     t.float    "lng"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "share_hash"
     t.string   "location"
     t.string   "md5"
-    t.integer  "year",        limit: 2
-    t.integer  "month",       limit: 2
+    t.integer  "year"
+    t.integer  "month"
     t.integer  "day_id"
     t.text     "exif_info"
     t.string   "caption"
@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 20140615233904) do
     t.string   "name"
     t.string   "type"
     t.string   "token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "shares", ["token"], name: "index_shares_on_token", unique: true, using: :btree
@@ -97,8 +97,8 @@ ActiveRecord::Schema.define(version: 20140615233904) do
     t.string   "email"
     t.string   "password_hash"
     t.string   "password_salt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "last_ip"
     t.datetime "last_upload"
     t.boolean  "allowed_ip_storing"

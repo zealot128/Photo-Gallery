@@ -28,6 +28,15 @@ module PhotoMetadata
 
   def set_metadata
     return if !file.present?
+    # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
+    self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
+    if !Photo.slow_callbacks
+      set_top_colors
+    end
+    self.save
+  end
+
+  def set_top_colors
     self.top_colors =  begin
                          r = `convert #{file.path} -posterize 5 -define histogram:unique-colors=true -colorspace HSL -format %c histogram:info:- | sort -n -r | head`
                          r.split("\n").map{|i|
@@ -36,9 +45,6 @@ module PhotoMetadata
                            ]
                          }
                        end
-    # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
-    self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
-    self.save
   end
 
   def get_exif

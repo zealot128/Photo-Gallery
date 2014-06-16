@@ -153,6 +153,21 @@ $ ->
 
   #disable keyboard navigation
   $('body').on 'modal-changed', '#js-modal', Pics.disable_keyboard_nav
+  $('body').on 'modal-changed', '#js-modal', ->
+    console.log 'BLA'
+    $("#photo_tag_list").each ->
+      me = $(this)
+      me.select2(tags: me.data('values'))
+
+    $("#photo_share_ids").select2()
+    $('#photo_shot_at').datetimepicker
+      format: "YYYY-MM-DD hh:mm:ss",
+      weekStart: 1,
+      endDate: new Date()
+      todayBtn: "linked",
+      language: 'de'
+      calendarWeeks: true,
+      todayHighlight: true
 
   # reanable keyboard navigation
   $('body').on 'hidden modal:closed', '.modal', Pics.enable_keyboard_nav

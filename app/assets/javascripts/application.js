@@ -14,5 +14,6 @@
 //= require blueimp-gallery/jquery.blueimp-gallery.js
 //= require select2
 //= require endless-scroll
+//= require bootstrap-datetimepicker.min.js
 //= require photos
 //= require _gallery

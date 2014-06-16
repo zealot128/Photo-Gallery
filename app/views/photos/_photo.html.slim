@@ -1,5 +1,6 @@
+- gallery ||= nil
 .photo id="photo-#{photo.id}" class="#{dom_id(photo)}"
-  a(href=(photo.file.url(:large)) title=photo.caption data-gallery="#gallery-#{photo.year}"  data-options=photo.to_json data-thumbnail=photo.file.url(:thumb))
+  a(href=(photo.file.url(:large)) title=photo.caption data-gallery="#gallery-#{gallery || photo.year}"  data-options=photo.to_json data-thumbnail=photo.file.url(:thumb))
     = image_tag photo.file.url(:preview), data: { bla: 'foo' }
 
 

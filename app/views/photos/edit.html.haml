@@ -1,26 +1,12 @@
-= simple_form_for @photo, remote: true, html: { class: "form-horizontal"} do |f|
-  = f.input :caption
-  = f.input :shot_at, as: :string, data: {format: 'YYYY-MM-DD hh:mm:ss'}
-  = f.input :tag_list, input_html: { autocomplete: "off", data: { values: ActsAsTaggableOn::Tag.pluck(:name).to_json}}
-  = f.association :shares, as: :select
-  = f.input :new_share, as: :string
-  .clear
-  .form-group
-    .col-sm-3
-    .col-sm-7
-      = f.submit class: "btn-primary btn"
-:javascript
-  $("#photo_tag_list").each(function() {
-    me = $(this)
-    me.select2({ tags: me.data('values') })
-  })
-  $("#photo_share_ids").select2()
-  $('#photo_shot_at').datetimepicker({
-    format: "YYYY-MM-DD hh:mm:ss",
-    weekStart: 1,
-    endDate: "#{Date.today.to_s(:db)}",
-    todayBtn: "linked",
-    language: #{I18n.locale.to_s.to_json},
-    calendarWeeks: true,
-    todayHighlight: true
-  });
+%div
+  = simple_form_for @photo, remote: true, html: { class: "form-horizontal"} do |f|
+    = f.input :caption
+    = f.input :shot_at, as: :string, data: {format: 'YYYY-MM-DD hh:mm:ss'}
+    = f.input :tag_list, input_html: { autocomplete: "off", data: { values: ActsAsTaggableOn::Tag.pluck(:name).to_json}}
+    = f.association :shares, as: :select
+    = f.input :new_share, as: :string
+    .clear
+    .form-group
+      .col-sm-3
+      .col-sm-7
+        = f.submit class: "btn-primary btn"
