@@ -167,6 +167,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
+    parallel (1.0.0)
     pg (0.17.1)
     phashion (1.1.1)
     polyglot (0.3.5)
@@ -320,6 +321,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   mini_magick
+  parallel
   pg
   phashion
   pry-rails

@@ -19,6 +19,7 @@ gem 'slim-rails'
 gem 'grape'
 gem 'haml-rails'
 gem 'acts-as-taggable-on'
+gem 'parallel'
 
 gem 'pg'
 gem 'dotenv-rails'
