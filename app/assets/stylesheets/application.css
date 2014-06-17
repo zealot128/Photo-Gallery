@@ -2,6 +2,7 @@
  *= require_self
  *= require blueimp-gallery
  *= require select2
+ *= require select2-bootstrap
  *= depend_on_asset "dropzone/downloads/images/spritemap.png"
  *= depend_on_asset "dropzone/downloads/images/spritemap@2x.png"
  *= require dropzone

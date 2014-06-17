@@ -62,7 +62,7 @@ gem 'bootstrap-will_paginate'
 gem 'rails-assets-dropzone'
 gem 'rails-assets-moment'
 gem 'rails-assets-blueimp-gallery'
-gem 'rails-assets-select2'
+gem 'select2-rails'
 # gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
 
 gem 'searchkick'
