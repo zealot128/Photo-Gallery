@@ -43,6 +43,13 @@ jQuery ->
 
   $('.dropdown-toggle').dropdown()
 
+  $('body').on 'click', '[data-add-term]', ->
+    term = $(this).data('add-term')
+    input = $('#search_q')
+    if input.val().indexOf(term) == -1
+      input.val(input.val() + ' AND ' + term)
+    false
+
   setTimeout ->
     if $('.dropzone').length > 0
       dropzone = $('.dropzone')[0].dropzone

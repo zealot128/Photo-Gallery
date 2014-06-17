@@ -1,0 +1,26 @@
+= simple_form_for @search, url: '' do |f|
+  = f.input :q, label: 'Term', hint: 'ElasticSearch Syntax, a la: focal_length:8'
+  = f.input :position
+  = f.submit 'Suchen', class: 'btn btn-primary'
+
+- if @result
+  %hr
+  %h4 Ergebnisse
+  .row
+    .col-md-6
+      %table.table
+        %tr
+          %td Anzahl
+          %td= @result.total_count
+        - @result.facets.each do |name, content|
+          %tr
+            %td= name.humanize
+            %td
+              - content['terms'].each do |term|
+                %a.label.label-default{data: { add_term: "#{name}:#{term['term']}" }}
+                  = term['term']
+                  (#{term['count']})
+  - @result.each do |photo|
+    = render photo
+
+

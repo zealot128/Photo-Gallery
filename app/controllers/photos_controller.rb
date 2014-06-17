@@ -32,7 +32,12 @@ class PhotosController < ApplicationController
     self.response_body = open(path, "rb")
   end
 
-
+  def search
+    @search = Search.new(params[:search])
+    if params[:search]
+      @result = @search.search
+    end
+  end
 
   protect_from_forgery except: :create
   def create

@@ -28,12 +28,13 @@ class Photo < ActiveRecord::Base
         top_colors: top_colors,
         fingerprint: fingerprint,
         tags: tag_list,
+        year: shot_at.year,
         share_ids: share_ids,
+        orientation: (meta_data['orientation'] || {})['type'],
         location: [lat, lng]
       )
     end
   end
-
 
   attr_accessor :new_share
 
@@ -66,6 +67,10 @@ class Photo < ActiveRecord::Base
       @old_day.update_me if @old_day
     end
   end
+  after_destroy do
+    day.update_me
+  end
+
 
   def check_uniqueness
     valid?
