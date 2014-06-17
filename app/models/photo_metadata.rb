@@ -29,6 +29,7 @@ module PhotoMetadata
   def set_metadata
     return if !file.present?
     # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
+    self.meta_data ||= {}
     self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
     self.meta_data_will_change!
     if Photo.slow_callbacks
