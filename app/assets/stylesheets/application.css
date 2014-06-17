@@ -2,9 +2,9 @@
  *= require_self
  *= require blueimp-gallery
  *= require select2
+ *= depend_on_asset "dropzone/downloads/images/spritemap.png"
+ *= depend_on_asset "dropzone/downloads/images/spritemap@2x.png"
  *= require dropzone
  *= require bootstrap-datetimepicker.min.css
  *= require theme
- *= depend_on_asset "dropzone/downloads/images/spritemap.png"
- *= depend_on_asset "dropzone/downloads/images/spritemap@2x.png"
 */
