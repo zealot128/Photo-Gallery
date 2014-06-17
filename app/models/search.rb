@@ -9,6 +9,7 @@ class Search
     options =  {
       execute: false,
       facets: [:make, :model, :exposure_time, :f_number, :iso_speed_ratings, :aperture_value, :flash, :white_balance, :orientation, :software],
+      limit: 50,
       where: {}
     }
     if position.present?
