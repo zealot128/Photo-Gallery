@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140615233904) do
+ActiveRecord::Schema.define(version: 20140617074553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -35,13 +35,11 @@ ActiveRecord::Schema.define(version: 20140615233904) do
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.string   "share_hash"
     t.string   "location"
     t.string   "md5"
     t.integer  "year"
     t.integer  "month"
     t.integer  "day_id"
-    t.text     "exif_info"
     t.string   "caption"
     t.text     "description"
     t.string   "file"
@@ -51,7 +49,6 @@ ActiveRecord::Schema.define(version: 20140615233904) do
   add_index "photos", ["day_id"], name: "index_photos_on_day_id", using: :btree
   add_index "photos", ["md5"], name: "index_photos_on_md5", unique: true, using: :btree
   add_index "photos", ["month"], name: "index_photos_on_month", using: :btree
-  add_index "photos", ["share_hash"], name: "index_photos_on_share_hash", using: :btree
   add_index "photos", ["shot_at"], name: "index_photos_on_shot_at", using: :btree
   add_index "photos", ["year"], name: "index_photos_on_year", using: :btree
 
