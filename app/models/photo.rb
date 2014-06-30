@@ -15,14 +15,11 @@ class Photo < ActiveRecord::Base
   has_and_belongs_to_many :shares, :join_table => "photos_shares"
   acts_as_taggable
   scope :dates, -> { group(:shot_at).select(:shot_at).order("shot_at desc") }
-  validates :md5, :uniqueness => true
+  validates :md5, :uniqueness => true, presence: true
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
 
   include PhotoMetadata
-  def mime_type
-    `file #{Shellwords.escape file.path} --mime-type -b`.strip
-  end
 
   if Rails.application.config.features.elasticsearch
     searchkick
