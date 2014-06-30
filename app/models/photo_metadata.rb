@@ -25,6 +25,9 @@ module PhotoMetadata
 
   end
 
+  def mime_type
+    `file #{Shellwords.escape file.path} --mime-type -b`.strip
+  end
 
   def set_metadata
     return if !file.present?

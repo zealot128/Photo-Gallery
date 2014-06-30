@@ -21,12 +21,12 @@
     = f.input "tag", required: false
   = f.submit "Add Images", class: "btn btn-primary"
 
-:javascript
-  $('#bulk_tag_list').typeahead({
-    matcher: function(candidate) {
-      q = this.query;
-      element = $.trim(q.toLowerCase());
-      return  ( candidate.indexOf( element ) !== -1) && element.length > 1
-    },
-    source: #{raw ActsAsTaggableOn::Tag.order(:name).pluck(:name).to_json }
-  });
+-# :javascript
+-#   $('#bulk_tag_list').typeahead({
+-#     matcher: function(candidate) {
+-#       q = this.query;
+-#       element = $.trim(q.toLowerCase());
+-#       return  ( candidate.indexOf( element ) !== -1) && element.length > 1
+-#     },
+-#     source: #{raw ActsAsTaggableOn::Tag.order(:name).pluck(:name).to_json }
+-#   });

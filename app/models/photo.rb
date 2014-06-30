@@ -20,6 +20,9 @@ class Photo < ActiveRecord::Base
   self.slow_callbacks = true
 
   include PhotoMetadata
+  def mime_type
+    `file #{Shellwords.escape file.path} --mime-type -b`.strip
+  end
 
   if Rails.application.config.features.elasticsearch
     searchkick

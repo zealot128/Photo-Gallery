@@ -11,9 +11,9 @@ window.Pics =
       Pics.gallery().next()
 
   disable_keyboard_nav: ->
-    Pics.gallery().options.enableKeyboardNavigation = false
+    Pics.gallery()?.options.enableKeyboardNavigation = false
   enable_keyboard_nav: ->
-    Pics.gallery().options.enableKeyboardNavigation = true
+    Pics.gallery()?.options.enableKeyboardNavigation = true
 
 
 blueimp.Gallery.prototype.imageFactory = (obj, callback) ->
@@ -63,7 +63,6 @@ blueimp.Gallery.prototype.imageFactory = (obj, callback) ->
 
 blueimp.Gallery.prototype.onkeydown =  (event)->
   return if not this.options.enableKeyboardNavigation
-  console.log event.which || event.keyCode
 
   switch  event.which || event.keyCode
     when 13
@@ -154,7 +153,6 @@ $ ->
   #disable keyboard navigation
   $('body').on 'modal-changed', '#js-modal', Pics.disable_keyboard_nav
   $('body').on 'modal-changed', '#js-modal', ->
-    console.log 'BLA'
     $("#photo_tag_list").each ->
       me = $(this)
       me.select2(tags: me.data('values'))
