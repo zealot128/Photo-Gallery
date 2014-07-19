@@ -8,12 +8,12 @@ class ZipController < ApplicationController
       end
     end
     filename = "tmp/cache/share-#{params[:id]}.zip"
-    if !File.exists?(filename)
+    if !File.exists?(filename) or true
       @share = Share.find_by_token(params[:id])
       files = @share.photos.order('shot_at asc').map{|i| i.file}
       Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zipfile|
         files.each do |file|
-          to_file = Paperclip.io_adapters.for(file)
+          to_file = file.file.to_file
 
           next unless to_file
           name = file.path.split('/')[-2..-1].join('_')
