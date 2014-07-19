@@ -34,10 +34,14 @@ module PhotoMetadata
     # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
     self.meta_data ||= {}
     self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
+    if self.meta_data['orientation'].is_a? EXIFR::TIFF::Orientation
+      self.meta_data['orientation'] = self.meta_data['orientation'].instance_variable_get("@type")
+    end
     self.meta_data_will_change!
     if Photo.slow_callbacks
       set_top_colors
     end
+    self.md5 = Digest::MD5.hexdigest(file.read)
     self.save
   end
 
