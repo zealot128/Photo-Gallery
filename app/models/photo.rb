@@ -144,7 +144,7 @@ class Photo < ActiveRecord::Base
 
   def self.grouped_by_day_and_month
 
-    days = all.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse
+    days = all.sort_by{|i| i.shot_at }.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse
     #  [datum, [items]] ...
     #  [month, [ [datum, items], ...
 

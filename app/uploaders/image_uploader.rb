@@ -43,7 +43,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Create different versions of your uploaded files:
   version :preview do
     process :auto_orient
-    process :resize_to_fill => [300,300]
+    process :resize_to_fit => [300,300]
     def store_dir
       store_dir_version('preview')
     end
@@ -57,14 +57,14 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
   version :medium do
     process :auto_orient
-    process :resize_to_fill => [500,500]
+    process :resize_to_fit => [500,500]
     def store_dir
       store_dir_version('medium')
     end
   end
   version :large do
     process :auto_orient
-    process :resize_to_fill => [1200,1000]
+    process :resize_to_fit => [1200,1000]
     def store_dir
       store_dir_version('large')
     end
