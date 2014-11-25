@@ -42,6 +42,7 @@ group :capistrano do
   gem 'capistrano-bundler'
   gem 'capistrano-rails', '~> 1.1.0'
   gem 'capistrano-rails-console'
+  gem 'highline'
 end
 
 gem 'rubyzip', '>= 1.0.0'
