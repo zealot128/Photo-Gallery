@@ -2,15 +2,15 @@
 #
 base = Photo.where('shot_at > ?',2.weeks.ago)
 
-dupes = base.group(:file).having('count(file) > 1')
-dupes.each do |dupe|
+dupes = base.group(:file).having('count(file) > 1').count
+dupes.each do |dupe,counts|
+  puts "#{dupe} -> #{counts - 1} zuviel"
   all = base.where(file: dupe)
   real = all.where('md5 is not null').first
   if not real
     real = all.first
   end
-  puts "DELETE: "
-  puts all.where('id != ?', real.id).to_sql
-
+  delete =  all.where('id != ?', real.id)
+  delete.delete_all
   real.save
 end
