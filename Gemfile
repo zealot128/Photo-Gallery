@@ -21,6 +21,8 @@ gem 'haml-rails'
 gem 'acts-as-taggable-on'
 gem 'parallel'
 
+gem 'filelock'
+
 gem 'pg'
 gem 'dotenv-rails'
 
@@ -67,3 +69,4 @@ gem 'select2-rails'
 # gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
 
 gem 'searchkick'
+gem 'exception_notification', group: :production

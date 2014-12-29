@@ -23,6 +23,12 @@
   .fallback
     | Your browser does not support Javascript Uploads
 
+.help-block
+  p
+    |Your upload url:
+    br
+    - url  =token_upload_path(token: current_user.token)
+    code = link_to url, url
 
 .clear
 - if @years.length == 0

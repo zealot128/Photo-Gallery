@@ -41,12 +41,14 @@ class PhotosController < ApplicationController
 
   protect_from_forgery except: :create
   def create
-    @photo = Photo.create_from_upload(params[:userfile], current_user)
-    current_user.enable_ip_based_login request
-    if @photo.new_record?
-      render text: 'ALREADY_UPLOADED'
-    else
-      render :text => "OK"
+    Filelock "tmp/upload-#{current_user.id}.lock", timeout: 60 do
+      @photo = Photo.create_from_upload(params[:userfile], current_user)
+      current_user.enable_ip_based_login request
+      if @photo.new_record?
+        render text: 'ALREADY_UPLOADED'
+      else
+        render text: 'OK'
+      end
     end
   end
 
@@ -101,6 +103,10 @@ class PhotosController < ApplicationController
 
   protected
   def http_basic_auth
+    if params[:token]
+      session[:user_id] = User.where(token: params[:token]).first!.id
+      return true
+    end
     return true if current_user
     if by_ip       = User.authenticate_by_ip(request)
       session[:user_id] = by_ip.id

@@ -55,7 +55,19 @@ SimpleGallery::Application.configure do
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
+  config.action_mailer.delivery_method = :smtp
 
+  ActionMailer::Base.smtp_settings = YAML.load_file('config/email.yml')
+  config.action_mailer.default_url_options = { :host => "pics.stefanwienert.de" }
+
+  config.middleware.use ExceptionNotification::Rack,
+    :email => {
+    :email_prefix => "[Pictures] ",
+    :sender_address => %{"pictures" <info@podfilter.de>},
+    :exception_recipients => %w{info@stefanwienert.de},
+    ignore_exceptions: ['ActionController::BadRequest'] + ExceptionNotifier.ignored_exceptions,
+    ignore_crawlers: true
+  }
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 end

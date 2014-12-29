@@ -1,9 +1,6 @@
 class User < ActiveRecord::Base
-  # new columns need to be added here to be writable through mass assignment
-
   attr_accessor :password
   before_save :prepare_password
-
 
   has_many :photos
   validates_presence_of :username

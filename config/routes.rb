@@ -36,5 +36,6 @@ SimpleGallery::Application.routes.draw do
   get 'tag/:id',  to: 'pages#tag', as: 'pages_tag'
 
   get '/', to: 'pages#index', as: 'root'
+  post 'upload/:token' => 'photos#create', as: :token_upload
   post '/', to: 'photos#create'
 end
