@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password
   validates_length_of :password, :minimum => 4, :allow_blank => true
 
+  before_create :set_token
+  before_save :set_token, if: :password_hash_changed?
+
   # login can be either username or email address
   def self.authenticate(login, pass)
     user = find_by_username(login) || find_by_email(login)
@@ -23,6 +26,10 @@ class User < ActiveRecord::Base
   def self.authenticate_by_ip(request)
     user = find_by_last_ip(request.env["REMOTE_ADDR"])
     user if user and user.last_upload > 15.minutes.ago
+  end
+
+  def set_token
+    self.token = SecureRandom.hex(16)
   end
 
   def encrypt_password(pass)

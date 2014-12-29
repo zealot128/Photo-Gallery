@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617074553) do
+ActiveRecord::Schema.define(version: 20141229185509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 20140617074553) do
     t.string   "last_ip"
     t.datetime "last_upload"
     t.boolean  "allowed_ip_storing"
+    t.string   "token"
   end
 
 end
