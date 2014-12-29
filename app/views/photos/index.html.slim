@@ -25,10 +25,10 @@
 
 .help-block
   p
-    |Your upload url:
+    |Your unique upload url (no credentials required):
     br
-    - url  =token_upload_path(token: current_user.token)
-    code = link_to url, url
+    code  =token_upload_url(token: current_user.token)
+    br
 
 .clear
 - if @years.length == 0

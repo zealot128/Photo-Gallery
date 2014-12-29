@@ -80,7 +80,7 @@ describe Photo do
   specify 'geocoding' do
     picture = "spec/fixtures/geocode.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    photo.location.should == 'Hofheim - Wallau'
+    photo.location.should == 'Hofheim am Taunus - Wallau'
   end
 
   if Rails.application.config.features.ocr
