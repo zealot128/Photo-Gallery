@@ -27,6 +27,8 @@ SimpleGallery::Application.routes.draw do
   post 'photos/upload'
   get 'photos/ajax_year'
   get 'photos/ajax_photos'
+  post 'upload/:token' => 'upload#create', as: :token_upload
+  post 'photos' => 'upload#create'
   resources :photos do
     member do
       post :rotate
@@ -36,6 +38,5 @@ SimpleGallery::Application.routes.draw do
   get 'tag/:id',  to: 'pages#tag', as: 'pages_tag'
 
   get '/', to: 'pages#index', as: 'root'
-  post 'upload/:token' => 'photos#create', as: :token_upload
-  post '/', to: 'photos#create'
+  post '/', to: 'upload#create'
 end

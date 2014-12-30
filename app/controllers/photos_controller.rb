@@ -1,6 +1,4 @@
 class PhotosController < ApplicationController
-
-  before_filter :http_basic_auth, only: :create
   before_filter :login_required
 
   def index
@@ -39,18 +37,6 @@ class PhotosController < ApplicationController
     end
   end
 
-  protect_from_forgery except: :create
-  def create
-    Filelock "tmp/upload-#{current_user.id}.lock", timeout: 60 do
-      @photo = Photo.create_from_upload(params[:userfile], current_user)
-      current_user.enable_ip_based_login request
-      if @photo.new_record?
-        render text: 'ALREADY_UPLOADED'
-      else
-        render text: 'OK'
-      end
-    end
-  end
 
   def upload
     photo = Photo.create_from_upload(params[:file], current_user)
@@ -99,27 +85,5 @@ class PhotosController < ApplicationController
   def ajax_photos
     @photos = Day.find(params[:id]).photos.order('shot_at asc')
     render partial: "photos/photo", collection: @photos, layout: false
-  end
-
-  protected
-  def http_basic_auth
-    if params[:token]
-      session[:user_id] = User.where(token: params[:token]).first!.id
-      return true
-    end
-    return true if current_user
-    if by_ip       = User.authenticate_by_ip(request)
-      session[:user_id] = by_ip.id
-      return true
-    end
-
-    authenticate_or_request_with_http_basic do |username, password|
-      if by_username = User.authenticate(username, password)
-        session[:user_id] = by_username.id
-        true
-      else
-        false
-      end
-    end
   end
 end
