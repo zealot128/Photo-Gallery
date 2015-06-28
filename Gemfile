@@ -6,7 +6,10 @@ gem 'rails', '~>4.1.0'
 gem 'bcrypt-ruby', require: 'bcrypt'
 gem 'exifr'
 gem 'geocoder'
+
 gem 'carrierwave'
+gem 'fog', require: "fog/aws/storage"
+
 gem 'mini_magick'
 gem 'rack-raw-upload'
 gem 'ruby-progressbar'
@@ -25,6 +28,8 @@ gem 'filelock'
 
 gem 'pg'
 gem 'dotenv-rails'
+
+gem 'aws-sdk', '~> 1.6'
 
 gem 'phashion'
 

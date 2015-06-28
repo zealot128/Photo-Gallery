@@ -7,8 +7,11 @@ class ImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  if defined?(Rails.application.secrets.fog)
+    storage :fog
+  else
+    storage :file
+  end
 
   def auto_orient
     `mogrify -auto-orient #{Shellwords.escape current_path}`
@@ -22,26 +25,17 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   def store_dir_version(version)
     "photos/#{version}/#{model.shot_at.year}/#{model.shot_at.to_date.to_s}"
-
   end
 
-  # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
-  #   # For Rails 3.1+ asset pipeline compatibility:
   #   # ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default.png"].compact.join('_'))
-  #
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
   # end
 
-  # Process files as they are uploaded:
-  # process :scale => [200, 300]
-  #
-  # def scale(width, height)
-  #   # do something
-  # end
 
   # Create different versions of your uploaded files:
   version :preview do
+    storage :file
     process :auto_orient
     process :resize_to_fit => [300,300]
     def store_dir
@@ -49,6 +43,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
   version :thumb do
+    storage :file
     process :auto_orient
     process :resize_to_fill => [30,30]
     def store_dir
@@ -56,6 +51,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
   version :medium do
+    storage :file
     process :auto_orient
     process :resize_to_fit => [500,500]
     def store_dir
@@ -63,23 +59,12 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
   version :large do
+    storage :file
     process :auto_orient
     process :resize_to_fit => [1200,1000]
     def store_dir
       store_dir_version('large')
     end
   end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  # def extension_white_list
-  #   %w(jpg jpeg gif png)
-  # end
-
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
 
 end

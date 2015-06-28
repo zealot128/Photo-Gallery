@@ -1,4 +1,17 @@
-* Geo Index
-* Search
+# TODO
+
+* Jahr als eigene Seite -> schneller
+* Map mit GEO dort
+
+* Dupes besser finden
 * Photos mit selbem Namen an einem Tag
-* Gruppen
+* Je Nutzer eine eindeutige Upload URL (QR Code?)
+
+## AWS Migration
+
+* Rotation
+* Move bei Datumsumbennung
+* Test eines Uploads
+* Dev Server Test
+
+ElasticSearch wieder raus

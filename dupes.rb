@@ -1,8 +1,7 @@
-base = Photo.where('shot_at > ?', 2.weeks.ago)
-dupes = base.group(:file).having('count(file) > 1').count.keys
+dupes = Photo.group(:file, :day_id).having('count(file) > 1').count.keys
 
-dupes.each do |file|
-  keep, *delete = base.where(file: file)
+dupes.each do |file,day_id|
+  keep, *delete = Photo.where(file: file, day_id: day_id)
   delete.each(&:delete)
   keep.save
   keep.day.update_me
