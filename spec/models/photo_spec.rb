@@ -58,6 +58,14 @@ describe Photo do
     photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
     photo.reload
     File.exists?(photo.file.path).should be_true
+
+    photo.file.versions.each do |key,version|
+      File.exists?(version.path).should be_true
+    end
+
+    old_path = photo.file.path.gsub('/2012/','/2010/').gsub('2012-10-01', day.date.to_s)
+    File.exists?(old_path).should be_false
+
     Day.where(date: "2012-10-01").first.tap do |d|
       d.photos.should == [photo]
     end
@@ -73,7 +81,6 @@ describe Photo do
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     photo.as_json.should be_present
-    photo.search_data.should be_present
     photo.exif['model'].should == 'GT-N7100'
   end
 

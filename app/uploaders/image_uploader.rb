@@ -1,16 +1,13 @@
-# encoding: utf-8
-
 class ImageUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
-  # Choose what kind of storage to use for this uploader:
-  if defined?(Rails.application.secrets.fog)
-    storage :fog
-  else
+  if Rails.application.secrets.storage == 'file'
     storage :file
+  else
+    storage :fog
   end
 
   def auto_orient

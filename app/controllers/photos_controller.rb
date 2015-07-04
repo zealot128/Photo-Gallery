@@ -6,6 +6,10 @@ class PhotosController < ApplicationController
     @years = Photo.uniq.group(:year).count.sort_by{|a,b|-a}
     @recent = Photo.order("created_at desc").limit(20)
     @last_upload = @recent.first.created_at rescue false
+    if current_user.token.nil?
+      current_user.set_token
+      current_user.save validate: false
+    end
   end
 
   def destroy
@@ -29,14 +33,6 @@ class PhotosController < ApplicationController
     #render :text => open(path, "rb").read
     self.response_body = open(path, "rb")
   end
-
-  def search
-    @search = Search.new(params[:search])
-    if params[:search]
-      @result = @search.search
-    end
-  end
-
 
   def upload
     photo = Photo.create_from_upload(params[:file], current_user)
@@ -72,14 +68,6 @@ class PhotosController < ApplicationController
   def ocr
     @photo = Photo.find(params[:id])
     @photo.ocr
-  end
-
-  def ajax_year
-    @year = params[:year]
-    @months_and_days = Day.grouped_by_day_and_month @year
-
-    @month_names = ["","Jan","Feb","Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep","Okt", "Nov", "Dez"]
-    render :partial => "photos/groups", :locals => { months_and_days: @months_and_days}
   end
 
   def ajax_photos

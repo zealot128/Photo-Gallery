@@ -14,10 +14,9 @@
 - @years.each do |year,count|
   .year
     h2.year-title id="year-#{year}"
-      = link_to photos_ajax_year_path(year: year), class: "js-year-switch" do
+      = link_to year_path(year: year) do
         = year
         span.label.label-default< = count
-    .year-body
 
 = form_tag '/photos/upload', class: 'dropzone' do
   .fallback
@@ -27,8 +26,9 @@
   p
     |Your unique upload url (no credentials required):
     br
-    code  =token_upload_url(token: current_user.token)
+    code = token_upload_url(token: current_user.token)
     br
+    = image_tag qrcode_image_url(token_upload_url(token: current_user.token))
 
 .clear
 - if @years.length == 0

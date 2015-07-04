@@ -15,7 +15,6 @@ jQuery ->
     hidden.toggle()
     false
 
-  $('.open .group .toggler').click()
 
   $('.js-year-switch').click ->
     elem = $(this)

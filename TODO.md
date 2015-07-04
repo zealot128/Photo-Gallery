@@ -1,6 +1,5 @@
 # TODO
 
-* Jahr als eigene Seite -> schneller
 * Map mit GEO dort
 
 * Dupes besser finden

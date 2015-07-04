@@ -21,21 +21,6 @@ class Photo < ActiveRecord::Base
 
   include PhotoMetadata
 
-  if Rails.application.config.features.elasticsearch
-    searchkick
-    def search_data
-      as_json.except(:exif).merge(exif).merge(
-        top_colors: top_colors,
-        fingerprint: fingerprint,
-        tags: tag_list,
-        year: shot_at.year,
-        share_ids: share_ids,
-        orientation: (meta_data['orientation'] || {})['type'],
-        location: [lat, lng]
-      )
-    end
-  end
-
   attr_accessor :new_share
 
   before_validation do
@@ -194,14 +179,30 @@ class Photo < ActiveRecord::Base
     @old_day = self.day
     old = shot_at_was.strftime("%Y-%m-%d")
     new = shot_at.strftime("%Y-%m-%d")
-    ( [[:original, file]] + file.versions.to_a).each do |key,version|
-      from = version.path
-      to   = version.path.gsub(old, new).gsub(shot_at_was.year.to_s, shot_at.year.to_s)
+    ( file.versions.to_a + [[:original, file]]).each do |key,version|
+      from = version.path.gsub(new, old).gsub(%r{/#{shot_at.year.to_s}/}, "/#{shot_at_was.year.to_s}/")
+      to = version.path.gsub(old, new).gsub(%r{/#{shot_at_was.year.to_s}/}, "/#{shot_at.year.to_s}/")
       Rails.logger.info "[photo] Moving #{from} -> #{to}"
       Rails.logger.info "  #{from} exists? -> #{File.exists?(from)}"
       Rails.logger.info "  #{to}   exists? -> #{File.exists?(to)}"
-      FileUtils.mkdir_p File.dirname(to)
-      FileUtils.move from, to rescue false
+
+      version.instance_exec do
+        # file.instance_variable_set("@file", from)
+        cache!
+        # file.instance_variable_set("@file", to)
+        # binding.pry if key == :original
+        store!
+        # file.instance_variable_set("@file", from)
+
+        # file.delete if file
+        # file.instance_variable_set("@file", to)
+      end
+      # case version.file
+      # when CarrierWave::Storage::Fog::File
+      # else
+      #   FileUtils.mkdir_p File.dirname(to)
+      #   FileUtils.move from, to rescue false
+      # end
     end
   end
 end

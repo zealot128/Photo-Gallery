@@ -21,9 +21,6 @@ SimpleGallery::Application.routes.draw do
   get '/shares/:id/download' => 'zip#share', as: 'download_share'
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'
 
-  get 'photos/search'
-  post 'photos/search'
-
   post 'photos/upload'
   get 'photos/ajax_year'
   get 'photos/ajax_photos'
@@ -35,6 +32,7 @@ SimpleGallery::Application.routes.draw do
       post :ocr
     end
   end
+  get 'year/:year' => "years#show", as: :year
   get 'tag/:id',  to: 'pages#tag', as: 'pages_tag'
 
   get '/', to: 'pages#index', as: 'root'

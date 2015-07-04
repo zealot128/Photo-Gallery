@@ -8,7 +8,7 @@ gem 'exifr'
 gem 'geocoder'
 
 gem 'carrierwave'
-gem 'fog', require: "fog/aws/storage"
+gem 'fog', require: false
 
 gem 'mini_magick'
 gem 'rack-raw-upload'
@@ -29,9 +29,8 @@ gem 'filelock'
 gem 'pg'
 gem 'dotenv-rails'
 
-gem 'aws-sdk', '~> 1.6'
-
 gem 'phashion'
+gem 'rqrcode'
 
 group :development, :test do
   gem 'better_errors'
@@ -71,7 +70,5 @@ gem 'rails-assets-dropzone'
 gem 'rails-assets-moment'
 gem 'rails-assets-blueimp-gallery'
 gem 'select2-rails'
-# gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
 
-gem 'searchkick'
 gem 'exception_notification', group: :production
