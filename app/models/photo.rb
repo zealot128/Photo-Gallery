@@ -86,17 +86,19 @@ class Photo < ActiveRecord::Base
 
   def self.create_from_upload(file, current_user)
     photo = Photo.new
-    date = Photo.parse_date(file)
-    meta = EXIFR::JPEG.new(file.path)
-    if meta.gps
-      photo.lat = meta.gps.latitude
-      photo.lng = meta.gps.longitude
+    transaction do
+      date = Photo.parse_date(file)
+      meta = EXIFR::JPEG.new(file.path)
+      if meta.gps
+        photo.lat = meta.gps.latitude
+        photo.lng = meta.gps.longitude
+      end
+      photo.shot_at = date
+      photo.user = current_user
+      photo.file = file
+      photo.update_gps
+      photo.save
     end
-    photo.shot_at = date
-    photo.user = current_user
-    photo.file = file
-    photo.update_gps
-    photo.save
     photo
   end
 

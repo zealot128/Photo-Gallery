@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org'
 
-gem 'rails', '~>4.1.0'
+gem 'rails', '~>4.2.0'
 
 gem 'bcrypt-ruby', require: 'bcrypt'
 gem 'exifr'
@@ -27,7 +27,6 @@ gem 'parallel'
 gem 'filelock'
 
 gem 'pg'
-gem 'dotenv-rails'
 
 gem 'phashion'
 gem 'rqrcode'

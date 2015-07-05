@@ -12,7 +12,7 @@ set :format, :pretty
 set :pty, true
 # set :log_level, :info
 
-set :linked_files, %w{config/database.yml .env config/email.yml}
+set :linked_files, %w{config/database.yml .env config/email.yml config/secrets.yml}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/photos}
 
 set :keep_releases, 2

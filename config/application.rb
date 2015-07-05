@@ -30,6 +30,7 @@ module SimpleGallery
     config.assets.enabled = true
     config.assets.version = '1.0'
     config.action_controller.permit_all_parameters = true
+    config.active_record.raise_in_transactional_callbacks = true
     config.features = Hashie::Mash.new YAML.load_file 'config/features.yml'
   end
 end

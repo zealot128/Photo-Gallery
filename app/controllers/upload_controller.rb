@@ -3,7 +3,7 @@ class UploadController < ApplicationController
   before_filter :http_basic_auth
 
   def create
-    Filelock "tmp/upload-#{@user.id}.lock", timeout: 60 do
+    Filelock "tmp/upload-#{@user.id}.lock", timeout: 180 do
       @photo = Photo.create_from_upload(params[:userfile], @user)
       @user.enable_ip_based_login request
       if @photo.new_record?

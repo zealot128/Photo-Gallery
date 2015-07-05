@@ -57,14 +57,14 @@ describe Photo do
     day.should_receive(:update_me)
     photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
     photo.reload
-    File.exists?(photo.file.path).should be_true
+    File.exists?(photo.file.path).should be == true
 
     photo.file.versions.each do |key,version|
-      File.exists?(version.path).should be_true
+      File.exists?(version.path).should be == true
     end
 
     old_path = photo.file.path.gsub('/2012/','/2010/').gsub('2012-10-01', day.date.to_s)
-    File.exists?(old_path).should be_false
+    File.exists?(old_path).should be == false
 
     Day.where(date: "2012-10-01").first.tap do |d|
       d.photos.should == [photo]

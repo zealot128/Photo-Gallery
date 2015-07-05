@@ -43,7 +43,7 @@ SimpleForm.setup do |config|
   config.boolean_style = :nested
   config.button_class = 'btn'
   #config.label_class = 'control-label'
-  config.form_class = 'simple_form form-horizontal'
+  config.default_form_class = 'simple_form form-horizontal'
 
   config.wrappers :prepend, :tag => 'div', :class => "control-group", :error_class => 'error' do |b|
     b.use :html5
