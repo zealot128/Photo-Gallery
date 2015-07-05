@@ -52,10 +52,10 @@ class Photo < ActiveRecord::Base
       @old_day.update_me if @old_day
     end
   end
+
   after_destroy do
     day.update_me
   end
-
 
   def check_uniqueness
     valid?
@@ -177,32 +177,29 @@ class Photo < ActiveRecord::Base
 
   def move_file_after_shot_at_changed
     @old_day = self.day
-    old = shot_at_was.strftime("%Y-%m-%d")
-    new = shot_at.strftime("%Y-%m-%d")
-    ( file.versions.to_a + [[:original, file]]).each do |key,version|
-      from = version.path.gsub(new, old).gsub(%r{/#{shot_at.year.to_s}/}, "/#{shot_at_was.year.to_s}/")
-      to = version.path.gsub(old, new).gsub(%r{/#{shot_at_was.year.to_s}/}, "/#{shot_at.year.to_s}/")
+    old = shot_at_was
+    new = shot_at
+    old_str = old.strftime("%Y-%m-%d")
+    new_str = new.strftime("%Y-%m-%d")
+    return if old_str == new_str
+
+    ([[:original, file]] + file.versions.to_a ).each do |key,version|
+      from = version.path.gsub(new_str, old_str).gsub(%r{/#{new.year.to_s}/}, "/#{old.year.to_s}/")
+      to = version.path.gsub(old_str, new_str).gsub(%r{/#{old.year.to_s}/}, "/#{new.year.to_s}/")
       Rails.logger.info "[photo] Moving #{from} -> #{to}"
       Rails.logger.info "  #{from} exists? -> #{File.exists?(from)}"
       Rails.logger.info "  #{to}   exists? -> #{File.exists?(to)}"
 
-      version.instance_exec do
-        # file.instance_variable_set("@file", from)
-        cache!
-        # file.instance_variable_set("@file", to)
-        # binding.pry if key == :original
-        store!
-        # file.instance_variable_set("@file", from)
-
-        # file.delete if file
-        # file.instance_variable_set("@file", to)
+      case version.file
+      when CarrierWave::Storage::Fog::File
+        self.shot_at = old
+        version.cache!
+        self.shot_at = new
+        version.store!
+      else
+        version.cache!
+        version.store!
       end
-      # case version.file
-      # when CarrierWave::Storage::Fog::File
-      # else
-      #   FileUtils.mkdir_p File.dirname(to)
-      #   FileUtils.move from, to rescue false
-      # end
     end
   end
 end

@@ -97,4 +97,38 @@ describe Photo do
       photo.description.should include "Mietsteigerung"
     end
   end
+
+  describe 'FOG' do
+    around do |ex|
+      config = YAML.load_file('config/secrets.yml')['development']
+      load_fog(config['fog'])
+      ImageUploader.storage :fog
+      begin
+        ex.run
+      ensure
+        ImageUploader.storage :file
+      end
+    end
+
+    specify 'photo upload + rename' do
+      Photo.slow_callbacks = true
+      photo = Photo.create_from_upload(File.open(picture.to_s), user)
+
+      photo.file.file.exists?.should be == true
+      old_path = photo.file.file.path
+      day = photo.day
+      day.should_receive(:update_me)
+      photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
+      photo = Photo.find photo.id
+      photo.file.file.exists?.should be == true
+      photo.file.path.should be == 'photos/original/2012/2012-10-01/tiger.jpg'
+      photo.file.versions.each do |key,version|
+        version.file.exists?.should be == true
+      end
+
+      f = photo.file.file
+      f.instance_variable_set('@path', old_path)
+      f.exists?.should be == false
+    end
+  end
 end
