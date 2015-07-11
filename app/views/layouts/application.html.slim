@@ -27,13 +27,6 @@ html lang="en"
           ul.nav.navbar-nav
             - if current_user
               = render 'layouts/nav'
-              li.dropdown
-                a.js-message-count.dropdown-toggle href='#' data-toggle='dropdown'
-                  | 0 Messages
-                  b.caret
-                ul.dropdown-menu#messages
-                  li
-                    #file-uploader
             - else
               li = link_to "Login", login_path
               li = link_to "Impressum", "http://stefanwienert.net/impressum/"
