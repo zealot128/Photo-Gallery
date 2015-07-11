@@ -2,6 +2,7 @@ SimpleGallery::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
+  config.log_level = :info
   config.eager_load = true
   config.cache_classes = true
 
