@@ -8,7 +8,8 @@ gem 'exifr'
 gem 'geocoder'
 
 gem 'carrierwave'
-gem 'fog', require: false
+# gem 'fog', require: false
+gem 'carrierwave-aws'
 
 gem 'mini_magick'
 gem 'rack-raw-upload'

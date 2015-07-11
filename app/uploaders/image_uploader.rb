@@ -7,7 +7,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   if Rails.application.secrets.storage == 'file'
     storage :file
   else
-    storage :fog
+    storage :aws
   end
 
   def auto_orient
