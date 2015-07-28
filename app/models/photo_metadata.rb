@@ -1,4 +1,11 @@
 module PhotoMetadata
+  class NullMetaData
+    def exif
+      {}
+    end
+    def gps
+    end
+  end
   extend ActiveSupport::Concern
 
   included do
@@ -65,7 +72,7 @@ module PhotoMetadata
   def get_exif
     @_exif ||= file.path && EXIFR::JPEG.new(file.path)
   rescue EXIFR::MalformedJPEG
-    @_exif ||= {}
+    @_exif ||= NullMetaData.new
   end
 
   def exif
@@ -78,6 +85,7 @@ module PhotoMetadata
       self.lng = gps.longitude
       reverse_geocode
     end
+  rescue NoMethodError
   end
 
 
