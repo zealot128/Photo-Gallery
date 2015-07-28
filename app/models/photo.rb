@@ -92,10 +92,13 @@ class Photo < ActiveRecord::Base
     photo = Photo.new
     transaction do
       date = Photo.parse_date(file)
-      meta = EXIFR::JPEG.new(file.path)
-      if meta.gps
-        photo.lat = meta.gps.latitude
-        photo.lng = meta.gps.longitude
+      begin
+        meta = EXIFR::JPEG.new(file.path)
+        if meta.gps
+          photo.lat = meta.gps.latitude
+          photo.lng = meta.gps.longitude
+        end
+      rescue EXIFR::MalformedJPEG
       end
       photo.shot_at = date
       photo.user = current_user

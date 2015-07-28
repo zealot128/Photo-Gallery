@@ -29,9 +29,15 @@ module PhotoMetadata
     `file #{Shellwords.escape file.path} --mime-type -b`.strip
   end
 
+  def get_fingerprint!
+    if !self.file.cached?
+      file.cache!
+    end
+    self.fingerprint = Phashion::Image.new(file.path).fingerprint rescue nil
+  end
+
   def set_metadata
     return if !file.present?
-    # self.fingerprint =  Phashion::Image.new(file.path).fingerprint rescue nil
     self.meta_data ||= {}
     self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
     if self.meta_data['orientation'].is_a? EXIFR::TIFF::Orientation
@@ -58,6 +64,8 @@ module PhotoMetadata
 
   def get_exif
     @_exif ||= file.path && EXIFR::JPEG.new(file.path)
+  rescue EXIFR::MalformedJPEG
+    @_exif ||= {}
   end
 
   def exif
