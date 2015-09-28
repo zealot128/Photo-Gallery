@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/capistrano/rvm.git
-  revision: 9cfef39cf0022839dca6b5b330dfefeb5fc363e7
-  specs:
-    capistrano-rvm (0.1.2)
-      capistrano (~> 3.0)
-      sshkit (~> 1.2)
-
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -75,18 +67,6 @@ GEM
     builder (3.2.2)
     call-me (0.0.2.3)
       refining
-    capistrano (3.0.1)
-      i18n
-      rake (>= 10.0.0)
-      sshkit (>= 0.0.23)
-    capistrano-bundler (1.1.2)
-      capistrano (~> 3.0)
-      sshkit (~> 1.2)
-    capistrano-rails (1.1.0)
-      capistrano (>= 3.0.0)
-      capistrano-bundler (>= 1.0.0)
-    capistrano-rails-console (0.5.2)
-      capistrano (>= 3.0.0, < 4.0.0)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -106,7 +86,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
-    colorize (0.7.7)
     compass (0.12.7)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -160,7 +139,6 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
     hashie (3.4.2)
-    highline (1.7.2)
     hike (1.2.3)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
@@ -186,9 +164,6 @@ GEM
     minitest (5.7.0)
     multi_json (1.11.2)
     multi_xml (0.5.5)
-    net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
-    net-ssh (2.9.2)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     parallel (1.6.0)
@@ -294,10 +269,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    sshkit (1.7.1)
-      colorize (>= 0.7.0)
-      net-scp (>= 1.1.2)
-      net-ssh (>= 2.8.0)
     temple (0.7.6)
     tesseract-ocr (0.1.8)
       call-me
@@ -337,11 +308,6 @@ DEPENDENCIES
   better_errors
   bootstrap-sass
   bootstrap-will_paginate
-  capistrano (~> 3.0.1)
-  capistrano-bundler
-  capistrano-rails (~> 1.1.0)
-  capistrano-rails-console
-  capistrano-rvm!
   carrierwave
   carrierwave-aws
   coffee-rails
@@ -354,7 +320,6 @@ DEPENDENCIES
   geocoder
   grape
   haml-rails
-  highline
   jquery-rails
   mini_magick
   parallel
