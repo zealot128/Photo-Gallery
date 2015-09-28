@@ -102,7 +102,7 @@ describe Photo do
     around do |ex|
       config = YAML.load_file('config/secrets.yml')['development']
       load_fog(config['fog'])
-      ImageUploader.storage :fog
+      ImageUploader.storage :aws
       begin
         ex.run
       ensure

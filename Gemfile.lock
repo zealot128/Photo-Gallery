@@ -294,7 +294,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    sqlite3 (1.3.10)
     sshkit (1.7.1)
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
@@ -377,9 +376,11 @@ DEPENDENCIES
   select2-rails
   simple_form
   slim-rails
-  sqlite3
   tesseract-ocr
   thin
   uglifier (>= 1.0.3)
   yaml_db
   zip-zip
+
+BUNDLED WITH
+   1.10.5

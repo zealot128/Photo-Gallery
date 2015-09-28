@@ -15,7 +15,7 @@ gem 'mini_magick'
 gem 'rack-raw-upload'
 gem 'ruby-progressbar'
 gem 'simple_form'
-gem 'sqlite3'
+# gem 'sqlite3'
 gem 'thin'
 gem 'yaml_db'
 gem 'tesseract-ocr', require: false
