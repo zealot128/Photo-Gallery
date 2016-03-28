@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 gem 'rails', '~>4.2.0'
 
@@ -57,9 +56,11 @@ gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
 gem 'compass-rails'
 gem 'bootstrap-will_paginate'
-gem 'rails-assets-dropzone'
-gem 'rails-assets-moment'
-gem 'rails-assets-blueimp-gallery'
 gem 'select2-rails'
+source 'https://rails-assets.tenex.tech' do
+  gem 'rails-assets-dropzone'
+  gem 'rails-assets-moment'
+  gem 'rails-assets-blueimp-gallery'
+end
 
 gem 'exception_notification', group: :production
