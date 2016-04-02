@@ -1,4 +1,4 @@
-class Photo < ActiveRecord::Base
+class Photo < BaseFile
   mount_uploader :file, ImageUploader
   # has_attached_file :file, styles: {
   #   preview:  "300x300",
@@ -10,55 +10,14 @@ class Photo < ActiveRecord::Base
   # url:    "/photos/:style/:date/:basename.:extension",
   # convert_options: { all: '-auto-orient' }
 
-  belongs_to :user
-  belongs_to :day
-  has_and_belongs_to_many :shares, :join_table => "photos_shares"
-  acts_as_taggable
-  scope :dates, -> { group(:shot_at).select(:shot_at).order("shot_at desc") }
-  validates :md5, :uniqueness => true, presence: true
-  cattr_accessor :slow_callbacks
-  self.slow_callbacks = true
 
   include PhotoMetadata
-
-  attr_accessor :new_share
-
-  before_validation do
-    if new_share.present?
-      share = Share.where(name: new_share).first_or_create
-      self.shares << share unless self.shares.include?(share)
-    end
-  end
-
-  before_save do
-    self.year = self.shot_at.year
-    self.month = self.shot_at.month
-  end
 
   before_save do
     if self.shot_at_changed? and self.shot_at_was.present?
       move_file_after_shot_at_changed
     end
     self.day = Day.date self.shot_at
-  end
-
-  before_validation on: :create do
-    self.md5 = Digest::MD5.hexdigest(file.read)
-  end
-
-  after_save do
-    if Photo.slow_callbacks
-      self.day.update_me
-      @old_day.update_me if @old_day
-    end
-  end
-
-  after_destroy do
-    day.update_me
-  end
-
-  def check_uniqueness
-    valid?
   end
 
   def self.parse_date(file)
@@ -109,10 +68,6 @@ class Photo < ActiveRecord::Base
     photo
   end
 
-  def modal_group
-    shot_at.strftime("d%Y%m%d")
-  end
-
   def rotate!(direction)
     degrees =  case direction.to_sym
                when :left
@@ -134,15 +89,6 @@ class Photo < ActiveRecord::Base
     r.body[:query][:dis_max][:queries] << { query_string: {:fields=>["_all"], :query=> q} }
     r.execute
     r
-  end
-
-  def self.grouped_by_day_and_month
-
-    days = all.sort_by{|i| i.shot_at }.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse
-    #  [datum, [items]] ...
-    #  [month, [ [datum, items], ...
-
-    days.group_by{|day, items| Date.parse day.strftime("%Y-%m-01")}
   end
 
   def self.grouped
@@ -199,8 +145,8 @@ class Photo < ActiveRecord::Base
       Rails.logger.info "  #{from} exists? -> #{File.exists?(from)}"
       Rails.logger.info "  #{to}   exists? -> #{File.exists?(to)}"
 
-      case version.file
-      when CarrierWave::Storage::Fog::File
+      case version.file.class.to_s
+      when 'CarrierWave::Storage::Fog::File'
         self.shot_at = old
         version.cache!
         self.shot_at = new

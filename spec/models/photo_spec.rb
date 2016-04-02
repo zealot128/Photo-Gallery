@@ -2,17 +2,9 @@ require 'spec_helper'
 
 describe Photo do
 
-  let :picture do
-    Rails.root.join("spec/fixtures/tiger.jpg")
-  end
-
-  let :other_picture do
-    Rails.root.join("spec/fixtures/somestuff.jpg")
-  end
-
-  let :user do
-    valid_user
-  end
+  let(:picture) { Rails.root.join("spec/fixtures/tiger.jpg") }
+  let(:other_picture) { Rails.root.join("spec/fixtures/somestuff.jpg") }
+  let(:user) { valid_user }
 
   it "should store the uniq by hash" do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
@@ -54,7 +46,6 @@ describe Photo do
     Photo.slow_callbacks = true
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     day = photo.day
-    day.should_receive(:update_me)
     photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
     photo.reload
     File.exists?(photo.file.path).should be == true

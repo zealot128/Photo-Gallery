@@ -3,7 +3,7 @@ class Share < ActiveRecord::Base
     self.token = SecureRandom.hex(24)
   end
 
-  has_and_belongs_to_many :photos, :join_table => "photos_shares"
+  has_and_belongs_to_many :photos, join_table: "photos_shares", association_foreign_key: 'photo_id'
   validates_presence_of :name
 
   def to_param

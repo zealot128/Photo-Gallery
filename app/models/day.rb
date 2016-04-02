@@ -8,7 +8,6 @@ class Day < ActiveRecord::Base
     self.year ||= date.year
   end
 
-
   def make_montage
     images = photos.order("shot_at asc").map{|i|i.file.versions[:thumb].path }
     image_args = Shellwords.shelljoin images

@@ -1,0 +1,2 @@
+class Video < BaseFile
+end
