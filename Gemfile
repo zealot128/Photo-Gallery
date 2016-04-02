@@ -7,14 +7,12 @@ gem 'exifr'
 gem 'geocoder'
 
 gem 'carrierwave'
-# gem 'fog', require: false
 gem 'carrierwave-aws'
 
 gem 'mini_magick'
 gem 'rack-raw-upload'
 gem 'ruby-progressbar'
 gem 'simple_form'
-# gem 'sqlite3'
 gem 'thin'
 gem 'yaml_db'
 gem 'tesseract-ocr', require: false
@@ -34,7 +32,7 @@ gem 'rqrcode'
 group :development, :test do
   gem 'better_errors'
   gem 'pry-rails'
-  gem 'rb-inotify', '~> 0.9'
+  # gem 'rb-inotify', '~> 0.9'
 end
 group :development do
   gem 'fontsquirrel-download'

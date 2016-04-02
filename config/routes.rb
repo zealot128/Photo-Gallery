@@ -1,5 +1,8 @@
 SimpleGallery::Application.routes.draw do
 
+  # Api compliance for Photobackup
+  post '/test' => 'upload#test'
+
   get 'pages/index'
 
   get 'user/edit' => 'users#edit', :as => :edit_current_user

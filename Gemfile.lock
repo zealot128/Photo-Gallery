@@ -216,8 +216,6 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (11.1.2)
-    rb-inotify (0.9.5)
-      ffi (>= 0.5.0)
     refining (0.0.5.5)
     rqrcode (0.6.0)
       chunky_png
@@ -333,7 +331,6 @@ DEPENDENCIES
   rails-assets-blueimp-gallery!
   rails-assets-dropzone!
   rails-assets-moment!
-  rb-inotify (~> 0.9)
   rqrcode
   rspec-rails (~> 2.0)
   ruby-progressbar
