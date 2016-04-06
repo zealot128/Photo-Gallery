@@ -2,9 +2,8 @@ class PhotosController < ApplicationController
   before_filter :login_required
 
   def index
-    #@groups = Photo.grouped
-    @years = Photo.uniq.group(:year).count.sort_by{|a,b|-a}
-    @recent = Photo.order("created_at desc").limit(20)
+    @years = BaseFile.uniq.group(:year).count.sort_by{|a,b|-a}
+    @recent = BaseFile.order("created_at desc").limit(20)
     @last_upload = @recent.first.created_at rescue false
     if current_user.token.nil?
       current_user.set_token
@@ -13,7 +12,7 @@ class PhotosController < ApplicationController
   end
 
   def destroy
-    @photo = Photo.find(params[:id])
+    @photo = BaseFile.find(params[:id])
     d = @photo.day
     @photo.destroy
     d.update_me
@@ -29,13 +28,13 @@ class PhotosController < ApplicationController
     response.headers['Content-Type'] = 'image/jpeg'
     response.headers['Content-Disposition'] = 'inline'
 
-    path = Photo.find_by_share_hash!(params[:hash]).file.path(:large)
+    path = BaseFile.find_by_share_hash!(params[:hash]).file.path(:large)
     #render :text => open(path, "rb").read
     self.response_body = open(path, "rb")
   end
 
   def upload
-    photo = Photo.create_from_upload(params[:file], current_user)
+    photo = BaseFile.create_from_upload(params[:file], current_user)
     render json: photo.attributes.except('exif_info').merge(
       valid: photo.valid?,
       errors: photo.errors,
@@ -44,12 +43,12 @@ class PhotosController < ApplicationController
   end
 
   def edit
-    @photo = Photo.find(params[:id])
+    @photo = BaseFile.find(params[:id])
     render layout: !request.xhr?
   end
 
   def update
-    @photo = Photo.find(params[:id])
+    @photo = BaseFile.find(params[:id])
     @photo.share_ids = params[:photo][:share_ids]
     @photo.update_attributes!(params[:photo])
     if request.xhr?
@@ -60,18 +59,19 @@ class PhotosController < ApplicationController
   end
 
   def rotate
-    @photo = Photo.find(params[:id])
+    @photo = BaseFile.find(params[:id])
     @photo.rotate! params[:direction]
     @photo.save
   end
 
   def ocr
-    @photo = Photo.find(params[:id])
+    @photo = BaseFile.find(params[:id])
     @photo.ocr
   end
 
   def ajax_photos
     @photos = Day.find(params[:id]).photos.order('shot_at asc')
-    render partial: "photos/photo", collection: @photos, layout: false
+
+    render @photos, layout: false
   end
 end

@@ -16,6 +16,13 @@ class BaseFile < ActiveRecord::Base
     self.md5 = Digest::MD5.hexdigest(file.read)
   end
 
+  before_save do
+    if self.shot_at_changed? and self.shot_at_was.present?
+      move_file_after_shot_at_changed
+    end
+    self.day = Day.date self.shot_at
+  end
+
   before_validation do
     if new_share.present?
       share = Share.where(name: new_share).first_or_create
@@ -30,13 +37,23 @@ class BaseFile < ActiveRecord::Base
 
   after_commit do
     if Photo.slow_callbacks
-      self.day.update_me
+      day && day.update_me
       @old_day.update_me if @old_day
     end
   end
 
   after_destroy do
-    day.update_me
+    day && day.update_me
+  end
+
+  def self.create_from_upload(file, current_user)
+    klass =
+      case file.content_type
+      when %r{image/}, nil then Photo
+      when %r{video/} then Video
+      else raise NotImplementedError.new("Unknown content type: #{file.content_type}")
+      end
+    klass.create_from_upload(file,current_user)
   end
 
   def modal_group
@@ -46,6 +63,7 @@ class BaseFile < ActiveRecord::Base
   def check_uniqueness
     valid?
   end
+
 
   def self.grouped_by_day_and_month
     days = all.sort_by{|i| i.shot_at }.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse

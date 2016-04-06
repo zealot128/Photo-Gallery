@@ -1,0 +1,4 @@
+- gallery ||= nil
+.photo.video id="video-#{video.id}" class="#{dom_id(video)}"
+  a(href=(video.file.url(:medium)) title=video.caption data-gallery="#gallery-#{gallery || video.year}"  data-options=video.to_json data-thumbnail=video.file.url(:preview))
+    = image_tag video.file.url(:preview), data: { bla: 'foo' }

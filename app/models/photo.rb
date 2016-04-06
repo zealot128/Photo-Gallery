@@ -13,13 +13,6 @@ class Photo < BaseFile
 
   include PhotoMetadata
 
-  before_save do
-    if self.shot_at_changed? and self.shot_at_was.present?
-      move_file_after_shot_at_changed
-    end
-    self.day = Day.date self.shot_at
-  end
-
   def self.parse_date(file)
     date = nil
     begin

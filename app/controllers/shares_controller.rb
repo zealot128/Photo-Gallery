@@ -1,5 +1,6 @@
 class SharesController < ApplicationController
   before_filter :login_required, except: "show"
+
   def new
     @share = Share.new
     render layout: false if request.xhr?
@@ -8,19 +9,18 @@ class SharesController < ApplicationController
   def index
     @shares = Share.order(:name)
     @share = Share.new
-
   end
 
   def create
     if @share = Share.create(params[:share])
       if request.xhr?
-        render json: {status: "OK", data: @share}
+        render json: { status: "OK", data: @share }
       else
         redirect_to shares_path
       end
     else
       if request.xhr?
-        render json: {status: "error", data: @share.errors.full_messages}
+        render json: { status: "error", data: @share.errors.full_messages }
       else
         render :new
       end
@@ -34,7 +34,6 @@ class SharesController < ApplicationController
   end
 
   def options
-
   end
 
   def destroy
@@ -58,7 +57,7 @@ class SharesController < ApplicationController
   def bulk_add
     from = Date.parse params[:date]
     to   = from + 1
-    @photos = Photo.where(shot_at: from..to)
+    @photos = BaseFile.where(shot_at: from..to)
     render  layout: false
   end
 
@@ -66,7 +65,7 @@ class SharesController < ApplicationController
     case params[:choice]
     when "tag"
       tag = params[:bulk][:tag]
-      photos = Photo.where(:id => params["photos"])
+      photos = BaseFile.where(id: params["photos"])
       photos.map{|i|
         i.tag_list << tag
         i.slow_callbacks = false
@@ -77,15 +76,14 @@ class SharesController < ApplicationController
       render json: {status: "OK", url: pages_tag_path(tag)}
     when "share"
       if params["new_share_name"].present?
-        @share = Share.create! name: params["new_share_name"]
+        @share = Share.create!(name: params["new_share_name"])
       else
         @share = Share.find(params["bulk"]["share_id"])
       end
-      photo_ids = Photo.where(:id => params["photos"]).pluck :id
+      photo_ids = BaseFile.where(id: params["photos"]).pluck :id
       @share.photo_ids = (@share.photo_ids + photo_ids).uniq
       @share.save!
       render json: {status: "OK", url: share_url(@share)}
-
     else
       render json: { status: "error", message: "Choose Share or Tag"}
     end

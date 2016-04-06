@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402190224) do
+ActiveRecord::Schema.define(version: 20160402200606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,12 +44,14 @@ ActiveRecord::Schema.define(version: 20160402190224) do
     t.text     "description"
     t.string   "file"
     t.json     "meta_data"
+    t.string   "type"
   end
 
   add_index "photos", ["day_id"], name: "index_photos_on_day_id", using: :btree
   add_index "photos", ["md5"], name: "index_photos_on_md5", unique: true, using: :btree
   add_index "photos", ["month"], name: "index_photos_on_month", using: :btree
   add_index "photos", ["shot_at"], name: "index_photos_on_shot_at", using: :btree
+  add_index "photos", ["type"], name: "index_photos_on_type", using: :btree
   add_index "photos", ["year"], name: "index_photos_on_year", using: :btree
 
   create_table "photos_shares", id: false, force: :cascade do |t|

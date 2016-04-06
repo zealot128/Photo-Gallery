@@ -4,7 +4,7 @@ class UploadController < ApplicationController
 
   def create
     Filelock "tmp/upload-#{@user.id}.lock", timeout: 180 do
-      @photo = Photo.create_from_upload(params[:userfile] || params[:upfile], @user)
+      @photo = BaseFile.create_from_upload(params[:userfile] || params[:upfile], @user)
       @user.enable_ip_based_login request
       if @photo.new_record?
         render text: 'ALREADY_UPLOADED', status: 409

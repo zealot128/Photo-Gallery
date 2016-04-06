@@ -22,6 +22,13 @@ class VideoUploader < CarrierWave::Uploader::Base
       store_dir_version('preview')
     end
   end
+  version :thumb do
+    process encode_video: [:jpg, resolution: '30x30', preserve_aspect_ratio: :width ]
+    storage :file
+    def store_dir
+      store_dir_version('thumb')
+    end
+  end
 
   version :medium do
     process encode_video: [:mp4, resolution: '640x360', preserve_aspect_ratio: :width ]
