@@ -58,10 +58,8 @@ Deployment is handled through capistrano; have a look at ``config/deplog.rb`` fo
 
 ## Todo
 
-* Being able to rotate images from the interface
-* Change/Correct image dates
-* Notes/Tagging of picture
-* other image formats than jpeg should not work, because on the liability of exif-informations
+* image formats other than jpeg
+* UI overwork
 
 ## Notes
 
@@ -71,6 +69,14 @@ Deployment is handled through capistrano; have a look at ``config/deplog.rb`` fo
 * Rails 3.2
 * Some specs
 
+## Video
+
+For video transcoding needs ffmpeg with libfaac
+OSX:
+
+```
+brew reinstall ffmpeg --with-faac
+```
 
 ## License
 

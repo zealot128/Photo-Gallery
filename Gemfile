@@ -8,6 +8,7 @@ gem 'geocoder'
 
 gem 'carrierwave'
 gem 'carrierwave-aws'
+gem 'carrierwave-video'
 
 gem 'mini_magick'
 gem 'rack-raw-upload'

@@ -130,31 +130,4 @@ class Photo < BaseFile
 
   private
 
-  def move_file_after_shot_at_changed
-    @old_day = self.day
-    old = shot_at_was
-    new = shot_at
-    old_str = old.strftime("%Y-%m-%d")
-    new_str = new.strftime("%Y-%m-%d")
-    return if old_str == new_str
-
-    ([[:original, file]] + file.versions.to_a ).each do |key,version|
-      from = version.path.gsub(new_str, old_str).gsub(%r{/#{new.year.to_s}/}, "/#{old.year.to_s}/")
-      to = version.path.gsub(old_str, new_str).gsub(%r{/#{old.year.to_s}/}, "/#{new.year.to_s}/")
-      Rails.logger.info "[photo] Moving #{from} -> #{to}"
-      Rails.logger.info "  #{from} exists? -> #{File.exists?(from)}"
-      Rails.logger.info "  #{to}   exists? -> #{File.exists?(to)}"
-
-      case version.file.class.to_s
-      when 'CarrierWave::Storage::Fog::File'
-        self.shot_at = old
-        version.cache!
-        self.shot_at = new
-        version.store!
-      else
-        version.cache!
-        version.store!
-      end
-    end
-  end
 end
