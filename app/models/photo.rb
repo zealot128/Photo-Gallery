@@ -1,15 +1,5 @@
 class Photo < BaseFile
   mount_uploader :file, ImageUploader
-  # has_attached_file :file, styles: {
-  #   preview:  "300x300",
-  #   thumb:  "30x30",
-  #   medium: "500x500>",
-  #   large:  "1000x1000>"
-  # },
-  # path:   ":rails_root/public/photos/:style/:date/:basename.:extension",
-  # url:    "/photos/:style/:date/:basename.:extension",
-  # convert_options: { all: '-auto-orient' }
-
 
   include PhotoMetadata
 
@@ -76,51 +66,4 @@ class Photo < BaseFile
     file.recreate_versions!
     save
   end
-
-  def self.search_with_query_syntax(q, opts={})
-    r = Photo.search q, opts.merge(execute: false)
-    r.body[:query][:dis_max][:queries] << { query_string: {:fields=>["_all"], :query=> q} }
-    r.execute
-    r
-  end
-
-  def self.grouped
-    days = Photo.all.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse
-    #  [datum, [items]] ...
-    #  [month, [ [datum, items], ...
-
-    days.group_by{|day, items| Date.parse day.strftime("%Y-%m-01")}
-  end
-
-  # @deprecated
-  def self.days_of_year(year)
-    days = Photo.where(:year => year).
-      group_by{|i|i.shot_at.to_date}.
-      sort_by{|a,b| a}.reverse
-    days.group_by{|day, items| day.month}
-  end
-
-  def self.years
-    Photo.uniq.order("year desc").pluck(:year)
-  end
-
-  include ActionView::Helpers::NumberHelper
-
-  def as_json(op={})
-    {
-      id:                   id,
-      location:             location,
-      shot_at:              shot_at,
-      shot_at_formatted:    I18n.l(shot_at, format: :short),
-      original:             file.url,
-      file_size:            file.size,
-      file_size_formatted:  number_to_human_size(file.size),
-      caption:              caption,
-      description:          description,
-      exif:                 exif
-    }
-  end
-
-  private
-
 end

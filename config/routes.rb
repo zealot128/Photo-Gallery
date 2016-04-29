@@ -21,6 +21,15 @@ SimpleGallery::Application.routes.draw do
       post 'remove_image'
     end
   end
+
+  namespace :v2 do
+    resources :years, only: [:index, :show] do
+      member do
+        get 'month/:month' => 'months#show', as: :month
+      end
+    end
+    resources :days, only: [:show]
+  end
   get '/shares/:id/download' => 'zip#share', as: 'download_share'
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'
 

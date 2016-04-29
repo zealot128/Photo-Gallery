@@ -1,0 +1,12 @@
+h2
+  small> = link_to [:v2, @day.year] do
+    = @day.year.name
+    span> &raquo;
+  small> = link_to month_v2_year_path(@day.year, @day.month) do
+    = @day.month.name
+    span> &raquo;
+  = l @day.date, format: "%d. (%a)"
+
+
+
+.js-photo-gallery data-photos="#{@photos.to_json}"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160402200606) do
+ActiveRecord::Schema.define(version: 20160429084818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,22 +19,32 @@ ActiveRecord::Schema.define(version: 20160402200606) do
 
   create_table "days", force: :cascade do |t|
     t.date     "date"
-    t.integer  "year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "locations"
     t.string   "montage"
+    t.integer  "month_id"
   end
 
   add_index "days", ["date"], name: "index_days_on_date", using: :btree
+  add_index "days", ["month_id"], name: "index_days_on_month_id", using: :btree
+
+  create_table "months", force: :cascade do |t|
+    t.integer  "month_number"
+    t.integer  "year_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "months", ["year_id"], name: "index_months_on_year_id", using: :btree
 
   create_table "photos", force: :cascade do |t|
     t.datetime "shot_at"
     t.float    "lat"
     t.float    "lng"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.string   "location"
     t.string   "md5"
     t.integer  "year"
@@ -45,6 +55,7 @@ ActiveRecord::Schema.define(version: 20160402200606) do
     t.string   "file"
     t.json     "meta_data"
     t.string   "type"
+    t.integer  "file_size",   limit: 8
   end
 
   add_index "photos", ["day_id"], name: "index_photos_on_day_id", using: :btree
@@ -103,6 +114,12 @@ ActiveRecord::Schema.define(version: 20160402200606) do
     t.boolean  "allowed_ip_storing"
     t.string   "token"
     t.string   "pseudo_password"
+  end
+
+  create_table "years", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

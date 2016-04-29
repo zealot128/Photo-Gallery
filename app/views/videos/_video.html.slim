@@ -1,4 +1,10 @@
 - gallery ||= nil
-.photo.video id="video-#{video.id}" class="#{dom_id(video)}"
-  a(href=(video.file.url(:medium)) title=video.caption data-gallery="#gallery-#{gallery || video.year}"  data-options=video.to_json data-thumbnail=video.file.url(:preview))
-    = image_tag video.file.url(:preview), data: { bla: 'foo' }
+.photo.video data-poster="#{video.file.url(:preview)}" data-sub-html="" data-html="##{dom_id(video)}"
+  = image_tag video.file.url(:preview)
+
+
+  div style="display:none;" id="#{dom_id(video)}"
+    video.lg-video-object.lg-html5.video-js.vjs-default-skin(controls preload="none")
+      source src="#{video.file.url(:medium)}" type="video/mp4" label='SD'
+      source src="#{video.file.url}" type="video/mp4" label='HD'
+      |Your browser does not support HTML5 video.

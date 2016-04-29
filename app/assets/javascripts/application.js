@@ -10,10 +10,11 @@
 //= require dropzone
 //= require moment
 //= require _modal-ajax
-//= require blueimp-gallery
-//= require blueimp-gallery/jquery.blueimp-gallery.js
+//= require lightgallery/lightgallery-all.js
 //= require select2
 //= require endless-scroll
 //= require bootstrap-datetimepicker.min.js
+//= require videojs/video.js
+//= require videojs-resolution-switcher.js
 //= require photos
-//= require _gallery
+//= require v2

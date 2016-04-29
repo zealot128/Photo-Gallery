@@ -22,6 +22,7 @@ gem 'grape'
 gem 'haml-rails'
 gem 'acts-as-taggable-on'
 gem 'parallel'
+gem 'migration_data'
 
 gem 'filelock'
 
@@ -59,7 +60,10 @@ gem 'select2-rails'
 source 'https://rails-assets.tenex.tech' do
   gem 'rails-assets-dropzone'
   gem 'rails-assets-moment'
-  gem 'rails-assets-blueimp-gallery'
+  gem 'rails-assets-lightgallery'
+  gem 'rails-assets-videojs-resolution-switcher'
+  gem 'rails-assets-video.js'
+  # gem 'rails-assets-blueimp-gallery'
 end
 
 gem 'exception_notification', group: :production

@@ -56,20 +56,24 @@ class BaseFile < ActiveRecord::Base
     klass.create_from_upload(file,current_user)
   end
 
-  def modal_group
-    shot_at.strftime("d%Y%m%d")
-  end
-
   def check_uniqueness
     valid?
   end
 
-
-  def self.grouped_by_day_and_month
-    days = all.sort_by{|i| i.shot_at }.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse
-    #  [datum, [items]] ...
-    #  [month, [ [datum, items], ...
-    days.group_by{|day, items| Date.parse day.strftime("%Y-%m-01")}
+  def as_json(op={})
+    {
+      id:                   id,
+      type:                 type,
+      location:             location,
+      shot_at:              shot_at,
+      shot_at_formatted:    I18n.l(shot_at, format: :short),
+      file_size:            file_size,
+      file_size_formatted:  ApplicationController.helpers.number_to_human_size(file_size),
+      caption:              caption,
+      description:          description,
+      versions:             file.versions.map{|k,v| [k,v.url] }.to_h,
+      exif:                 exif
+    }
   end
 
   def move_file_after_shot_at_changed

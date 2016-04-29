@@ -10,6 +10,20 @@ jQuery ->
     if hidden.hasClass("unloaded")
       loader.show()
       hidden.load "/photos/ajax_photos?id=#{el.data("id")}", ->
+        lg = hidden.lightGallery(
+          videojs: true
+          videojsOptions: {
+            plugins: {
+              videoJsResolutionSwitcher: {
+                dynamicLabel: true
+              }
+            }
+          }
+        )
+        lg.on('onAferAppendSlide.lg',  (event, index)->
+          # $(this).find('video').each ->
+            # videojs(this) #.videoJsResolutionSwitcher()
+        )
         loader.hide()
       hidden.removeClass("unloaded")
     hidden.toggle()
