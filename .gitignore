@@ -24,3 +24,4 @@ import/*PNG
 import/*png
 public/uploads
 config/secrets.yml
+.DS_Store

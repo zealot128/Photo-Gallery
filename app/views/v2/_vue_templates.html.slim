@@ -1,0 +1,25 @@
+script type="x-template" id='tpl-photo-gallery'
+  div.gallery
+    template v-for="file in files"
+      vue-photo(v-if='file.type == "Photo"' v-bind:file="file")
+      vue-video(v-if='file.type == "Video"' v-bind:file="file")
+
+script type="x-template" id='tpl-photo'
+  a v-bind:href='file.versions.large' v-on:click="imageClick($event)" data-sub-html='\#{{subHtmlId}}'
+    img v-bind:src='file.versions.preview' title='{{title}}'
+    .hidden id='{{subHtmlId}}'
+      p
+        span.image-info<
+          i.fa.fa-clock-o.fa-fw>
+          |{{file.shot_at_formatted}}
+        span.image-info< v-if='file.exif && file.exif.aperture_value'
+          i.fa.fa-camera-retro.fa-fw> title='Aperture'
+          |{{file.exif.aperture_value}}
+        span.image-info< v-if='file.exif && file.exif.exposure_time'
+          i.fa.fa-clock-o.fa-fw> title='Exposure time'
+          |{{file.exif.exposure_time}}
+        span.image-info< v-if='file.exif && file.exif.model'
+          i.fa.fa-camera.fa-fw> title='Camera Model'
+          |{{file.exif.model}}
+
+
