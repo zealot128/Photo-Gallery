@@ -22,6 +22,8 @@ SimpleGallery::Application.routes.draw do
     end
   end
 
+  get "download/:id/:filename" => 'photos#download', filename: /.*/
+
   namespace :v2 do
     resources :years, only: [:index, :show] do
       member do

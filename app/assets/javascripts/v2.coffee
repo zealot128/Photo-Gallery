@@ -11,6 +11,7 @@ createGallery = (el) ->
     }
     events: {
       'start-gallery': (clickedImage) ->
+        window.location.hash = ''  ## gallery has problems if there is an old hash
         this.gallery ||= $(this.$el).lightGallery().data('lightGallery')
         index = this.files.findIndex (i)->  i == clickedImage
         if !$('body').hasClass('lg-on')
@@ -25,7 +26,6 @@ files = {
   computed: {
     subHtmlId: -> "subhtml-#{this.id}"
     title: ->
-      console.log this.file
       "#{this.caption} (Shot-At: #{this.shot_at_formatted})"
   },
   methods: {

@@ -5,7 +5,7 @@ script type="x-template" id='tpl-photo-gallery'
       vue-video(v-if='file.type == "Video"' v-bind:file="file")
 
 script type="x-template" id='tpl-photo'
-  a v-bind:href='file.versions.large' v-on:click="imageClick($event)" data-sub-html='\#{{subHtmlId}}'
+  a v-bind:href='file.versions.large' v-on:click="imageClick($event)" data-sub-html='\#{{subHtmlId}}' data-download-url='{{file.download_url}}'
     img v-bind:src='file.versions.preview' title='{{title}}'
     .hidden id='{{subHtmlId}}'
       p

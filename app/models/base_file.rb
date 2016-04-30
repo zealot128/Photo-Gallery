@@ -72,6 +72,7 @@ class BaseFile < ActiveRecord::Base
       caption:              caption,
       description:          description,
       versions:             file.versions.map{|k,v| [k,v.url] }.to_h,
+      download_url:         "/download/#{id}/#{attributes['file']}",
       exif:                 exif
     }
   end

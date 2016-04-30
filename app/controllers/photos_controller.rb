@@ -11,6 +11,12 @@ class PhotosController < ApplicationController
     end
   end
 
+  def download
+    binding.pry
+    file = BaseFile.where(id: params[:id], file: params[:filename]).first!
+    redirect_to file.file.url
+  end
+
   def destroy
     @photo = BaseFile.find(params[:id])
     d = @photo.day
