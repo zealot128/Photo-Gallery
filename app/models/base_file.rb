@@ -68,6 +68,8 @@ class BaseFile < ActiveRecord::Base
       shot_at:              shot_at,
       shot_at_formatted:    I18n.l(shot_at, format: :short),
       file_size:            file_size,
+      tag_ids:              tag_ids,
+      tags:                 tag_list,
       file_size_formatted:  ApplicationController.helpers.number_to_human_size(file_size),
       caption:              caption,
       description:          description,

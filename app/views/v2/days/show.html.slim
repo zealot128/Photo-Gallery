@@ -11,3 +11,18 @@ h2
 
 .js-photo-gallery data-photos="#{@photos.to_json}"
 
+  br
+  br
+  .row
+    .col-sm-1.text-center
+      - if @previous_day
+        i.fa.fa-fw.fa-4x.fa-arrow-circle-left>
+    .col-sm-5.js-previous-day
+      - if @previous_day
+        = render @previous_day
+    .col-sm-5.js-next-day
+      - if @next_day
+        = render @next_day
+    .col-sm-1.text-center
+      - if @next_day
+        i.fa.fa-fw.fa-4x.fa-arrow-circle-right>

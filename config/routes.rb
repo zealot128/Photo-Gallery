@@ -31,6 +31,7 @@ SimpleGallery::Application.routes.draw do
       end
     end
     resources :days, only: [:show]
+    get 'tags' => 'api#tags'
   end
   get '/shares/:id/download' => 'zip#share', as: 'download_share'
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'

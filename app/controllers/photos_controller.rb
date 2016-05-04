@@ -55,10 +55,10 @@ class PhotosController < ApplicationController
 
   def update
     @photo = BaseFile.find(params[:id])
-    @photo.share_ids = params[:photo][:share_ids]
+    @photo.share_ids = params[:photo][:share_ids] if params[:photo][:share_ids]
     @photo.update_attributes!(params[:photo])
     if request.xhr?
-      render json: { status: "OK"}
+      render json: { status: "OK", photo: @photo.as_json}
     else
       redirect_to photos_path
     end

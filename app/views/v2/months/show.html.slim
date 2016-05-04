@@ -1,7 +1,7 @@
 h2
   small> = link_to [:v2, @year] do
     = @year.name
-    span> &raquo;
+  small<> &raquo;
   = @month.name
 
 = render @month.days.order('date desc')

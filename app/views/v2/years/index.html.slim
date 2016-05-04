@@ -1,15 +1,7 @@
 - @years.each do |year|
   h3 = year.name
   - year.months.order('month_number desc').each do |month|
-    .panel.panel-default
-      .panel-heading
-        h3.panel-title.clearfix
-          = link_to month_v2_year_path(year, month) do
-            = month.to_s
-          .pull-right
-            - month.photos.limit(10).each do |photo|
-              = image_tag photo.file.url(:thumb)
-            span.badge< = month.photos.count
+    = render "month", month: month, year: year
 
 = render "pages/upload"
 

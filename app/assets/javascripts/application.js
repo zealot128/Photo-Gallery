@@ -7,7 +7,6 @@
 //= require bootstrap/button
 //= require dropzone
 //= require moment
-//= require _modal-ajax
 //= require videojs/video.js
 //= require videojs-resolution-switcher.js
 //= require lightgallery/lightgallery-all.js
