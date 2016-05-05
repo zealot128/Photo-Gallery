@@ -45,7 +45,12 @@ class PhotosController < ApplicationController
   def update
     @photo = BaseFile.find(params[:id])
     @photo.share_ids = params[:photo][:share_ids] if params[:photo][:share_ids]
+    new_share = params[:photo].delete(:new_share)
     @photo.update_attributes!(params[:photo])
+    if new_share.present?
+      share = Share.where(name: new_share).first_or_create(user: current_user)
+      @photo.shares << share unless @photo.shares.include?(share)
+    end
     if request.xhr?
       render json: { status: "OK", photo: @photo.as_json}
     else

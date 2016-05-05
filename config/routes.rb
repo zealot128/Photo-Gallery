@@ -51,6 +51,7 @@ SimpleGallery::Application.routes.draw do
     end
   end
   get 'tag/:id',  to: 'pages#tag', as: 'pages_tag'
+  get 'upload' => 'pages#upload'
 
   get '/', to: 'pages#index', as: 'root'
   post '/', to: 'upload#create'

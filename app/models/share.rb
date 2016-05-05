@@ -5,6 +5,7 @@ class Share < ActiveRecord::Base
   end
 
   has_and_belongs_to_many :photos, join_table: "photos_shares", association_foreign_key: 'photo_id'
+  belongs_to :user
   validates_presence_of :name
 
   def to_param

@@ -8,7 +8,6 @@
 * Map mit GEO dort
 * Dupes besser finden
 * Reponsive
-* Download All
 * Share mit expire
 
 ## AWS Migration

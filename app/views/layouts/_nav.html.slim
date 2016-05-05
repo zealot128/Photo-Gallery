@@ -18,7 +18,8 @@ nav.navbar.navbar-default role='navigation'
 
           li.dropdown
             a.dropdown-toggle data-toggle='dropdown' data-target='#'
-              |Profil
+              i.fa.fa-user.fa-fw>
+              |Profile
               b.caret<
             ul.dropdown-menu(role="menu")
               li
@@ -27,7 +28,7 @@ nav.navbar.navbar-default role='navigation'
                   |Change Password
               li
                 = link_to logout_path, data: { method: 'delete' }  do
-                  i.fa.fa-off.fa-fw
+                  i.fa.fa-sign-out.fa-fw>
                   |Log out
 
           li.dropdown
@@ -44,11 +45,15 @@ nav.navbar.navbar-default role='navigation'
             a.dropdown-toggle data-toggle="dropdown" data-target="#"
               i.fa.fa-tag.fa-fw>
               |Tags
-              b.caret
+              b.caret<
             ul.dropdown-menu(role="menu")
               li v-for='tag in tags'
                 a href='/tag/{{tag.id}}'
                   | {{tag.name}} ({{tag.taggings_count}})
+          li
+            a href='/upload'
+              i.fa.fa-fw.fa-upload>
+              | Upload
         - else
           li = link_to "Login", login_path
           li = link_to "Impressum", "https://www.stefanwienert.net/impressum/"
