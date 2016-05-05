@@ -3,7 +3,7 @@ class PhotosController < ApplicationController
 
   def index
     @years = BaseFile.uniq.group(:year).count.sort_by{|a,b|-a}
-    @recent = BaseFile.order("created_at desc").limit(20)
+    @recent = BaseFile.order("created_at desc").limit(10)
     @last_upload = @recent.first.created_at rescue false
     if current_user.token.nil?
       current_user.set_token

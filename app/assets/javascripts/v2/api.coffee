@@ -19,11 +19,11 @@ window.Api = {
     console.log 'DELETING IMAGE'
     callback() if callback
 
-  tags: (callback)->
-    $.get '/v2/tags.json', (r) =>
-      this.loadedTags = r
-      callback(r)
+  tags: (callback) ->
+    $.get '/v2/tags.json', callback
 
+  shares: (callback) ->
+    $.get '/v2/shares.json', callback
 }
 
 

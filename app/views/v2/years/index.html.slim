@@ -1,3 +1,13 @@
+.panel.panel-default
+  .panel-heading
+    h3.panel-title.clearfix
+      = link_to recent_v2_years_path do
+        |Recently uploaded
+      .pull-right
+        - @recent.each do |photo|
+          = image_tag photo.file.url(:thumb)
+
+
 - @years.each do |year|
   h3 = year.name
   - year.months.order('month_number desc').each do |month|

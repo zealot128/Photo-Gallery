@@ -36,7 +36,7 @@ script type="x-template" id='tpl-photo'
 
 
 script type="x-template" id='tpl-video-preview'
-  .gallery-element data-poster="{{ file.versions.preview }}" data-html="\#{{subHtmlId}}"
+  a.gallery-element data-poster="{{ file.versions.preview }}" data-html="\#{{subHtmlId}}"
     img v-bind:src='file.versions.preview' title='{{title}}'
 script type="x-template" id='tpl-video'
   div id='{{subHtmlId}}'
@@ -59,12 +59,22 @@ script type="x-template" id='tpl-edit'
               .col-sm-7
                 button.btn.btn-default.btn-xs.tag-toggle<>(v-for='tag in allTags' v-bind:class='{ "active" : tagged(tag)}' v-on:click='toggleTag(tag)')
                   | {{tag.name}} ({{tag.taggings_count}})
-                br
-                br
-                button.btn.btn-primary v-on:click='save()'
-                  | {{buttonText}}
               .col-sm-5
                 form.form-inline
                   .form-group
-                    input class="form-control" v-model="newTag" placeholder='new tag'
+                    input class="form-control" v-model="newTag" placeholder='create new tag'
+          div v-if='allShares'
+            h4 Shares
+            .row
+              .col-sm-7
+                button.btn.btn-default.btn-xs.tag-toggle<>(v-for='share in allShares' v-bind:class='{ "active" : hasShare(share)}' v-on:click='toggleShare(share)')
+                  | {{share.name}}
+              .col-sm-5
+                form.form-inline
+                  .form-group
+                    input class="form-control" v-model="newShare" placeholder='create new share'
+          br
+          br
+          button.btn.btn-primary v-on:click='save()'
+            | {{buttonText}}
 

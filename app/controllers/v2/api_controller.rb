@@ -4,4 +4,9 @@ class V2::ApiController < ApplicationController
     tags = ActsAsTaggableOn::Tag.order(:name).as_json
     render json: tags
   end
+
+  def shares
+    shares = Share.order(:name).as_json
+    render json: shares
+  end
 end

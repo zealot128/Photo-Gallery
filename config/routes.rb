@@ -26,12 +26,16 @@ SimpleGallery::Application.routes.draw do
 
   namespace :v2 do
     resources :years, only: [:index, :show] do
+      collection do
+        get 'recent'
+      end
       member do
         get 'month/:month' => 'months#show', as: :month
       end
     end
     resources :days, only: [:show]
     get 'tags' => 'api#tags'
+    get 'shares' => 'api#shares'
   end
   get '/shares/:id/download' => 'zip#share', as: 'download_share'
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'
