@@ -13,8 +13,6 @@ gem 'carrierwave-video'
 gem 'mini_magick'
 gem 'rack-raw-upload'
 gem 'ruby-progressbar'
-gem 'simple_form'
-gem 'thin'
 gem 'tesseract-ocr', require: false
 gem 'slim-rails'
 gem 'haml-rails'
@@ -23,6 +21,7 @@ gem 'parallel'
 gem 'migration_data'
 
 gem 'filelock'
+gem 'hashie'
 
 gem 'pg'
 
@@ -30,6 +29,7 @@ gem 'phashion'
 gem 'rqrcode'
 
 group :development, :test do
+  gem 'thin'
   gem 'pry-rails'
 end
 group :development do
@@ -46,7 +46,7 @@ end
 gem 'font-awesome-rails'
 gem 'coffee-rails' #'~> 3.2.1'
 gem 'jquery-rails'
-gem 'sass-rails' , '4.0.2'
+gem 'sass-rails' , '>= 4.0.2'
 gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-will_paginate'
