@@ -2,7 +2,9 @@
   .panel-heading
     h3.panel-title.clearfix
       = link_to recent_v2_years_path do
-        |Recently uploaded
+        = t 'photos.index.recently_uploaded'
+        br
+        small = t 'photos.index.last_upload', time: time_ago_in_words(last_upload)
       .pull-right
         - @recent.each do |photo|
           = image_tag photo.file.url(:thumb)

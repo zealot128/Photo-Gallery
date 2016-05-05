@@ -1,0 +1,33 @@
+br
+h3.text-center Usage
+.row
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading: h3.panel-title
+        h4 Android Autoshare
+      .panel-body
+        = link_to "Google Play", "https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result"
+        br
+        br
+        | Configuration:
+        ul
+          li Webserver
+          li Active (Yes)
+          li
+            |Server Address: #{token_upload_url(token: current_user.token)}
+            br
+            = image_tag qrcode_image_url(token_upload_url(token: current_user.token))
+          li Username / Password: (blank) not needed with unique token url
+          li Upload some photos with Autoshare or configure it for auto-upload for new images
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading: h3.panel-title
+        h4 Photobackup
+      .panel-body
+        | Using #{link_to "PhotoUpload protocol", "https://photobackup.github.io"}. Only available on Android #{link_to "Play Store", "https://play.google.com/store/apps/details?id=fr.s13d.photobackup"} or F-Droid + CLI clients.
+        br
+        br
+        | Configuration:
+        ul
+          li Address: #{root_url}
+          li Your custom pseudo-Password: <code>#{current_user.pseudo_password}</code> <small>Only valid for upload</small>

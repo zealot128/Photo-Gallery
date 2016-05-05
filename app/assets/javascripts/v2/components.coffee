@@ -94,7 +94,8 @@ window.createGallery = (el) ->
               $(elements.get(newIndex)).click()
             , 200
       handleKeyboardNav: (e)->
-        KeyboardNavigation(e, this, this.gallery)
+        if currentUser
+          KeyboardNavigation(e, this, this.gallery)
 
     }
     template: '#tpl-photo-gallery'

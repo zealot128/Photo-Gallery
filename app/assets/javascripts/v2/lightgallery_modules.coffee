@@ -19,7 +19,6 @@ Delete.prototype.init = ->
 Delete.prototype.destroy = ->
   true
 
-$.fn.lightGallery.modules.delete = Delete
 
 Edit = (element) ->
   this.core = $(element).data('lightGallery')
@@ -39,4 +38,6 @@ Edit.prototype.init = ->
 Edit.prototype.destroy = ->
   true
 
-$.fn.lightGallery.modules.edit = Edit
+if currentUser
+  $.fn.lightGallery.modules.edit = Edit
+  $.fn.lightGallery.modules.delete = Delete

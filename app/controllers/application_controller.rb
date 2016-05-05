@@ -13,4 +13,9 @@ class ApplicationController < ActionController::Base
   end
   helper_method :shares
   helper_method :tag_counts
+
+  def can?(subject, object)
+    !!current_user
+  end
+  helper_method :can?
 end

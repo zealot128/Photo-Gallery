@@ -2,14 +2,4 @@
   .fallback
     | Your browser does not support Javascript Uploads
 
-.help-block
-  p
-    |Your unique upload url (no credentials required):
-    br
-    code = token_upload_url(token: current_user.token)
-    br
-    = image_tag qrcode_image_url(token_upload_url(token: current_user.token))
-
-.clear
-- if @years.length == 0
-  = render "layouts/manual"
+= render "layouts/manual"

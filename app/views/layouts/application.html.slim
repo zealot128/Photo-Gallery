@@ -10,6 +10,8 @@ html lang="en"
     link href="images/favicon.ico" rel=("shortcut icon") /
     - if current_user
       meta name='user' value=current_user.username
+    javascript:
+      window.currentUser = #{raw current_user.try(:username).to_json}
     = javascript_include_tag "application"
 
   body

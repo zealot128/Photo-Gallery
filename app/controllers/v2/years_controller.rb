@@ -13,4 +13,11 @@ class V2::YearsController < ApplicationController
     @year = Year.find_by!(name: params[:id])
     @days = @year.days.order('date desc').group_by{|i| i.date.month }
   end
+
+  protected
+
+  helper_method def last_upload
+    BaseFile.maximum(:created_at)
+
+  end
 end

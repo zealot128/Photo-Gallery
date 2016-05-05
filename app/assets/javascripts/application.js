@@ -1,6 +1,5 @@
 //= require jquery
 //= require jquery_ujs
-//= require jquery.mousewheel.js
 //= require bootstrap/modal
 //= require bootstrap/collapse
 //= require bootstrap/dropdown

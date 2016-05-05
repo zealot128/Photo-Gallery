@@ -26,6 +26,8 @@ module ControllerAuthentication
   private
 
   def store_target_location
-    session[:return_to] = request.url
+    if request.format.html?
+      session[:return_to] = request.url
+    end
   end
 end

@@ -1,8 +1,6 @@
 ## Rewrite
 
-* Alte Views loeschen
 * Ganzen Tag zu share hinzufuegen
-* Tag und Share Seiten
 
 # TODO
 

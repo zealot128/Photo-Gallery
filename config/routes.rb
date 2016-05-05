@@ -41,17 +41,15 @@ SimpleGallery::Application.routes.draw do
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'
 
   post 'photos/upload'
-  get 'photos/ajax_year'
-  get 'photos/ajax_photos'
   post 'upload/:token' => 'upload#create', as: :token_upload
   post 'photos' => 'upload#create'
+  get 'photos' => 'v2/years#index'
   resources :photos do
     member do
       post :rotate
       post :ocr
     end
   end
-  get 'year/:year' => "years#show", as: :year
   get 'tag/:id',  to: 'pages#tag', as: 'pages_tag'
 
   get '/', to: 'pages#index', as: 'root'

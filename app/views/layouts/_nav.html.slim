@@ -26,7 +26,7 @@ nav.navbar.navbar-default role='navigation'
                   i.fa.fa-key.fa-fw>
                   |Change Password
               li
-                = link_to logout_path  do
+                = link_to logout_path, data: { method: 'delete' }  do
                   i.fa.fa-off.fa-fw
                   |Log out
 
@@ -36,7 +36,6 @@ nav.navbar.navbar-default role='navigation'
               |Shares
               b.caret<
             ul.dropdown-menu(role="menu" v-if='shares')
-              li = link_to "New Share", shares_path
               li(v-for='s in shares')
                 a href='/shares/{{s.token}}'
                   | {{s.name}}
