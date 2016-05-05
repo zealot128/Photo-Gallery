@@ -12,7 +12,7 @@ script type="x-template" id='tpl-photo-gallery'
     slot
 
     div v-if='editMode'
-      vue-edit v-bind:file='currentImage'
+      vue-edit v-bind:file='currentImage' v-bind:state='state'
 
 script type="x-template" id='tpl-photo-preview'
   a.gallery-element v-bind:href='file.versions.large' data-sub-html='\#{{subHtmlId}}' data-download-url='{{file.download_url}}'

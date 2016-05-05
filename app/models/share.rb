@@ -1,4 +1,5 @@
 class Share < ActiveRecord::Base
+  scope :sorted, -> { order('lower(shares.name)') }
   before_create do
     self.token = SecureRandom.hex(24)
   end

@@ -6,7 +6,7 @@ class V2::ApiController < ApplicationController
   end
 
   def shares
-    shares = Share.order(:name).as_json
+    shares = Share.sorted.as_json
     render json: shares
   end
 end
