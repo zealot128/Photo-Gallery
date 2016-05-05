@@ -15,10 +15,8 @@ gem 'rack-raw-upload'
 gem 'ruby-progressbar'
 gem 'simple_form'
 gem 'thin'
-gem 'yaml_db'
 gem 'tesseract-ocr', require: false
 gem 'slim-rails'
-gem 'grape'
 gem 'haml-rails'
 gem 'acts-as-taggable-on'
 gem 'parallel'
@@ -32,12 +30,9 @@ gem 'phashion'
 gem 'rqrcode'
 
 group :development, :test do
-  gem 'better_errors'
   gem 'pry-rails'
-  # gem 'rb-inotify', '~> 0.9'
 end
 group :development do
-  gem 'fontsquirrel-download'
   gem 'quiet_assets'
 end
 
@@ -54,7 +49,6 @@ gem 'jquery-rails'
 gem 'sass-rails' , '4.0.2'
 gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
-gem 'compass-rails'
 gem 'bootstrap-will_paginate'
 gem 'select2-rails'
 source 'https://rails-assets.tenex.tech' do
@@ -63,7 +57,6 @@ source 'https://rails-assets.tenex.tech' do
   gem 'rails-assets-lightgallery'
   gem 'rails-assets-videojs-resolution-switcher'
   gem 'rails-assets-video.js'
-  # gem 'rails-assets-blueimp-gallery'
 end
 
 gem 'exception_notification', group: :production

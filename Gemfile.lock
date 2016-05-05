@@ -54,10 +54,6 @@ GEM
     bcrypt (3.1.10)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
-    better_errors (2.1.1)
-      coderay (>= 1.0.0)
-      erubis (>= 2.6.6)
-      rack (>= 0.9.0)
     bootstrap-sass (3.3.5)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
@@ -88,12 +84,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
-    compass (0.12.7)
-      chunky_png (~> 1.2)
-      fssm (>= 0.2.7)
-      sass (~> 3.2.19)
-    compass-rails (2.0.0)
-      compass (>= 0.12.2)
     daemons (1.2.3)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -114,11 +104,6 @@ GEM
     filelock (1.0.3)
     font-awesome-rails (4.3.0.0)
       railties (>= 3.2, < 5.0)
-    fontsquirrel-download (1.1.1)
-      rails (>= 3.1)
-      rubyzip
-      rubyzip (>= 1.0)
-    fssm (0.2.10)
     geocoder (1.2.9)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -167,7 +152,7 @@ GEM
     mini_magick (4.2.7)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
-    multi_json (1.11.3)
+    multi_json (1.12.0)
     multi_xml (0.5.5)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
@@ -301,9 +286,6 @@ GEM
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
     will_paginate (3.0.7)
-    yaml_db (0.3.0)
-      rails (>= 3.0, < 4.3)
-      rake (>= 0.8.7)
     zip-zip (0.3)
       rubyzip (>= 1.0.0)
 
@@ -313,19 +295,16 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on
   bcrypt-ruby
-  better_errors
   bootstrap-sass
   bootstrap-will_paginate
   carrierwave
   carrierwave-aws
   carrierwave-video
   coffee-rails
-  compass-rails
   exception_notification
   exifr
   filelock
   font-awesome-rails
-  fontsquirrel-download
   geocoder
   grape
   haml-rails
@@ -355,7 +334,6 @@ DEPENDENCIES
   tesseract-ocr
   thin
   uglifier (>= 1.0.3)
-  yaml_db
   zip-zip
 
 BUNDLED WITH
