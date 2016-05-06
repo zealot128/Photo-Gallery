@@ -96,6 +96,7 @@ describe Photo do
     around do |ex|
       config = YAML.load_file('config/secrets.yml')['development']
       load_fog(config['fog'])
+      skip("Skipping Fog") if config['fog'].blank? or config['fog']['aws_access_key_id'].blank?
       ImageUploader.storage :aws
       begin
         ex.run
