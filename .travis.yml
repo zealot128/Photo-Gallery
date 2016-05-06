@@ -4,6 +4,9 @@ cache: bundler
 
 addons:
   postgresql: 9.3
+  apt:
+    packages:
+      - ffmpeg
 
 rvm:
   - 2.2
