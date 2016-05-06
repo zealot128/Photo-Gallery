@@ -15,7 +15,9 @@ class PhotosController < ApplicationController
       f.html {
         redirect_to photos_path
       }
-      f.js
+      f.json {
+        render json: { status: 'success' }
+      }
     end
   end
 

@@ -18,6 +18,7 @@ class SharesController < ApplicationController
   end
 
   def bulk_update
+    binding.pry
     case params[:choice]
     when "tag"
       tag = params[:bulk][:tag]
@@ -29,7 +30,6 @@ class SharesController < ApplicationController
         i.slow_callbacks = true
       }
       tag = ActsAsTaggableOn::Tag.where(name: tag).first
-      render json: {status: "OK", url: pages_tag_path(tag)}
     when "share"
       if params["new_share_name"].present?
         @share = Share.create!(name: params["new_share_name"])

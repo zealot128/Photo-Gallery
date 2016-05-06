@@ -31,6 +31,8 @@ gem 'rqrcode'
 group :development, :test do
   gem 'thin'
   gem 'pry-rails'
+  gem 'vcr'
+  gem 'webmock'
 end
 group :development do
   gem 'quiet_assets'

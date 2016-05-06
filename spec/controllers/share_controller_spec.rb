@@ -13,12 +13,6 @@ describe SharesController do
     p.save! validate: false
     p
   end
-  specify "Bulk add - get without error" do
-    photo
-    get :bulk_add, date: "2012-02-01"
-
-    assigns(:photos).should == [photo]
-  end
 
   let :share do
     Share.create! name: "123123"

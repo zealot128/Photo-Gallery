@@ -28,7 +28,7 @@ describe Photo do
     photo.day.should be_present
     Day.last.tap do |day|
       day.date.should == photo.shot_at.to_date
-      day.year.should == photo.shot_at.year
+      day.year.year.should == photo.shot_at.year
     end
   end
 
@@ -65,7 +65,7 @@ describe Photo do
   specify 'EOS600d date format' do
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    photo.shot_at.should ==  DateTime.parse("2014-02-05T14:17:42+01:00")
+    photo.shot_at.should ==  Time.zone.parse("2014-02-05T14:17:42+01:00")
   end
 
   specify 'Metadata' do
@@ -76,9 +76,12 @@ describe Photo do
   end
 
   specify 'geocoding' do
-    picture = "spec/fixtures/geocode.jpg"
-    photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    photo.location.should == 'Hofheim am Taunus - Wallau'
+    Geocoder.configure(timeout: 30)
+    VCR.use_cassette 'geocoding' do
+      picture = "spec/fixtures/geocode.jpg"
+      photo = Photo.create_from_upload(File.open(picture.to_s), user)
+      photo.location.should == 'Hofheim am Taunus - Wallau'
+    end
   end
 
   if Rails.application.config.features.ocr

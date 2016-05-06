@@ -13,10 +13,6 @@ SimpleGallery::Application.routes.draw do
   resources :sessions
   resources :users
   resources :shares do
-    collection do
-      get 'bulk_add'
-      post 'bulk_update'
-    end
     member do
       post 'remove_image'
     end
@@ -36,6 +32,7 @@ SimpleGallery::Application.routes.draw do
     resources :days, only: [:show]
     get 'tags' => 'api#tags'
     get 'shares' => 'api#shares'
+    post 'bulk_update' => 'api#bulk_update'
   end
   get '/shares/:id/download' => 'zip#share', as: 'download_share'
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'

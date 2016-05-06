@@ -9,4 +9,10 @@ class V2::ApiController < ApplicationController
     shares = Share.sorted.as_json
     render json: shares
   end
+
+  def bulk_update
+    bu = BulkUpdate.new(params, current_user)
+    bu.save
+    render json: bu.files
+  end
 end

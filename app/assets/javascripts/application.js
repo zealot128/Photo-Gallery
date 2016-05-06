@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs
+//= require lodash
 //= require bootstrap/modal
 //= require bootstrap/collapse
 //= require bootstrap/dropdown

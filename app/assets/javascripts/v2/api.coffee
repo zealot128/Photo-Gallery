@@ -1,6 +1,15 @@
 
-
 window.Api = {
+  bulkUpdate: (request, callback, error) ->
+    $.ajax
+      dataType: 'json'
+      url: '/v2/bulk_update'
+      method: 'POST'
+      data: request
+      success: (e) ->
+        callback(e)
+      complete: (e)->
+        error(e) if error
   saveImage: (id, attributes, callback, error) ->
     $.ajax
       dataType: 'json'
@@ -13,11 +22,17 @@ window.Api = {
       complete: (e)->
         error(e) if error
 
-  # TODO
   deleteImage: (id, callback)->
+    if !id?
+      callback()
+      return
     url = "/photos/#{id}"
-    console.log 'DELETING IMAGE'
-    callback() if callback
+    $.ajax
+      url: "/photos/#{id}"
+      dataType: "json"
+      method: "DELETE"
+      success: (e) ->
+        callback(e) if callback
 
   tags: (callback) ->
     $.get '/v2/tags.json', callback
@@ -40,8 +55,9 @@ window.KeyboardNavigation = (event, vueInstance, gallery)->
   else if vueInstance.galleryOpen
     switch event.which
       when 68, 46 # d, delete #delete image
-        vueInstance.deleteImage(gallery)
-        event.preventDefault()
+        if confirm("Really delete image?")
+          vueInstance.deleteImage(gallery)
+          event.preventDefault()
       when 69 # e
         vueInstance.editImage(gallery)
         event.preventDefault()

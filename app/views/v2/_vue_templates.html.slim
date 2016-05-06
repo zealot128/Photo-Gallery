@@ -9,6 +9,7 @@ script type="x-template" id='tpl-photo-gallery'
       template v-for="file in files"
         vue-photo-preview(v-if='file.type == "Photo"' v-bind:file="file")
         vue-video-preview(v-if='file.type == "Video"' v-bind:file="file")
+    vue-bulk-edit v-bind:state='state' v-bind:files='files'
     slot
 
     div v-if='editMode'
@@ -77,4 +78,46 @@ script type="x-template" id='tpl-edit'
           br
           button.btn.btn-primary v-on:click='save()'
             | {{buttonText}}
+
+
+script type="x-template" id='tpl-bulk-edit'
+  div
+    .clearfix
+      a.btn.btn-default.pull-right href='#' v-on:click='startEditing()'
+        | Bulk edit
+    .modal.fade v-if='editMode'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button type="button" class="close" v-on:click='closeModal()'
+              span aria-hidden="true"  &times;
+            h4 class="modal-title" Edit {{files.length}} images
+          .modal-body
+            div
+              a.btn.btn-xs.btn-default>(v-for='file in files' href='#' v-on:click='toggleFile(file)' v-bind:class='{ "active": isChosen(file)}')
+                img v-bind:src='file.versions.thumb'
+            div v-if='allTags'
+              h4 Tags
+              .row
+                .col-sm-7
+                  button.btn.btn-default.btn-xs.tag-toggle<>(v-for='tag in allTags' v-bind:class='{ "active" : tagged(tag)}' v-on:click='toggleTag(tag)')
+                    | {{tag.name}} ({{tag.taggings_count}})
+                .col-sm-5
+                  form.form-inline
+                    .form-group
+                      input class="form-control" v-model="newTag" placeholder='create new tag'
+            div v-if='allShares'
+              h4 Shares
+              .row
+                .col-sm-7
+                  button.btn.btn-default.btn-xs.tag-toggle<>(v-for='share in allShares' v-bind:class='{ "active" : hasShare(share)}' v-on:click='toggleShare(share)')
+                    | {{share.name}}
+                .col-sm-5
+                  form.form-inline
+                    .form-group
+                      input class="form-control" v-model="newShare" placeholder='create new share'
+            br
+            br
+            button.btn.btn-primary v-on:click='save()'
+              | {{buttonText}}
 
