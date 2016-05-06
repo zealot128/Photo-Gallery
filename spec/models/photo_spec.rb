@@ -76,7 +76,7 @@ describe Photo do
   end
 
   specify 'geocoding' do
-    Geocoder.configure(timeout: 30)
+    Geocoder.configure(timeout: 60)
     VCR.use_cassette 'geocoding' do
       picture = "spec/fixtures/geocode.jpg"
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
