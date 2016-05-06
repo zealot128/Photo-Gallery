@@ -1,11 +1,13 @@
 /*
  *= require_self
- *= require blueimp-gallery
+ *= require lightgallery
  *= require select2
  *= require select2-bootstrap
  *= depend_on_asset "dropzone/downloads/images/spritemap.png"
  *= depend_on_asset "dropzone/downloads/images/spritemap@2x.png"
  *= require dropzone
  *= require bootstrap-datetimepicker.min.css
+ *= require videojs/video-js.min.css
+ *= require videojs-resolution-switcher
  *= require theme
 */

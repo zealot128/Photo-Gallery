@@ -1,0 +1,23 @@
+language: ruby
+sudo: false
+cache: bundler
+
+addons:
+  postgresql: 9.3
+  apt:
+    packages:
+      - ffmpeg
+
+rvm:
+  - 2.2
+
+before_script:
+  - cp config/secrets.yml.example config/secrets.yml
+  - mkdir tmp
+  - "bundle exec rake db:create RAILS_ENV=test"
+  - "bundle exec rake db:schema:load RAILS_ENV=test"
+
+script:
+  - bundle exec rspec
+
+bundler_args: "--without development production"

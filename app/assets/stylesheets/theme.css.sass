@@ -2,20 +2,14 @@ $linkColor: #8013AE
 $img-size: 300px
 @import bootstrap
 @import bootstrap/theme
-@import bootstrap-modal-bs3patch
-@import bootstrap-modal
 @import font-awesome
-@import fonts
-@import compass/css3/images
-@import compass/utilities/general/clearfix
-@import _photos
 
-h1,h2,h3,h4,h5
-  font-family: "DejaVuSerifBook", serif
+body
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", sans-serif
+
 h2
   clear: both
   text-decoration: none
-  text-shadow: 1px 1px 1px white, -1px -1px #222222
   a
     color: #555
     &:hover
@@ -50,10 +44,6 @@ span.checkbox
   top: 50%
   z-index: 99999999
 
-// .modal, .modal-scrollable
-//   z-index: 9999999
-
-
 .select2-drop
   z-index: 20000000
 
@@ -61,11 +51,26 @@ span.checkbox
   padding: 0
   border: none
 
-
-.blueimp-gallery, .blueimp-gallery > .slides > .slide > .slide-content
-  transition: none !important
-.blueimp-gallery
-  opacity: 0.99
-  z-index: 100
 .bootstrap-datetimepicker-widget
   z-index: 100000000 !important
+
+
+
+//// V2
+
+.image-info
+  margin-right: 10px
+
+.lg-icon .fa
+  position: relative
+  bottom: 4px
+
+.tag-toggle
+  margin-right: 2px
+  margin-bottom: 2px
+
+.gallery-element
+  img
+    width: 300px
+    height: 200px
+  cursor: pointer

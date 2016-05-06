@@ -1,19 +1,19 @@
-<%= form_for @user do |f| %>
+<%= form_for @user, class: 'form-vertical' do |f| %>
+  <div class='form-group'>
+    <%= f.label :username, class: 'control-label' %>
+    <%= f.text_field :username, class: 'form-control' %>
+  </div>
   <p>
-    <%= f.label :username %>
-    <%= f.text_field :username %>
+    <%= f.label :email, "Email Address", class: 'control-label' %>
+    <%= f.text_field :email, class: 'form-control' %>
   </p>
   <p>
-    <%= f.label :email, "Email Address" %>
-    <%= f.text_field :email %>
+    <%= f.label :password, class: 'control-label' %>
+    <%= f.password_field :password, class: 'form-control' %>
   </p>
   <p>
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-  </p>
-  <p>
-    <%= f.label :password_confirmation, "Confirm Password" %>
-    <%= f.password_field :password_confirmation %>
+    <%= f.label :password_confirmation, "Confirm Password", class: 'control-label' %>
+    <%= f.password_field :password_confirmation, class: 'form-control' %>
   </p>
   <p><%= f.submit (@user.new_record? ? "Sign up" : "Update"), class: "btn-primary btn" %></p>
 <% end %>

@@ -1,0 +1,6 @@
+
+h2
+  = t 'photos.index.recently_uploaded'
+  small< = t 'photos.index.last_upload', time: time_ago_in_words(last_upload)
+
+.js-photo-gallery data-photos="#{@recent.to_json}"

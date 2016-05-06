@@ -1,0 +1,60 @@
+nav.navbar.navbar-default role='navigation'
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle type='button' data-toggle='collapse' data-target='#navbar'
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+
+      a.navbar-brand href='/' = t 'title'
+    .collapse.navbar-collapse#navbar.js-navbar data-shares='#{shares.to_json}' data-tags='#{tag_counts.to_json}'
+      ul.nav.navbar-nav
+        - if current_user
+          li
+            = link_to photos_path do
+              i.fa.fa-camera-retro.fa-fw>
+              |Photos
+
+          li.dropdown
+            a.dropdown-toggle data-toggle='dropdown' data-target='#'
+              i.fa.fa-user.fa-fw>
+              |Profile
+              b.caret<
+            ul.dropdown-menu(role="menu")
+              li
+                = link_to edit_current_user_path do
+                  i.fa.fa-key.fa-fw>
+                  |Change Password
+              li
+                = link_to logout_path, data: { method: 'delete' }  do
+                  i.fa.fa-sign-out.fa-fw>
+                  |Log out
+
+          li.dropdown
+            = link_to shares_path, class: "dropdown-toggle", data: {toggle: "dropdown", target: "#"} do
+              i.fa.fa-share.fa-fw>
+              |Shares
+              b.caret<
+            ul.dropdown-menu(role="menu" v-if='shares')
+              li(v-for='s in shares')
+                a href='/shares/{{s.token}}'
+                  | {{s.name}}
+
+          li.dropdown
+            a.dropdown-toggle data-toggle="dropdown" data-target="#"
+              i.fa.fa-tag.fa-fw>
+              |Tags
+              b.caret<
+            ul.dropdown-menu(role="menu")
+              li v-for='tag in tags'
+                a href='/tag/{{tag.id}}'
+                  | {{tag.name}} ({{tag.taggings_count}})
+          li
+            a href='/upload'
+              i.fa.fa-fw.fa-upload>
+              | Upload
+        - else
+          li = link_to "Login", login_path
+          li = link_to "Impressum", "https://www.stefanwienert.net/impressum/"
+

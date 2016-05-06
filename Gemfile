@@ -13,17 +13,15 @@ gem 'carrierwave-video'
 gem 'mini_magick'
 gem 'rack-raw-upload'
 gem 'ruby-progressbar'
-gem 'simple_form'
-gem 'thin'
-gem 'yaml_db'
 gem 'tesseract-ocr', require: false
 gem 'slim-rails'
-gem 'grape'
 gem 'haml-rails'
 gem 'acts-as-taggable-on'
 gem 'parallel'
+gem 'migration_data'
 
 gem 'filelock'
+gem 'hashie'
 
 gem 'pg'
 
@@ -31,12 +29,12 @@ gem 'phashion'
 gem 'rqrcode'
 
 group :development, :test do
-  gem 'better_errors'
+  gem 'thin'
   gem 'pry-rails'
-  # gem 'rb-inotify', '~> 0.9'
+  gem 'vcr'
+  gem 'webmock'
 end
 group :development do
-  gem 'fontsquirrel-download'
   gem 'quiet_assets'
 end
 
@@ -50,16 +48,17 @@ end
 gem 'font-awesome-rails'
 gem 'coffee-rails' #'~> 3.2.1'
 gem 'jquery-rails'
-gem 'sass-rails' , '4.0.2'
+gem 'sass-rails' , '>= 4.0.2'
 gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
-gem 'compass-rails'
 gem 'bootstrap-will_paginate'
 gem 'select2-rails'
 source 'https://rails-assets.tenex.tech' do
   gem 'rails-assets-dropzone'
   gem 'rails-assets-moment'
-  gem 'rails-assets-blueimp-gallery'
+  gem 'rails-assets-lightgallery'
+  gem 'rails-assets-videojs-resolution-switcher'
+  gem 'rails-assets-video.js'
 end
 
 gem 'exception_notification', group: :production

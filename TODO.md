@@ -1,13 +1,13 @@
+## Rewrite
+
 # TODO
 
+* Rotation
+* User admin oberflaeche
 * Map mit GEO dort
-
 * Dupes besser finden
-* Photos mit selbem Namen an einem Tag
+* Share mit expire
 
 ## AWS Migration
 
 * Rotation
-* Test eines Uploads
-* Dev Server Test
-

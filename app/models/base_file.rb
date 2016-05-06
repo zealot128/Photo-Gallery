@@ -10,8 +10,6 @@ class BaseFile < ActiveRecord::Base
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
 
-  attr_accessor :new_share
-
   before_validation on: :create do
     self.md5 = Digest::MD5.hexdigest(file.read)
   end
@@ -21,13 +19,6 @@ class BaseFile < ActiveRecord::Base
       move_file_after_shot_at_changed
     end
     self.day = Day.date self.shot_at
-  end
-
-  before_validation do
-    if new_share.present?
-      share = Share.where(name: new_share).first_or_create
-      self.shares << share unless self.shares.include?(share)
-    end
   end
 
   before_save do
@@ -56,20 +47,28 @@ class BaseFile < ActiveRecord::Base
     klass.create_from_upload(file,current_user)
   end
 
-  def modal_group
-    shot_at.strftime("d%Y%m%d")
-  end
-
   def check_uniqueness
     valid?
   end
 
-
-  def self.grouped_by_day_and_month
-    days = all.sort_by{|i| i.shot_at }.group_by{|i|i.shot_at.to_date}.sort_by{|a,b| a}.reverse
-    #  [datum, [items]] ...
-    #  [month, [ [datum, items], ...
-    days.group_by{|day, items| Date.parse day.strftime("%Y-%m-01")}
+  def as_json(op={})
+    {
+      id:                   id,
+      type:                 type,
+      location:             location,
+      shot_at:              shot_at,
+      shot_at_formatted:    I18n.l(shot_at, format: :short),
+      file_size:            file_size,
+      tag_ids:              tag_ids,
+      tags:                 tag_list,
+      share_ids:            share_ids,
+      file_size_formatted:  ApplicationController.helpers.number_to_human_size(file_size),
+      caption:              caption,
+      description:          description,
+      versions:             file.versions.map{|k,v| [k,v.url] }.to_h,
+      download_url:         "/download/#{id}/#{attributes['file']}",
+      exif:                 exif
+    }
   end
 
   def move_file_after_shot_at_changed

@@ -1,14 +1,9 @@
 class PhotosController < ApplicationController
   before_filter :login_required
 
-  def index
-    @years = BaseFile.uniq.group(:year).count.sort_by{|a,b|-a}
-    @recent = BaseFile.order("created_at desc").limit(20)
-    @last_upload = @recent.first.created_at rescue false
-    if current_user.token.nil?
-      current_user.set_token
-      current_user.save validate: false
-    end
+  def download
+    file = BaseFile.where(id: params[:id], file: params[:filename]).first!
+    redirect_to file.file.url
   end
 
   def destroy
@@ -20,7 +15,9 @@ class PhotosController < ApplicationController
       f.html {
         redirect_to photos_path
       }
-      f.js
+      f.json {
+        render json: { status: 'success' }
+      }
     end
   end
 
@@ -49,10 +46,15 @@ class PhotosController < ApplicationController
 
   def update
     @photo = BaseFile.find(params[:id])
-    @photo.share_ids = params[:photo][:share_ids]
+    @photo.share_ids = params[:photo][:share_ids] if params[:photo][:share_ids]
+    new_share = params[:photo].delete(:new_share)
     @photo.update_attributes!(params[:photo])
+    if new_share.present?
+      share = Share.where(name: new_share).first_or_create(user: current_user)
+      @photo.shares << share unless @photo.shares.include?(share)
+    end
     if request.xhr?
-      render json: { status: "OK"}
+      render json: { status: "OK", photo: @photo.as_json}
     else
       redirect_to photos_path
     end
@@ -67,11 +69,5 @@ class PhotosController < ApplicationController
   def ocr
     @photo = BaseFile.find(params[:id])
     @photo.ocr
-  end
-
-  def ajax_photos
-    @photos = Day.find(params[:id]).photos.order('shot_at asc')
-
-    render @photos, layout: false
   end
 end

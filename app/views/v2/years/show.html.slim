@@ -1,0 +1,7 @@
+h2 = @year.name
+
+
+- @year.months.order('month_number desc').each do |month|
+  = render "month", month: month, year: @year
+
+/* = render "pages/upload" */

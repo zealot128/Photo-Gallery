@@ -36,11 +36,12 @@ AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/d
 
 **Prerequisites:**
 
-* Ruby 1.9 and bundler
+* Ruby >2.2 and bundler
 * imagemagick
+* ffmpeg for video upload
 * file-storage -> all pictures are stored inside public/photos directory
   * Image uploads are handled by [Paperclip](https://github.com/thoughtbot/paperclip#storage), so with a little configuration S3, Fog, Dropbox or azure should be possible.
-* sqlite3 for development, mysql by default for production.
+* postgresql
 
 ```
 git clone https://github.com/zealot128/AutoShare-Gallery.git
@@ -53,21 +54,6 @@ rails s
 
 This will also create a new user with name "share" and password "password". This can be changed later.
 Configuration for AutoShare is explained after login.
-
-Deployment is handled through capistrano; have a look at ``config/deplog.rb`` for the settings.
-
-## Todo
-
-* image formats other than jpeg
-* UI overwork
-
-## Notes
-
-* Using Twitter Bootstrap and Font Awesome for icons
-* jquery fileuploader for drag-drop field and ajaxified uploads
-* Several font-packages from Fontsquirrel
-* Rails 3.2
-* Some specs
 
 ## Video
 

@@ -5,7 +5,7 @@ module ApplicationHelper
   end
 
   def qrcode_image_url(link)
-    qrcode = RQRCode::QRCode.new("http://github.com/")
+    qrcode = RQRCode::QRCode.new(link)
     qrcode.as_png.to_data_url
   end
 
