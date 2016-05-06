@@ -94,14 +94,17 @@ describe Photo do
 
   describe 'FOG' do
     around do |ex|
-      config = YAML.load_file('config/secrets.yml')['development']
-      load_fog(config['fog'])
-      skip("Skipping Fog") if config['fog'].blank? or config['fog']['aws_access_key_id'].blank?
-      ImageUploader.storage :aws
-      begin
-        ex.run
-      ensure
-        ImageUploader.storage :file
+      config = YAML.load_file('config/secrets.yml')['test']
+      if config['fog'].blank? or config['fog']['aws_access_key_id'].blank?
+        $stderr.puts "Skipping AWS spec because no fog config found"
+      else
+        load_fog(config['fog'])
+        ImageUploader.storage :aws
+        begin
+          ex.run
+        ensure
+          ImageUploader.storage :file
+        end
       end
     end
 
