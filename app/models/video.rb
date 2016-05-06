@@ -11,7 +11,12 @@ class Video < BaseFile
 
   def self.create_from_upload(file, user)
     r = `ffprobe #{Shellwords.escape(file.path)} -show_format -print_format json 2> /dev/null`
-    meta_data = JSON.load(r)['format']
+    if $?.success?
+      meta_data = JSON.load(r)['format']
+    else
+      Rails.logger.error 'Error running ffprobe, make sure ffmpeg is installed'
+      meta_data = { 'tags' => {} }
+    end
 
     date = meta_data['tags']['creation_time']
     if !date and file.original_filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
