@@ -3,7 +3,7 @@ class Photo < BaseFile
 
   include PhotoMetadata
 
-  def self.parse_date(file)
+  def self.parse_date(file, current_user)
     date = nil
     begin
       meta = EXIFR::JPEG.new(file.path)
@@ -27,13 +27,16 @@ class Photo < BaseFile
         date = Date.parse(date)
       end
     end
-    date
+    # move date into application's timezone (+DST Stuff), as EXIF has no timezone info...
+    # TODO move to user
+    assumed_timezone = Time.zone
+    date.to_datetime.change(offset: date.in_time_zone(assumed_timezone).strftime("%z"))
   end
 
   def self.create_from_upload(file, current_user)
     photo = Photo.new
     transaction do
-      date = Photo.parse_date(file)
+      date = Photo.parse_date(file, current_user)
       begin
         meta = EXIFR::JPEG.new(file.path)
         if meta.gps
