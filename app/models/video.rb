@@ -19,7 +19,8 @@ class Video < BaseFile
     end
 
     date = meta_data['tags']['creation_time']
-    if !date and file.original_filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
+    filename = file.try(:original_filename) || file.path
+    if !date and filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
       date = Date.parse "#$1-#$2-#$3"
     else
       date = file.mtime rescue Date.today
