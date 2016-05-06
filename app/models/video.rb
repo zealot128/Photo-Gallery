@@ -11,6 +11,7 @@ class Video < BaseFile
 
   def self.create_from_upload(file, user)
     r = `ffprobe #{Shellwords.escape(file.path)} -show_format -print_format json 2> /dev/null`
+    p r
     if $?.success?
       meta_data = JSON.load(r)['format']
     else
