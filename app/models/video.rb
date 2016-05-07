@@ -4,7 +4,7 @@ class Video < BaseFile
 
   def exif
     {
-      duration: (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).round
+      duration: (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).to_f.round
     }
 
   end
