@@ -38,11 +38,11 @@ class BaseFile < ActiveRecord::Base
   end
 
   def self.create_from_upload(file, current_user)
-    mime_type = MIME::Types.type_for(file.tempfile.path).first.content_type
+    mime_type = `file #{Shellwords.escape(file.tempfile.path)} --mime-type`.split(':').last.strip
     klass =
       case mime_type
       when %r{image/}, nil then Photo
-      when %r{video/} then Video
+      when %r{video/|mp4} then Video
       else raise NotImplementedError.new("Unknown content type: #{file.content_type}")
       end
     klass.create_from_upload(file,current_user)
