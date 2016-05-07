@@ -1,6 +1,4 @@
 ## Rewrite
-* Hochkant sieht scheisse aus
-* Jahre laden zu langsam
 
 
 # TODO

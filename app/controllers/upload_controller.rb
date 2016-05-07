@@ -1,5 +1,5 @@
 class UploadController < ApplicationController
-  skip_before_filter :verify_authenticity
+  skip_before_filter :verify_authenticity_token
   before_filter :http_basic_auth
 
   def create
