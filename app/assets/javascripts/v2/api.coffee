@@ -39,6 +39,9 @@ window.Api = {
 
   shares: (callback) ->
     $.get '/v2/shares.json', callback
+
+  year: (year, callback) ->
+    $.get "/v2/years/#{year}.json", callback
 }
 
 

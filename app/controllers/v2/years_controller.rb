@@ -11,7 +11,15 @@ class V2::YearsController < ApplicationController
 
   def show
     @year = Year.find_by!(name: params[:id])
-    @days = @year.days.order('date desc').group_by{|i| i.date.month }
+    respond_to do |f|
+      f.html {
+        @days = @year.days.order('date desc').group_by{|i| i.date.month }
+      }
+      f.json {
+        @months = @year.months.order('month_number desc')
+        render json: @year.as_json.merge(months: @months)
+      }
+    end
   end
 
   protected

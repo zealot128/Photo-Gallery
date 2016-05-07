@@ -1,3 +1,27 @@
+script type="x-template" id='tpl-years'
+  div.years
+    div v-for='year in years'
+      h3
+        a href='#' v-on:click='toggleYear(year, $event)'
+          |{{year.name}}
+      vue-year v-if='isOpen(year)' v-bind:year='year'
+
+script type="x-template" id='tpl-year'
+  div.year
+    div v-for='month in months'
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title.clearfix
+            a href='{{month.url}}'
+              | {{month.to_s}}
+            .pull-right
+              span v-for='photo in month.preview_photos'
+                img v-bind:src='photo.versions.thumb'
+              span.badge<
+                |{{month.photo_count}}
+
+
+
 script type="x-template" id='tpl-photo-gallery'
   div.gallery-set
     div.hidden-elements.hidden

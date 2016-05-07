@@ -7,6 +7,10 @@ class Month < ActiveRecord::Base
     month_number.to_s
   end
 
+  def as_json(opts= {})
+    super.merge( 'to_s' => to_s, 'photo_count' => photos.count, 'preview_photos' => photos.limit(10).as_json(opts) )
+  end
+
   def self.find_or_make(date)
     year = Year.where(name: date.year).first_or_create
     where(month_number: date.month, year: year).first_or_create

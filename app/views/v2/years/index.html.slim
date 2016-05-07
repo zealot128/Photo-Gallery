@@ -10,8 +10,10 @@
           = image_tag photo.file.url(:thumb)
 
 
-- @years.each do |year|
-  h3 = year.name
-  - year.months.order('month_number desc').each do |month|
-    = render "month", month: month, year: year
+.js-years data-years='#{@years.to_json}'
+/* - @years.each do |year| */
+/*   h3: a href='##{dom_id(year)}' data-toggle='collapse' = year.name */
+/*   .collapse id=dom_id(year) */
+/*     - year.months.order('month_number desc').each do |month| */
+/*       = render "month", month: month, year: year */
 

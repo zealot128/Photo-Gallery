@@ -48,10 +48,8 @@ window.Gallery = (domEl, state) ->
           this.gallery.goToPrevSlide = this.savedCallbacks.prevSlide
 
       deleteImage: (gallery)->
-        console.log('running deleteImage')
         file = this.files[gallery.index]
         return if !file?
-        console.log(file)
         Api.deleteImage(file.id)
         index = gallery.index
         item_count = gallery.$items.length

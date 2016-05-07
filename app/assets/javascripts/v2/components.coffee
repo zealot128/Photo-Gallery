@@ -16,5 +16,7 @@ $ ->
   $('.js-photo-gallery').each ->
     Gallery(this, state )
 
+  $('.js-years').each ->
+    Years(this, state)
 
 
