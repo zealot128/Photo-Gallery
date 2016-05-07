@@ -7,7 +7,7 @@ class UploadController < ApplicationController
       @photo = BaseFile.create_from_upload(params[:userfile] || params[:upfile], @user)
       @user.enable_ip_based_login request
       if @photo.new_record?
-        render text: 'ALREADY_UPLOADED', status: 409
+        render text: "ALREADY_UPLOADED:: #{@photo.errors.full_messages}", status: 409
       else
         render text: 'OK'
       end

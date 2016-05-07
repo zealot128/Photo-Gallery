@@ -24,6 +24,7 @@ class BaseFile < ActiveRecord::Base
   before_save do
     self.year = self.shot_at.year
     self.month = self.shot_at.month
+    self.file_size = self.file.size
   end
 
   after_commit do
@@ -38,12 +39,13 @@ class BaseFile < ActiveRecord::Base
   end
 
   def self.create_from_upload(file, current_user)
-    mime_type = `file #{Shellwords.escape(file.tempfile.path)} --mime-type`.split(':').last.strip
+    path = file.try(:tempfile).try(:path) || file.path
+    mime_type = `file #{Shellwords.escape(path)} --mime-type`.split(':').last.strip
     klass =
       case mime_type
       when %r{image/}, nil then Photo
       when %r{video/|mp4} then Video
-      else raise NotImplementedError.new("Unknown content type: #{file.content_type}")
+      else raise NotImplementedError.new("Unknown content type: #{mime_type}")
       end
     klass.create_from_upload(file,current_user)
   end
