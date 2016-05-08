@@ -70,6 +70,7 @@ span.checkbox
   margin-bottom: 2px
 
 .gallery-element
+  position: relative
   width: 300px
   height: 200px
   display: inline-block
@@ -77,6 +78,31 @@ span.checkbox
   background: #f4f3f4
   border: 1px solid #ddd
   margin-right: 2px
+  margin-bottom: 2px
+  .duration
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    color: #666
+    transition: color 0.3s ease
+  &:hover
+    .duration
+      transition: color 0.3s ease
+      color: white
+    .play-icon
+      color: white
+      transition: color 0.3s ease
+  .play-icon
+    position: absolute
+    left: 0
+    right: 0
+    top: 93px
+    bottom: 0
+    color: #666
+    font-size: 30px
+    width: auto
+    transition: color 0.3s ease
   img
     max-width: 100%
     max-height: 100%

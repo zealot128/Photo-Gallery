@@ -3,6 +3,7 @@
 
 # TODO
 
+* PNG upload
 * Rotation
 * User admin oberflaeche
 * Map mit GEO dort
@@ -11,4 +12,3 @@
 
 ## AWS Migration
 
-* Rotation
