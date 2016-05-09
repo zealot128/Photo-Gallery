@@ -8,7 +8,11 @@ class Month < ActiveRecord::Base
   end
 
   def as_json(opts= {})
-    super.merge( 'to_s' => to_s, 'photo_count' => photos.count, 'preview_photos' => photos.limit(10).as_json(opts) )
+    super.merge( 'to_s' => to_s,
+                'photo_count' => photos.count,
+                'preview_photos' => photos.limit(10).as_json(opts),
+                'url' => "/v2/years/#{year.name}/month/#{month_number}"
+               )
   end
 
   def self.find_or_make(date)

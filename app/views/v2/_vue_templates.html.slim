@@ -12,7 +12,7 @@ script type="x-template" id='tpl-year'
       .panel.panel-default
         .panel-heading
           h3.panel-title.clearfix
-            a href='{{month.url}}'
+            a v-bind:href='month.url'
               | {{month.to_s}}
             .pull-right
               span v-for='photo in month.preview_photos'
