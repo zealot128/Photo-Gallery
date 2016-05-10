@@ -6,7 +6,6 @@ class Video < BaseFile
     {
       duration: (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).to_f.round
     }
-
   end
 
   def self.create_from_upload(file, user)
@@ -19,14 +18,8 @@ class Video < BaseFile
       meta_data = { 'tags' => {} }
     end
 
-    date = meta_data['tags']['creation_time']
-    filename = file.try(:original_filename) || file.path
-    if !date and filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
-      date = Date.parse "#$1-#$2-#$3"
-    else
-      date = file.mtime rescue Date.today
-    end
-
+    meta_date = meta_data['tags']['creation_time']
+    date = FileDateParser.new(file: file, user: current_user, exif_date: meta_date).parsed_date
     video = Video.new
     video.shot_at = date
     video.user = user

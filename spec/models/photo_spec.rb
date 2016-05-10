@@ -75,6 +75,12 @@ describe Photo do
     photo.exif['model'].should == 'GT-N7100'
   end
 
+  specify 'Mobile Phone format' do
+    picture = 'spec/fixtures/IMG-20160508-WA0000.jpg'
+    date = Photo.parse_date(File.open(picture), user)
+    date.to_date.to_s.should be == '2016-05-08'
+  end
+
   specify 'geocoding' do
     Geocoder.configure(timeout: 60)
     VCR.use_cassette 'geocoding' do

@@ -10,27 +10,7 @@ class Photo < BaseFile
       date = meta.exif[:date_time] || meta.exif[:date_time_original] rescue nil
     rescue EXIFR::MalformedJPEG
     end
-    if not date
-      if file.original_filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
-        date = Date.parse "#$1-#$2-#$3"
-      else
-        Rails.logger.warn "No Date found for file #{file.original_filename}. taking mtime"
-        date = file.mtime rescue Date.today
-      end
-    end
-    if date.is_a? String
-      case date
-      # correction for exif from hd cam
-      when /^(\d{4}):(\d{1,2}):(\d{1,2})/
-        date = Date.parse("#$1-#$2-#$3")
-      else
-        date = Date.parse(date)
-      end
-    end
-    # move date into application's timezone (+DST Stuff), as EXIF has no timezone info...
-    # TODO move to user
-    assumed_timezone = Time.zone
-    date.to_datetime.change(offset: date.in_time_zone(assumed_timezone).strftime("%z"))
+    FileDateParser.new(file: file, user: current_user, exif_date: date).parsed_date
   end
 
   def self.create_from_upload(file, current_user)

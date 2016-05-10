@@ -1,6 +1,7 @@
 class UploadController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :http_basic_auth
+  layout false
 
   def create
     FileUtils.mkdir_p('tmp')
@@ -15,9 +16,9 @@ class UploadController < ApplicationController
       end
       UploadLog.handle_file(@photo, file, self, exception)
       if @photo.new_record?
-        render text: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409
+        render text: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409, layout: false
       else
-        render text: 'OK'
+        render text: 'OK', layout: false
       end
     end
   end

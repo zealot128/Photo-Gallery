@@ -50,6 +50,7 @@ class BaseFile < ActiveRecord::Base
     klass.create_from_upload(file,current_user)
   end
 
+
   def check_uniqueness
     valid?
   end
