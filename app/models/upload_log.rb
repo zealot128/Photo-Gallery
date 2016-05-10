@@ -10,8 +10,8 @@ class UploadLog < ActiveRecord::Base
       user_agent: controller.request.user_agent,
       user:       controller.current_user || controller.instance_variable_get('@user')
     )
-    if base_file.new_record?
-      if base_file.errors[:md5]
+    if uploaded_file.new_record?
+      if uploaded_file.errors[:md5]
         log.status = 'already_uploaded'
       else
         log.status = 'error'
