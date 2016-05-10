@@ -54,6 +54,20 @@ nav.navbar.navbar-default role='navigation'
             a href='/upload'
               i.fa.fa-fw.fa-upload>
               | Upload
+          - if admin?
+            li.dropdown
+              a.dropdown-toggle data-toggle="dropdown" data-target="#"
+                i.fa.fa-lock.fa-fw>
+                |Admin
+                b.caret<
+              ul.dropdown-menu(role="menu")
+                li
+                  i.fa.fa-bar-list.fa-fw>
+                  a href='/admin/upload_logs' Upload logs
+                li
+                  i.fa.fa-bar-chart.fa-fw>
+                  a href='/admin/aws_statistics' S3 metrics
+
         - else
           li = link_to "Login", login_path
           li = link_to "Impressum", "https://www.stefanwienert.net/impressum/"

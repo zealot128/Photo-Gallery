@@ -1,6 +1,6 @@
 module ControllerAuthentication
   def self.included(controller)
-    controller.send :helper_method, :current_user, :logged_in?, :redirect_to_target_or_default
+    controller.send :helper_method, :current_user, :logged_in?, :redirect_to_target_or_default, :admin?
   end
 
   def current_user
@@ -11,10 +11,21 @@ module ControllerAuthentication
     current_user
   end
 
+  def admin?
+    logged_in? && current_user.admin?
+  end
+
   def login_required
     unless logged_in?
       store_target_location
       redirect_to login_url, :alert => "You must first log in or sign up before accessing this page."
+    end
+  end
+
+  def admin_required
+    login_required
+    if logged_in? and !current_user.admin?
+      render status: 403, text: "You are not authorized to access that page", layout: true
     end
   end
 

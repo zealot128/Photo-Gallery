@@ -20,6 +20,11 @@ SimpleGallery::Application.routes.draw do
 
   get "download/:id/:filename" => 'photos#download', filename: /.*/
 
+  namespace :admin do
+    get 'upload_logs' => 'upload_logs#index'
+    get 'aws_statistics' => 'upload_logs#aws'
+  end
+
   namespace :v2 do
     resources :years, only: [:index, :show] do
       collection do
