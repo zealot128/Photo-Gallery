@@ -40,8 +40,9 @@ script type="x-template" id='tpl-photo-gallery'
       vue-edit v-bind:file='currentImage' v-bind:state='state'
 
 script type="x-template" id='tpl-photo-preview'
-  a.gallery-element v-bind:href='file.versions.large' data-sub-html='\#{{subHtmlId}}' data-download-url='{{file.download_url}}'
-    img v-bind:src='file.versions.preview' title='{{title}}'
+  .gallery-box
+    a.gallery-element v-bind:href='file.versions.large' data-sub-html='\#{{subHtmlId}}' data-download-url='{{file.download_url}}'
+      img v-bind:src='file.versions.preview' title='{{title}}'
 
 script type="x-template" id='tpl-photo'
   div id='{{subHtmlId}}'
@@ -61,11 +62,12 @@ script type="x-template" id='tpl-photo'
 
 
 script type="x-template" id='tpl-video-preview'
-  a.gallery-element data-poster="{{ file.versions.preview }}" data-html="\#{{subHtmlId}}"
-    i.fa.fa-play-circle.play-icon>
-    img v-bind:src='file.versions.preview' title='{{title}}'
-    .duration
-      | {{duration}}
+  .gallery-box
+    a.gallery-element data-poster="{{ file.versions.preview }}" data-html="\#{{subHtmlId}}"
+      i.fa.fa-play-circle.play-icon>
+      img v-bind:src='file.versions.preview' title='{{title}}'
+      .duration
+        | {{duration}}
 script type="x-template" id='tpl-video'
   div id='{{subHtmlId}}'
     video.lg-video-object.lg-html5.video-js.vjs-default-skin(controls preload="none")
