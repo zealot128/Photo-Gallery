@@ -31,7 +31,14 @@ class PhotosController < ApplicationController
   end
 
   def upload
-    photo = BaseFile.create_from_upload(params[:file], current_user)
+    photo = nil
+    exception = nil
+    begin
+      photo = BaseFile.create_from_upload(params[:file], current_user)
+    rescue StandardError => e
+      exception = e
+    end
+    UploadLog.handle_file(photo, params[:file], self, exception)
     render json: photo.attributes.except('exif_info').merge(
       valid: photo.valid?,
       errors: photo.errors,

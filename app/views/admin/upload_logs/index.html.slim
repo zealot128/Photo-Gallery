@@ -1,0 +1,32 @@
+h2 Upload Log
+
+table.table
+  thead
+    td
+    td Filename
+    td Size (MB)
+    td Uploader
+  - @logs.each do |log|
+    tr
+      td
+        = log.created_at.to_s(:db)
+        br
+        - if log.success?
+          i.fa.fa-check title='successfully uploaded' style='color: green'
+        - elsif log.already_uploaded?
+          i.fa.fa-clone style='color: orange' title='Already uploaded'
+        - else
+          i.fa.fa-exclamation-triangle style='color: red'
+      td = log.file_name
+      td = (log.file_size / 1.megabytes.to_f).round(3)
+      td
+        = log.user.try(:username)
+        br
+        small = log.ip
+        br
+        small title=log.user_agent
+          = truncate log.user_agent, length: 60
+
+
+
+

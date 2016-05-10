@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160505135825) do
+ActiveRecord::Schema.define(version: 20160510055802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,20 @@ ActiveRecord::Schema.define(version: 20160505135825) do
 
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
+  create_table "upload_logs", force: :cascade do |t|
+    t.string   "file_name"
+    t.integer  "file_size",  limit: 8
+    t.integer  "status",               default: 0
+    t.integer  "user_id"
+    t.text     "message"
+    t.string   "ip"
+    t.text     "user_agent"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  add_index "upload_logs", ["user_id"], name: "index_upload_logs_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
@@ -115,6 +129,7 @@ ActiveRecord::Schema.define(version: 20160505135825) do
     t.boolean  "allowed_ip_storing"
     t.string   "token"
     t.string   "pseudo_password"
+    t.boolean  "admin"
   end
 
   create_table "years", force: :cascade do |t|
@@ -123,4 +138,5 @@ ActiveRecord::Schema.define(version: 20160505135825) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "upload_logs", "users"
 end

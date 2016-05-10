@@ -62,11 +62,13 @@ nav.navbar.navbar-default role='navigation'
                 b.caret<
               ul.dropdown-menu(role="menu")
                 li
-                  i.fa.fa-bar-list.fa-fw>
-                  a href='/admin/upload_logs' Upload logs
+                  a href='/admin/upload_logs'
+                    i.fa.fa-list.fa-fw>
+                    |Upload logs
                 li
-                  i.fa.fa-bar-chart.fa-fw>
-                  a href='/admin/aws_statistics' S3 metrics
+                  a href='/admin/aws_statistics'
+                    i.fa.fa-bar-chart.fa-fw>
+                    |S3 metrics
 
         - else
           li = link_to "Login", login_path

@@ -3,11 +3,19 @@ class UploadController < ApplicationController
   before_filter :http_basic_auth
 
   def create
-    Filelock "tmp/upload-#{@user.id}.lock", timeout: 180 do
-      @photo = BaseFile.create_from_upload(params[:userfile] || params[:upfile], @user)
-      @user.enable_ip_based_login request
+    FileUtils.mkdir_p('tmp')
+    Filelock "tmp/upload-#{@user.id}.lock", timeout: 600 do
+      file = params[:userfile] || params[:upfile]
+      exception = nil
+      begin
+        @photo = BaseFile.create_from_upload(file, @user)
+        @user.enable_ip_based_login request
+      rescue StandardError => e
+        exception = e
+      end
+      UploadLog.handle_file(@photo, file, self, exception)
       if @photo.new_record?
-        render text: "ALREADY_UPLOADED:: #{@photo.errors.full_messages}", status: 409
+        render text: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409
       else
         render text: 'OK'
       end

@@ -21,6 +21,8 @@ describe UploadController do
       lambda {
         post :create, :userfile => picture
       }.should change(Photo, :count)
+      UploadLog.count.should be == 1
+      p UploadLog.first
       response.status.should == 200
     end
 

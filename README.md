@@ -1,35 +1,29 @@
 # Web Image Gallery for Autoshare Android Phone
 
-This is a Rails-App, which acts as an endpoint and private image-gallery.
+This is a Rails-App, which acts as an api server for different (Android) photo upload apps and private image-gallery.
 
 
 ## Features
 
-* Integrations with Autoshare
-AutoShare is an Android App which can automatically upload any (new) images to a specified server. In a way, it work's similiar like the Android Google+ App/Dropbox whatever.
-I liked the way the google+ app uploaded any new images to picasa. I didn't like the feeling that all my photos are located on a (US) company's server, which I have no control over.
+* Integrations with AutoShare and PhotoBackup
+  * AutoShare is an Android App which can automatically upload any (new) images to a specified server. In a way, it work's similiar like the Android Google+ App/Dropbox whatever.
+    AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/details?id=com.dngames.autoshare)
+  * [PhotoBackup](http://photobackup.github.io/) is a small protocol and a collection of Apps. For Mobile there is only a Android App atm
+  * Manual Upload on website
+  * ... your app missing? Just POST to / with http-basic-auth or pseudo-password or unique upload URL (displayed in the app)
 
-AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/details?id=com.dngames.autoshare)
+* Image gallery grouped by Year -> Month -> Day for faster image retrieval
+* Reads EXIF information for date of photo, GPS and camera information, orientation
+* Uses LightGallery with VideoJS support, so Photos as well as videos can be uploaded
+* works on mobile (responsive + touch support by LightGallery)
 
-[Some Screenshots/Demo using sharing feature](http://pics.stefanwienert.de/shares/adfb45830b436150cc5e15e4b95db599136f568fb1b80afd)
+Default:
+* Uses AWS S3 to store the original files (Also grouped by /year/day/). The smaller thumbnails and preview versions are stored locally (can be changed in ``app/uploaders/image_uploader.rb``) to reduce aws requests and costs.
 
+Shares + Tags
+* Photos/Videos can be tagged (private) and added to shares (public). Those shares have each an unique long URL and can be handed to other people
+* a share "Public" is automatically created, and all containing photos are displayed in a blogy fashion on the home page (Feed subcription possible)
 
-## More Features:
-
-* Works as API for other applications too: just POST the picture content to /photos with credentials as HTTP Basic authentication
-* Reads EXIF information for date of photo, GPS and camera information
-![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot6.jpg?1356009448)
-* being able to share individual photos or whole days via a "Share", which is a random URL which contains all the shared info. In this way, there are no limit, which photos too share to whome. A share is like a gallery
-![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot5.jpg?1356009448)
-* a share "Public" is automatically created, and all containing photos are displayed in a blogy fashion on the home page (Feed subcription possible, endless scrolling enabled)
-  ![](http://pics.stefanwienert.de/photos/medium/2012-12-19/sho1.jpg?1356009370)
-* Using Twitter Bootstrap
-* Internal private gallery: This is more or less the core feature and been used by me for a while now.
-![](http://pics.stefanwienert.de/photos/medium/2012-12-19/shot4.jpg?1356009376)
-  * All images are sorted and grouped by date. For performance reasons, whole years are foldable and folded by default.
-  * days are automatically montage'd into a big preview thumbnail, so even if you took 100's of shots on one day, it will load fastly (because you save 99 HTTP-Requests)
-  * Bulk upload with ajax possible, just drop your picture folder into the app
-  * Images are saved in a way, even after quitting the app, the folder can be took and makes sense: public/photos/original/YEAR-MO-DA/pictures-of-the-days
 
 
 ## Install
@@ -37,27 +31,41 @@ AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/d
 **Prerequisites:**
 
 * Ruby >2.2 and bundler
-* imagemagick
-* ffmpeg for video upload
-* file-storage -> all pictures are stored inside public/photos directory
-  * Image uploads are handled by [Paperclip](https://github.com/thoughtbot/paperclip#storage), so with a little configuration S3, Fog, Dropbox or azure should be possible.
-* postgresql
+* Imagemagick
+* PostgreSQL
+* (optional) ffmpeg for video upload
+* (optional) AWS account and S3 configuration
 
-```
+
+Getting started (development mode)
+
+```bash
 git clone https://github.com/zealot128/AutoShare-Gallery.git
-bundle
+cd AutoShare-Gallery
+bundle install
+cp config/secrets.yml.example config/secrets.yml
+# edit secrets
 rake db:setup  # migrate and create a new user "share" with password "password"
-rails s
+rails server -p 3000
 # server is started on port 3000
-# edit config/locales/en.yml and change settings
+# edit config/features.yml and config and change settings
 ```
 
 This will also create a new user with name "share" and password "password". This can be changed later.
 Configuration for AutoShare is explained after login.
 
+## AWS
+
+1. Create AWS account
+2. Create S3 Bucket (name needs to be unique over all S3 buckets), remember bucket name + region
+3. Create an IAM User in Security credentials, download credentials
+4. under yab Permissions Attach policy:  AmazonS3FullAccess  +  CloudWatchReadOnlyAccess
+5. Fill in AccessKeyId and SecretAccessKey in ``config/secrets.yml``, as well as bucket + region
+
 ## Video
 
-For video transcoding needs ffmpeg with libfaac
+For video transcoding needs ffmpeg, because Libfaac is not available on many systems by default, the default Audio codec is aac.
+
 OSX:
 
 ```
@@ -65,7 +73,6 @@ brew reinstall ffmpeg --with-faac
 ```
 
 ## License
-
 
 
 Copyright (c) 2012 Stefan Wienert
