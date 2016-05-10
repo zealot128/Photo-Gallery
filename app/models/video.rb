@@ -19,7 +19,7 @@ class Video < BaseFile
     end
 
     meta_date = meta_data['tags']['creation_time']
-    date = FileDateParser.new(file: file, user: current_user, exif_date: meta_date).parsed_date
+    date = FileDateParser.new(file: file, user: user, exif_date: meta_date).parsed_date
     video = Video.new
     video.shot_at = date
     video.user = user
