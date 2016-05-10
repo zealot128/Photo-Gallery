@@ -13,14 +13,15 @@ class Day < ActiveRecord::Base
   def make_montage
     images = photos.order("shot_at asc").map{|i|i.file.versions[:thumb].path }
     image_args = Shellwords.shelljoin images
-    width = [images.count, 30].min
-    # TODO Tempfile
-    out_file = Rails.root.join("tmp/", SecureRandom.hex(16) + ".jpg")
-    command = "montage -geometry +0+0 -tile #{width}x #{image_args} #{out_file}"
-    system command
-    self.montage = File.open(out_file)
-    self.save
-    File.unlink out_file
+    width = [images.count, 15].min
+    Tempfile.open(['montage', '.jpg']) do |f|
+      f.binmode
+      command = "montage -geometry +0+0 -tile #{width}x #{image_args} #{f.path}"
+      system command
+
+      self.montage = f
+      self.save
+    end
   end
 
   def self.date(datetime)

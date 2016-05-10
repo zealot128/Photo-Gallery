@@ -7,10 +7,11 @@ h2
   small<> &raquo;
   = l @day.date, format: "%d. (%a)"
 
+- if @day.locations?
+  p Locations: #{@day.locations}
 
 
 .js-photo-gallery data-photos="#{@photos.to_json}"
-
   br
   br
   .row
