@@ -18,7 +18,11 @@ class ZipController < ApplicationController
           next unless to_file
           name = file.path.split('/')[-2..-1].join('_')
           zipfile.get_output_stream(name) { |f|
-            f.write to_file.read
+            if to_file.respond_to?(:read)
+              f.write to_file.read
+            else
+              f.write to_file.get.body.read
+            end
           }
         end
       end
