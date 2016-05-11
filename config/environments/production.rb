@@ -14,6 +14,14 @@ SimpleGallery::Application.configure do
   # config.serve_static_assets = true
   config.serve_static_files = false
 
+  if config.features && (proxy = config.features.proxy)
+    if proxy == 'nginx'
+      config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
+    elsif proxy == 'apache'
+      config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+    end
+  end
+
   # Compress JavaScripts and CSS
   config.assets.compress = true
 

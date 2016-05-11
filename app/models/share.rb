@@ -16,6 +16,10 @@ class Share < ActiveRecord::Base
     photos.grouped_by_day_and_month
   end
 
+  def file_size
+    photos.map{|i| i.file_size.to_i }.sum
+  end
+
   def to_s
     name
   end

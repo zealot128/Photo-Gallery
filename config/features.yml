@@ -1,3 +1,11 @@
 ---
+# using sendfile header for Share Download
+proxy: nginx # apache or nginx
+default_timezone: 'Europe/Berlin'
+
+# default audio coded faac is not available on all ffmpeg versions, aac good enough
+audio_codec: 'aac'
+
+# experimental
 ocr: false
-elasticsearch: true
+elasticsearch: false

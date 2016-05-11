@@ -6,7 +6,12 @@ h1=@share.name
   .js-photo-gallery data-photos="#{@photos.to_json}"
 .row
   .col-lg-12 style='margin-top: 50px; margin-bottom: 50px'
-    a.btn.btn-default type='button' data-disable-with="Loading..." href=download_share_path(id: @share.token) Download All
+    a.btn.btn-default type='button' data-disable-with="Loading..." href=download_share_path(id: @share.token)
+      i.fa.fa-fw.fa-download>
+      |Download All
+      br
+      small
+        |~ #{number_to_human_size @share.file_size}
 
 - if can? :destroy, @share
   = link_to @share, data: {method: "delete", remote: true, confirm: "Really?"}, class: 'btn btn-default' do

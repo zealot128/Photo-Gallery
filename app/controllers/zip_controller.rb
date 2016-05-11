@@ -8,8 +8,8 @@ class ZipController < ApplicationController
       end
     end
     filename = "tmp/cache/share-#{params[:id]}.zip"
-    if !File.exists?(filename) or true
-      @share = Share.find_by_token(params[:id])
+    @share = Share.find_by_token(params[:id])
+    if !File.exists?(filename) or File.ctime(filename) < @share.updated_at
       files = @share.photos.order('shot_at asc').map{|i| i.file}
       Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zipfile|
         files.each do |file|
@@ -27,6 +27,6 @@ class ZipController < ApplicationController
         end
       end
     end
-    send_file filename, filename: 'photos.zip', type: 'application/zip'
+    send_file filename, filename: "photos-#{@share.updated_at.to_s(:db)}.zip", type: 'application/zip'
   end
 end
