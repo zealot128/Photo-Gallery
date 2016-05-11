@@ -7,6 +7,6 @@
 * Map mit GEO dort
 * Dupes besser finden
 * Share mit expire
-* Share download size
-* Day Partial mit zuvielen Bildern explodiert, evtl Daypartial als Vue component?
+* evtl Daypartial als Vue component?
 * TimeZone
+* Download Video

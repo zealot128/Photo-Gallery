@@ -226,6 +226,7 @@ GEM
       sprockets-rails (~> 2.0.0)
     select2-rails (4.0.2)
       thor (~> 0.14)
+    send_file_with_range (1.0.0)
     sexp_processor (4.7.0)
     slim (3.0.6)
       temple (~> 0.7.3)
@@ -315,6 +316,7 @@ DEPENDENCIES
   rubyzip (>= 1.0.0)
   sass-rails (>= 4.0.2)
   select2-rails
+  send_file_with_range
   slim-rails
   tesseract-ocr
   thin
