@@ -22,6 +22,7 @@ gem 'migration_data'
 
 gem 'filelock'
 gem 'hashie'
+gem 'local_time'
 
 gem 'pg'
 

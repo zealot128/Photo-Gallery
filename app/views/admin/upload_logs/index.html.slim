@@ -2,14 +2,14 @@ h2 Upload Log
 
 table.table
   thead
-    td
+    td Upload date
     td Filename
     td Size (MB)
     td Uploader
   - @logs.each do |log|
     tr
       td
-        = log.created_at.to_s(:db)
+        = local_time log.created_at, format: :long
         br
         - if log.success?
           i.fa.fa-check title='successfully uploaded' style='color: green'
@@ -17,8 +17,11 @@ table.table
           i.fa.fa-clone style='color: orange' title='Already uploaded'
         - else
           i.fa.fa-exclamation-triangle style='color: red'
-      td = log.file_name
-      td = (log.file_size / 1.megabytes.to_f).round(3)
+      td
+        - if log.base_file
+          span style='display: inline-block; margin-right: 5px'= image_tag log.base_file.file.url(:thumb)
+        = log.file_name
+      td = number_to_human (log.file_size / 1.megabytes.to_f).round(2)
       td
         = log.user.try(:username)
         br
