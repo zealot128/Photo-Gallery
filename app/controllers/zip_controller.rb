@@ -27,6 +27,9 @@ class ZipController < ApplicationController
         end
       end
     end
-    send_file filename, filename: "photos-#{@share.updated_at.to_s(:db)}.zip", type: 'application/zip'
+    response.headers['Content-Length'] = File.size(filename).to_s
+    response.headers["Accept-Ranges"] = "bytes"
+
+    send_file filename, filename: "photos-#{@share.updated_at.to_s(:db)}.zip", type: 'application/zip', x_sendfile: true
   end
 end
