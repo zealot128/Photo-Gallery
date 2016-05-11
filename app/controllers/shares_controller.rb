@@ -3,7 +3,7 @@ class SharesController < ApplicationController
 
   def show
     @share = Share.find_by!(token: params[:id])
-    @photos = @share.photos.order("shot_at desc")
+    @photos = @share.photos.order("shot_at asc")
   end
 
   def destroy
