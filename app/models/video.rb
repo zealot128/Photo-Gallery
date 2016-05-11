@@ -17,6 +17,7 @@ class Video < BaseFile
       Rails.logger.error 'Error running ffprobe, make sure ffmpeg is installed'
       meta_data = { 'tags' => {} }
     end
+    p meta_data
 
     meta_date = meta_data['tags']['creation_time']
     date = FileDateParser.new(file: file, user: user, exif_date: meta_date).parsed_date
