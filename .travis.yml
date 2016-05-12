@@ -4,14 +4,21 @@ cache: bundler
 
 addons:
   postgresql: 9.3
-  apt:
-    packages:
-      - ffmpeg
+  # apt:
+  #   packages:
+  #     - ffmpeg
 
 rvm:
   - 2.2
 
 before_script:
+  # ffmpeg
+  - mkdir ffmpeg
+  - wget "http://ffmpeg.gusari.org/static/64bit/ffmpeg.static.64bit.latest.tar.gz"
+  - tar xzf ffmpeg.static.64bit.latest.tar.gz -C ffmpeg
+  - export PATH=`pwd`/ffmpeg:$PATH
+
+
   - cp config/secrets.yml.example config/secrets.yml
   - mkdir tmp
   - "bundle exec rake db:create RAILS_ENV=test"
