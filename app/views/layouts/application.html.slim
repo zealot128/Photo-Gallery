@@ -7,7 +7,7 @@ html lang="en"
     /![if lt IE 9]
       = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
     = stylesheet_link_tag "application", :media => "all"
-    link href="images/favicon.ico" rel=("shortcut icon") /
+    link href="#{image_path('logo.png')}" rel="shortcut icon"
     - if current_user
       meta name='user' value=current_user.username
     javascript:
