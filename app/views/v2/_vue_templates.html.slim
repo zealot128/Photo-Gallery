@@ -12,13 +12,13 @@ script type="x-template" id='tpl-year'
       .panel.panel-default
         .panel-heading
           h3.panel-title.clearfix
-            a v-bind:href='month.url'
+            a v-bind:href='month.url' style='display: block' class='clearfix'
               | {{month.to_s}}
-            .pull-right
-              span v-for='photo in month.preview_photos'
-                img v-bind:src='photo.versions.thumb'
-              span.badge<
-                |{{month.photo_count}}
+              .pull-right
+                span v-for='photo in month.preview_photos'
+                  img v-bind:src='photo.versions.thumb'
+                span.badge<
+                  |{{month.photo_count}}
 
 
 
@@ -63,7 +63,7 @@ script type="x-template" id='tpl-photo'
 
 script type="x-template" id='tpl-video-preview'
   .gallery-box
-    a.gallery-element data-poster="{{ file.versions.preview }}" data-html="\#{{subHtmlId}}"
+    a.gallery-element data-poster="{{ file.versions.preview }}" data-html="\#{{subHtmlId}}" data-download-url='{{file.download_url}}'
       i.fa.fa-play-circle.play-icon>
       img v-bind:src='file.versions.preview' title='{{title}}'
       .duration

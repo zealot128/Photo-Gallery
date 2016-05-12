@@ -7,6 +7,10 @@ class Month < ActiveRecord::Base
     month_number.to_s
   end
 
+  before_save do
+    self.month_string ||= "#{year.name}-#{sprintf "%02d", month_number}"
+  end
+
   def as_json(opts= {})
     super.merge( 'to_s' => to_s,
                 'photo_count' => photos.count,

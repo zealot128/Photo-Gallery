@@ -5,3 +5,20 @@ h2
   = @month.name
 
 = render @month.days.order('date desc')
+
+br
+br
+.row
+  .col-sm-1.text-center
+    - if @prev_month
+      i.fa.fa-fw.fa-4x.fa-arrow-circle-left>
+  .col-sm-5
+    - if @prev_month
+      = render 'v2/years/month', month: @prev_month, year: @prev_month.year
+  .col-sm-5
+    - if @next_month
+      = render 'v2/years/month', month: @next_month, year: @next_month.year
+  .col-sm-1.text-center
+    - if @next_month
+      i.fa.fa-fw.fa-4x.fa-arrow-circle-right>
+
