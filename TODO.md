@@ -9,5 +9,5 @@
 * Share mit expire
 * evtl Daypartial als Vue component?
 * TimeZone
-* Theme
 * Recently uploaded asyncron updaten, auch Upload Logs
+* Rails 5

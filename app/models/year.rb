@@ -12,4 +12,8 @@ class Year < ActiveRecord::Base
   def year
     name.to_i
   end
+
+  def as_json(opts={})
+    super.merge(photo_count: photos.count)
+  end
 end

@@ -1,9 +1,11 @@
 script type="x-template" id='tpl-years'
   div.years
     div v-for='year in years'
-      h3
+      h2.text-center
         a href='#' v-on:click='toggleYear(year, $event)'
           |{{year.name}}
+          span.badge<
+            | {{year.photo_count}}
       vue-year v-if='isOpen(year)' v-bind:year='year'
 
 script type="x-template" id='tpl-year'
