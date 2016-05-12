@@ -1,0 +1,34 @@
+h2 Find already uploaded files
+
+p If you have a folder of files for that you don't know if there are already uploaded, you can paste the filenames here and get those that are not in the gallery, yet.
+
+p: small On OSX/Linux just get 1 file per line:
+pre: code ls -1
+
+
+= form_for @check, url: '', method: 'post', as: :check do |f|
+  .form-group
+    = f.label :files do
+      | List of files
+    = f.text_area :files, class: 'form-control', style: 'height: 100px'
+
+  .form-group
+    = f.label :min_date do
+      | Only files uploaded after that date
+    = f.text_field :date, class: 'form-control'
+  = submit_tag 'Check', class: 'btn btn-primary'
+
+
+- if @check.files.present?
+  br
+  br
+  .row
+    .col-sm-6
+      p Already uploaded
+      pre
+        = @check.already_uploaded_files.join("\n")
+    .col-sm-6
+      p Missing
+      pre
+        = @check.missing_files.join("\n")
+

@@ -5,7 +5,7 @@
 * Rotation
 * ShotAt aendern moeglich
 * User admin oberflaeche
-* Dupes besser finden
+* Dupes besser finden?
 * Share mit expire
 * evtl Daypartial als Vue component?
 * TimeZone

@@ -70,6 +70,10 @@ nav.navbar.navbar-default role='navigation'
                   a href='/admin/aws_statistics'
                     i.fa.fa-bar-chart.fa-fw>
                     |S3 metrics
+                li
+                  a href='/admin/already_uploaded'
+                    i.fa.fa-clone.fa-fw>
+                    |Find already uploaded
 
         - else
           li = link_to "Login", login_path
