@@ -8,7 +8,7 @@ describe UploadController do
     Photo.count.should == 0
   end
   specify "post without credentials should be 401" do
-    post :create, :userfile => picture
+    post :create, params: { :userfile => picture }
     response.status.should == 401
   end
   context "successful transfers" do
@@ -19,7 +19,7 @@ describe UploadController do
 
     specify "post with valid credentials should work "do
       lambda {
-        post :create, :userfile => picture
+        post :create, params: { :userfile => picture }
       }.should change(Photo, :count)
       UploadLog.count.should be == 1
       response.status.should == 200
@@ -28,7 +28,7 @@ describe UploadController do
     specify "authentication should be remembered" do
 
       request.env['REMOTE_ADDR'] = '1.2.3.4'
-      post :create, :userfile => picture
+      post :create, params: { :userfile => picture }
 
       User.first.tap do |u|
         u.last_ip.should == "1.2.3.4"
@@ -58,7 +58,7 @@ describe UploadController do
       User.first.enable_ip_based_login(request)
 
       lambda {
-        post :create, :userfile => picture
+        post :create, params: { :userfile => picture }
       }.should change(Photo,:count)
       response.status.should == 200
     end

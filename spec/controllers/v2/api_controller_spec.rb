@@ -17,9 +17,11 @@ describe V2::ApiController do
   context "bulk update" do
     specify "New Share onthefly has higher priority" do
       share = Share.create(name: 'meetup2016')
-      post :bulk_update, file_ids: [photo.id],
+      post :bulk_update, params: {
+        file_ids: [photo.id],
         tag_ids: [], new_tag: 'foobar',
         share_ids: [share.id], new_share: 'newshare123'
+      }
       photo.shares.map(&:name).sort.should be == ['meetup2016', 'newshare123']
       photo.tag_list.should be == ['foobar']
 

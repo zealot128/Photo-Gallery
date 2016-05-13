@@ -16,15 +16,15 @@ class UploadController < ApplicationController
       end
       UploadLog.handle_file(@photo, file, self, exception)
       if @photo.new_record?
-        render text: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409, layout: false
+        render plain: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409, layout: false
       else
-        render text: 'OK', layout: false
+        render plain: 'OK', layout: false
       end
     end
   end
 
   def test
-    render text: ''
+    render plain: ''
   end
 
   protected

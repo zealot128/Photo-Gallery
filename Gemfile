@@ -27,7 +27,6 @@ gem 'hashie'
 gem 'local_time'
 gem 'send_file_with_range'
 
-
 gem 'pg'
 
 gem 'phashion'
