@@ -5,6 +5,6 @@ describe Video do
 
   it "should store the uniq by hash" do
     photo = Video.create_from_upload(File.open(video), user)
-    photo.md5.should == Digest::MD5.hexdigest( video.read )
+    expect(photo.md5).to eq(Digest::MD5.hexdigest( video.read ))
   end
 end

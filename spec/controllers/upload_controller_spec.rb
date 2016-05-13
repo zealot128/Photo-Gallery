@@ -4,12 +4,12 @@ describe UploadController do
   let(:picture) { fixture_file_upload('/tiger.jpg', 'image/jpeg') }
 
   specify "preconditions" do
-    User.count.should == 0
-    Photo.count.should == 0
+    expect(User.count).to eq(0)
+    expect(Photo.count).to eq(0)
   end
   specify "post without credentials should be 401" do
     post :create, params: { :userfile => picture }
-    response.status.should == 401
+    expect(response.status).to eq(401)
   end
   context "successful transfers" do
     before :each do
@@ -18,11 +18,11 @@ describe UploadController do
     end
 
     specify "post with valid credentials should work "do
-      lambda {
+      expect {
         post :create, params: { :userfile => picture }
-      }.should change(Photo, :count)
-      UploadLog.count.should be == 1
-      response.status.should == 200
+      }.to change(Photo, :count)
+      expect(UploadLog.count).to eq(1)
+      expect(response.status).to eq(200)
     end
 
     specify "authentication should be remembered" do
@@ -31,8 +31,8 @@ describe UploadController do
       post :create, params: { :userfile => picture }
 
       User.first.tap do |u|
-        u.last_ip.should == "1.2.3.4"
-        u.last_upload.should > 1.minute.ago
+        expect(u.last_ip).to eq("1.2.3.4")
+        expect(u.last_upload).to be > 1.minute.ago
       end
 
     end
@@ -40,7 +40,7 @@ describe UploadController do
     specify "user auth by ip" do
       request.env["REMOTE_ADDR"] = "1.2.3.4"
       User.first.enable_ip_based_login(request)
-      User.authenticate_by_ip(request).should == User.first
+      expect(User.authenticate_by_ip(request)).to eq(User.first)
     end
 
     specify "authenication by ip should be invalid after some time" do
@@ -48,7 +48,7 @@ describe UploadController do
       User.first.enable_ip_based_login(request)
       User.first.update_attribute(:last_upload, 1.day.ago)
 
-      User.authenticate_by_ip(request).should be_nil
+      expect(User.authenticate_by_ip(request)).to be_nil
     end
 
     specify "authentication with ip should work instead of HTTP AUTH" do
@@ -57,10 +57,10 @@ describe UploadController do
       request.env["REMOTE_ADDR"] = "1.2.3.4"
       User.first.enable_ip_based_login(request)
 
-      lambda {
+      expect {
         post :create, params: { :userfile => picture }
-      }.should change(Photo,:count)
-      response.status.should == 200
+      }.to change(Photo,:count)
+      expect(response.status).to eq(200)
     end
 
 

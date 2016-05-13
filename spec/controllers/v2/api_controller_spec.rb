@@ -22,14 +22,14 @@ describe V2::ApiController do
         tag_ids: [], new_tag: 'foobar',
         share_ids: [share.id], new_share: 'newshare123'
       }
-      photo.shares.map(&:name).sort.should be == ['meetup2016', 'newshare123']
-      photo.tag_list.should be == ['foobar']
+      expect(photo.shares.map(&:name).sort).to eq(['meetup2016', 'newshare123'])
+      expect(photo.tag_list).to eq(['foobar'])
 
       get :tags
-      JSON.load(response.body).count.should be == 1
+      expect(JSON.load(response.body).count).to eq(1)
 
       get :shares
-      JSON.load(response.body).count.should be == 2
+      expect(JSON.load(response.body).count).to eq(2)
     end
   end
 end

@@ -8,7 +8,7 @@ describe Photo do
 
   it "should store the uniq by hash" do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    photo.md5.should == Digest::MD5.hexdigest( picture.read )
+    expect(photo.md5).to eq(Digest::MD5.hexdigest( picture.read ))
   end
 
   it "should validate by uniqness" do
@@ -25,10 +25,10 @@ describe Photo do
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
     }.to change(Day, :count)
 
-    photo.day.should be_present
+    expect(photo.day).to be_present
     Day.last.tap do |day|
-      day.date.should == photo.shot_at.to_date
-      day.year.year.should == photo.shot_at.year
+      expect(day.date).to eq(photo.shot_at.to_date)
+      expect(day.year.year).to eq(photo.shot_at.year)
     end
   end
 
@@ -38,8 +38,8 @@ describe Photo do
     expect {
       photo = Photo.create_from_upload(File.open(other_picture), user)
     }.to_not change(Day, :count)
-    photo.day.should == d
-    photo.reload.day.should == d
+    expect(photo.day).to eq(d)
+    expect(photo.reload.day).to eq(d)
   end
 
   specify "Changing the date should move the file" do
@@ -48,37 +48,37 @@ describe Photo do
     day = photo.day
     photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
     photo.reload
-    File.exists?(photo.file.path).should be == true
+    expect(File.exists?(photo.file.path)).to eq(true)
 
     photo.file.versions.each do |key,version|
-      File.exists?(version.path).should be == true
+      expect(File.exists?(version.path)).to eq(true)
     end
 
     old_path = photo.file.path.gsub('/2012/','/2010/').gsub('2012-10-01', day.date.to_s)
-    File.exists?(old_path).should be == false
+    expect(File.exists?(old_path)).to eq(false)
 
     Day.where(date: "2012-10-01").first.tap do |d|
-      d.photos.should == [photo]
+      expect(d.photos).to eq([photo])
     end
   end
 
   specify 'EOS600d date format' do
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    photo.shot_at.should ==  Time.zone.parse("2014-02-05T14:17:42+01:00")
+    expect(photo.shot_at).to eq(Time.zone.parse("2014-02-05T14:17:42+01:00"))
   end
 
   specify 'Metadata' do
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    photo.as_json.should be_present
-    photo.exif['model'].should == 'GT-N7100'
+    expect(photo.as_json).to be_present
+    expect(photo.exif['model']).to eq('GT-N7100')
   end
 
   specify 'Mobile Phone format' do
     picture = 'spec/fixtures/IMG-20160508-WA0000.jpg'
     date = Photo.parse_date(File.open(picture), user)
-    date.to_date.to_s.should be == '2016-05-08'
+    expect(date.to_date.to_s).to eq('2016-05-08')
   end
 
   specify 'geocoding' do
@@ -86,7 +86,7 @@ describe Photo do
     VCR.use_cassette 'geocoding' do
       picture = "spec/fixtures/geocode.jpg"
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
-      photo.location.should == 'Hofheim am Taunus - Wallau'
+      expect(photo.location).to eq('Hofheim am Taunus - Wallau')
     end
   end
 
@@ -94,7 +94,7 @@ describe Photo do
     specify "OCR" do
       photo = Photo.create_from_upload(File.open("spec/fixtures/text.jpg"), user)
       photo.ocr
-      photo.description.should include "Mietsteigerung"
+      expect(photo.description).to include "Mietsteigerung"
     end
   end
 
@@ -118,21 +118,21 @@ describe Photo do
       Photo.slow_callbacks = true
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
 
-      photo.file.file.exists?.should be == true
+      expect(photo.file.file.exists?).to eq(true)
       old_path = photo.file.file.path
       day = photo.day
-      day.should_receive(:update_me)
+      expect(day).to receive(:update_me)
       photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
       photo = Photo.find photo.id
-      photo.file.file.exists?.should be == true
-      photo.file.path.should be == 'photos/original/2012/2012-10-01/tiger.jpg'
+      expect(photo.file.file.exists?).to eq(true)
+      expect(photo.file.path).to eq('photos/original/2012/2012-10-01/tiger.jpg')
       photo.file.versions.each do |key,version|
-        version.file.exists?.should be == true
+        expect(version.file.exists?).to eq(true)
       end
 
       f = photo.file.file
       f.instance_variable_set('@path', old_path)
-      f.exists?.should be == false
+      expect(f.exists?).to eq(false)
     end
   end
 end
