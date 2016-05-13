@@ -1,10 +1,8 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
-if defined?(Bundler)
-  Bundler.require(:default, Rails.env)
-end
+Bundler.require(*Rails.groups)
 
 module SimpleGallery
   class Application < Rails::Application
