@@ -27,6 +27,8 @@ pre: code ls -1
       p Already uploaded
       pre
         = @check.already_uploaded_files.join("\n")
+      p: small ProTip: You can remove that files on Linux/OSX with:
+      pre: code: echo '<PASTE...>' | xargs rm
     .col-sm-6
       p Missing
       pre
