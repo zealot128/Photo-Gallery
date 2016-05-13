@@ -1,5 +1,5 @@
 class Admin::UploadLogsController < ApplicationController
-  before_filter :admin_required
+  before_action :admin_required
 
   def index
     @logs = UploadLog.order('created_at desc').limit(100)

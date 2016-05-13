@@ -1,5 +1,5 @@
 class V2::ApiController < ApplicationController
-  before_filter :login_required
+  before_action :login_required
 
   def tags
     tags = ActsAsTaggableOn::Tag.order(:name).as_json

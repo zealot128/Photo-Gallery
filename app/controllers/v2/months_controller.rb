@@ -1,5 +1,5 @@
 class V2::MonthsController < ApplicationController
-  before_filter :login_required
+  before_action :login_required
 
   def show
     @year = Year.find_by!(name: params[:id])

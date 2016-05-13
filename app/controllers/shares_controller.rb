@@ -1,5 +1,5 @@
 class SharesController < ApplicationController
-  before_filter :login_required, except: "show"
+  before_action :login_required, except: "show"
 
   def show
     @share = Share.find_by!(token: params[:id])
