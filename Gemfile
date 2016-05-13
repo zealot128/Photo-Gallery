@@ -46,7 +46,7 @@ gem 'rubyzip', '>= 1.0.0'
 gem 'zip-zip'
 
 group :test do
-  gem 'rspec-rails', '~> 2.0'
+  gem 'rspec-rails', '~> 3.5.0.beta3'
 end
 
 gem 'font-awesome-rails'
