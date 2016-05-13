@@ -17,7 +17,8 @@ gem 'ruby-progressbar'
 gem 'tesseract-ocr', require: false
 gem 'slim-rails'
 gem 'haml-rails'
-gem 'acts-as-taggable-on'
+# TODO https://github.com/mbleigh/acts-as-taggable-on/issues/736
+gem 'acts-as-taggable-on', github: 'mbleigh/acts-as-taggable-on'
 gem 'parallel'
 gem 'migration_data'
 
