@@ -4,6 +4,8 @@ p If you have a folder of files for that you don't know if there are already upl
 
 p: small On OSX/Linux just get 1 file per line:
 pre: code ls -1
+p: small On OSX you can directly copy the output:
+pre: code ls -1 | pbcopy
 
 
 = form_for @check, url: '', method: 'post', as: :check do |f|
@@ -29,6 +31,8 @@ pre: code ls -1
         = @check.already_uploaded_files.join("\n")
       p: small ProTip: You can remove that files on Linux/OSX with:
       pre: code: echo '<PASTE...>' | xargs rm
+      p: small OSX:
+      pre: code: pbpaste | xargs rm
     .col-sm-6
       p Missing
       pre
