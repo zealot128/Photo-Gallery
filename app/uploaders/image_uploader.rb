@@ -13,21 +13,15 @@ class ImageUploader < CarrierWave::Uploader::Base
     `mogrify -auto-orient #{Shellwords.escape current_path}`
   end
 
-  # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     store_dir_version('original')
   end
 
   def store_dir_version(version)
-    "photos/#{version}/#{model.shot_at.year}/#{model.shot_at.to_date.to_s}"
+    # using the day of the associated date - this way we ignore Timezone, that might conflict with the ShotAt date and keep the paths
+    date = model.try(:day).try(:date) || model.shot_at
+    "photos/#{version}/#{date}/#{date}"
   end
-
-  # def default_url
-  #   # ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default.png"].compact.join('_'))
-  #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  # end
-
 
   # Create different versions of your uploaded files:
   version :preview do

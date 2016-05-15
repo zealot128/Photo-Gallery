@@ -1,13 +1,15 @@
 # TODO
 
-* Geodaten wieder anzeigen -> Map
+* Geodaten -> Map
 * PNG upload
 * Rotation
 * ShotAt aendern moeglich
-* User admin oberflaeche
+* User-Admin oberflaeche
 * Dupes besser finden?
-* Share mit expire
-* evtl Daypartial als Vue component?
+* Share mit Expire
+* evtl Day-partial als Vue component?
 * TimeZone
 * Recently uploaded asyncron updaten, auch Upload Logs
-* Rails 5
+
+
+* ShotAt abh. von aktueller Zeitzone, wenn in Winterzeit geschossen und in Sommereit betrachtet kann es in den falschen Tag fallen.
