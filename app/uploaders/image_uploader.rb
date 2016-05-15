@@ -17,10 +17,10 @@ class ImageUploader < CarrierWave::Uploader::Base
     store_dir_version('original')
   end
 
+  # using the day of the associated date - this way we ignore Timezone, that might conflict with the ShotAt date and keep the paths
   def store_dir_version(version)
-    # using the day of the associated date - this way we ignore Timezone, that might conflict with the ShotAt date and keep the paths
-    date = model.try(:day).try(:date) || model.shot_at
-    "photos/#{version}/#{date}/#{date}"
+    date = model.try(:day).try(:date) || model.shot_at.to_date
+    p("photos/#{version}/#{date.year}/#{date.to_s}")
   end
 
   # Create different versions of your uploaded files:

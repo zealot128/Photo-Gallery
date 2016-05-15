@@ -12,7 +12,8 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
 
   def store_dir_version(version)
-    "photos/#{version}/#{model.shot_at.year}/#{model.shot_at.to_date.to_s}"
+    date = model.try(:day).try(:date) || model.shot_at
+    "photos/#{version}/#{date.year}/#{date.to_s}"
   end
 
   version :preview do

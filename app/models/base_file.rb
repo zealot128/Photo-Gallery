@@ -15,10 +15,16 @@ class BaseFile < ActiveRecord::Base
   end
 
   before_save do
-    if self.shot_at_changed? and self.shot_at_was.present?
+    if (self.shot_at_changed? and self.shot_at_was.present?)
       move_file_after_shot_at_changed
     end
-    self.day = Day.date self.shot_at
+    new_day = Day.date(self.shot_at)
+    if new_day != day and shot_at_was.present?
+      self.day = new_day
+      move_file_after_shot_at_changed
+    else
+      self.day = new_day
+    end
   end
 
   before_save do
