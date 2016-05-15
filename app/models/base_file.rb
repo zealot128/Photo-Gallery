@@ -56,6 +56,9 @@ class BaseFile < ActiveRecord::Base
     klass.create_from_upload(file,current_user)
   end
 
+  def shot_at_without_timezone
+    self.day.try(:date) || shot_at.to_date
+  end
 
   def check_uniqueness
     valid?

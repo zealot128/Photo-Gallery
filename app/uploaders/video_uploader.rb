@@ -12,7 +12,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
 
   def store_dir_version(version)
-    date = model.try(:day).try(:date) || model.shot_at
+    date = model.shot_at_without_timezone
     "photos/#{version}/#{date.year}/#{date.to_s}"
   end
 
