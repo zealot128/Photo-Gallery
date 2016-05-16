@@ -20,21 +20,36 @@ pre: code ls -1 | pbcopy
     = f.text_field :date, class: 'form-control'
   = submit_tag 'Check', class: 'btn btn-primary'
 
-
 - if @check.files.present?
   br
   br
   .row
     .col-sm-6
       p Already uploaded
-      pre
+      textarea.js-copy-target.form-control
         = @check.already_uploaded_files.join("\n")
+      a.btn.btn-default(href='#' js-clipboard) Copy list
       p: small ProTip: You can remove that files on Linux/OSX with:
-      pre: code: echo '<PASTE...>' | xargs rm
+      pre: code
+        |echo '<PASTE...>' | xargs rm
       p: small OSX:
-      pre: code: pbpaste | xargs rm
+      pre: code
+        |pbpaste | xargs rm
     .col-sm-6
       p Missing
       pre
         = @check.missing_files.join("\n")
 
+javascript:
+  $(document).on("click", "[js-clipboard]", function(e) {
+    e.preventDefault();
+    var textArea = $('.js-copy-target');
+    textArea.get(0).select();
+    try {
+      document.execCommand('copy');
+      console.log("COPIED");
+    } catch (err) {
+      alert("Copy not possible with browser/security");
+    }
+    return false;
+  })
