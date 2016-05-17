@@ -12,6 +12,7 @@ rvm:
   - 2.2
 
 before_script:
+  - gem install bundler
   # ffmpeg
   - mkdir ffmpeg
   - wget "http://ffmpeg.gusari.org/static/64bit/ffmpeg.static.64bit.latest.tar.gz"
