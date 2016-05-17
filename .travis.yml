@@ -9,7 +9,7 @@ addons:
   #     - ffmpeg
 
 rvm:
-  - 2.2
+  - 2.2-head
 
 before_install:
   - gem install bundler
