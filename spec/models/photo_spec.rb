@@ -82,12 +82,20 @@ describe Photo do
   end
 
   specify 'geocoding' do
-    Geocoder.configure(timeout: 60)
-    VCR.use_cassette 'geocoding' do
-      picture = "spec/fixtures/geocode.jpg"
-      photo = Photo.create_from_upload(File.open(picture.to_s), user)
-      expect(photo.location).to eq('Hofheim am Taunus - Wallau')
-    end
+    Geocoder.configure(:lookup => :test)
+    Geocoder::Lookup::Test.add_stub(
+      [50.068056, 8.385000], [
+        {
+          'latitude' => 50.068056,
+          'longitude' => 8.385000,
+          'address' => "Rudolf-Diesel-Straße 3, 65719 Hofheim am Taunus, Germany",
+          'city' => "Hofheim am Taunus",
+        }
+      ]
+    )
+    picture = "spec/fixtures/geocode.jpg"
+    photo = Photo.create_from_upload(File.open(picture), user)
+    expect(photo.location).to eq('Hofheim am Taunus')
   end
 
   if Rails.application.config.features.ocr
@@ -96,6 +104,14 @@ describe Photo do
       photo.ocr
       expect(photo.description).to include "Mietsteigerung"
     end
+  end
+
+  specify 'PNG upload' do
+    picture = "spec/fixtures/aws.png"
+    photo = Photo.create_from_upload(File.open(picture.to_s), user)
+
+    expect(photo.persisted?).to be == true
+    expect(photo.exif).to be_present
   end
 
   describe 'FOG' do

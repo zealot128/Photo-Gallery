@@ -4,12 +4,7 @@ class Photo < BaseFile
   include PhotoMetadata
 
   def self.parse_date(file, current_user)
-    date = nil
-    begin
-      meta = EXIFR::JPEG.new(file.path)
-      date = meta.exif[:date_time] || meta.exif[:date_time_original] rescue nil
-    rescue EXIFR::MalformedJPEG
-    end
+    date = MetaDataParser.new(file.path).shot_at_date
     FileDateParser.new(file: file, user: current_user, exif_date: date).parsed_date
   end
 
@@ -17,18 +12,9 @@ class Photo < BaseFile
     photo = Photo.new
     transaction do
       date = Photo.parse_date(file, current_user)
-      begin
-        meta = EXIFR::JPEG.new(file.path)
-        if meta.gps
-          photo.lat = meta.gps.latitude
-          photo.lng = meta.gps.longitude
-        end
-      rescue EXIFR::MalformedJPEG
-      end
       photo.shot_at = date
       photo.user = current_user
       photo.file = file
-      photo.update_gps
       photo.save
     end
     photo

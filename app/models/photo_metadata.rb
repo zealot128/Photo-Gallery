@@ -20,8 +20,6 @@ module PhotoMetadata
     def top_colors=(val)
       super val.to_json
     end
-
-
   end
 
   def mime_type
@@ -38,15 +36,13 @@ module PhotoMetadata
   def set_metadata
     return if !file.present?
     self.meta_data ||= {}
-    self.meta_data.merge! get_exif.exif.reduce({}){|a,e|a.merge(e)}.except(:user_comment).stringify_keys rescue nil
-    if self.meta_data['orientation'].is_a? EXIFR::TIFF::Orientation
-      self.meta_data['orientation'] = self.meta_data['orientation'].instance_variable_get("@type")
-    end
+    self.meta_data = MetaDataParser.new(file.path).as_json
     self.meta_data_will_change!
     if Photo.slow_callbacks
       set_top_colors
     end
-    self.md5 = Digest::MD5.hexdigest(file.read)
+    self.md5 = Digest::MD5.file(file.path)
+    self.update_gps
     self.save
   end
 
@@ -61,23 +57,8 @@ module PhotoMetadata
                        end
   end
 
-  def get_exif
-    @_exif ||= file.path && EXIFR::JPEG.new(file.path)
-  rescue EXIFR::MalformedJPEG
-    @_exif ||= NullMetaData.new
-  end
-
   def exif
     (self.meta_data || {}).except('fingerprint', 'top_colors')
-  end
-
-  def update_gps
-    if gps = get_exif.gps
-      self.lat = gps.latitude
-      self.lng = gps.longitude
-      reverse_geocode
-    end
-  rescue NoMethodError
   end
 
 

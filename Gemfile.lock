@@ -99,7 +99,6 @@ GEM
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
     execjs (2.6.0)
-    exifr (1.2.4)
     ffi (1.9.10)
     ffi-extra (0.1.0)
       ffi
@@ -148,6 +147,9 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0221)
     mimemagic (0.3.1)
+    mini_exiftool (2.7.2)
+    mini_exiftool_vendored (9.2.7.v1)
+      mini_exiftool (>= 1.6.0)
     mini_magick (4.5.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
@@ -303,7 +305,6 @@ DEPENDENCIES
   carrierwave-video
   coffee-rails
   exception_notification
-  exifr
   filelock
   font-awesome-rails
   geocoder
@@ -312,6 +313,8 @@ DEPENDENCIES
   jquery-rails
   local_time
   migration_data
+  mini_exiftool
+  mini_exiftool_vendored
   mini_magick
   parallel
   pg

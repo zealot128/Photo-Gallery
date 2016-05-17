@@ -19,6 +19,16 @@ class BaseFile < ActiveRecord::Base
     end
   end
 
+
+  protected def update_gps
+    if meta_data && meta_data['gps_latitude']
+      self.lat = meta_data['gps_latitude']
+      self.lng = meta_data['gps_longitude']
+      reverse_geocode
+    end
+  end
+
+
   before_validation on: :create do
     self.md5 = Digest::MD5.hexdigest(file.read)
   end

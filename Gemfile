@@ -4,7 +4,8 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.0.0.rc1'
 
 gem 'bcrypt-ruby', require: 'bcrypt'
-gem 'exifr'
+gem 'mini_exiftool_vendored'
+gem 'mini_exiftool'
 gem 'geocoder'
 
 gem 'carrierwave'
