@@ -32,11 +32,12 @@ Shares + Tags
 
 **Prerequisites:**
 
-* Ruby >2.2 and bundler
+* Ruby >2.2.2 and bundler
 * Imagemagick
 * PostgreSQL
 * (optional) ffmpeg for video upload
 * (optional) AWS account and S3 configuration
+* At this point, only tested on (x64) linux architecture and OSX
 
 
 Getting started (development mode)
