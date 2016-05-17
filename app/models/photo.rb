@@ -5,6 +5,7 @@ class Photo < BaseFile
 
   def self.parse_date(file, current_user)
     date = MetaDataParser.new(file.path).shot_at_date
+    binding.pry
     FileDateParser.new(file: file, user: current_user, exif_date: date).parsed_date
   end
 
@@ -19,6 +20,16 @@ class Photo < BaseFile
     end
     photo
   end
+
+  protected def update_gps(save: true)
+    if meta_data && meta_data['gps_latitude']
+      self.lat = meta_data['gps_latitude']
+      self.lng = meta_data['gps_longitude']
+      reverse_geocode
+      self.save if save
+    end
+  end
+
 
   def rotate!(direction)
     degrees =  case direction.to_sym

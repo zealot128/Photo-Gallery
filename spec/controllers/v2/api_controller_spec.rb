@@ -6,7 +6,7 @@ describe V2::ApiController do
                  password: "123123123",
                  email: "info@example.com",
                  password_confirmation: "123123123")
-    expect(@controller).to_receive(:current_user).and_return(user)
+    allow(@controller).to receive(:current_user).and_return(user)
   end
   let :photo do
     Photo.slow_callbacks = false

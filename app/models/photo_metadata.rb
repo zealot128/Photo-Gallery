@@ -41,8 +41,7 @@ module PhotoMetadata
     if Photo.slow_callbacks
       set_top_colors
     end
-    self.md5 = Digest::MD5.file(file.path)
-    self.update_gps
+    self.update_gps save: false
     self.save
   end
 

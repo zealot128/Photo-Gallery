@@ -22,9 +22,8 @@ class Video < BaseFile
     video.shot_at = date
     video.user = user
     video.file = file
-    gps = meta_data['tags']['location'] || meta_data['tags']['location-eng']
     video.meta_data = { ffprobe: meta_data }
-    update_gps
+    video.update_gps save: false
     video.save
     video
   end

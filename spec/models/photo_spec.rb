@@ -33,7 +33,7 @@ describe Photo do
   end
 
   specify "Reusing created date" do
-    d = Day.create date: Date.parse("2004-09-12")
+    d = Day.create date: Date.parse("2004-09-11")
     photo = nil
     expect {
       photo = Photo.create_from_upload(File.open(other_picture), user)
