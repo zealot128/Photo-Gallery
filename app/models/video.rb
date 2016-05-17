@@ -22,8 +22,23 @@ class Video < BaseFile
     video.shot_at = date
     video.user = user
     video.file = file
+    gps = meta_data['tags']['location'] || meta_data['tags']['location-eng']
     video.meta_data = { ffprobe: meta_data }
+    update_gps
     video.save
     video
+  end
+
+  def update_gps(save: true)
+    tags = meta_data.fetch('ffprobe', {}).fetch('tags', {})
+    gps = tags['location'] || tags['location-eng']
+    case gps
+    when nil then return
+    when /([\+\-][\d\.]+){2}/ then
+      self.lat, self.lng = gps.scan(/([\+\-][\d\.]+)/).map(&:first).map(&:to_f)
+      reverse_geocode
+      self.save if save
+    end
+
   end
 end

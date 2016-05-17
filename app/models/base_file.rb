@@ -10,6 +10,15 @@ class BaseFile < ActiveRecord::Base
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
 
+  reverse_geocoded_by :lat, :lng do |obj,results|
+    if geo = results.first
+      parts = [geo.city]
+      parts << geo.address_components_of_type("establishment").first["short_name"]  rescue nil
+      parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
+      obj.update_attribute(:location, parts.join(" - "))
+    end
+  end
+
   before_validation on: :create do
     self.md5 = Digest::MD5.hexdigest(file.read)
   end

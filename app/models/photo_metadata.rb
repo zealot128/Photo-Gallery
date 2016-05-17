@@ -21,14 +21,6 @@ module PhotoMetadata
       super val.to_json
     end
 
-    reverse_geocoded_by :lat, :lng do |obj,results|
-      if geo = results.first
-        parts = [geo.city]
-        parts << geo.address_components_of_type("establishment").first["short_name"]  rescue nil
-        parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
-        obj.update_attribute(:location, parts.join(" - "))
-      end
-    end
 
   end
 

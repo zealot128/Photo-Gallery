@@ -6,12 +6,7 @@ file = {
   }
 }
 
-Vue.component('vue-photo', { mixins: [ file ], template: '#tpl-photo' })
-Vue.component('vue-video', { mixins: [ file ], template: '#tpl-video' })
-Vue.component('vue-photo-preview', { mixins: [ file ], template: '#tpl-photo-preview'})
-Vue.component('vue-video-preview', {
-  mixins: [ file ],
-  template: '#tpl-video-preview',
+video = {
   computed: {
     duration: ->
       sec_num = this.file.exif.duration
@@ -30,4 +25,12 @@ Vue.component('vue-video-preview', {
       else
         minutes+':'+seconds
   }
+}
+
+Vue.component('vue-photo', { mixins: [ file ], template: '#tpl-photo' })
+Vue.component('vue-video', { mixins: [ file, video ], template: '#tpl-video' })
+Vue.component('vue-photo-preview', { mixins: [ file ], template: '#tpl-photo-preview'})
+Vue.component('vue-video-preview', {
+  mixins: [ file, video ],
+  template: '#tpl-video-preview',
 })
