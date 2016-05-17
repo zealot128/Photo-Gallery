@@ -5,7 +5,6 @@ class Photo < BaseFile
 
   def self.parse_date(file, current_user)
     date = MetaDataParser.new(file.path).shot_at_date
-    binding.pry
     FileDateParser.new(file: file, user: current_user, exif_date: date).parsed_date
   end
 
