@@ -1,63 +1,52 @@
 source 'https://rubygems.org'
 
-# gem 'rails', '~>4.2.0'
+### Basic Framework
 gem 'rails', '~> 5.0.0.rc1'
+gem 'pg'
+gem 'slim-rails'
+gem 'haml-rails'
+gem 'migration_data'
+gem 'hashie'
+gem 'local_time'
 
+### Model
 gem 'bcrypt-ruby', require: 'bcrypt'
-gem 'mini_exiftool_vendored'
-gem 'mini_exiftool'
-gem 'geocoder'
+# TODO https://github.com/mbleigh/acts-as-taggable-on/issues/736
+gem 'acts-as-taggable-on', github: 'mbleigh/acts-as-taggable-on'
 
+### Utils
+gem 'ruby-progressbar'
+gem 'parallel', require: false
+
+### Image analysis / conversion
 gem 'carrierwave'
 gem 'carrierwave-aws'
 gem 'carrierwave-video'
-
 gem 'mini_magick'
-gem 'rack-raw-upload'
-gem 'ruby-progressbar'
-gem 'tesseract-ocr', require: false
-gem 'slim-rails'
-gem 'haml-rails'
-# TODO https://github.com/mbleigh/acts-as-taggable-on/issues/736
-gem 'acts-as-taggable-on', github: 'mbleigh/acts-as-taggable-on'
-gem 'parallel'
-gem 'migration_data'
-
-gem 'filelock'
-gem 'hashie'
-gem 'local_time'
-gem 'send_file_with_range'
-
-gem 'pg'
-
+gem 'mini_exiftool_vendored'
+gem 'mini_exiftool'
+gem 'geocoder'
 gem 'phashion'
 gem 'rqrcode'
+gem 'tesseract-ocr', require: false
 
-group :development, :test do
-  gem 'thin'
-  gem 'pry-rails'
-  gem 'vcr'
-  gem 'webmock'
-end
-group :development do
-  gem 'quiet_assets'
-end
-
+### Share page / upload
 gem 'rubyzip', '>= 1.0.0'
 gem 'zip-zip'
+gem 'send_file_with_range'
+gem 'rack-raw-upload'
+gem 'filelock'
 
-group :test do
-  gem 'rspec-rails', '~> 3.5.0.beta3'
-end
-
+### Frontend
 gem 'font-awesome-rails'
-gem 'coffee-rails' #'~> 3.2.1'
+gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'sass-rails' , '>= 4.0.2'
 gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-will_paginate'
 gem 'select2-rails'
+
 source 'https://rails-assets.tenex.tech' do
   gem 'rails-assets-dropzone'
   gem 'rails-assets-moment'
@@ -66,4 +55,23 @@ source 'https://rails-assets.tenex.tech' do
   gem 'rails-assets-video.js'
 end
 
-gem 'exception_notification', group: :production
+group :development do
+  gem 'quiet_assets'
+  gem 'listen'
+end
+
+group :test do
+  gem 'rspec-rails', '~> 3.5.0.beta3'
+end
+
+group :development, :test do
+  gem 'thin'
+  gem 'pry-rails'
+  # gem 'vcr'
+  # gem 'webmock'
+end
+
+group :production do
+  gem 'exception_notification'
+  gem 'lograge'
+end

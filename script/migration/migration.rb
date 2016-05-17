@@ -1,3 +1,4 @@
+require 'parallel'
 mapping = Hash[YAML.load_file('migration/picsmapping.yml')]
 Photo.slow_callbacks = false
 Parallel.each(Photo.where('file is null'), :in_processes => 4) do |photo|
