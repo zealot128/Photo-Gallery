@@ -1,5 +1,7 @@
 window.Gallery = (domEl, state) ->
   el = $(domEl)
+  recent =  window.location.pathname.indexOf('/recent') != -1
+
   g = new Vue({
     el: el[0],
     data: {
@@ -8,6 +10,7 @@ window.Gallery = (domEl, state) ->
       currentImage: null,
       galleryOpen: false,
       editMode: false,
+      isRecentGallery: recent,
       gallery: null,
     }
 
@@ -15,6 +18,10 @@ window.Gallery = (domEl, state) ->
       window.location.hash = ''  ## gallery has problems if there is an old hash
       this.buildGallery()
       $( document ).on( "keyup", (e) => this.handleKeyboardNav(e) )
+      if this.isRecentGallery
+        App.new_uploads.received = (data)=>
+          this.files.unshift({})
+          this.files.$set(0, data.file)
 
     methods: {
       buildGallery: ->

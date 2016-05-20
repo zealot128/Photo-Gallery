@@ -46,7 +46,6 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.4.0)
     arel (7.0.0)
     autoprefixer-rails (6.3.6)
       execjs
@@ -89,12 +88,8 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.2)
-    crack (0.4.3)
-      safe_yaml (~> 1.0.0)
-    daemons (1.2.3)
     diff-lcs (1.2.5)
     erubis (2.7.0)
-    eventmachine (1.2.0.1)
     exception_notification (4.1.1)
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
@@ -118,7 +113,6 @@ GEM
       haml (>= 4.0.6, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
-    hashdiff (0.3.0)
     hashie (3.4.4)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
@@ -135,6 +129,9 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.3)
     json_pure (1.8.3)
+    listen (3.0.6)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9.7)
     local_time (1.0.3)
       coffee-rails
     lograge (0.3.6)
@@ -170,6 +167,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    puma (3.4.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (2.0.0.rc1)
@@ -212,6 +210,9 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (11.1.2)
+    rb-fsevent (0.9.7)
+    rb-inotify (0.9.7)
+      ffi (>= 0.5.0)
     refining (0.0.5.5)
     rqrcode (0.10.1)
       chunky_png (~> 1.0)
@@ -236,7 +237,6 @@ GEM
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
     rubyzip (1.2.0)
-    safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -273,10 +273,6 @@ GEM
       ffi-extra
       ffi-inline
       iso-639
-    thin (1.6.2)
-      daemons (>= 1.0.9)
-      eventmachine (>= 1.0.0)
-      rack (>= 1.0.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.3)
@@ -284,11 +280,6 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
-    vcr (3.0.1)
-    webmock (2.0.2)
-      addressable (>= 2.3.6)
-      crack (>= 0.3.2)
-      hashdiff
     websocket-driver (0.6.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -315,6 +306,7 @@ DEPENDENCIES
   haml-rails
   hashie
   jquery-rails
+  listen
   local_time
   lograge
   migration_data
@@ -325,6 +317,7 @@ DEPENDENCIES
   pg
   phashion
   pry-rails
+  puma
   quiet_assets
   rack-raw-upload
   rails (~> 5.0.0.rc1)
@@ -342,10 +335,7 @@ DEPENDENCIES
   send_file_with_range
   slim-rails
   tesseract-ocr
-  thin
   uglifier (>= 1.0.3)
-  vcr
-  webmock
   zip-zip
 
 BUNDLED WITH

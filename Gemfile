@@ -65,7 +65,7 @@ group :test do
 end
 
 group :development, :test do
-  gem 'thin'
+  gem 'puma'
   gem 'pry-rails'
   # gem 'vcr'
   # gem 'webmock'

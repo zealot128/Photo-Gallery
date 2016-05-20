@@ -15,6 +15,7 @@ module SimpleGallery
       g.test_framework  false
     end
 
+    config.action_cable.mount_path = '/websocket'
     config.filter_parameters += [:password]
     config.assets.enabled = true
     config.assets.version = '1.0'
