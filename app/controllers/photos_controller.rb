@@ -71,6 +71,7 @@ class PhotosController < ApplicationController
     @photo = BaseFile.find(params[:id])
     @photo.rotate! params[:direction]
     @photo.save
+    render json: { file: @photo.as_json }
   end
 
   def ocr

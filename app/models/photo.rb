@@ -39,10 +39,12 @@ class Photo < BaseFile
                else
                  90
                end
-    cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path)}"
-    `#{cmd}`
+
+    retrieve_and_reprocess do |file|
+      cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path)}"
+      `#{cmd}`
+    end
     self.fingerprint = nil
-    file.recreate_versions!
     save
   end
 end

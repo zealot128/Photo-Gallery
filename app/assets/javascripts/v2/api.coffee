@@ -1,5 +1,14 @@
 
 window.Api = {
+  rotate: (fileId, direction, callback) ->
+    $.ajax
+      dataType: 'json'
+      url: "/photos/#{fileId}/rotate"
+      method: 'POST'
+      data:
+        direction: direction
+      success: callback
+
   bulkUpdate: (request, callback, error) ->
     $.ajax
       dataType: 'json'

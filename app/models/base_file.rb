@@ -55,6 +55,13 @@ class BaseFile < ActiveRecord::Base
     day && day.update_me
   end
 
+  def retrieve_and_reprocess(&block)
+    file.cache_stored_file!
+    file.retrieve_from_cache!(file.cache_name)
+    yield(file.file)
+    file.recreate_versions!
+  end
+
   def self.create_from_upload(file, current_user)
     path = file.try(:tempfile).try(:path) || file.path
     mime_type = `file #{Shellwords.escape(path)} --mime-type`.split(':').last.strip

@@ -102,8 +102,19 @@ script type="x-template" id='tpl-edit'
         .modal-header
           button type="button" class="close" v-on:click='closeModal()'
             span aria-hidden="true"  &times;
-          h4 class="modal-title" edit image
+          h4 class="modal-title" Edit image
         .modal-body
+          div v-if='isImage'
+            h4 Rotate image
+            div v-if='notRotating'
+              a.btn.btn-default.btn-xs> href='' v-on:click='rotate("left", $event)'
+                i.fa.fa-fw.fa-undo title='rotate left'
+
+              a.btn.btn-default.btn-xs href='' v-on:click='rotate("right", $event)'
+                i.fa.fa-fw.fa-repeat title='rotate right'
+            div v-if='!notRotating'
+              i class="fa fa-spinner fa-spin fa-2x fa-fw"
+
           div v-if='allTags'
             h4 Tags
             .row

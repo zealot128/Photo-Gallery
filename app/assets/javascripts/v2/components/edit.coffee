@@ -81,13 +81,32 @@ Vue.component('vue-edit', {
   mixins: [ EditMixin ],
   props: ['file', 'state'],
   template: '#tpl-edit'
+  data: ->
+    notRotating: true
   ready: ->
     this.state.updateAll() if !this.allTags
     this.modalEl().modal('show').css({'zIndex': 10000 })
     this.tagIds = this.file.tag_ids
     this.shareIds = this.file.share_ids
+  computed: {
+    isImage: -> this.file.type == "Photo"
+  }
 
   methods: {
+    rotate: (direction, event)->
+      event.preventDefault()
+      this.notRotating = false
+      Api.rotate this.file.id, direction, (response) =>
+        part = (new Date).getTime()
+        debugger
+        that = this
+        for version, name of this.file.versions
+          new_version =  name.replace(/\?\d$/, "") + "?" + part
+          this.file.versions[version] = new_version
+          $('img').filter(-> this.src.indexOf(name) != -1).each ->
+            $(this).attr('src', new_version)
+        this.notRotating = true
+
     save: ->
       hasNewTag = this.newTag? and this.newTag != ""
       filteredTags = this.allTags.filter( (tag)=> this.tagIds.indexOf(tag.id) != -1  ).map((tag) -> tag.name )
