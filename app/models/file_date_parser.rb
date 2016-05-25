@@ -37,8 +37,10 @@ class FileDateParser
   def parse_date_from_filename
     if filename[/(\d{4})[\-_\.](\d{2})[\-_\.](\d{2})/]
       Date.parse "#$1-#$2-#$3"
-    elsif filename[/(\d{4})(\d{2})(\d{2})/]
+    elsif filename[/(\d{4})(\d{2})(\d{2})/] and $1.to_i > 2000
       Date.parse "#$1-#$2-#$3"
+    elsif filename[/(\d{10})/] and ($1.to_i > 2.years.ago.to_i) and ($1.to_i < 1.day.from_now.to_i)
+      Time.at($1).to_date
     else
       Rails.logger.warn "No Date found for file #{filename}. taking mtime"
       file.mtime rescue Date.today
