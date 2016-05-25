@@ -6,13 +6,16 @@ class UploadController < ApplicationController
   def create
     FileUtils.mkdir_p('tmp')
     Filelock "tmp/upload-#{@user.id}.lock", timeout: 600 do
-      file = params[:userfile] || params[:upfile]
+      file = params[:userfile] || params[:upfile] || params[:file]
       exception = nil
       begin
         @photo = BaseFile.create_from_upload(file, @user)
         @user.enable_ip_based_login request
       rescue StandardError => e
         exception = e
+        ExceptionNotifier.notify_exception(exception, env: request.env)
+        render status: 500, text: "Server Error", layout: false
+        return
       end
       UploadLog.handle_file(@photo, file, self, exception)
       if @photo.new_record?
