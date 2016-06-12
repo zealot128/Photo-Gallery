@@ -113,7 +113,7 @@ Vue.component('vue-edit', {
       if hasNewTag
         filteredTags.push this.newTag
 
-      request = { tag_list: filteredTags, share_ids: this.shareIds, new_share: this.newShare }
+      request = { tag_list: filteredTags, share_ids: this.shareIds || [], new_share: this.newShare }
       this.buttonText = "...saving"
       Api.saveImage this.file.id, request, (response)=>
         this.file.tag_ids = response.photo.tag_ids

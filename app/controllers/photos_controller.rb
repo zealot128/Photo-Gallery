@@ -53,7 +53,7 @@ class PhotosController < ApplicationController
 
   def update
     @photo = BaseFile.find(params[:id])
-    @photo.share_ids = params[:photo][:share_ids] if params[:photo][:share_ids]
+    @photo.share_ids = params[:photo][:share_ids] || []
     new_share = params[:photo].delete(:new_share)
     @photo.update_attributes!(params[:photo])
     if new_share.present?
