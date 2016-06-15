@@ -2,7 +2,12 @@
   .panel-heading
     h3.panel-title.clearfix
       a href=v2_day_path(day.id) style='display: block'
-        = l day.date, format: '%a, %d.'
-        = ' '
-        - if day.montage.present?
-          = image_tag day.montage.url
+        .row
+          .col-sm-2
+            = l day.date, format: '%a, %d.'
+            - if day.locations?
+              br
+              = day.locations
+          .col-sm-10
+            - if day.montage.present?
+              = image_tag day.montage.url

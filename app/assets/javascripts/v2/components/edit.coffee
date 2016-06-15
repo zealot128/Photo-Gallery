@@ -98,7 +98,6 @@ Vue.component('vue-edit', {
       this.notRotating = false
       Api.rotate this.file.id, direction, (response) =>
         part = (new Date).getTime()
-        debugger
         that = this
         for version, name of this.file.versions
           new_version =  name.replace(/\?\d$/, "") + "?" + part
