@@ -30,6 +30,20 @@ class UploadController < ApplicationController
     render plain: ''
   end
 
+  def exists
+    if !params[:md5]
+      render json: { error: 'No md5 given' }, status: 400
+      return
+    end
+    exists = BaseFile.where(md5: params[:md5]).first
+    if exists
+      render json: { photo: exists }
+    else
+      render json: { error: 'no photo found' }, status: 404
+    end
+  end
+
+
   protected
 
   def http_basic_auth
