@@ -13,7 +13,7 @@ class AwsStatistics
     @disk_usage ||=
       begin
         s = Sys::Filesystem.stat("/")
-        upload = `du -hs public/uploads/*`.split("\n").map{|i| i.split(' ') }
+        upload = `du -hs public/system/* public/photos/*`.split("\n").map{|i| i.split(' ') }
         {
           available: (s.block_size * s.blocks_available) / 1.gigabyte.to_f,
           total: (s.block_size * s.blocks) / 1.gigabyte.to_f,
