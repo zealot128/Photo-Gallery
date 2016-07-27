@@ -7,7 +7,6 @@ class Admin::UploadLogsController < ApplicationController
 
   def aws
     @aws = AwsStatistics.new
-    binding.pr
     @datapoints =@aws.bucket_size_bytes.datapoints.sort_by{|i| i.timestamp}.reverse
   end
 end
