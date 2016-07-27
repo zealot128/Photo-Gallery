@@ -1,3 +1,4 @@
+require 'sys/filesystem'
 class AwsStatistics
   attr_reader :client
   def initialize
@@ -6,6 +7,19 @@ class AwsStatistics
 
   def bucket
     CarrierWave::Uploader::Base.aws_bucket
+  end
+
+  def disk_usage
+    @disk_usage ||=
+      begin
+        s = Sys::Filesystem.stat("/")
+        upload = `du -hs public/uploads/*`.split("\n").map{|i| i.split(' ') }
+        {
+          available: (s.block_size * s.blocks_available) / 1.gigabyte.to_f,
+          total: (s.block_size * s.blocks) / 1.gigabyte.to_f,
+          upload_dir: upload
+        }
+      end
   end
 
   def bucket_size_bytes

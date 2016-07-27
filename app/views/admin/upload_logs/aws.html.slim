@@ -1,16 +1,30 @@
-h1 Bucket information
+.row
+  .col-sm-6
+    h1 Bucket information
 
 
-p Bucket: #{@aws.bucket}
+    p Bucket: #{@aws.bucket}
 
-table.table
-  thead
-    tr
-      th Date
-      th Store used
-  - @datapoints.each do |dp|
-    tr
-      td = dp.timestamp.to_date.to_s
-      td
-        span title="#{dp.sum / 1.megabytes} MB" = number_to_human_size dp.sum
+    table.table
+      thead
+        tr
+          th Date
+          th Store used
+      - @datapoints.each do |dp|
+        tr
+          td = dp.timestamp.to_date.to_s
+          td
+            span title="#{dp.sum / 1.megabytes} MB" = number_to_human_size dp.sum
+  .col-sm-6
+    h1 Local storage
+
+    p Available: #{@aws.disk_usage[:available].round(1)}GB / #{@aws.disk_usage[:total].round(1)}GB
+
+    strong Upload dir stats:
+
+    table.table
+      - @aws.disk_usage[:upload_dir].each do |mb,dir|
+        tr
+          td = dir
+          td = mb
 

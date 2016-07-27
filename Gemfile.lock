@@ -7,7 +7,7 @@ GIT
 
 GEM
   remote: https://rubygems.org/
-  remote: https://rails-assets.tenex.tech/
+  remote: https://rails-assets.org/
   specs:
     actioncable (5.0.0.rc1)
       actionpack (= 5.0.0.rc1)
@@ -267,6 +267,8 @@ GEM
       sprockets (>= 3.0.0)
     streamio-ffmpeg (2.0.0)
       multi_json (~> 1.8)
+    sys-filesystem (1.1.6)
+      ffi
     temple (0.7.6)
     tesseract-ocr (0.1.8)
       call-me
@@ -334,6 +336,7 @@ DEPENDENCIES
   select2-rails
   send_file_with_range
   slim-rails
+  sys-filesystem
   tesseract-ocr
   uglifier (>= 1.0.3)
   zip-zip

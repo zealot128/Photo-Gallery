@@ -36,6 +36,7 @@ gem 'zip-zip'
 gem 'send_file_with_range'
 gem 'rack-raw-upload'
 gem 'filelock'
+gem 'sys-filesystem'
 
 ### Frontend
 gem 'font-awesome-rails'
@@ -47,7 +48,7 @@ gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-will_paginate'
 gem 'select2-rails'
 
-source 'https://rails-assets.tenex.tech' do
+source 'https://rails-assets.org' do
   gem 'rails-assets-dropzone'
   gem 'rails-assets-moment'
   gem 'rails-assets-lightgallery'
