@@ -19,8 +19,10 @@ class VideoUploader < CarrierWave::Uploader::Base
   version :preview do
     process encode_video: [:jpg, resolution: '500x500', preserve_aspect_ratio: :width ]
     storage :file
-    def store_dir
-      store_dir_version('preview')
+
+    def full_filename(for_file = model.avatar.file)
+      old = super
+      File.basename(old, '.*') + ".jpg"
     end
   end
   version :thumb do
@@ -28,6 +30,10 @@ class VideoUploader < CarrierWave::Uploader::Base
     storage :file
     def store_dir
       store_dir_version('thumb')
+    end
+    def full_filename(for_file = model.avatar.file)
+      old = super
+      File.basename(old, '.*') + ".jpg"
     end
   end
 
