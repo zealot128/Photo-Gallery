@@ -36,6 +36,7 @@ class PhotosController < ApplicationController
     begin
       photo = BaseFile.create_from_upload(params[:file], current_user)
     rescue StandardError => e
+      ExceptionNotifier.notify_exception(e, env: request.env)
       exception = e
     end
     UploadLog.handle_file(photo, params[:file], self, exception)

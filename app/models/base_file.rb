@@ -19,10 +19,13 @@ class BaseFile < ActiveRecord::Base
     end
   end
 
-
-
   before_validation do
-    self.md5 ||= Digest::MD5.file(file.path)
+    if !md5?
+      if !(File.exists?(file.path)) && !file.cached? #File already gone
+        self.md5 ||= Digest::MD5.hexdigest file.read.to_s
+      end
+      self.md5 ||= Digest::MD5.file(file.path)
+    end
   end
 
   before_save do
