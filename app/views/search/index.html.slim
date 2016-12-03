@@ -23,13 +23,13 @@
           | To Date
         = f.text_field :to, class: 'form-control'
 
-  = f.submit 'Search', class: 'btn btn-primary'
+  = f.submit 'Search', class: 'btn btn-primary', data: { disable_with: false }
 
 
 br
 br
 div: strong Popular Tags
-- @search.label_facets.take(100).each do |name, count|
+- @search.label_facets.each do |name, count|
   span.label.label-default<>
     |#{name} <span class='badge'>#{count}</span>
 

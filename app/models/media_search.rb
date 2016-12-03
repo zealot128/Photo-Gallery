@@ -10,7 +10,7 @@ class MediaSearch
   def label_facets
     ImageLabel.joins(:base_files).
       where('photos.id in (?)', media.select('photos.id')).
-      order('count_all desc').group(:name).count
+      order('count_all desc').group(:name).limit(100).count
   end
 
   def type=(other)
@@ -20,12 +20,12 @@ class MediaSearch
   def media
     sql = BaseFile.all
     if labels.present?
-      l = labels.split(/ *,; */)
-      aws_labels = ImageLabel.where(name: l)
+      l = labels.split(/ *[,;] */)
+      aws_labels = ImageLabel.where('name ilike any (array[?])', l).pluck(:id)
       if aws_labels.any?
         sql = sql.where('photos.id in (?)',
                         BaseFile.joins(:image_labels).
-                        where('image_labels.id in (?)', aws_labels.select('id')).
+                        where('image_labels.id in (?)', aws_labels).
                           select('photos.id')
                        )
       end

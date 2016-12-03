@@ -35,7 +35,11 @@ class Photo < BaseFile
     if Rails.application.secrets[:rekognition_collection]
       aws_labels = RekognitionClient.labels(self)
       aws_labels.labels.each do |aws_label|
-        image_labels.where(name: aws_label.name).first_or_create
+        image_labels.where(name: aws_label.name).first ||
+          begin
+            label = ImageLabel.where(name: aws_label.name).first_or_create
+            image_labels << label
+          end
       end
     end
   end
