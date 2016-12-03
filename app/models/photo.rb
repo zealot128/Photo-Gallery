@@ -3,6 +3,8 @@ class Photo < BaseFile
 
   include PhotoMetadata
 
+	after_create :rekognize_labels
+
   def self.parse_date(file, current_user)
     date = MetaDataParser.new(file.path).shot_at_date
     FileDateParser.new(file: file, user: current_user, exif_date: date).parsed_date
@@ -29,6 +31,14 @@ class Photo < BaseFile
     end
   end
 
+  def rekognize_labels
+    if Rails.application.secrets[:rekognition_collection]
+      aws_labels = RekognitionClient.labels(self)
+      aws_labels.labels.each do |aws_label|
+        image_labels.where(name: aws_label.name).first_or_create
+      end
+    end
+  end
 
   def rotate!(direction)
     degrees =  case direction.to_sym

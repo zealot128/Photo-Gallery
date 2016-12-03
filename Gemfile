@@ -57,6 +57,7 @@ source 'https://rails-assets.org' do
 end
 
 group :development do
+  gem 'habtm_generator'
   gem 'quiet_assets'
   gem 'listen'
 end

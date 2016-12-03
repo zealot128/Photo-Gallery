@@ -1,4 +1,5 @@
 class BaseFile < ActiveRecord::Base
+  has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
   self.table_name = 'photos'
 
   belongs_to :user

@@ -11,11 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517092114) do
+ActiveRecord::Schema.define(version: 20161202083511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "base_files_image_labels", id: false, force: :cascade do |t|
+    t.integer "base_file_id"
+    t.integer "image_label_id"
+    t.index ["base_file_id", "image_label_id"], name: "base_files_image_labels_index", unique: true, using: :btree
+  end
 
   create_table "days", force: :cascade do |t|
     t.date     "date"
@@ -28,6 +34,24 @@ ActiveRecord::Schema.define(version: 20160517092114) do
     t.index ["month_id"], name: "index_days_on_month_id", using: :btree
   end
 
+  create_table "image_faces", force: :cascade do |t|
+    t.json     "bounding_box"
+    t.string   "file"
+    t.integer  "base_file_id"
+    t.integer  "person_id"
+    t.uuid     "aws_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["base_file_id"], name: "index_image_faces_on_base_file_id", using: :btree
+    t.index ["person_id"], name: "index_image_faces_on_person_id", using: :btree
+  end
+
+  create_table "image_labels", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "months", force: :cascade do |t|
     t.integer  "month_number"
     t.integer  "year_id"
@@ -35,6 +59,12 @@ ActiveRecord::Schema.define(version: 20160517092114) do
     t.datetime "updated_at",   null: false
     t.string   "month_string"
     t.index ["year_id"], name: "index_months_on_year_id", using: :btree
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "photos", force: :cascade do |t|
