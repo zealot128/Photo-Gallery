@@ -42,6 +42,7 @@ class Photo < BaseFile
           end
       end
     end
+  rescue Aws::Rekognition::Errors::InvalidS3ObjectException
   end
 
   def rotate!(direction)
