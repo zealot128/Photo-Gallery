@@ -13,7 +13,7 @@ class RekognitionClient
       collection(max_results: max_results)
     end
 
-    def labels(photo, max_labels: 10, min_confidence: 40)
+    def labels(photo, max_labels: 20, min_confidence: 40)
       resp = client.detect_labels({
         image: {
           s3_object: {
