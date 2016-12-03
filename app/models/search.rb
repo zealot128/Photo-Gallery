@@ -23,4 +23,5 @@ class Search
     end
     r.execute
   end
+
 end

@@ -76,12 +76,17 @@ window.KeyboardNavigation = (event, vueInstance, gallery)->
   else
     switch event.which
       when 37 # left arrow
-        $(vueInstance.$el).find('.js-previous-day .panel').addClass('panel-primary').find('a img').click()
-        event.preventDefault()
+        el = $(vueInstance.$el).find('.js-previous-day .panel')
+        if el.length > 0
+          el.addClass('panel-primary').find('a img').click()
+          event.preventDefault()
       when 39 # right arrow
-        $(vueInstance.$el).find('.js-next-day .panel').addClass('panel-primary').find('a img').click()
-        event.preventDefault()
+        el = $(vueInstance.$el).find('.js-next-day .panel')
+        if el.length > 0
+          el.addClass('panel-primary').find('a img').click()
+          event.preventDefault()
       when 32 # space
+        return if $(vueInstance.$el).data('disableSpace')
         $(vueInstance.$el).find('.gallery a').first().click()
         event.preventDefault()
 

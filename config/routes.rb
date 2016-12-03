@@ -42,6 +42,7 @@ SimpleGallery::Application.routes.draw do
   end
   get '/shares/:id/download' => 'zip#share', as: 'download_share'
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'
+  get 'search' => 'search#index'
 
   get 'api/exists' => 'upload#exists'
 

@@ -1,0 +1,46 @@
+= form_for @search, url: '', method: :get do |f|
+  .row
+    .col-sm-6
+      .form-group
+        = f.label :labels, class: 'control-label' do
+          | Rekognized Labels or Tags
+        = f.text_field :labels, class: 'form-control'
+      .checkbox
+        = f.label :type, class: '' do
+          = f.check_box :type, { multiple: true }, 'photos', ''
+          | Photos
+      .checkbox
+        = f.label :type, class: '' do
+          = f.check_box :type, { multiple: true }, 'videos', ''
+          | Videos
+    .col-sm-6
+      .form-group
+        = f.label :from, class: 'control-label' do
+          | From Date
+        = f.text_field :from, class: 'form-control'
+      .form-group
+        = f.label :to, class: 'control-label' do
+          | To Date
+        = f.text_field :to, class: 'form-control'
+
+  = f.submit 'Search', class: 'btn btn-primary'
+
+
+br
+br
+div: strong Popular Tags
+- @search.label_facets.take(100).each do |name, count|
+  span.label.label-default<>
+    |#{name} <span class='badge'>#{count}</span>
+
+- if @search.parsed_from
+  | Media from #{@search.parsed_from} to #{@search.parsed_to}
+
+- @media = @search.media.paginate(page: params[:page], per_page: 100)
+
+.js-photo-gallery data-photos="#{@media.to_json}" data-disable-space='1'
+  br
+  br
+
+= will_paginate @media
+

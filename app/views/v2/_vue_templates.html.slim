@@ -66,6 +66,11 @@ script type="x-template" id='tpl-photo'
         span.duration
           |{{file.file_size_formatted}}
 
+      span<>(v-for='tag in file.labels' style='margin-left: 1px')
+        span.label.label-default<>
+          |{{tag}}
+          = ' '
+
 
 script type="x-template" id='tpl-video-preview'
   .gallery-box

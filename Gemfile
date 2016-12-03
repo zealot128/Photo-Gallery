@@ -29,6 +29,7 @@ gem 'geocoder'
 gem 'phashion'
 gem 'rqrcode'
 gem 'tesseract-ocr', require: false
+gem 'chronic'
 
 ### Share page / upload
 gem 'rubyzip', '>= 1.0.0'

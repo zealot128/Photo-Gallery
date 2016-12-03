@@ -96,6 +96,7 @@ class BaseFile < ActiveRecord::Base
       file_size:            file_size,
       tag_ids:              tag_ids,
       tags:                 tag_list,
+      labels:               image_labels.pluck(:name),
       share_ids:            share_ids,
       file_size_formatted:  ApplicationController.helpers.number_to_human_size(file_size),
       caption:              caption,
