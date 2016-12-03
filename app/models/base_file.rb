@@ -1,6 +1,32 @@
+# == Schema Information
+#
+# Table name: photos
+#
+#  id          :integer          not null, primary key
+#  shot_at     :datetime
+#  lat         :float
+#  lng         :float
+#  user_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  location    :string
+#  md5         :string
+#  year        :integer
+#  month       :integer
+#  day_id      :integer
+#  caption     :string
+#  description :text
+#  file        :string
+#  meta_data   :json
+#  type        :string
+#  file_size   :integer
+#
+
 class BaseFile < ActiveRecord::Base
-  has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
   self.table_name = 'photos'
+  has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
+  has_many :image_faces
+  has_many :people, through: :image_faces
 
   belongs_to :user
   belongs_to :day

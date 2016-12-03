@@ -54,6 +54,6 @@ class MediaSearch
         sql = sql.where('shot_at <= ?', @parsed_to)
       end
     end
-    sql
+    sql.order('shot_at desc')
   end
 end

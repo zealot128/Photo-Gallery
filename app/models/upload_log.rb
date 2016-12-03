@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: upload_logs
+#
+#  id           :integer          not null, primary key
+#  file_name    :string
+#  file_size    :integer
+#  status       :integer          default("success")
+#  user_id      :integer
+#  message      :text
+#  ip           :string
+#  user_agent   :text
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  base_file_id :integer
+#
+
 class UploadLog < ActiveRecord::Base
   belongs_to :user
   enum status: [ :success, :already_uploaded, :error ]

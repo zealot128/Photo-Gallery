@@ -61,6 +61,7 @@ group :development do
   gem 'habtm_generator'
   gem 'quiet_assets'
   gem 'listen'
+  gem 'annotate'
 end
 
 group :test do

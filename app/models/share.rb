@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: shares
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  type       :string
+#  token      :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :integer
+#
+
 class Share < ActiveRecord::Base
   scope :sorted, -> { order('lower(shares.name)') }
   before_create do

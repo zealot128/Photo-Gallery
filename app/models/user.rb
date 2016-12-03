@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                 :integer          not null, primary key
+#  username           :string
+#  email              :string
+#  password_hash      :string
+#  password_salt      :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  last_ip            :string
+#  last_upload        :datetime
+#  allowed_ip_storing :boolean
+#  token              :string
+#  pseudo_password    :string
+#  admin              :boolean
+#
+
 class User < ActiveRecord::Base
   attr_accessor :password
   before_save :prepare_password

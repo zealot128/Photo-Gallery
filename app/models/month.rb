@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: months
+#
+#  id           :integer          not null, primary key
+#  month_number :integer
+#  year_id      :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  month_string :string
+#
+
 class Month < ActiveRecord::Base
   belongs_to :year
   has_many :days

@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: days
+#
+#  id         :integer          not null, primary key
+#  date       :date
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  locations  :string
+#  montage    :string
+#  month_id   :integer
+#
+
 class Day < ActiveRecord::Base
   validates_presence_of :date
   has_many :photos, class_name: 'BaseFile'
