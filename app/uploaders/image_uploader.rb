@@ -49,7 +49,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
   version :large do
-    storage :file
+    # storage :file
     process :auto_orient
     process :resize_to_fit => [1200,1000]
     def store_dir
