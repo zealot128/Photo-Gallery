@@ -84,7 +84,7 @@ script type="x-template" id='tpl-video'
   div
     div id='{{subHtmlId}}'
       video.lg-video-object.lg-html5.video-js.vjs-default-skin(controls preload="none")
-        source(v-bind:src="file.versions.medium" type="video/mp4" label='SD')
+        source(v-bind:src="file.versions.large" type="video/mp4" label='SD')
         | Your browser does not support HTML5 video.
       div id='{{subHtmlId}}_caption'
         p
