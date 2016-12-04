@@ -40,11 +40,11 @@ class VideoUploader < CarrierWave::Uploader::Base
     end
   end
 
-  version :medium do
+  version :large do
     process encode_video: [:mp4, resolution: '640x360', preserve_aspect_ratio: :width, audio_codec: Rails.application.config.features.audio_codec ]
     storage :file
     def store_dir
-      store_dir_version('medium')
+      store_dir_version('large')
     end
   end
 
