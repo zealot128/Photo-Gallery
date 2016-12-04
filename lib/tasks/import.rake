@@ -5,9 +5,9 @@ task :import => :environment do
   user = User.first
   Photo.slow_callbacks = false
   files = Dir[Rails.root.join("import/*")]
-  pbar = ProgressBar.new("test", files.count +  500)
+  pbar = ProgressBar.create(total: files.count)
   files.each do |file|
-    pbar.inc
+    pbar.increment
 begin
     photo = Photo.create_from_upload(File.open(file), user)
     if photo.new_record?
