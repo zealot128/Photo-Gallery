@@ -19,4 +19,9 @@ $ ->
   $('.js-years').each ->
     Years(this, state)
 
+  $('.js-face-selection').each ->
+    FaceSelection(this, state)
+
+  $('.js-face-image').each ->
+    FaceImage(this, state)
 

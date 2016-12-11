@@ -3,6 +3,11 @@ file = {
   computed: {
     subHtmlId: -> "subhtml-#{this.file.id}"
     title: -> "#{this.file.caption || ""} (Shot-At: #{this.file.shot_at_formatted})"
+    unassigned_faces_count: ->
+      faces = this.file.faces.filter((el)-> !el.person_id )
+      console.log faces
+      console.log faces.length
+      faces.length
   }
 }
 

@@ -43,6 +43,17 @@ window.Api = {
       success: (e) ->
         callback(e) if callback
 
+  createPerson: (person_name, face_ids, unselected_face_ids, callback) ->
+    $.ajax
+      dataType: 'json'
+      url: '/v2/assign_faces'
+      method: 'POST'
+      data:
+        person_name: person_name
+        face_ids: face_ids
+        unselected_face_ids: unselected_face_ids
+      success: callback
+
   tags: (callback) ->
     $.get '/v2/tags.json', callback
 

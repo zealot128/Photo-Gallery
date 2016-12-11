@@ -78,6 +78,10 @@ nav.navbar.navbar-default role='navigation'
                   a href='/admin/already_uploaded'
                     i.fa.fa-clone.fa-fw>
                     |Find already uploaded
+                li
+                  a href='/v2/assign_faces/unassigned'
+                    i.fa.fa-user.fa-fw>
+                    |Unassigned Faces
 
         - else
           li = link_to "Login", login_path

@@ -23,7 +23,6 @@ class AwsStatistics
   end
 
   def bucket_size_bytes
-    # bucket = 'swi-pictures-production'
     client.get_metric_statistics(namespace: 'AWS/S3',
                                  metric_name: 'BucketSizeBytes',
                                  statistics: ['Average', 'Sum'],

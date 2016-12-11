@@ -41,6 +41,15 @@ class RekognitionClient
 			})
     end
 
+    def search_faces(face_id, max_faces: 100, threshold: 70.0)
+      client.search_faces({
+        collection_id: Rails.application.secrets.rekognition_collection,
+        face_id: face_id.to_s,
+        max_faces: max_faces,
+        face_match_threshold: threshold,
+      })
+    end
+
     def client
       @client ||= Aws::Rekognition::Client.new(CarrierWave::Uploader::Base.aws_credentials.merge(region: 'eu-west-1'))
     end

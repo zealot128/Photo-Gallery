@@ -54,6 +54,6 @@ class MediaSearch
         sql = sql.where('shot_at <= ?', @parsed_to)
       end
     end
-    sql.order('shot_at desc')
+    sql.order('shot_at desc').includes(:image_faces, :image_labels)
   end
 end

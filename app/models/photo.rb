@@ -98,4 +98,10 @@ class Photo < BaseFile
     self.fingerprint = nil
     save
   end
+
+  def as_json(op={})
+    super.merge({
+      'faces' => image_faces.as_json
+    })
+  end
 end

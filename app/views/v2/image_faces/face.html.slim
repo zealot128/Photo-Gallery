@@ -1,0 +1,13 @@
+.row
+  .col-sm-6
+    .js-face-selection data-face='#{@face.to_json}' data-similar='#{@similar.to_json}'
+  .col-sm-6
+    h3 Appears in:
+    .js-face-image data-photo="#{@face.base_file.to_json}"
+
+/ = image_tag @face.file.url
+
+/ h4 Ähnlich:
+
+/ - @similar.each do |face|
+/   = image_tag face.file.url

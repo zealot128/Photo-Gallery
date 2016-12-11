@@ -39,6 +39,11 @@ SimpleGallery::Application.routes.draw do
     get 'tags' => 'api#tags'
     get 'shares' => 'api#shares'
     post 'bulk_update' => 'api#bulk_update'
+
+    get 'faces/:face_id' => 'image_faces#face'
+    get 'assign_faces/unassigned' => 'image_faces#unassigned'
+    get 'assign_faces/:id' => 'image_faces#show'
+    post 'assign_faces' => 'image_faces#bulk_update'
   end
   get '/shares/:id/download' => 'zip#share', as: 'download_share'
   get 'photos/:hash.jpg', to: 'photos#shared', as: 'photo_share'

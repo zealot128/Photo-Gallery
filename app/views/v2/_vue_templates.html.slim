@@ -49,6 +49,11 @@ script type="x-template" id='tpl-photo-preview'
 script type="x-template" id='tpl-photo'
   div id='{{subHtmlId}}'
     p
+      span<>(v-if='unassigned_faces_count > 0')
+        a href='/v2/assign_faces/{{file.id}}' target='_blank'
+          span.badge
+            |{{unassigned_faces_count}}
+          i.fa.fa-user.fa-fw<>
       span.image-info<
         i.fa.fa-clock-o.fa-fw>
         |{{file.shot_at_formatted}}
@@ -187,3 +192,40 @@ script type="x-template" id='tpl-bulk-edit'
             button.btn.btn-primary v-on:click='save()'
               | {{buttonText}}
 
+script type="x-template" id='tpl-face-selection'
+
+  h3 v-if='face.person_name'
+    | {{face.person_name}} appear also on:
+  h3 v-if='!face.person_name'
+    | Who's this?
+
+  img v-bind:src='face.preview'
+
+  br
+  br
+  p: strong Unselect all, who are not the same person
+  span v-for='other_face in similar'
+  button.btn.btn-default.btn-xs.tag-toggle.face-toggle<>(v-for='other_face in similar' v-bind:class='{ "active" : selected(other_face)}' v-on:click='toggleSelect(other_face)')
+    img v-bind:src='other_face.preview'
+
+  form
+    h3 Create or assign existing person
+    .row: .col-md-6
+      .form-group
+        input class="form-control" v-model="person_name" placeholder='enter new persons name'
+      button.btn.btn-primary v-on:click='createPerson($event)' type='submit'
+        |Create new person
+
+css:
+  .face-toggle {
+    min-height: 80px;
+  }
+
+script type="x-template" id='tpl-face-image'
+  .bb-image
+    img v-bind:src='photo.versions.medium'
+    bounding-box v-bind:face='face' v-for='face in photo.faces' v-bind:width='image_width' v-bind:height='image_height'
+
+script type="x-template" id='tpl-bounding-box'
+  a.bb-face v-bind:style='styleObject' href='/v2/faces/{{face.id}}' target='_blank' title='{{name}}'
+    | {{name}}

@@ -1,0 +1,10 @@
+.face-block
+  = link_to "/v2/assign_faces/#{image_face.base_file_id}/#{image_face.id}"
+    = image_tag image_face.file.url
+    - if image_face.person.blank?
+      br
+      small Unknown Person
+    - else
+      br
+      small= image_face.person.name
+

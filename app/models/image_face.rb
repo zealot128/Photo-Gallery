@@ -14,10 +14,20 @@
 
 class ImageFace < ApplicationRecord
   belongs_to :base_file
-  belongs_to :people
+  belongs_to :person
 
   after_create :crop_bounding_box
   mount_uploader :file, MontageUploader
+
+  def as_json(opts={})
+    {
+      id: id,
+      preview: file.url,
+      bounding_box: bounding_box,
+      person_id: person_id,
+      person_name: person.try(:name)
+    }
+  end
 
   def crop_bounding_box
     version = base_file.file.versions[:medium]
@@ -30,6 +40,7 @@ class ImageFace < ApplicationRecord
     left = (bounding_box['left'] * image_width).round
     top = (bounding_box['top'] * image_height).round
     image.crop("#{w}x#{h}+#{left}+#{top}")
+    image.resize 'x100>'
     self.file = File.open(image.path)
     self.save
   end
