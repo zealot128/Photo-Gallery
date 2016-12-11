@@ -30,7 +30,7 @@ class ImageFace < ApplicationRecord
   end
 
   def crop_bounding_box
-    version = base_file.file.versions[:medium]
+    version = base_file.file.versions[:large]
     version.cache!
     image = MiniMagick::Image.open(version.path)
     image_width = image.width
