@@ -6,10 +6,8 @@ class V2::ImageFacesController < ApplicationController
   def face
     @face = ImageFace.find(params[:face_id])
     @photo = @face.base_file
-    @similar = Rails.cache.fetch("similar.#{@face.id}", expires_in: 1.week) {
-      similar = RekognitionClient.search_faces(@face.aws_id, threshold: 50)
-      ImageFace.where(aws_id: similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.sort_by{|a,b| -b }.map(&:first))
-    }
+    similar = RekognitionClient.search_faces(@face.aws_id, threshold: 50)
+    @similar = ImageFace.where(aws_id: similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.sort_by{|a,b| -b }.map(&:first))
   end
 
   def unassigned
