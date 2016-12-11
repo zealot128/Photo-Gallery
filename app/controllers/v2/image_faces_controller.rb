@@ -6,9 +6,10 @@ class V2::ImageFacesController < ApplicationController
   def face
     @face = ImageFace.find(params[:face_id])
     @photo = @face.base_file
-    similar = RekognitionClient.search_faces(@face.aws_id, threshold: 50)
-    @similar = ImageFace.where('person_id is null or person_id = ?', @face.person_id).where(aws_id: similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.sort_by{|a,b| -b }.map(&:first))
-    @new_similar = ImageFace.where('person_id is null').where(aws_id: similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.sort_by{|a,b| -b }.map(&:first))
+    similar = RekognitionClient.search_faces(@face.aws_id, threshold: 80)
+    out = similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.to_h
+    similarities = ImageFace.where('person_id is null or person_id = ?', @face.person_id).where(aws_id: out.keys).map{|face| [face, out[face.aws_id] ] }.sort_by{|a,b| -b }
+    @similar = similarities.map(&:first)
   end
 
   def unassigned

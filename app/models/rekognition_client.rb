@@ -41,7 +41,7 @@ class RekognitionClient
 			})
     end
 
-    def search_faces(face_id, max_faces: 1000, threshold: 70.0)
+    def search_faces(face_id, max_faces: 500, threshold: 80.0)
       client.search_faces({
         collection_id: Rails.application.secrets.rekognition_collection,
         face_id: face_id.to_s,
