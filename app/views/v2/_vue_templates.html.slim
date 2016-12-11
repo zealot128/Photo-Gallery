@@ -49,9 +49,9 @@ script type="x-template" id='tpl-photo-preview'
 script type="x-template" id='tpl-photo'
   div id='{{subHtmlId}}'
     p
-      span<>(v-if='unassigned_faces_count > 0')
-        a href='/v2/assign_faces/{{file.id}}' target='_blank'
-          span.badge
+      span<>(v-if='faces_count > 0')
+        a href='/v2/assign_faces/{{file.id}}' target='_blank' title='There are {{faces_count}} people in this picture'
+          span.badge(v-if='unassigned_faces_count > 0')
             |{{unassigned_faces_count}}
           i.fa.fa-user.fa-fw<>
       span.image-info<
@@ -202,6 +202,22 @@ script type="x-template" id='tpl-face-selection'
 
   br
   br
+  p: strong Create/Assign person and select all similar people
+  form
+    .row
+      .col-sm-4
+        label.control-label
+          |Similarity (percent)
+          input class="form-control" v-model="similarity" placeholder=''
+      .col-sm-4
+        label.control-label
+          |Max. images
+          input class="form-control" v-model="max" placeholder=''
+      .col-sm-4
+        br
+        button type='submit' class='btn btn-default' href='#' v-on:click='refreshSimilarities($event)'
+          |Refresh similar images
+
 
   p: strong Unselect all, who are not the same person
   span v-for='other_face in similar'

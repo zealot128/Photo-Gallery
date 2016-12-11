@@ -45,16 +45,32 @@ window.FaceSelection = (domEl, state) ->
       face: el.data('face'),
       selectedFaces: [],
       similar: el.data('similar'),
+      similarity: 80,
+      max: 200,
       person_name: ""
     }
     ready: ->
       this.selectedFaces = []
-      this.similar.forEach (el) =>
-        if el.person_id == this.face.person_id || !el.person_id
-          this.selectedFaces.push(el.id)
       this.selectedFaces.push(this.face.id)
       this.person_name = this.face.person_name
+      this.refreshSimilarities()
+      if !this.state.people
+        Api.getPeople (d)->
+          this.state.people = d
+
     methods: {
+      refreshSimilarities: (event)->
+        event.preventDefault() if event
+        Api.getSimilarImages(this.face, this.max, this.similarity, (d) =>
+          this.similar = d
+          this.selectedFaces = [ this.face.id ]
+          this.similar.forEach (el) =>
+            if el.person_id == this.face.person_id || !el.person_id
+              this.selectedFaces.push(el.id)
+        )
+
+
+
       selectAll: (event)->
         event.preventDefault()
         ids = this.similar.map (i) -> i.id

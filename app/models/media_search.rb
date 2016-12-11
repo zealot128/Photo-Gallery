@@ -60,7 +60,6 @@ class MediaSearch
       people.each do |person|
         sql = sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
       end
-      binding.pry
     end
     sql.order('shot_at desc').includes(:image_faces, :image_labels)
   end

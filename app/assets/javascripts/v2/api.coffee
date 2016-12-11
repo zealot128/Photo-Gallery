@@ -54,6 +54,19 @@ window.Api = {
         unselected_face_ids: unselected_face_ids
       success: callback
 
+  getSimilarImages: (face, max, threshold, callback) ->
+    $.ajax
+      dataType: 'json'
+      url: "/v2/faces/#{face.id}"
+      method: 'GET'
+      data:
+        max: max
+        threshold: threshold
+      success: callback
+
+  getPeople: (callback) ->
+    $.get '/v2/people.json', callback
+
   tags: (callback) ->
     $.get '/v2/tags.json', callback
 
