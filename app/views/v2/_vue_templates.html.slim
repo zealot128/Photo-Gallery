@@ -193,7 +193,6 @@ script type="x-template" id='tpl-bulk-edit'
               | {{buttonText}}
 
 script type="x-template" id='tpl-face-selection'
-
   h3 v-if='face.person_name'
     | {{face.person_name}} appear also on:
   h3 v-if='!face.person_name'
@@ -203,10 +202,19 @@ script type="x-template" id='tpl-face-selection'
 
   br
   br
+
   p: strong Unselect all, who are not the same person
   span v-for='other_face in similar'
-  button.btn.btn-default.btn-xs.tag-toggle.face-toggle<>(v-for='other_face in similar' v-bind:class='{ "active" : selected(other_face)}' v-on:click='toggleSelect(other_face)')
-    img v-bind:src='other_face.preview'
+  .btn.btn-default.btn-xs.tag-toggle.face-toggle<>(v-for='other_face in similar' v-bind:class='{ "active" : selected(other_face)}')
+    img v-bind:src='other_face.preview' v-on:click='toggleSelect(other_face)'
+    br
+    a href='/v2/faces/{{other_face.id}}'
+      i.fa.fa-fw.fa-external-link
+
+  div.clearfix
+    br
+    a.btn.btn-default.btn-xs href='#' v-on:click='selectAll($event)' Select All
+    a.btn.btn-default.btn-xs href='#' v-on:click='unselectAll($event)' Unselect all
 
   form
     h3 Create or assign existing person
@@ -216,10 +224,6 @@ script type="x-template" id='tpl-face-selection'
       button.btn.btn-primary v-on:click='createPerson($event)' type='submit'
         |Create new person
 
-css:
-  .face-toggle {
-    min-height: 80px;
-  }
 
 script type="x-template" id='tpl-face-image'
   .bb-image

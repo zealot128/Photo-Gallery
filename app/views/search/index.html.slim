@@ -22,6 +22,17 @@
         = f.label :to, class: 'control-label' do
           | To Date
         = f.text_field :to, class: 'form-control'
+  .row
+    .col-sm-12
+      p People
+      - Person.all.each do |person|
+        = f.label "person_ids_#{person.id}" do
+          img src='#{person.image_faces.first.try(:file).try(:url)}'
+          br
+          = f.check_box :person_ids, { multiple: true }, person.id.to_s, ''
+          = ' '
+          = person.name
+
 
   = f.submit 'Search', class: 'btn btn-primary', data: { disable_with: false }
 

@@ -25,7 +25,7 @@
 class BaseFile < ActiveRecord::Base
   self.table_name = 'photos'
   has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
-  has_many :image_faces
+  has_many :image_faces, dependent: :destroy
   has_many :people, through: :image_faces
 
   belongs_to :user

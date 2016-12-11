@@ -44,7 +44,6 @@ window.FaceSelection = (domEl, state) ->
       state: state,
       face: el.data('face'),
       selectedFaces: [],
-      unselectedFaces: [],
       similar: el.data('similar'),
       person_name: ""
     }
@@ -53,18 +52,26 @@ window.FaceSelection = (domEl, state) ->
       this.similar.forEach (el) =>
         if el.person_id == this.face.person_id || !el.person_id
           this.selectedFaces.push(el.id)
-        else
-          this.unselectedFaces.push(el.id)
       this.selectedFaces.push(this.face.id)
       this.person_name = this.face.person_name
     methods: {
+      selectAll: (event)->
+        event.preventDefault()
+        ids = this.similar.map (i) -> i.id
+        this.selectedFaces = ids
+        this.selectedFaces.push(this.face.id)
+
+      unselectAll: (event)->
+        event.preventDefault()
+        this.selectedFaces = [ this.face.id ]
+
+
       createPerson: (event)->
         event.preventDefault()
-        Api.createPerson(this.person_name, this.selectedFaces, this.unselectedFaces, => this.face.person_name = this.person_name)
+        Api.createPerson(this.person_name, this.selectedFaces, [], => this.face.person_name = this.person_name)
       selected: (face)-> this.selectedFaces.indexOf(face.id) != -1
       toggleSelect: (face)->
         this.toggleObject(face, this.selectedFaces)
-        this.toggleObject(face, this.unselectedFaces)
 
       toggleObject: (object, array)->
         if array.indexOf(object.id) != -1

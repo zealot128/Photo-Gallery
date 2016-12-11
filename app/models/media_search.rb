@@ -4,6 +4,7 @@ class MediaSearch
   attr_accessor :from
   attr_accessor :to
   attr_accessor :type
+  attr_accessor :person_ids
 
   attr_reader :parsed_from, :parsed_to
 
@@ -53,6 +54,10 @@ class MediaSearch
         @parsed_to = d.to_date
         sql = sql.where('shot_at <= ?', @parsed_to)
       end
+    end
+    if person_ids.present? && (p=person_ids.reject(&:blank?)).any?
+      people = Person.where(id: p)
+      sql = sql.where('photos.id in (?)', people.joins(:image_faces).select('image_faces.base_file_id')) if people.any?
     end
     sql.order('shot_at desc').includes(:image_faces, :image_labels)
   end

@@ -7,7 +7,8 @@ class V2::ImageFacesController < ApplicationController
     @face = ImageFace.find(params[:face_id])
     @photo = @face.base_file
     similar = RekognitionClient.search_faces(@face.aws_id, threshold: 50)
-    @similar = ImageFace.where(aws_id: similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.sort_by{|a,b| -b }.map(&:first))
+    @similar = ImageFace.where('person_id is null or person_id = ?', @face.person_id).where(aws_id: similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.sort_by{|a,b| -b }.map(&:first))
+    @new_similar = ImageFace.where('person_id is null').where(aws_id: similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.sort_by{|a,b| -b }.map(&:first))
   end
 
   def unassigned
@@ -23,9 +24,9 @@ class V2::ImageFacesController < ApplicationController
     existing = Person.where('lower(name) = lower(?)', params[:person_name].strip).first
     person = existing || Person.create(params[:person_name])
     ImageFace.where(id: params[:face_ids]).update_all(person_id: person.id)
-    if params[:unselected_face_ids].present?
-      ImageFace.where(id: params[:unselected_face_ids]).where(person_id: person.id).update_all person_id: nil
-    end
+    # if params[:unselected_face_ids].present?
+    #   ImageFace.where(id: params[:unselected_face_ids]).where(person_id: person.id).update_all person_id: nil
+    # end
     render json: {}
   end
 end
