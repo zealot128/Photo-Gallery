@@ -13,7 +13,7 @@ class V2::ImageFacesController < ApplicationController
   end
 
   def unassigned
-    @images = ImageFace.where(person_id: nil).limit(200)
+    @images = ImageFace.where(person_id: nil).order('created_at desc').paginate(page: params[:page], per_page: 100)
   end
 
   def bulk_update
