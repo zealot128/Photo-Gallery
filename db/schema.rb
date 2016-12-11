@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202083511) do
+ActiveRecord::Schema.define(version: 20161211190356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,8 +72,8 @@ ActiveRecord::Schema.define(version: 20161202083511) do
     t.float    "lat"
     t.float    "lng"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "location"
     t.string   "md5"
     t.integer  "year"
@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(version: 20161202083511) do
     t.json     "meta_data"
     t.string   "type"
     t.bigint   "file_size"
+    t.boolean  "rekognition_labels_run", default: false
+    t.boolean  "rekognition_faces_run",  default: false
     t.index ["day_id"], name: "index_photos_on_day_id", using: :btree
     t.index ["md5"], name: "index_photos_on_md5", unique: true, using: :btree
     t.index ["month"], name: "index_photos_on_month", using: :btree
