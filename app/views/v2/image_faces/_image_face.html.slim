@@ -1,5 +1,5 @@
 .face-block
-  = link_to "/v2/face/#{image_face.id}"
+  = link_to "/v2/faces/#{image_face.id}"
     = image_tag image_face.file.url
     - if image_face.person.blank?
       br
