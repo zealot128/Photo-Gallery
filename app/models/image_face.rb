@@ -16,7 +16,7 @@ class ImageFace < ApplicationRecord
   belongs_to :base_file
   belongs_to :person
 
-  after_create :crop_bounding_box
+  after_create :crop_bounding_box, :auto_assign_person
   mount_uploader :file, MontageUploader
 
   def as_json(opts={})
@@ -43,5 +43,18 @@ class ImageFace < ApplicationRecord
     image.resize 'x100>'
     self.file = File.open(image.path)
     self.save
+  end
+
+  def auto_assign_person
+    if !person
+      similar = RekognitionClient.search_faces(aws_id, threshold: 80, max_faces: 10)
+      if similar.count >= 5
+        face_histogram = ImageFace.where(aws_id: similar.face_matches.map{|i| i.face.face_id }).map(&:person_id).compact.group_by(&:itself).map{|a,b|[a,b.count]}.to_h
+        if face_histogram.length == 1 && face_histogram.values.first >= 5
+          person_id = face_histogram.keys.first
+          update person_id: person_id
+        end
+      end
+    end
   end
 end
