@@ -19,15 +19,9 @@ class ImageFace < ApplicationRecord
   after_create :crop_bounding_box, :auto_assign_person
   mount_uploader :file, MontageUploader
 
-  def as_json(opts={})
-    {
-      id: id,
-      preview: file.url,
-      bounding_box: bounding_box,
-      person_id: person_id,
-      person_name: person.try(:name)
-    }
-  end
+  # For image face controller transient value
+  attr_accessor :similarity
+
 
   def crop_bounding_box
     version = base_file.file.versions[:large]
@@ -56,5 +50,17 @@ class ImageFace < ApplicationRecord
         end
       end
     end
+  end
+
+  def as_json(opts={})
+    {
+      id: id,
+      preview: file.url,
+      bounding_box: bounding_box,
+      similarity: similarity,
+      confidence: confidence,
+      person_id: person_id,
+      person_name: person.try(:name)
+    }
   end
 end

@@ -76,7 +76,7 @@ class Photo < BaseFile
       if labels.include?("People") || labels.include?("Person") || labels.include?("Child")
         faces = RekognitionClient.index_faces(self)
         faces.face_records.each do |face|
-          image_faces.where(aws_id: face.face.face_id).first_or_create(bounding_box: face.face.bounding_box.as_json)
+          image_faces.where(aws_id: face.face.face_id).first_or_create(bounding_box: face.face.bounding_box.as_json, confidence: face.face.confidence).update(confidence: face.face.confidence)
         end
         update_column :rekognition_faces_run, true
       end

@@ -11,8 +11,8 @@ class V2::ImageFacesController < ApplicationController
       format.json {
         similar = RekognitionClient.search_faces(@face.aws_id, threshold: params[:threshold].to_i, max_faces: params[:max].to_i)
         out = similar.face_matches.map{|i| [i.face.face_id, i.similarity]}.to_h
-        similarities = ImageFace.where('person_id is null or person_id = ?', @face.person_id).where(aws_id: out.keys).map{|face| [face, out[face.aws_id] ] }.sort_by{|a,b| -b }
-        render json: similarities.map(&:first)
+        similarities = ImageFace.where(aws_id: out.keys).tap{|i| i.each{|face| face.similarity = out[face.aws_id] } }.sort_by{|a| -(a.similarity || 0)}
+        render json: similarities
       }
 
     end

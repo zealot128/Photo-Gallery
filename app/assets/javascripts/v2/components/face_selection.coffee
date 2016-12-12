@@ -44,9 +44,12 @@ window.FaceSelection = (domEl, state) ->
       state: state,
       face: el.data('face'),
       selectedFaces: [],
-      similar: el.data('similar'),
+      allSimilar: [],
       similarity: 80,
-      max: 200,
+      people: [],
+      confidence: 0,
+      similarUnassigned: [],
+      max: 500,
       person_name: ""
     }
     ready: ->
@@ -54,22 +57,38 @@ window.FaceSelection = (domEl, state) ->
       this.selectedFaces.push(this.face.id)
       this.person_name = this.face.person_name
       this.refreshSimilarities()
-      if !this.state.people
-        Api.getPeople (d)->
-          this.state.people = d
+      # if !this.state.people
+      #   Api.getPeople (d)->
+      #     this.state.people = d
 
     methods: {
       refreshSimilarities: (event)->
         event.preventDefault() if event
         Api.getSimilarImages(this.face, this.max, this.similarity, (d) =>
-          this.similar = d
+          this.allSimilar = d
+          this.similarUnassigned = []
           this.selectedFaces = [ this.face.id ]
-          this.similar.forEach (el) =>
-            if el.person_id == this.face.person_id || !el.person_id
-              this.selectedFaces.push(el.id)
+          people = {}
+          this.allSimilar.forEach (el) =>
+            if el.confidence >= this.confidence
+              if !el.person_id
+                this.similarUnassigned.push(el)
+                this.selectedFaces.push(el.id)
+              else
+                people[el.person_name] ||= 0
+                people[el.person_name] += 1
+
+          this.people = []
+          for k,v of people
+            this.people.push({name: k, count: v})
+          debugger
         )
 
-
+      setPerson: (event, person) ->
+        event.preventDefault()
+        this.person_name = person.name
+      round: (value) ->
+        Math.round(value * 10) / 10
 
       selectAll: (event)->
         event.preventDefault()
@@ -84,7 +103,10 @@ window.FaceSelection = (domEl, state) ->
 
       createPerson: (event)->
         event.preventDefault()
-        Api.createPerson(this.person_name, this.selectedFaces, [], => this.face.person_name = this.person_name)
+        Api.createPerson(this.person_name, this.selectedFaces, [], =>
+          this.face.person_name = this.person_name
+          this.refreshSimilarities()
+        )
       selected: (face)-> this.selectedFaces.indexOf(face.id) != -1
       toggleSelect: (face)->
         this.toggleObject(face, this.selectedFaces)

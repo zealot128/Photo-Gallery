@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161211190356) do
+ActiveRecord::Schema.define(version: 20161212132103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20161211190356) do
     t.uuid     "aws_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.float    "confidence"
     t.index ["base_file_id"], name: "index_image_faces_on_base_file_id", using: :btree
     t.index ["person_id"], name: "index_image_faces_on_person_id", using: :btree
   end

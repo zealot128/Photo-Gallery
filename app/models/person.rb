@@ -9,6 +9,6 @@
 #
 
 class Person < ApplicationRecord
-  has_many :image_faces
+  has_many :image_faces, dependent: :nullify
   has_many :base_files, through: :image_faces
 end
