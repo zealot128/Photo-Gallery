@@ -10,7 +10,6 @@ class V2::ImageFacesController < ApplicationController
       format.html
       format.json {
         similar = RekognitionClient.search_faces(@face.aws_id, threshold: params[:threshold].to_i, max_faces: params[:max].to_i)
-        binding.pry
         out = similar.face_matches.map{|i| [i.face.face_id, [i.similarity, i.face.confidence]]}.to_h
         similarities = ImageFace.where(aws_id: out.keys).tap{|i|
           i.each{|face|
