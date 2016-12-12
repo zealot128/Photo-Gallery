@@ -48,7 +48,7 @@ class ImageFace < ApplicationRecord
   def auto_assign_person
     if !person
       similar = RekognitionClient.search_faces(aws_id, threshold: 80, max_faces: 10)
-      if similar.count >= 5
+      if similar.face_matches.count >= 5
         face_histogram = ImageFace.where(aws_id: similar.face_matches.map{|i| i.face.face_id }).map(&:person_id).compact.group_by(&:itself).map{|a,b|[a,b.count]}.to_h
         if face_histogram.length == 1 && face_histogram.values.first >= 5
           person_id = face_histogram.keys.first
