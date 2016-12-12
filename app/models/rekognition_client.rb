@@ -1,10 +1,11 @@
 class RekognitionClient
   class << self
-    def collection(max_results: 10)
+    def collection(max_results: 100, next_token: nil)
       client.list_faces({
         collection_id: Rails.application.secrets.rekognition_collection,
         max_results: max_results,
-      })
+        next_token: next_token
+      }.delete_if{|k,v| v.nil? })
     rescue Aws::Rekognition::Errors::ResourceNotFoundException
       puts "Creating Face collection #{Rails.application.secrets.rekognition_collection}..."
       client.create_collection({
