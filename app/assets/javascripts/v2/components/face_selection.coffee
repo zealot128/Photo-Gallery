@@ -113,8 +113,8 @@ window.FaceSelection = (domEl, state) ->
 
       toggleObject: (object, array)->
         if array.indexOf(object.id) != -1
-          index = this.array.indexOf(object.id)
-          this.array.splice(index, 1)
+          index = array.indexOf(object.id)
+          array.splice(index, 1)
         else
           array.push(object.id)
 
