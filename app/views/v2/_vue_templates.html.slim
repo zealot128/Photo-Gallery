@@ -43,14 +43,14 @@ script type="x-template" id='tpl-photo-gallery'
 
 script type="x-template" id='tpl-photo-preview'
   .gallery-box
-    a.gallery-element v-bind:href='file.versions.large' data-sub-html='\#{{subHtmlId}}' data-download-url='{{file.download_url}}'
-      img v-bind:src='file.versions.preview' title='{{title}}'
+    a.gallery-element v-bind:href='file.versions.large' v-bind:data-sub-html='"#" + subHtmlId' v-bind:data-download-url="file.download_url"
+      img v-bind:src='file.versions.preview' v-bind:title='title'
 
 script type="x-template" id='tpl-photo'
-  div id='{{subHtmlId}}'
+  div v-bind:id="subHtmlId"
     p
       span<>(v-if='faces_count > 0')
-        a href='/v2/assign_faces/{{file.id}}' target='_blank' title='There are {{faces_count}} people in this picture'
+        a(v-bind:href='"/v2/assign_faces/" + file.id' target='_blank' v-bind:title='"There are " + faces_count + " people in this picture"')
           span.badge(v-if='unassigned_faces_count > 0')
             |{{unassigned_faces_count}}
           i.fa.fa-user.fa-fw<>
@@ -79,19 +79,19 @@ script type="x-template" id='tpl-photo'
 
 script type="x-template" id='tpl-video-preview'
   .gallery-box
-    a.gallery-element data-poster="{{ file.versions.preview }}" data-html="\#{{subHtmlId}}" data-download-url='{{file.download_url}}' data-sub-html='\#{{subHtmlId}}_caption'
+    a.gallery-element(v-bind:data-poster="file.versions.preview" v-bind:data-html='"#" + subHtmlId'  v-bind:data-download-url='file.download_url' v-bind:data-sub-html='"#" + subHtmlId + "_caption"')
       i.fa.fa-play-circle.play-icon>
-      img v-bind:src='file.versions.preview' title='{{title}}'
+      img v-bind:src='file.versions.preview' v-bind:title='title'
       .duration
         | {{duration}}
 
 script type="x-template" id='tpl-video'
   div
-    div id='{{subHtmlId}}'
+    div v-bind:id="subHtmlId"
       video.lg-video-object.lg-html5.video-js.vjs-default-skin(controls preload="none")
         source(v-bind:src="file.versions.large" type="video/mp4" label='SD')
         | Your browser does not support HTML5 video.
-      div id='{{subHtmlId}}_caption'
+      div v-bind:id='subHtmlId + "_caption"'
         p
           span.image-info<
             i.fa.fa-clock-o.fa-fw>
@@ -193,68 +193,69 @@ script type="x-template" id='tpl-bulk-edit'
               | {{buttonText}}
 
 script type="x-template" id='tpl-face-selection'
-  h3 v-if='face.person_name'
-    | {{face.person_name}} appear also on:
-  h3 v-if='!face.person_name'
-    | Who's this?
+  div.face-selection
+    h3 v-if='face.person_name'
+      | {{face.person_name}} appear also on:
+    h3 v-if='!face.person_name'
+      | Who's this?
 
-  img v-bind:src='face.preview'
+    img v-bind:src='face.preview'
 
-  br
-  br
-  p: strong Create/Assign person and select all similar people
-  form
-    .row
-      .col-sm-3
-        label.control-label
-          |Similarity (percent)
-          input class="form-control" v-model="similarity" placeholder='' type='number'
-      .col-sm-3
-        label.control-label
-          |Max. images
-          input class="form-control" v-model="max" placeholder='' type='number'
-      .col-sm-3
-        label.control-label
-          |Min. Confidence
-          input class="form-control" v-model="confidence" placeholder='' type='number'
-      .col-sm-3
-        br
-        button type='submit' class='btn btn-default' href='#' v-on:click='refreshSimilarities($event)'
-          |Refresh similar images
-
-
-  p: strong Assign together with similar faces &ndash; Unselect all, who are not the same person
-  p v-if='allSimilar.length > 0'
-    |{{allSimilar.length}} similar images matched by amazon.
-
-  span v-for='other_face in similarUnassigned'
-  .btn.btn-default.btn-xs.tag-toggle.face-toggle<>(v-for='other_face in similarUnassigned' v-bind:class='{ "active" : selected(other_face)}')
-    img v-bind:src='other_face.preview' v-on:click='toggleSelect(other_face)'
     br
-    div title='Similarity with face - Confidence that it is a face'
-      | {{round(other_face.similarity)}}% &ndash; {{round(other_face.confidence)}}
-    a href='/v2/faces/{{other_face.id}}'
-      i.fa.fa-fw.fa-external-link
-  div v-if='similarUnassigned.length == 0'
-    i No new unassigned images found.
-  div.clearfix v-if='similarUnassigned.length > 0'
     br
-    a.btn.btn-default.btn-xs href='#' v-on:click='selectAll($event)' Select All
-    a.btn.btn-default.btn-xs href='#' v-on:click='unselectAll($event)' Unselect all
+    p: strong Create/Assign person and select all similar people
+    form
+      .row
+        .col-sm-3
+          label.control-label
+            |Similarity (percent)
+            input class="form-control" v-model="similarity" placeholder='' type='number'
+        .col-sm-3
+          label.control-label
+            |Max. images
+            input class="form-control" v-model="max" placeholder='' type='number'
+        .col-sm-3
+          label.control-label
+            |Min. Confidence
+            input class="form-control" v-model="confidence" placeholder='' type='number'
+        .col-sm-3
+          br
+          button type='submit' class='btn btn-default' href='#' v-on:click='refreshSimilarities($event)'
+            |Refresh similar images
 
-  form
-    h3 Create or assign existing person
-    span v-if='people.length > 0'
-      | Quick-Select one of the following people who also appeared that many in the similar matches
-      p
-        a.label.label-default<> href='#' v-for='person in people' v-on:click='setPerson($event, person)'
-          |{{person.name}} ({{person.count}})
 
-    .row: .col-md-6
-      .form-group
-        input class="form-control" v-model="person_name" placeholder='enter new persons name'
-      button.btn.btn-primary v-on:click='createPerson($event)' type='submit'
-        |Create new or assign to existing person
+    p: strong Assign together with similar faces &ndash; Unselect all, who are not the same person
+    p v-if='allSimilar.length > 0'
+      |{{allSimilar.length}} similar images matched by amazon.
+
+    span v-for='other_face in similarUnassigned'
+    .btn.btn-default.btn-xs.tag-toggle.face-toggle<>(v-for='other_face in similarUnassigned' v-bind:class='{ "active" : selected(other_face)}')
+      img v-bind:src='other_face.preview' v-on:click='toggleSelect(other_face)'
+      br
+      div title='Similarity with face - Confidence that it is a face'
+        | {{round(other_face.similarity)}}% &ndash; {{round(other_face.confidence)}}
+      a v-bind:href='"/v2/faces/" + other_face.id'
+        i.fa.fa-fw.fa-external-link
+    div v-if='similarUnassigned.length == 0'
+      i No new unassigned images found.
+    div.clearfix v-if='similarUnassigned.length > 0'
+      br
+      a.btn.btn-default.btn-xs href='#' v-on:click='selectAll($event)' Select All
+      a.btn.btn-default.btn-xs href='#' v-on:click='unselectAll($event)' Unselect all
+
+    form
+      h3 Create or assign existing person
+      span v-if='people.length > 0'
+        | Quick-Select one of the following people who also appeared that many in the similar matches
+        p
+          a.label.label-default<> href='#' v-for='person in people' v-on:click='setPerson($event, person)'
+            |{{person.name}} ({{person.count}})
+
+      .row: .col-md-6
+        .form-group
+          input class="form-control" v-model="person_name" placeholder='enter new persons name'
+        button.btn.btn-primary v-on:click='createPerson($event)' type='submit'
+          |Create new or assign to existing person
 
 
 
@@ -264,5 +265,5 @@ script type="x-template" id='tpl-face-image'
     bounding-box v-bind:face='face' v-for='face in photo.faces' v-bind:width='image_width' v-bind:height='image_height'
 
 script type="x-template" id='tpl-bounding-box'
-  a.bb-face v-bind:style='styleObject' href='/v2/faces/{{face.id}}' target='_blank' title='{{name}}'
+  a.bb-face v-bind:style='styleObject' v-bind:href='"/v2/faces/" + face.id' target='_blank' v-bind:title='name'
     | {{name}}

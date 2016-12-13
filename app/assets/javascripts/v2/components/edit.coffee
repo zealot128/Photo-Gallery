@@ -20,7 +20,8 @@ EditMixin = {
 
     toggleObject: (object, array)->
       if array.indexOf(object.id) != -1
-        array.$remove(object.id)
+        index = this.array.indexOf(object.id)
+        this.array.splice(index, 1)
       else
         array.push(object.id)
     toggleTag: (tag) -> this.toggleObject(tag, this.tagIds)
@@ -83,7 +84,7 @@ Vue.component('vue-edit', {
   template: '#tpl-edit'
   data: ->
     notRotating: true
-  ready: ->
+  mounted: ->
     this.state.updateAll() if !this.allTags
     this.modalEl().modal('show').css({'zIndex': 10000 })
     this.tagIds = this.file.tag_ids

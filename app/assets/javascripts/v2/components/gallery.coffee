@@ -14,14 +14,14 @@ window.Gallery = (domEl, state) ->
       gallery: null,
     }
 
-    ready: ->
+    mounted: ->
       window.location.hash = ''  ## gallery has problems if there is an old hash
       this.buildGallery()
       $( document ).on( "keyup", (e) => this.handleKeyboardNav(e) )
-      if this.isRecentGallery
+      if this.isRecentGallery && window.App
         App.new_uploads.received = (data)=>
           this.files.unshift({})
-          this.files.$set(0, data.file)
+          Vue.set(this.files, 0, data.file)
 
     methods: {
       buildGallery: ->
@@ -61,7 +61,8 @@ window.Gallery = (domEl, state) ->
         index = gallery.index
         item_count = gallery.$items.length
         gallery.destroy(true)
-        this.files.$remove(file)
+        index = this.files.indexOf(file)
+        this.files.splice(index, 1)
         that = this
         Vue.nextTick ->
           if item_count > 1

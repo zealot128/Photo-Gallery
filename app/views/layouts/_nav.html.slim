@@ -43,7 +43,7 @@ nav.navbar.navbar-default role='navigation'
               b.caret<
             ul.dropdown-menu(role="menu" v-if='shares')
               li(v-for='s in shares')
-                a href='/shares/{{s.token}}'
+                a v-bind:href="'/shares/' + s.token"
                   | {{s.name}}
 
           li.dropdown
@@ -53,7 +53,7 @@ nav.navbar.navbar-default role='navigation'
               b.caret<
             ul.dropdown-menu(role="menu")
               li v-for='tag in tags'
-                a href='/tag/{{tag.id}}'
+                a v-bind:href="'/tag/' + tag.id"
                   | {{tag.name}} ({{tag.taggings_count}})
           li
             a href='/upload'

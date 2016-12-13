@@ -11,7 +11,8 @@ window.Years = (domEl, state) ->
       toggleYear: (year, event) ->
         event.preventDefault()
         if this.openYears.indexOf(year.id) != -1
-          this.openYears.$remove(year.id)
+          index = this.openYears.indexOf(year.id)
+          this.openYears.splice(index, 1)
         else
           this.openYears.push(year.id)
       isOpen: (year) ->

@@ -8,11 +8,12 @@ window.FaceImage = (domEl, state) ->
       image_height: 0,
       image_width: 0,
     }
-    ready: ->
+    mounted: ->
       that = this
-      $(this.$el).find('img').on 'load', ->
-        that.image_width = this.width
-        that.image_height = this.height
+      Vue.nextTick =>
+        $(this.$el).find('img').on 'load', ->
+          that.image_width = this.width
+          that.image_height = this.height
   })
 
 Vue.component('bounding-box', {
@@ -52,7 +53,7 @@ window.FaceSelection = (domEl, state) ->
       max: 500,
       person_name: ""
     }
-    ready: ->
+    mounted: ->
       this.selectedFaces = []
       this.selectedFaces.push(this.face.id)
       this.person_name = this.face.person_name
@@ -81,7 +82,6 @@ window.FaceSelection = (domEl, state) ->
           this.people = []
           for k,v of people
             this.people.push({name: k, count: v})
-          debugger
         )
 
       setPerson: (event, person) ->
@@ -113,7 +113,8 @@ window.FaceSelection = (domEl, state) ->
 
       toggleObject: (object, array)->
         if array.indexOf(object.id) != -1
-          array.$remove(object.id)
+          index = this.array.indexOf(object.id)
+          this.array.splice(index, 1)
         else
           array.push(object.id)
 
