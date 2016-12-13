@@ -1,10 +1,11 @@
 .face-block
   = link_to "/v2/faces/#{image_face.id}"
     = image_tag image_face.file.url
+    br
+    = number_to_percentage (image_face.confidence || 0).round(1)
+    br
     - if image_face.person.blank?
-      br
       small Unknown Person
     - else
-      br
       small= image_face.person.name
 
