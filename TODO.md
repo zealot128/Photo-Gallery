@@ -19,6 +19,7 @@
   * Tags und ImageTags mergen, Translate
   * CloudWatch oder aehnliches was Anzahl hinterlegter / Budget abfragt, falls noch viel offen, Button der die naechsten ~1000 unrekognized Bilder durch geht
   * Video: 10 Snippets generieren, GIF generieren, Snippets an AWS schicken
+  * Similarity abspeichern
 
 * Admin
   * User anlegen/editieren

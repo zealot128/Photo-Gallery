@@ -35,3 +35,19 @@ en:
       file_size_to: "Files smaller than <span class='label label-default'>%{max}</span>"
 
 
+  nav:
+    photos: Photos
+    search: Search
+    profile: Profile
+    change_password: Change Password
+    log_out: Log out
+    shares: Shares
+    upload: Upload
+    admin: Admin
+    upload_logs: Upload logs
+    cloud_metrics: Cloud metrics
+    tags: Tags
+    already_uploaded: Find already uploaded
+    unassigned_faces: Unassigned Faces
+    login: login
+    impressum: Impressum

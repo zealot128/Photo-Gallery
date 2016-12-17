@@ -1,0 +1,88 @@
+de:
+  simple_form:
+    labels:
+    hints:
+      photo:
+        tag_list: Schlagworte nutzen, um Inhalte für private Zwecke zu kategorisieren
+        shares: Benutze Shares um Inhalte mit anderen Personen zu teilen. Alles im Share "Public" wird auf der Startseite angezeigt
+        new_share: Ad-Hoc-Erstellung eines neuen Shares
+
+  pages:
+    index:
+      title: "Photo-App"
+      intro: "Dies ist meine private Foto-Archivierung App. Hier kommen ein paar private öffentliche Fotos von mir"
+
+  title: "Foto-App"
+  twitter: "https://www.twitter.com/stefanwienert"
+  photos:
+    index:
+      last_upload: "vor %{time}"
+      recently_uploaded: Zuletzt hochgeladen
+
+  search:
+    index:
+      by_content: Nach Inhalten
+      by_meta_data: Nach Meta-Daten
+      labels: Erkannte Labels/Schlagworte
+      people: Enthaltene Personen
+      from_date: Von (Datum)
+      to_date: Bis (Datum)
+      button: Suche
+      popular_tags_in_result_set: Meist gefundene Tags in der Ergebnismenge
+      found_media_in_time: "<mark>%{count}</mark> Fotos/Videos gefunden beginnend ab <span class='label label-default'>%{from}</span> bis <span class='label label-default'>%{to}</span>. "
+      file_size_from_to: "Nur Dateien größer als <span class='label label-default'>%{min}</span> und kleiner als <span class='label label-default'>%{max}</span>."
+      file_size_from: "Dateien größer als <span class='label label-default'>%{min}</span>"
+      file_size_to: "Dateien kleiner als <span class='label label-default'>%{max}</span>"
+  nav:
+    photos: Fotos
+    search: Suche
+    profile: Profil
+    change_password: Passwort ändern
+    log_out: Ausloggen
+    shares: Shares
+    upload: Hochladen
+    admin: Admin
+    upload_logs: Upload Logs
+    cloud_metrics: Cloud Metrics
+    tags: Tags
+    already_uploaded: Bereits hochgeladene abgleichen
+    unassigned_faces: Nicht zugewiesene Gesichter
+    login: Einloggen
+    impressum: Impressum
+  vue_templates:
+
+    face:
+      appears_on: "Weitere Bilder zu {{face.person_name}}  hinzufügen"
+      whos_this: "Wer ist das?"
+      create_or_assign_selected: Gesicht und alle ausgewählten zu Person zuweisen
+      similarity: Ähnlichkeit (%)
+      max_matches: Max. Anzahl an Matches
+      confidence: Min. Konfidenz (%)
+      refresh: Neu laden
+      instructions: Alle ausgewählten Gesichter zu einer Person hinzufügen. Alle abwählen, die nicht zur Person gehören, dann Person eintragen oder auswählen und speichern.
+      create_or_assign: Zusammenführen und Person ggf. anlegen
+      person_name: Name der Person
+      quick_select: Ähnliche Gesichter von bereits zugewiesenen Personen. Person anklicken um diese auszuwählen.
+      select_all: Alle auswählen
+      unselect_all: Alle abwählen
+      no_new_found: Keine neuen Bilder gefunden!
+      similar_images_found: "{{allSimilar.length}} ähnliche Bilder von AWS gefunden."
+
+    bulk_edit:
+      button: Alle bearbeiten
+      title: "{{files.length}} Bilder bearbeiten"
+      new_tag: Neues Schlagwort
+      new_share: Neuer Share
+    photo:
+      title: "gefundene Personen in diesem Bild"
+      aperture: Blende
+      exposure: Belichtungszeit
+      camera: Kamera-Modell
+      file_size: Dateigröße
+      edit: Bearbeiten
+      rotate: Drehen
+    video:
+      duration: Dauer
+      file_size: Dateigröße
+
+

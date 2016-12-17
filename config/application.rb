@@ -24,5 +24,8 @@ module SimpleGallery
     if config.features.default_timezone
       config.time_zone = config.features.default_timezone
     end
+    config.i18n.default_locale = :de
+    config.i18n.available_locales = [:de, :en]
+
   end
 end
