@@ -1,10 +1,26 @@
 = form_for @search, url: '', method: :get do |f|
   .row
     .col-sm-6
-      .form-group
-        = f.label :labels, class: 'control-label' do
-          | Rekognized Labels or Tags
-        = f.text_field :labels, class: 'form-control'
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title
+            a href='#search-content' data-toggle='collapse'
+              = t 'search.index.by_content'
+        .panel-body.collapse#search-content class='#{"in" if @search.labels.present? || @search.person_ids.present?}'
+          .form-group
+            = f.label :labels, class: 'control-label' do
+              = t 'search.index.labels'
+            = f.text_field :labels, class: 'form-control'
+          .row
+            .col-sm-12
+              p = t 'search.index.people'
+              - Person.all.each do |person|
+                = f.label "person_ids_#{person.id}" do
+                  img src='#{person.image_faces.first.try(:file).try(:url)}'
+                  br
+                  = f.check_box :person_ids, { multiple: true }, person.id.to_s, ''
+                  = ' '
+                  = person.name
       .checkbox
         = f.label :type, class: '' do
           = f.check_box :type, { multiple: true }, 'photos', ''
@@ -14,40 +30,54 @@
           = f.check_box :type, { multiple: true }, 'videos', ''
           | Videos
     .col-sm-6
-      .form-group
-        = f.label :from, class: 'control-label' do
-          | From Date
-        = f.text_field :from, class: 'form-control'
-      .form-group
-        = f.label :to, class: 'control-label' do
-          | To Date
-        = f.text_field :to, class: 'form-control'
-  .row
-    .col-sm-12
-      p People
-      - Person.all.each do |person|
-        = f.label "person_ids_#{person.id}" do
-          img src='#{person.image_faces.first.try(:file).try(:url)}'
-          br
-          = f.check_box :person_ids, { multiple: true }, person.id.to_s, ''
-          = ' '
-          = person.name
+      .panel.panel-default
+        .panel-heading
+          h3.panel-title
+            a href='#search-meta' data-toggle='collapse'
+              = t 'search.index.by_meta_data'
+        .panel-body.collapse#search-meta class='#{"in" if @search.from.present? || @search.to.present?}'
+          .form-group
+            = f.label :from, class: 'control-label' do
+              = t 'search.index.from_date'
+            = f.text_field :from, class: 'form-control', placeholder: "e.g. Last July"
+          .form-group
+            = f.label :to, class: 'control-label' do
+              = t 'search.index.to_date'
+            = f.text_field :to, class: 'form-control'
+          .form-group
+            = f.label :per_page, class: 'control-label' do
+              = t 'search.index.per_page'
+            = f.text_field :per_page, class: 'form-control'
+          .form-group
+            = f.label :file_size, class: 'control-label' do
+              = t 'search.index.file_size'
+            = f.text_field :file_size, class: 'form-control', placeholer: '1m-5m, >1m,<5m, ...'
 
 
-  = f.submit 'Search', class: 'btn btn-primary', data: { disable_with: false }
+
+  = f.submit t('search.index.button'), class: 'btn btn-primary', data: { disable_with: false }
 
 
 br
 br
-div: strong Popular Tags
+div: strong = t('search.index.popular_tags_in_result_set')
 - @search.label_facets.each do |name, count|
   span.label.label-default<>
     |#{name} <span class='badge'>#{count}</span>
 
-- if @search.parsed_from
-  | Media from #{@search.parsed_from} to #{@search.parsed_to}
+- @media = @search.media.paginate(page: params[:page], per_page: @search.per_page)
+p
+  == t('search.index.found_media_in_time', from: l(@search.parsed_from.presence || 100.years.ago.to_date), to: l(@search.parsed_to.presence || 1.years.from_now.to_date), count: @media.total_entries)
+  - if @search.file_size_min && @search.file_size_max
+    == t('search.index.file_size_from_to', min: number_to_human_size(@search.file_size_min), max: number_to_human_size(@search.file_size_max))
+  - elsif @search.file_size_min
+    == t('search.index.file_size_from', min: number_to_human_size(@search.file_size_min))
+    == t('search.index.file_size_from_to', min: number_to_human_size(@search.file_size_min), max: number_to_human_size(@search.file_size_max))
+  - elsif @search.file_size_max
+    == t('search.index.file_size_to', max: number_to_human_size(@search.file_size_max))
 
-- @media = @search.media.paginate(page: params[:page], per_page: 100)
+
+
 
 .js-photo-gallery data-photos="#{@media.to_json}" data-disable-space='1'
   br

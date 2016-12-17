@@ -19,5 +19,19 @@ en:
       last_upload: "%{time} ago"
       recently_uploaded: Recently Uploaded
 
+  search:
+    index:
+      by_content: By content
+      by_meta_data: By meta data
+      labels: Rekognized labels/tags
+      people: People
+      from_date: From (Date)
+      to_date: To (Date)
+      button: Search
+      popular_tags_in_result_set: Popular tags in found pictures
+      found_media_in_time: "Found <mark>%{count}</mark> photos/videos from <span class='label label-default'>%{from}</span> to <span class='label label-default'>%{to}</span>. "
+      file_size_from_to: "File size larger than <span class='label label-default'>%{min}</span> and smaller than <span class='label label-default'>%{max}</span>."
+      file_size_from: "Files larger than <span class='label label-default'>%{min}</span>"
+      file_size_to: "Files smaller than <span class='label label-default'>%{max}</span>"
 
 

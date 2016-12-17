@@ -5,6 +5,10 @@ class MediaSearch
   attr_accessor :to
   attr_accessor :type
   attr_accessor :person_ids
+  attr_accessor :per_page
+  attr_accessor :file_size
+
+  attr_reader :file_size_min, :file_size_max
 
   attr_reader :parsed_from, :parsed_to
 
@@ -12,6 +16,10 @@ class MediaSearch
     ImageLabel.joins(:base_files).
       where('photos.id in (?)', media.select('photos.id')).
       order('count_all desc').group(:name).limit(100).count
+  end
+
+  def per_page=(val)
+    @per_page = val.to_i
   end
 
   def type=(other)
@@ -61,6 +69,46 @@ class MediaSearch
         sql = sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
       end
     end
+    if file_size.present?
+      @file_size_min, @file_size_max = parsed_file_size
+      sql = sql.where('file_size >= ?', @file_size_min) if @file_size_min
+      sql = sql.where('file_size <= ?', @file_size_max) if @file_size_max
+    end
     sql.order('shot_at desc').includes(:image_faces, :image_labels)
+  end
+
+  def parsed_file_size
+    return [nil, nil] if file_size.blank?
+
+    min = nil
+    max = nil
+
+    parts = file_size.split(',').map(&:strip).reject(&:blank?)
+    unit = "[\\d+,\\.kKmMgGbB ]+"
+    parts.each do |part|
+      case part
+      when /^>=?(#{unit})/
+        min = parse_number_with_unit($1)
+      when /^<=?(#{unit})/
+        max = parse_number_with_unit($1)
+      when /^(#{unit})-(#{unit})/
+        min = parse_number_with_unit($1)
+        max = parse_number_with_unit($2)
+      end
+    end
+
+    [ min, max]
+  end
+
+  def parse_number_with_unit(string)
+    return nil if string.blank?
+    string.gsub!(" ", "")
+    string.gsub!(/bB/, "")
+    multiplicator = 1
+    multiplicator *= 1.kilobyte while string.sub!(/k/i,'')
+    multiplicator *= 1.megabyte while string.sub!(/m/i,'')
+    multiplicator *= 1.megabyte while string.sub!(/g/i,'')
+
+    string.to_f * multiplicator
   end
 end

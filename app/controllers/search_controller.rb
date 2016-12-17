@@ -3,5 +3,6 @@ class SearchController < ApplicationController
 
   def index
     @search = MediaSearch.new(params[:media_search])
+    @search.per_page ||= 100
   end
 end
