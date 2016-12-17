@@ -42,4 +42,27 @@ class AwsStatistics
                                  period: 1.day
                                 )
   end
+
+  def rekognition_collection_size
+    next_token = nil
+    total_count = 0
+    loop do
+      print 'x'
+      response = RekognitionClient.collection(max_results: 4000, next_token: next_token)
+      total_count += response.faces.length
+      if response.next_token
+        next_token = response.next_token
+      else
+        break
+      end
+    end
+    total_count
+  end
+
+  def budgets
+    return [] unless Rails.application.secrets.aws_account_id.present?
+    Aws::Budgets::Client.new(CarrierWave::Uploader::Base.aws_credentials).describe_budgets(account_id: Rails.application.secrets.aws_account_id.to_s).try(:budgets)
+  rescue Aws::Budgets::Errors::AccessDeniedException
+    []
+  end
 end
