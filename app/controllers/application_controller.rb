@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  force_ssl if: :should_force_ssl?
   include ControllerAuthentication
   protect_from_forgery with: :null_session
 
@@ -18,4 +19,8 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
   helper_method :can?
+
+  def should_force_ssl?
+    Rails.env.production? && request.format.html?
+  end
 end
