@@ -1,13 +1,37 @@
 file = {
   props: ['file'],
+  data: ->
+    showFaces: false
+    image_width: 0
+    image_height: 0
+  methods: {
+    toggleFaces: ()->
+      this.showFaces = !this.showFaces
+      img = $('.lg-current .lg-image')
+      this.image_width = img.width()
+      this.image_height = img.height()
+      Vue.nextTick =>
+        if this.showFaces
+          bbs = $(this.$el).find('.js-bbs').html()
+          img.parent().append(bbs).css({
+            position: 'relative',
+            display: 'inline-block',
+            maxWidth: this.image_width
+            maxHeight: this.image_height
+          })
+        else
+          img.parent().find('.bb-face').remove()
+          img.parent().append(bbs).attr('style', '')
+
+
+
+  },
   computed: {
     subHtmlId: -> "subhtml-#{this.file.id}"
     title: -> "#{this.file.caption || ""} (Shot-At: #{this.file.shot_at_formatted})"
     faces_count: -> this.file.faces.length
     unassigned_faces_count: ->
       faces = this.file.faces.filter((el)-> !el.person_id )
-      console.log faces
-      console.log faces.length
       faces.length
   }
 }
@@ -40,3 +64,9 @@ Vue.component('vue-video-preview', {
   mixins: [ file, video ],
   template: '#tpl-video-preview',
 })
+
+$(document).on('click', '.js-toggle-faces', (e)->
+  e.preventDefault()
+  vueInstance = $("#" + $(this).parent().parent()[0].dataset.id)[0].__vue__
+  vueInstance.toggleFaces()
+)

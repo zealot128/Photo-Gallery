@@ -48,9 +48,12 @@ script type="x-template" id='tpl-photo-preview'
 
 script type="x-template" id='tpl-photo'
   div v-bind:id="subHtmlId"
-    p
+    .js-bbs.hide
+      bounding-box v-bind:face='face' v-for='face in file.faces' v-bind:width='image_width' v-bind:height='image_height'
+    p v-bind:data-id="subHtmlId"
       span<>(v-if='faces_count > 0')
-        a(v-bind:href='"/v2/assign_faces/" + file.id' target='_blank' v-bind:title='faces_count + " " + #{t('vue_templates.photo.title').to_json}')
+        / a(v-bind:href='"/v2/assign_faces/" + file.id' target='_blank' v-bind:title='faces_count + " " + #{t('vue_templates.photo.title').to_json}')
+        a.js-toggle-faces(href='#' v-bind:title='faces_count + " " + #{t('vue_templates.photo.title').to_json}')
           span.badge(v-if='unassigned_faces_count > 0')
             |{{unassigned_faces_count}}
           i.fa.fa-user.fa-fw<>
