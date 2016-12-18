@@ -1,9 +1,7 @@
 # TODO
 
 * Search
-  * Mehr Optionen (Kamera, Blende?)
-
-* I18n all the things
+  * Mehr Optionen (Kamera)
 
 * Edit
   * ShotAt aendern moeglich (Bulk auch)

@@ -254,6 +254,9 @@ GEM
       thor (~> 0.14)
     send_file_with_range (1.0.0)
     sexp_processor (4.7.0)
+    simple_form (3.3.1)
+      actionpack (> 4, < 5.1)
+      activemodel (> 4, < 5.1)
     slim (3.0.6)
       temple (~> 0.7.3)
       tilt (>= 1.3.3, < 2.1)
@@ -344,6 +347,7 @@ DEPENDENCIES
   sass-rails (>= 4.0.2)
   select2-rails
   send_file_with_range
+  simple_form
   slim-rails
   sys-filesystem
   tesseract-ocr

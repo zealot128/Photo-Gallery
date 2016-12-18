@@ -30,6 +30,7 @@ gem 'phashion'
 gem 'rqrcode'
 gem 'tesseract-ocr', require: false
 gem 'chronic'
+gem 'simple_form'
 
 ### Share page / upload
 gem 'rubyzip', '>= 1.0.0'

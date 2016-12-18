@@ -38,7 +38,7 @@ de:
     photos: Fotos
     search: Suche
     profile: Profil
-    change_password: Passwort ändern
+    change_password: Profil/Passwort
     log_out: Ausloggen
     shares: Shares
     upload: Hochladen
@@ -50,8 +50,8 @@ de:
     unassigned_faces: Nicht zugewiesene Gesichter
     login: Einloggen
     impressum: Impressum
-  vue_templates:
 
+  vue_templates:
     face:
       appears_on: "Weitere Bilder zu {{face.person_name}}  hinzufügen"
       whos_this: "Wer ist das?"
@@ -68,7 +68,6 @@ de:
       unselect_all: Alle abwählen
       no_new_found: Keine neuen Bilder gefunden!
       similar_images_found: "{{allSimilar.length}} ähnliche Bilder von AWS gefunden."
-
     bulk_edit:
       button: Alle bearbeiten
       title: "{{files.length}} Bilder bearbeiten"
@@ -87,3 +86,16 @@ de:
       file_size: Dateigröße
 
 
+  simple_form:
+    labels:
+      user:
+        username: Nutzername (Login)
+        password: Passwort
+        password_confirmation: Passwort wiederholen
+        email: e-Mail
+        timezone: Zeitzone
+        locale: Sprache
+        admin: Nutzer ist Administrator
+    hints:
+      user:
+        timezone: Zeitzone ist sehr wichtig beim upload von JPEG Bildern, da die EXIF Informationen von JPEG leider keine Zeitzone enthalten. Wenn du verreist, ändere hier die Zeitzone mit, damit die Fotos richtig zugeordnet werden

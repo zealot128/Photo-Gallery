@@ -51,3 +51,52 @@ en:
     unassigned_faces: Unassigned Faces
     login: login
     impressum: Impressum
+
+  vue_templates:
+    face:
+      appears_on: "Assign more photos to {{face.person_name}}"
+      whos_this: "Who's this?"
+      create_or_assign_selected: Create Person/Assign all selected faces to that person
+      similarity: Similarity (%)
+      max_matches: Max. number of matches
+      confidence: Min. confidence (%)
+      refresh: Refresh
+      instructions: "Add all selected faces to a person. Deselect all, which are not the person. Then, enter the person's name or select an existing person."
+      create_or_assign: Merge faces to person / create person if not exist
+      person_name: Name of person
+      quick_select: Similar faces by already existing people. Click on aperson to select him/her.
+      select_all: Select all
+      unselect_all: Deselect all
+      no_new_found: "No new pictures found!"
+      similar_images_found: "{{allSimilar.length}} similar faces found by AWS."
+    bulk_edit:
+      button: Edit all
+      title: "Edit {{files.length}} media files"
+      new_tag: New tag
+      new_share: New share
+    photo:
+      title: "found people in this picture"
+      aperture: Aperture
+      exposure: Exposure Time
+      camera: Camera model
+      file_size: File size
+      edit: Edit
+      rotate: Rotate
+    video:
+      duration: Duration
+      file_size: File Size
+
+
+  simple_form:
+    labels:
+      user:
+        username: Username (Login)
+        password: Password
+        password_confirmation: Password confirmation
+        email: email
+        timezone: Time zone
+        locale: Language
+        admin: User is administrator
+    hints:
+      user:
+        timezone: Timezone is crucial when uploading JPEG photos. The EXIF meta date from jepg does not contain a timezone. So if you travel, also adjust the time zone here.
