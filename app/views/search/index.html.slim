@@ -52,6 +52,10 @@
             = f.label :file_size, class: 'control-label' do
               = t 'search.index.file_size'
             = f.text_field :file_size, class: 'form-control', placeholer: '1m-5m, >1m,<5m, ...'
+          .form-group
+            = f.label :aperture, class: 'control-label' do
+              = t 'search.index.aperture'
+            = f.text_field :aperture, class: 'form-control', placeholer: '1.2-2.3, >1.2,<3, ...'
 
 
 

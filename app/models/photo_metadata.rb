@@ -37,6 +37,7 @@ module PhotoMetadata
     return if !file.present?
     self.meta_data ||= {}
     self.meta_data = MetaDataParser.new(file.path).as_json
+    self.aperture = meta_data['f_number']
     self.meta_data_will_change!
     if Photo.slow_callbacks
       set_top_colors

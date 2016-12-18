@@ -7,6 +7,7 @@ class MediaSearch
   attr_accessor :person_ids
   attr_accessor :per_page
   attr_accessor :file_size
+  attr_accessor :aperture
 
   attr_reader :file_size_min, :file_size_max
 
@@ -70,14 +71,19 @@ class MediaSearch
       end
     end
     if file_size.present?
-      @file_size_min, @file_size_max = parsed_file_size
+      @file_size_min, @file_size_max = parsed(file_size)
       sql = sql.where('file_size >= ?', @file_size_min) if @file_size_min
       sql = sql.where('file_size <= ?', @file_size_max) if @file_size_max
+    end
+    if aperture.present?
+      @aperture_min, @aperture_max = parsed(aperture)
+      sql = sql.where('aperture is not null and aperture >= ?', @aperture_min) if @aperture_min
+      sql = sql.where('aperture is not null and aperture <= ?', @aperture_max) if @aperture_max
     end
     sql.order('shot_at desc').includes(:image_faces, :image_labels)
   end
 
-  def parsed_file_size
+  def parsed(file_size)
     return [nil, nil] if file_size.blank?
 
     min = nil

@@ -1,8 +1,6 @@
 # TODO
 
 * Search
-  * Bulk Edit auf Suchen Seite
-  * Faces besser versteckt zur Auswahl
   * Mehr Optionen (Kamera, Blende?)
 
 * I18n all the things

@@ -72,6 +72,7 @@ describe Photo do
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     expect(photo.as_json).to be_present
+    expect(photo.aperture).to be == 2.6
     expect(photo.exif['model']).to eq('GT-N7100')
   end
 

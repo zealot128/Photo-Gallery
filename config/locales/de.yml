@@ -33,6 +33,7 @@ de:
       file_size_from_to: "Nur Dateien größer als <span class='label label-default'>%{min}</span> und kleiner als <span class='label label-default'>%{max}</span>."
       file_size_from: "Dateien größer als <span class='label label-default'>%{min}</span>"
       file_size_to: "Dateien kleiner als <span class='label label-default'>%{max}</span>"
+      aperture: Blende (1..30)
   nav:
     photos: Fotos
     search: Suche
