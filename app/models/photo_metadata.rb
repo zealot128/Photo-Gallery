@@ -37,7 +37,11 @@ module PhotoMetadata
     return if !file.present?
     self.meta_data ||= {}
     self.meta_data = MetaDataParser.new(file.path).as_json
-    self.aperture = meta_data['f_number']
+    self.aperture = case meta_data['f_number']
+                    when %r{(\d+)/(\d+)} then Rational($1.to_i, $2.to_i).to_f
+                    when nil, "" then nil
+                    else meta_data['f_number'].to_f
+                    end
     self.meta_data_will_change!
     if Photo.slow_callbacks
       set_top_colors
