@@ -27,7 +27,9 @@ class V2::ImageFacesController < ApplicationController
   end
 
   def unassigned
-    @images = ImageFace.where(person_id: nil).order('created_at desc').paginate(page: params[:page], per_page: 100)
+    @filter = UnassignedFilter.new
+    @filter.assign_attributes(params[:unassigned_filter]) if params[:unassigned_filter]
+    @image_faces = @filter.image_faces.paginate(page: params[:page], per_page: 200)
   end
 
   def bulk_update
@@ -39,9 +41,12 @@ class V2::ImageFacesController < ApplicationController
     existing = Person.where('lower(name) = lower(?)', params[:person_name].strip).first
     person = existing || Person.create(params[:person_name])
     ImageFace.where(id: params[:face_ids]).update_all(person_id: person.id)
-    # if params[:unselected_face_ids].present?
-    #   ImageFace.where(id: params[:unselected_face_ids]).where(person_id: person.id).update_all person_id: nil
-    # end
     render json: {}
+  end
+
+  def bulk_delete
+    faces = ImageFace.where id: params[:face_ids]
+    faces.destroy_all
+    render json: { deletedCount: faces.length }
   end
 end

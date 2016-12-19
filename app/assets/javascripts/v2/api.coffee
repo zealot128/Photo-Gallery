@@ -64,6 +64,15 @@ window.Api = {
         threshold: threshold
       success: callback
 
+  bulkDeleteFaces: (face_ids, callback) ->
+    $.ajax
+      dataType: 'json'
+      url: "/v2/faces"
+      method: 'DELETE'
+      data:
+        face_ids: face_ids
+      success: callback
+
   getPeople: (callback) ->
     $.get '/v2/people.json', callback
 

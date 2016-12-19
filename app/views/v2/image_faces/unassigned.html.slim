@@ -1,8 +1,20 @@
-h2 Unassigned faces
+h2 = t('unassigned.title')
 
-p Click on a Face to start assignment.
+p = t('unassigned.intro')
 
-- @images.each do |image|
-  = render image
+= simple_form_for @filter, url: '', method: :get do |f|
+  .panel.panel-default
+    .panel-heading: h3.panel-title Filter
+    .panel-body
+      .row
+        .col-md-4
+          = f.input :confidence, placeholder: '90-100,>90,<90, ...'
+          = f.submit "Filter", class: "btn btn-primary"
+        .col-md-4
+          = f.input :from_date
+          = f.input :to_date
 
-= will_paginate @images
+p = t('unassigned.found', count: @image_faces.total_entries)
+.js-unassigned-filter data-faces="#{@image_faces.to_json}"
+
+= will_paginate @image_faces

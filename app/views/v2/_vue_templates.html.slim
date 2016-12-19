@@ -235,7 +235,6 @@ script type="x-template" id='tpl-face-selection'
     p v-if='allSimilar.length > 0'
       = t('vue_templates.face.similar_images_found')
 
-    span v-for='other_face in similarUnassigned'
     .btn.btn-default.btn-xs.tag-toggle.face-toggle<>(v-for='other_face in similarUnassigned' v-bind:class='{ "active" : selected(other_face)}')
       img v-bind:src='other_face.preview' v-on:click='toggleSelect(other_face)'
       br
@@ -275,3 +274,37 @@ script type="x-template" id='tpl-face-image'
 script type="x-template" id='tpl-bounding-box'
   a.bb-face v-bind:style='styleObject' v-bind:href='"/v2/faces/" + face.id' target='_blank' v-bind:title='name'
     | {{name}}
+
+script type="x-template" id='tpl-face-manager'
+  div.face-manager
+    div.text-center.face-block v-for='face in faces'
+      a v-bind:href='"/v2/faces/" + face.id' v-if='!deleteMode'
+        img v-bind:src='face.preview'
+        br
+        span
+          | {{round(face.confidence || 0)}}%
+        br
+        span ng-if='face.person_name'
+          | {{face.person_name}}
+
+      a.tag-toggle.btn.btn-default.btn-xs.face-toggle v-on:click='toggleSelection(face)' v-if='deleteMode' v-bind:class='{ active: selected(face) }'
+        img v-bind:src='face.preview'
+        br
+        span
+          | {{round(face.confidence || 0)}}%
+        br
+        span ng-if='face.person_name'
+          | {{face.person_name}}
+    div v-if='faces.length > 0'
+      .pull-right v-if='deleteMode'
+        a.btn.btn-default.btn-xs href='#' v-on:click='selectAll($event)' v-if='deleteMode'
+          = t('vue_templates.face.select_all')
+        a.btn.btn-default.btn-xs href='#' v-on:click='unselectAll($event)' v-if='deleteMode'
+          = t('vue_templates.face.unselect_all')
+        a.pull-right.btn.btn-danger.btn-xs v-on:click='confirmDeletion($event)' v-if='deleteMode'
+          = t('vue_templates.face_manager.confirm_deletion')
+
+      a.pull-right.btn.btn-warning.btn-xs v-on:click='startDelete($event)' v-if='!deleteMode'
+        = t('vue_templates.face_manager.start_delete_mode')
+
+

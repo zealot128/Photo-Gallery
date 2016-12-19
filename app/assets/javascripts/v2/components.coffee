@@ -25,3 +25,5 @@ $ ->
   $('.js-face-image').each ->
     FaceImage(this, state)
 
+  $('.js-unassigned-filter').each ->
+    UnassignedFacesManager(this, state)

@@ -86,6 +86,10 @@ en:
       duration: Duration
       file_size: File Size
 
+  unassigned:
+    title: Unassigned faces
+    intro: Click on a face to start assigning that face and similar faces to a person
+    found: "%{count} faces found."
 
   simple_form:
     labels:

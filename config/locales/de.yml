@@ -84,7 +84,13 @@ de:
     video:
       duration: Dauer
       file_size: Dateigröße
+    face_manager:
+      start_delete_mode: Aufräumen starten
 
+  unassigned:
+    title: Nicht zugewiesene Gesichter
+    intro: Klicke auf ein Gesicht um es und weitere Ähnliche einer Person zuzuweisen.
+    found: "%{count} Gesichter gefunden."
 
   simple_form:
     labels:

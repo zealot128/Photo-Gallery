@@ -22,6 +22,15 @@ class ImageFace < ApplicationRecord
   # For image face controller transient value
   attr_accessor :similarity
 
+  after_destroy do
+    begin
+      RekognitionClient.delete_faces(self.aws_id)
+    rescue Exception => e
+      ExceptionNotifier.notify_exception(e) if defined?(ExceptionNotifier)
+      p e if !Rails.env.production?
+      nil
+    end
+  end
 
   def crop_bounding_box
     version = base_file.file.versions[:large]

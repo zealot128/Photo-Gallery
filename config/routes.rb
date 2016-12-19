@@ -41,6 +41,7 @@ SimpleGallery::Application.routes.draw do
     post 'bulk_update' => 'api#bulk_update'
 
     get 'faces/:face_id' => 'image_faces#face'
+    delete 'faces' => 'image_faces#bulk_delete'
     get 'assign_faces/unassigned' => 'image_faces#unassigned'
     get 'assign_faces/:id' => 'image_faces#show'
     post 'assign_faces' => 'image_faces#bulk_update'

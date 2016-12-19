@@ -16,6 +16,53 @@ window.FaceImage = (domEl, state) ->
           that.image_height = this.height
   })
 
+window.UnassignedFacesManager = (domEl, state) ->
+  el = $(domEl)
+  g = new Vue({
+    el: el[0],
+    template: '#tpl-face-manager'
+    methods: {
+      round: (value) ->
+        Math.round(value * 10) / 10
+      startDelete: (event) ->
+        event.preventDefault()
+        this.deleteMode = true
+      confirmDeletion: (event) ->
+        event.preventDefault()
+        this.deleteMode = false
+        Api.bulkDeleteFaces this.selectedFaces, =>
+          if this.selectedFaces.length > 0
+            this.faces.forEach (f) =>
+              if this.selectedFaces.indexOf(f.id) != -1
+                index = this.faces.indexOf(f)
+                this.faces.splice(index, 1)
+
+
+      selectAll: (event)->
+        event.preventDefault()
+        this.selectedFaces = this.faces.map( (f) -> f.id )
+      unselectAll: (event)->
+        event.preventDefault()
+        this.selectedFaces = []
+
+      selected: (face)-> this.selectedFaces.indexOf(face.id) != -1
+      toggleSelection: (face)->
+        this.toggleObject(face, this.selectedFaces)
+      toggleObject: (object, array)->
+        if array.indexOf(object.id) != -1
+          index = array.indexOf(object.id)
+          array.splice(index, 1)
+        else
+          array.push(object.id)
+    }
+    data: {
+      faces: el.data('faces'),
+      deleteMode: false,
+      selectedFaces: []
+    }
+  })
+
+
 Vue.component('bounding-box', {
   props: [ 'face', 'width', 'height' ]
   template: '#tpl-bounding-box'

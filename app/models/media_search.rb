@@ -1,5 +1,6 @@
 class MediaSearch
   include ActiveModel::Model
+  include FilterFormModel
   attr_accessor :labels
   attr_accessor :from
   attr_accessor :to
@@ -51,14 +52,14 @@ class MediaSearch
       sql = sql.where(type: allowed_types)
     end
     if from.present?
-      d = Chronic.parse(from, context: :past)
+      d = date_parse(from)
       if d
         @parsed_from = d.to_date
         sql = sql.where('shot_at >= ?', @parsed_from)
       end
     end
     if to.present?
-      d = Chronic.parse(to, context: :past)
+      d = date_parse(to)
       if d
         @parsed_to = d.to_date
         sql = sql.where('shot_at <= ?', @parsed_to)
@@ -81,40 +82,5 @@ class MediaSearch
       sql = sql.where('aperture is not null and aperture <= ?', @aperture_max) if @aperture_max
     end
     sql.order('shot_at desc').includes(:image_faces, :image_labels)
-  end
-
-  def parsed(file_size)
-    return [nil, nil] if file_size.blank?
-
-    min = nil
-    max = nil
-
-    parts = file_size.split(',').map(&:strip).reject(&:blank?)
-    unit = "[\\d+,\\.kKmMgGbB ]+"
-    parts.each do |part|
-      case part
-      when /^>=?(#{unit})/
-        min = parse_number_with_unit($1)
-      when /^<=?(#{unit})/
-        max = parse_number_with_unit($1)
-      when /^(#{unit})-(#{unit})/
-        min = parse_number_with_unit($1)
-        max = parse_number_with_unit($2)
-      end
-    end
-
-    [ min, max]
-  end
-
-  def parse_number_with_unit(string)
-    return nil if string.blank?
-    string.gsub!(" ", "")
-    string.gsub!(/bB/, "")
-    multiplicator = 1
-    multiplicator *= 1.kilobyte while string.sub!(/k/i,'')
-    multiplicator *= 1.megabyte while string.sub!(/m/i,'')
-    multiplicator *= 1.megabyte while string.sub!(/g/i,'')
-
-    string.to_f * multiplicator
   end
 end
