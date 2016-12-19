@@ -13,10 +13,10 @@ class UnassignedFilter
       sql = sql.where('confidence <= ?', max) if max
     end
     if from_date.present?
-      sql = sql.joins('photos').where('photos.shot_at >= ?', date_parse(from_date))
+      sql = sql.joins(:base_file).where('photos.shot_at >= ?', date_parse(from_date))
     end
     if to_date.present?
-      sql = sql.joins('photos').where('photos.shot_at <= ?', date_parse(to_date))
+      sql = sql.joins(:base_file).where('photos.shot_at <= ?', date_parse(to_date))
     end
     sql
   end
