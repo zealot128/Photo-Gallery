@@ -32,10 +32,8 @@ window.UnassignedFacesManager = (domEl, state) ->
         this.deleteMode = false
         Api.bulkDeleteFaces this.selectedFaces, =>
           if this.selectedFaces.length > 0
-            this.faces.forEach (f) =>
-              if this.selectedFaces.indexOf(f.id) != -1
-                index = this.faces.indexOf(f)
-                this.faces.splice(index, 1)
+            filtered = this.faces.filter  (face) => this.selectedFaces.indexOf(face.id) == -1
+            this.faces = filtered
 
 
       selectAll: (event)->
@@ -105,9 +103,6 @@ window.FaceSelection = (domEl, state) ->
       this.selectedFaces.push(this.face.id)
       this.person_name = this.face.person_name
       this.refreshSimilarities()
-      # if !this.state.people
-      #   Api.getPeople (d)->
-      #     this.state.people = d
 
     methods: {
       refreshSimilarities: (event)->
@@ -139,7 +134,7 @@ window.FaceSelection = (domEl, state) ->
 
       selectAll: (event)->
         event.preventDefault()
-        ids = this.similar.map (i) -> i.id
+        ids = this.similarUnassigned.map (i) -> i.id
         this.selectedFaces = ids
         this.selectedFaces.push(this.face.id)
 
