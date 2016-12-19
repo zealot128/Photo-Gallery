@@ -1,7 +1,7 @@
 module FilterFormModel
 
   def date_parse(date)
-    Chronic.parse(from, context: :past)
+    Chronic.parse(date, context: :past)
   end
 
   def parsed(file_size)
