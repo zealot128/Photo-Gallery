@@ -121,7 +121,7 @@ window.FaceSelection = (domEl, state) ->
             if el.confidence >= this.confidence
               if !el.person_id
                 this.similarUnassigned.push(el)
-                this.selectedFaces.push(el.id)
+                # this.selectedFaces.push(el.id)
               else
                 people[el.person_name] ||= 0
                 people[el.person_name] += 1

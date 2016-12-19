@@ -235,6 +235,13 @@ script type="x-template" id='tpl-face-selection'
     p v-if='allSimilar.length > 0'
       = t('vue_templates.face.similar_images_found')
 
+    p v-if='similarUnassigned.length > 0'
+      br
+      a.btn.btn-default.btn-xs href='#' v-on:click='selectAll($event)'
+        = t('vue_templates.face.select_all')
+      a.btn.btn-default.btn-xs href='#' v-on:click='unselectAll($event)'
+        = t('vue_templates.face.unselect_all')
+
     .btn.btn-default.btn-xs.tag-toggle.face-toggle<>(v-for='other_face in similarUnassigned' v-bind:class='{ "active" : selected(other_face)}')
       img v-bind:src='other_face.preview' v-on:click='toggleSelect(other_face)'
       br
