@@ -27,6 +27,7 @@ window.Gallery = (domEl, state) ->
       buildGallery: ->
         lgOptions =  {
           selector: '.gallery-element',
+          showThumbByDefault: false
           videojs: true
         }
         $el = $(this.$el).find('.gallery')

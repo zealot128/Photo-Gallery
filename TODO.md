@@ -19,10 +19,8 @@
 
 * Admin
   * User anlegen/editieren
-  * TimeZone einstellbar bei Nutzeraccount
 
 * Bilder
-  * Rekognize Faces als overlay in Bilder Gallery togglebar
   * Geodaten -> Map in Day view
 
 * Rails 5.1
