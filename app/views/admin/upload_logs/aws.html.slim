@@ -29,34 +29,7 @@
       .panel-heading: h3.panel-title Budgets
       .panel-body
         - @aws.budgets.each do |budget|
-          .text-center
-            strong
-              = budget.budget_name
-              br
-              small = budget.cost_filters.transform_values{|i| i.to_sentence }.to_a.map{|i| i.join(": ") }.join("\n")
-
-          - if budget.budget_limit.is_a?(Aws::Budgets::Types::Spend)
-            table.table
-              tr
-                td Filter
-                td.text-right
-
-              tr
-                td Limit
-                td.text-right
-                  = number_to_currency budget.budget_limit.amount.to_f, locale: 'en'
-              tr
-                td Time period
-                td.text-right
-                  |#{l(budget.time_period.start.to_date)} - #{l(budget.time_period.end.to_date)}
-              tr
-                td Current spent in Timeframe
-                td.text-right
-                  = number_to_currency budget.calculated_spend.actual_spend.amount.to_f, locale: 'en'
-              tr
-                td Forecast
-                td.text-right
-                  = number_to_currency budget.calculated_spend.forecasted_spend.amount.to_f, locale: 'en'
+          = render "budget", budget: budget
 
 
 

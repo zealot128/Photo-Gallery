@@ -1,0 +1,42 @@
+.text-center
+  strong
+    = budget.budget_name
+    br
+    small = budget.cost_filters.transform_values{|i| i.to_sentence }.to_a.map{|i| i.join(": ") }.join("\n")
+
+- if budget.budget_type == 'COST'
+  table.table
+    tr
+      td Limit
+      td.text-right
+        = number_to_currency budget.budget_limit.amount.to_f, locale: 'en'
+    tr
+      td Time period
+      td.text-right
+        |#{l(budget.time_period.start.to_date)} - #{l(budget.time_period.end.to_date)}
+    tr
+      td Current spent in Timeframe
+      td.text-right
+        = number_to_currency budget.calculated_spend.actual_spend.amount.to_f, locale: 'en'
+    tr
+      td Forecast
+      td.text-right = number_to_currency budget.calculated_spend.forecasted_spend.amount.to_f, locale: 'en'
+
+- if budget.budget_type == 'USAGE'
+  table.table
+    tr
+      td Time period
+      td.text-right
+        |#{l(budget.time_period.start.to_date)} - #{l(budget.time_period.end.to_date)} (#{budget.time_unit.humanize})
+    tr
+      td Limit
+      td.text-right
+        | #{budget.budget_limit.amount} #{budget.budget_limit.unit}
+    tr
+      td Usage in current time frame
+      td.text-right
+        | #{budget.calculated_spend.actual_spend.amount.to_f.round} #{budget.calculated_spend.actual_spend.unit}
+    tr
+      td Forecast
+      td.text-right
+        | #{budget.calculated_spend.forecasted_spend.amount.to_f.round} #{budget.calculated_spend.forecasted_spend.unit}
