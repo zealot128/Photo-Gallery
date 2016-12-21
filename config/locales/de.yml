@@ -35,6 +35,7 @@ de:
       file_size_to: "Dateien kleiner als <span class='label label-default'>%{max}</span>"
       aperture: Blende (1..30)
   nav:
+    users: Nutzer
     photos: Fotos
     search: Suche
     profile: Profil

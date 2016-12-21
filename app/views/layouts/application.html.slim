@@ -19,6 +19,13 @@ html lang="en"
 
   body
     = render 'layouts/nav'
+    .container
+      - flash.each do |type, message|
+        - p type
+        - if type == 'notice' || type == 'success'
+          .alert.alert-success = message
+        - else
+          .alert.alert-warning = message
     .container-fluid
       = yield
     #loader(style="display: none;")

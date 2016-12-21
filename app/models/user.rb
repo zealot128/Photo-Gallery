@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   attr_accessor :password
   before_save :prepare_password
 
-  has_many :photos
+  has_many :base_files
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :allow_blank => true
   validates_format_of :username, :with => /\A[-\w\._@]+\Z/i, :allow_blank => true, :message => "should only contain letters, numbers, or .-_@"

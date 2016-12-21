@@ -1,0 +1,22 @@
+.container
+  .row: .col-md-6
+    table.table.table-bordered
+      tr
+        th Name
+        th Admin?
+        th
+          = '# photos'
+      - @users.each do |user|
+        tr
+          td = user.username
+          td = user.admin
+          td = user.base_files.count
+          td
+            = link_to [:edit, :admin, user], class: 'btn btn-default' do
+              | edit
+            = ' '
+            = link_to [:edit, :admin, user], data: { method: :delete, confirm: "REALLY?" }, class: 'btn btn-default' do
+              | destroy
+
+  = link_to [:new, :admin, :user], class: 'btn btn-primary' do
+    |New user

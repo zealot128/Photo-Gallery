@@ -1,0 +1,18 @@
+= simple_form_for [:admin, @user] do |f|
+  .row: .col-md-6
+    .panel.panel-default
+      .panel-heading: h3.panel-title Login
+      .panel-body
+        = f.input :username
+        = f.input :password
+        = f.input :password_confirmation
+        = f.input :email
+    .panel.panel-default
+      .panel-heading: h3.panel-title App
+      .panel-body
+        = f.input :timezone, as: :select, collection:  ActiveSupport::TimeZone.all.map{|i| [i.to_s, i.tzinfo.canonical_identifier ]}
+        = f.input :locale, collection: I18n.available_locales.map(&:to_s)
+        - if current_user.admin?
+          = f.input :admin
+    p = f.submit class: "btn-primary btn"
+
