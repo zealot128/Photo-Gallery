@@ -15,6 +15,8 @@
 #  token              :string
 #  pseudo_password    :string
 #  admin              :boolean
+#  timezone           :string
+#  locale             :string
 #
 
 class User < ActiveRecord::Base

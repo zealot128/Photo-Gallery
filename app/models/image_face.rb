@@ -10,6 +10,7 @@
 #  aws_id       :uuid
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  confidence   :float
 #
 
 class ImageFace < ApplicationRecord
