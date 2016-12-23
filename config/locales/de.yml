@@ -58,7 +58,7 @@ de:
       whos_this: "Wer ist das?"
       create_or_assign_selected: Gesicht und alle ausgewählten zu Person zuweisen
       similarity: Ähnlichkeit (%)
-      max_matches: Max. Anzahl an Matches
+      max_matches: Max. Matches
       confidence: Min. Konfidenz (%)
       refresh: Neu laden
       instructions: Alle ausgewählten Gesichter zu einer Person hinzufügen. Alle abwählen, die nicht zur Person gehören, dann Person eintragen oder auswählen und speichern.

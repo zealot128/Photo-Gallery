@@ -39,6 +39,8 @@ gem 'send_file_with_range'
 gem 'rack-raw-upload'
 gem 'filelock'
 gem 'sys-filesystem'
+gem 'whenever'
+gem 'pry'
 
 ### Frontend
 gem 'font-awesome-rails'
