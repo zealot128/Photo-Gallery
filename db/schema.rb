@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161218155629) do
+ActiveRecord::Schema.define(version: 20161222223833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,14 @@ ActiveRecord::Schema.define(version: 20161218155629) do
     t.integer  "user_id"
     t.index ["token"], name: "index_shares_on_token", unique: true, using: :btree
     t.index ["type"], name: "index_shares_on_type", using: :btree
+  end
+
+  create_table "similarities", force: :cascade do |t|
+    t.integer "image_face1_id"
+    t.integer "image_face2_id"
+    t.float   "similarity"
+    t.bigint  "created_at"
+    t.index ["image_face2_id", "image_face1_id"], name: "index_similarities_on_image_face2_id_and_image_face1_id", unique: true, using: :btree
   end
 
   create_table "taggings", force: :cascade do |t|

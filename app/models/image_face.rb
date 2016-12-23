@@ -14,6 +14,10 @@
 #
 
 class ImageFace < ApplicationRecord
+  AUTO_ASSIGN_THRESHOLD = 85
+  AUTO_ASSIGN_MAX_FACES = 15
+  AUTO_ASSIGN_MIN_EXISTING_FACES = 10
+
   belongs_to :base_file
   belongs_to :person
 
@@ -52,11 +56,11 @@ class ImageFace < ApplicationRecord
 
   def auto_assign_person
     if !person
-      similar = RekognitionClient.search_faces(aws_id, threshold: 85, max_faces: 15)
-      binding.pry if $debug
-      if similar.face_matches.count >= 10
-        face_histogram = ImageFace.where(aws_id: similar.face_matches.map{|i| i.face.face_id }).map(&:person_id).compact.group_by(&:itself).map{|a,b|[a,b.count]}.to_h
-        if face_histogram.length == 1 && face_histogram.values.first >= 5
+      similar = RekognitionClient.search_faces(aws_id, threshold: AUTO_ASSIGN_THRESHOLD, max_faces: AUTO_ASSIGN_MAX_FACES)
+      if similar.face_matches.count >= AUTO_ASSIGN_MIN_EXISTING_FACES
+        aws_ids = similar.face_matches.map{|i| i.face.face_id }
+        face_histogram = ImageFace.unscoped.where(aws_id: aws_ids).map(&:person_id).compact.group_by(&:itself).map{|a,b|[a,b.count]}.to_h
+        if face_histogram.length == 1 && face_histogram.values.first >= AUTO_ASSIGN_MIN_EXISTING_FACES
           person_id = face_histogram.keys.first
           update person_id: person_id
         end
