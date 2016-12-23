@@ -332,6 +332,7 @@ DEPENDENCIES
   parallel
   pg
   phashion
+  pry
   pry-rails
   puma
   quiet_assets
