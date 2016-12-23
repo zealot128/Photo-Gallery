@@ -105,3 +105,7 @@ en:
     hints:
       user:
         timezone: Timezone is crucial when uploading JPEG photos. The EXIF meta date from jepg does not contain a timezone. So if you travel, also adjust the time zone here.
+  image_faces:
+    face:
+      appears_in: Appears on
+      all_faces_on_date: "%{count} Photos shot on %{date}"

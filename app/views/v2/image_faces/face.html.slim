@@ -2,8 +2,13 @@
   .col-sm-6
     .js-face-selection data-face='#{@face.to_json}' data-similar='#{@similar.to_json}'
   .col-sm-6
-    h3 Appears in:
+    h3 = t 'image_faces.face.appears_in'
     .js-face-image data-photo="#{@face.base_file.to_json}"
+
+    br
+    br
+    = link_to [:v2, @face.base_file.day] do
+      = t('image_faces.face.all_faces_on_date', date: l(@face.base_file.shot_at.to_date), count: @face.base_file.day.photos.count)
 
 / = image_tag @face.file.url
 

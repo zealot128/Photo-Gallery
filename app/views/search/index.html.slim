@@ -6,7 +6,9 @@
           h3.panel-title
             a href='#search-content' data-toggle='collapse'
               = t 'search.index.by_content'
-        .panel-body.collapse#search-content class='#{"in" if @search.labels.present? || @search.person_ids.present?}'
+              - if @search.labels.present? || @search.person_ids.present?
+                = ' *'
+        .panel-body.collapse#search-content
           .form-group
             = f.label :labels, class: 'control-label' do
               = t 'search.index.labels'
@@ -16,11 +18,12 @@
               p = t 'search.index.people'
               - Person.all.each do |person|
                 = f.label "person_ids_#{person.id}" do
-                  img src='#{person.image_faces.first.try(:file).try(:url)}'
+                  img src='#{person.image_faces.order('created_at desc').first.try(:file).try(:url)}'
                   br
                   = f.check_box :person_ids, { multiple: true }, person.id.to_s, ''
                   = ' '
                   = person.name
+      .clearfix
       .checkbox
         = f.label :type, class: '' do
           = f.check_box :type, { multiple: true }, 'photos', ''

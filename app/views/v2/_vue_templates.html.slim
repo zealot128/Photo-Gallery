@@ -209,8 +209,6 @@ script type="x-template" id='tpl-face-selection'
 
     br
     br
-    p: strong
-      = t('vue_templates.face.create_or_assign_selected')
     form
       .row
         .col-sm-3
@@ -259,11 +257,11 @@ script type="x-template" id='tpl-face-selection'
         = t('vue_templates.face.unselect_all')
 
     form
-      h3 Create or assign existing person
+      h3 = t('vue_templates.face.create_or_assign_selected')
       span v-if='people.length > 0'
         = t('vue_templates.face.quick_select')
         p
-          a.label.label-default<> href='#' v-for='person in people' v-on:click='setPerson($event, person)'
+          a.btn.btn-default<> href='#' v-for='person in people' v-on:click='setPerson($event, person)'
             |{{person.name}} ({{person.count}})
 
       .row: .col-md-6
@@ -271,6 +269,9 @@ script type="x-template" id='tpl-face-selection'
           input class="form-control" v-model="person_name" placeholder=t('vue_templates.face.person_name')
         button.btn.btn-primary v-on:click='createPerson($event)' type='submit'
           = t('vue_templates.face.create_or_assign')
+      br
+      br
+      br
 
 
 script type="x-template" id='tpl-face-image'

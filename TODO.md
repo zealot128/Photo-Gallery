@@ -10,11 +10,15 @@
   * Share mit Expire
   * Usage Click count?
 
-* Rekognition
+* Tags
   * Tags und ImageTags mergen, Translate
+  * Uebersicht ueber Tags mit Beispielbildern zum Scrollen (Entdecken)
+
+* Rekognition
   * Button der die naechsten ~1000 unrekognized Bilder durch geht
   * Video: 10 Snippets generieren, GIF generieren, Snippets an AWS schicken
   * Similarity abspeichern
+  * Vorschau Hover bei Unassigned
 
 * Bilder
   * Geodaten -> Map in Day view

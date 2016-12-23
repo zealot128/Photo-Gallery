@@ -93,6 +93,13 @@ de:
     intro: Klicke auf ein Gesicht um es und weitere Ähnliche einer Person zuzuweisen.
     found: "%{count} Gesichter gefunden."
 
+  image_faces:
+    face:
+      appears_in: Erscheint in diesem Bild
+      all_faces_on_date:
+        one: "Kein weiteres Fotos am %{date} aufgenommen"
+        other: "Ingesamt %{count} Fotos am %{date} aufgenommen"
+
   simple_form:
     labels:
       user:

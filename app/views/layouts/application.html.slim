@@ -21,7 +21,6 @@ html lang="en"
     = render 'layouts/nav'
     .container
       - flash.each do |type, message|
-        - p type
         - if type == 'notice' || type == 'success'
           .alert.alert-success = message
         - else
