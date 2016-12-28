@@ -16,6 +16,8 @@ de:
       acl:
         description: 'S3 Standard ACL'
         type: string
+      account_id:
+        description: "AWS Account ID (12-stellige Zahl). Notwendig für Budgets abrufen"
     rekognition:
       enabled:
         description: 'Rekognition Labels aktiviert: Neue Bilder automatisch an AWS Rekognition schicken'
