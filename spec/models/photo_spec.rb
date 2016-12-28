@@ -63,6 +63,7 @@ describe Photo do
   end
 
   specify 'EOS600d date format' do
+    Time.zone = ActiveSupport::TimeZone[Rails.configuration.time_zone]
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     expect(photo.shot_at).to eq(Time.zone.parse("2014-02-05T14:17:42+01:00"))

@@ -1,7 +1,7 @@
 class VideoUploader < CarrierWave::Uploader::Base
   include CarrierWave::Video
 
-  storage Setting['storage.original']
+  storage Setting['storage.original'].to_sym
 
   def store_dir
     store_dir_version('original')
@@ -14,7 +14,7 @@ class VideoUploader < CarrierWave::Uploader::Base
 
   version :preview do
     process encode_video: [:jpg, resolution: '500x500', preserve_aspect_ratio: :width ]
-    storage Setting['storage.default']
+    storage Setting['storage.default'].to_sym
 
     def store_dir
       store_dir_version('preview')
@@ -26,7 +26,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
   version :thumb do
     process encode_video: [:jpg, resolution: '30x30', preserve_aspect_ratio: :width ]
-    storage Setting['storage.default']
+    storage Setting['storage.default'].to_sym
     def store_dir
       store_dir_version('thumb')
     end
@@ -37,7 +37,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
 
   version :large do
-    storage Setting['storage.large']
+    storage Setting['storage.large'].to_sym
     process encode_video: [:mp4, resolution: '640x360', preserve_aspect_ratio: :width, audio_codec: Setting['audio_codec'] ]
     def store_dir
       store_dir_version('large')

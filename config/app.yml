@@ -51,6 +51,11 @@ development:
 
 test:
   <<: *defaults
+  default_timezone: 'Europe/Berlin'
+  storage:
+    original: 'file'
+    large: 'file'
+    default: 'file'
 
 production:
   <<: *defaults

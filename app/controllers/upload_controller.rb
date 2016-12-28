@@ -13,7 +13,7 @@ class UploadController < ApplicationController
         @user.enable_ip_based_login request
       rescue StandardError => e
         exception = e
-        ExceptionNotifier.notify_exception(exception, env: request.env)
+        ExceptionNotifier.notify_exception(exception, env: request.env) if defined?(ExceptionNotifier)
         render status: 500, text: "Server Error", layout: false
         return
       end

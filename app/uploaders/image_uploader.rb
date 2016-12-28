@@ -3,7 +3,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
-  storage Setting['storage.original']
+  storage Setting['storage.original'].to_sym
 
   def auto_orient
     `mogrify -auto-orient #{Shellwords.escape current_path}`
@@ -21,7 +21,7 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :preview do
-    storage Setting['storage.default']
+    storage Setting['storage.default'].to_sym
     process :auto_orient
     process :resize_to_fit => [300,300]
     def store_dir
@@ -29,7 +29,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
   version :thumb do
-    storage Setting['storage.default']
+    storage Setting['storage.default'].to_sym
     process :auto_orient
     process :resize_to_fill => [30,30]
     def store_dir
@@ -37,7 +37,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
   version :medium do
-    storage Setting['storage.default']
+    storage Setting['storage.default'].to_sym
     process :auto_orient
     process :resize_to_fit => [500,500]
     def store_dir
@@ -45,7 +45,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     end
   end
   version :large do
-    storage Setting['storage.large']
+    storage Setting['storage.large'].to_sym
     process :auto_orient
     process :resize_to_fit => [1200,1000]
     def store_dir
