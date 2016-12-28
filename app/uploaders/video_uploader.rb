@@ -1,11 +1,7 @@
 class VideoUploader < CarrierWave::Uploader::Base
   include CarrierWave::Video
 
-  if Rails.application.secrets.storage == 'file'
-    storage :file
-  else
-    storage :aws
-  end
+  storage Setting['storage.original']
 
   def store_dir
     store_dir_version('original')
@@ -18,7 +14,7 @@ class VideoUploader < CarrierWave::Uploader::Base
 
   version :preview do
     process encode_video: [:jpg, resolution: '500x500', preserve_aspect_ratio: :width ]
-    storage :file
+    storage Setting['storage.default']
 
     def store_dir
       store_dir_version('preview')
@@ -30,7 +26,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
   version :thumb do
     process encode_video: [:jpg, resolution: '30x30', preserve_aspect_ratio: :width ]
-    storage :file
+    storage Setting['storage.default']
     def store_dir
       store_dir_version('thumb')
     end
@@ -41,8 +37,8 @@ class VideoUploader < CarrierWave::Uploader::Base
   end
 
   version :large do
-    process encode_video: [:mp4, resolution: '640x360', preserve_aspect_ratio: :width, audio_codec: Rails.application.config.features.audio_codec ]
-    # storage :
+    storage Setting['storage.large']
+    process encode_video: [:mp4, resolution: '640x360', preserve_aspect_ratio: :width, audio_codec: Setting['audio_codec'] ]
     def store_dir
       store_dir_version('large')
     end

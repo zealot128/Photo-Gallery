@@ -99,7 +99,7 @@ describe Photo do
     expect(photo.location).to eq('Hofheim am Taunus')
   end
 
-  if Rails.application.config.features.ocr
+  if Setting['ocr.enabled']
     specify "OCR" do
       photo = Photo.create_from_upload(File.open("spec/fixtures/text.jpg"), user)
       photo.ocr

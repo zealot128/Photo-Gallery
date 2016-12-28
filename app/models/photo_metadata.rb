@@ -67,7 +67,7 @@ module PhotoMetadata
 
 
   def ocr
-    return if !Rails.application.config.features.ocr
+    return if !Setting['elasticsearch.enabled']
     path = Shellwords.escape file.path(:original)
     t = Tempfile.new( [File.basename(path), ".tif"] )
 

@@ -10,7 +10,7 @@ class SetSettingsFromConfig < ActiveRecord::Migration[5.0]
     Setting['aws.access_key_secret'] = s.fog['aws_secret_access_key']
     Setting['aws.account_id'] = s.aws_account_id
     Setting['aws.region'] = s.fog['region']
-    Setting['aws.bucket'] = s.fog['bucked']
+    Setting['aws.bucket'] = s.fog['bucket']
     Setting['aws.acl'] = 'public-read'
     Setting['rekognition.enabled'] = true
     Setting['rekognition.labels.max_labels'] = 20

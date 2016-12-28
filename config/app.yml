@@ -5,6 +5,11 @@ defaults: &defaults
   # using sendfile header for Share Download
   proxy: 'nginx'
   default_timezone: 'Europe/Berlin'
+  storage:
+    original: 'aws'
+    large: 'aws'
+    default: 'file'
+
   aws:
     account_id: ''
     access_key_id: ''

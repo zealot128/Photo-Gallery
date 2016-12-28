@@ -14,9 +14,9 @@
 #
 
 class ImageFace < ApplicationRecord
-  AUTO_ASSIGN_THRESHOLD = 85
-  AUTO_ASSIGN_MAX_FACES = 15
-  AUTO_ASSIGN_MIN_EXISTING_FACES = 10
+  AUTO_ASSIGN_THRESHOLD = Setting['rekognition.faces.auto_assign.threshold']
+  AUTO_ASSIGN_MAX_FACES = Setting['rekognition.faces.auto_assign.max_faces']
+  AUTO_ASSIGN_MIN_EXISTING_FACES = Setting['rekognition.faces.auto_assign.min_existing_faces']
 
   belongs_to :base_file
   belongs_to :person
@@ -55,6 +55,7 @@ class ImageFace < ApplicationRecord
   end
 
   def auto_assign_person
+    return if !Setting['rekognition.faces.auto_assign.enabled']
     if !person
       similar = RekognitionClient.search_faces(aws_id, threshold: AUTO_ASSIGN_THRESHOLD, max_faces: AUTO_ASSIGN_MAX_FACES)
       if similar.face_matches.count >= AUTO_ASSIGN_MIN_EXISTING_FACES

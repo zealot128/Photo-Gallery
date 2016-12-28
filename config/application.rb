@@ -20,12 +20,7 @@ module SimpleGallery
     config.assets.enabled = true
     config.assets.version = '1.0'
     config.action_controller.permit_all_parameters = true
-    config.features = Hashie::Mash.new YAML.load_file 'config/features.yml'
-    if config.features.default_timezone
-      config.time_zone = config.features.default_timezone
-    end
     config.i18n.default_locale = :de
     config.i18n.available_locales = [:de, :en]
-
   end
 end

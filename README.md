@@ -51,7 +51,6 @@ cp config/secrets.yml.example config/secrets.yml
 rake db:setup  # migrate and create a new user "share" with password "password"
 rails server -p 3000
 # server is started on port 3000
-# edit config/features.yml and config and change settings
 ```
 
 This will also create a new user with name "share" and password "password". This can be changed later.

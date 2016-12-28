@@ -59,9 +59,14 @@ class AwsStatistics
     total_count
   end
 
+  def account_id
+    id = Setting['aws.account_id']
+    id && id.to_i
+  end
+
   def budgets
-    return [] unless Rails.application.secrets.aws_account_id.present?
-    Aws::Budgets::Client.new(CarrierWave::Uploader::Base.aws_credentials).describe_budgets(account_id: Rails.application.secrets.aws_account_id.to_s).try(:budgets)
+    return [] unless account_id
+    Aws::Budgets::Client.new(CarrierWave::Uploader::Base.aws_credentials).describe_budgets(account_id: account_id).try(:budgets)
   rescue Aws::Budgets::Errors::AccessDeniedException
     []
   end

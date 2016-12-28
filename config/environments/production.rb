@@ -27,13 +27,12 @@ SimpleGallery::Application.configure do
   # config.action_controller.asset_host = 'http://assets.example.com'
 
   # Specifies the header that your server uses for sending files.
-	if config.features && (proxy = config.features.proxy)
-		if proxy == 'nginx'
-			config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
-		elsif proxy == 'apache'
-			config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
-		end
-	end
+  case Setting['proxy']
+  when 'nginx'
+    config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
+  when 'apache'
+    config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+  end
 
   # Action Cable endpoint configuration
   # config.action_cable.url = 'wss://example.com/cable'

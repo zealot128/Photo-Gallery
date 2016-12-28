@@ -21,7 +21,7 @@
       .panel-body
         dl
           dt Name
-          dd = Rails.application.secrets.rekognition_collection
+          dd = Setting['rekognition.faces.rekognition_collection']
           dt Number of faces
           dd = @aws.rekognition_collection_size
 

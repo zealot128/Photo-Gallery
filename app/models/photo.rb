@@ -59,7 +59,7 @@ class Photo < BaseFile
   end
 
   def rekognize_labels
-    if Rails.application.secrets[:rekognition_collection]
+    if Setting['rekognition.faces.rekognition_collection']
       aws_labels = RekognitionClient.labels(self)
       aws_labels.labels.each do |aws_label|
         image_labels.where(name: aws_label.name).first ||
@@ -74,7 +74,7 @@ class Photo < BaseFile
   end
 
   def rekognize_faces
-    if Rails.application.secrets[:rekognition_collection]
+    if Setting['rekognition.faces.rekognition_collection']
       labels = image_labels.pluck(:name)
       if labels.include?("People") || labels.include?("Person") || labels.include?("Child")
         faces = RekognitionClient.index_faces(self)
