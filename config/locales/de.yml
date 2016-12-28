@@ -100,6 +100,12 @@ de:
         one: "Kein weiteres Fotos am %{date} aufgenommen"
         other: "Ingesamt %{count} Fotos am %{date} aufgenommen"
 
+  admin:
+    settings:
+      index:
+        current_value: Aktueller Wert
+        edit: Bearbeiten
+
   simple_form:
     labels:
       user:

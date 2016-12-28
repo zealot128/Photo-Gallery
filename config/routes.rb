@@ -25,6 +25,8 @@ SimpleGallery::Application.routes.draw do
     get 'aws_statistics' => 'upload_logs#aws'
     match 'already_uploaded' => 'misc#already_uploaded', via: [:get, :post]
     resources :users
+    get 'settings' => 'settings#index'
+    post 'settings' => 'settings#update'
   end
 
   namespace :v2 do

@@ -1,0 +1,29 @@
+.container
+  = simple_form_for 'setting', url: admin_settings_path, method: :post do |f|
+    - defs = Setting.definitions.group_by{|b| b[:key].split('.').first }
+    - defs.each do |group, items|
+      - if items.length > 1
+        h3 = group.to_s.humanize
+      .row
+        - items.each_with_index do |body, i|
+          - if i % 2 == 0
+            .clearfix
+          .col-sm-6
+            - key = body[:key]
+            .panel.panel-primary
+              .panel-heading
+                h3.panel-title = key
+              .panel-body
+                small = t '.current_value'
+                - case body[:type]
+                - when 'boolean'
+                  = f.input key, as: :boolean, label: false, required: false, checked_value: '1', unchecked_value: '0', input_html: { checked: Setting[key] }
+                - else
+                  = f.input key, as: body[:type], label: false, required: false, input_html: { value: Setting[key] }
+                p = body[:description]
+
+    = f.submit class: 'btn btn-primary'
+
+br
+br
+

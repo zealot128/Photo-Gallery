@@ -17,6 +17,7 @@ gem 'acts-as-taggable-on', github: 'mbleigh/acts-as-taggable-on'
 ### Utils
 gem 'ruby-progressbar'
 gem 'parallel', require: false
+gem "rails-settings-cached"
 
 ### Image analysis / conversion
 gem 'carrierwave'

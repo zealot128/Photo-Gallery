@@ -51,7 +51,6 @@ class RekognitionClient
       })
     end
 
-
     def delete_faces(*face_ids)
       client.delete_faces({
         collection_id: Rails.application.secrets.rekognition_collection,
@@ -60,7 +59,7 @@ class RekognitionClient
     end
 
     def client
-      @client ||= Aws::Rekognition::Client.new(CarrierWave::Uploader::Base.aws_credentials.merge(region: 'eu-west-1'))
+      @client ||= Aws::Rekognition::Client.new(CarrierWave::Uploader::Base.aws_credentials)
     end
   end
 end

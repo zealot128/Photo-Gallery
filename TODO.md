@@ -24,3 +24,16 @@
   * Geodaten -> Map in Day view
 
 * Rails 5.1
+
+* README
+  * Timezone
+  * Rekgonition Setup, Price point
+
+Setting editierbar
+  * Auto Assigning
+  * Rekognition Collection
+  * AWS Stuff
+  * Settings page
+  * Features
+  * Reload application beim aendern
+

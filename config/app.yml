@@ -1,0 +1,50 @@
+# config/app.yml for rails-settings-cached
+defaults: &defaults
+  # default audio coded faac is not available on all ffmpeg versions, aac good enough
+  audio_codec: 'aac'
+  # using sendfile header for Share Download
+  proxy: 'nginx'
+  default_timezone: 'Europe/Berlin'
+  aws:
+    access_key_id: ''
+    access_key_secret: ''
+    region: 'eu-west-1'
+    bucket: ''
+    acl: 'public-read'
+
+  rekognition:
+    enabled: true
+    rekognition_collection: 'swi-pictures2-prodution'
+    # When querying labels = tags for images, take the top 20 tags which have a
+    # confidence of more than 40%
+    labels:
+      max_labels: 20
+      min_confidence: 40
+
+    faces:
+      enabled: true
+      auto_assign:
+        # Auto-assign new faces, if:
+        #   * from the most similar 15 other faces
+        #   * with more than 85% similarity
+        #   * from only one existing person (or unknown)
+        #   * there are at least 10 images of an  existing person in the query set
+        enabled: true
+        threshold: 85
+        max_faces: 15
+        min_existing_faces: 10
+
+  # Experimental
+  ocr:
+    enabled: false
+  elasticsearch:
+    enabled: false
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
