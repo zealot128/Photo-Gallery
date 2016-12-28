@@ -1,5 +1,9 @@
 Rails.application.config.to_prepare do
-  s = ->(key) { setting = Setting.find_by_var(key)
+  s = ->(key) { setting =
+                  begin
+                    Setting.find_by_var(key)
+                  rescue ActiveRecord::StatementInvalid
+                  end
                 if setting
                   setting.value
                 else
