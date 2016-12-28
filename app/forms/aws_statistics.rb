@@ -61,7 +61,7 @@ class AwsStatistics
 
   def account_id
     id = Setting['aws.account_id']
-    id && id.to_i
+    id && id.to_s
   end
 
   def budgets
