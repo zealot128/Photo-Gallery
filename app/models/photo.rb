@@ -59,16 +59,14 @@ class Photo < BaseFile
   end
 
   def rekognize_labels
-    if Setting['rekognition.faces.rekognition_collection']
-      aws_labels = RekognitionClient.labels(self)
-      aws_labels.labels.each do |aws_label|
-        image_labels.where(name: aws_label.name).first ||
-          begin
-            label = ImageLabel.where(name: aws_label.name).first_or_create
-            image_labels << label
-          end
-        update_column :rekognition_labels_run, true
-      end
+    aws_labels = RekognitionClient.labels(self)
+    aws_labels.labels.each do |aws_label|
+      image_labels.where(name: aws_label.name).first ||
+        begin
+          label = ImageLabel.where(name: aws_label.name).first_or_create
+          image_labels << label
+        end
+      update_column :rekognition_labels_run, true
     end
   rescue Aws::Rekognition::Errors::InvalidS3ObjectException
   end

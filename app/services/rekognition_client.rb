@@ -23,7 +23,7 @@ class RekognitionClient
       resp = client.detect_labels({
         image: {
           s3_object: {
-            bucket:  Setting['aws.region'],
+            bucket: Setting['aws.bucket'],
             name: photo.file.file.path,
           },
         },
