@@ -32,4 +32,5 @@
 * SMTP configurable (?)
 * Real multi user with groups=families
 * Video Encoding async
+* Jpegoptim?
 

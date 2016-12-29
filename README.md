@@ -4,7 +4,6 @@
 
 This is a Rails-App, which acts as an api server for different (Android) photo upload apps and private image-gallery.
 
-
 ## Features
 
 * Integrations with AutoShare and PhotoBackup
@@ -12,20 +11,22 @@ This is a Rails-App, which acts as an api server for different (Android) photo u
     AutoShare: [Autoshare on Google Play Store](https://play.google.com/store/apps/details?id=com.dngames.autoshare)
   * [PhotoBackup](http://photobackup.github.io/) is a small protocol and a collection of Apps. For Mobile there is only a Android App atm
   * Manual Upload on website
-  * ... your app missing? Just POST to / with http-basic-auth or pseudo-password or unique upload URL (displayed in the app)
+  * ... your app missing? Just POST to / with http-basic-auth or pseudo-password or unique upload URL (displayed in the app), e.g. ``curl --progress-bar -i -k -XPOST https://myserver/?token=TOKEN` -F file="PATH_TO_FILE"``
 
 * Image gallery grouped by Year -> Month -> Day for faster image retrieval
 * Reads EXIF information for date of photo, GPS and camera information, orientation
 * Uses LightGallery with VideoJS support, so Photos as well as videos can be uploaded
+  * Video: Videos will be uploaded, a smaller preview version encoded and displayed via Video.js player
 * works on mobile (responsive + touch support by LightGallery)
-
-Default:
-* Uses AWS S3 to store the original files (Also grouped by /year/day/). The smaller thumbnails and preview versions are stored locally (can be changed in ``app/uploaders/image_uploader.rb``) to reduce aws requests and costs.
+* Storage: It can either use local storage or S3 (only then rekognition feature can be used)
+* **AWS Rekognition API**: Photos will be sent to AWS Rekognition API and app will store all "labels" and "faces" recognized by AWS. There is some kind of wizard process to assign faces to person names to search for photos with specific people
+  * **WARNING**: This can be a little pricy, to process 1000 pictures cost $1. To get the labels AND faces, we need to issue 2 calls per picture, so $1/500 pictures. Only pictures that are tagged with either "People" or "Person"/"Child" are process for face detection though to reduce cost.
+  * Also *storing* the face vectors on AWS costs a little money, but is far less: $ 0.01 / 1000 faces. One photo could have more than one face in it, some have none. There is a clean-up option, to remove unneeded faces (background person, wrongly detected faces, etc.)
+  * Data protection: According to AWS' policy, the images are not stored and are not used for their data model in any way.
 
 Shares + Tags
 * Photos/Videos can be tagged (private) and added to shares (public). Those shares have each an unique long URL and can be handed to other people
 * a share "Public" is automatically created, and all containing photos are displayed in a blogy fashion on the home page (Feed subcription possible)
-
 
 
 ## Install
@@ -46,8 +47,8 @@ Getting started (development mode)
 git clone https://github.com/zealot128/AutoShare-Gallery.git
 cd AutoShare-Gallery
 bundle install
+# Adjust secrets
 cp config/secrets.yml.example config/secrets.yml
-# edit secrets
 rake db:setup  # migrate and create a new user "share" with password "password"
 rails server -p 3000
 # server is started on port 3000
@@ -61,18 +62,39 @@ Configuration for AutoShare is explained after login.
 1. Create AWS account
 2. Create S3 Bucket (name needs to be unique over all S3 buckets), remember bucket name + region
 3. Create an IAM User in Security credentials, download credentials
-4. under yab Permissions Attach policy:  AmazonS3FullAccess  +  CloudWatchReadOnlyAccess
-5. Fill in AccessKeyId and SecretAccessKey in ``config/secrets.yml``, as well as bucket + region
+4. under tab Permissions Attach policy:  AmazonS3FullAccess  +  CloudWatchReadOnlyAccess
+  [![Build Status](https://raw.githubusercontent.com/zealot128/Photo-Gallery/master/doc/aws_permissions.png)](https://travis-ci.org/zealot128/AutoShare-Gallery)
+5. Fill in AccessKeyId and SecretAccessKey in Settings page, also Account-Id
+6. Optional: Create some Budgets to
+
+**IMPORTANT** If you intend to use Photo-Gallery in future for your personal gallery, please mention it somewhere (issue/email), so I can plan ahead to make future migrations more smooth. Also please notice, that this is MIT licensed software, so I can't provide any warranty whatsoever.
 
 ## Video
 
-For video transcoding needs ffmpeg, because Libfaac is not available on many systems by default, the default Audio codec is aac.
+For video transcoding needs ffmpeg, because Libfaac is not available on many systems by default, the default Audio codec is aac. If you can provide faac, install it and fill in on Settings page, otherwise just use the default, aac.
 
-OSX:
+e.g. OSX:
 
 ```
 brew reinstall ffmpeg --with-faac
 ```
+
+## Initial import of existing lots
+
+* TODO, Rekognition, Day disabling etc.
+
+### Upload script
+
+I've provided a sh upload script in [ doc/upload.sh.example ](https://raw.githubusercontent.com/zealot128/Photo-Gallery/master/doc/upload.sh.example )
+Edit the first two lines, fill in a token from your app instance (found in "Upload" section) and host. You can run this script with:
+
+```
+sh upload.sh *.jpg
+```
+
+this will upload each file and DELETE IT AFTERWARDS if uploaded successfully. As it only uses sh and curl, it can also run on most platforms, like NAS or Android phones (adb shell...) ;)
+
+
 
 ## License
 
