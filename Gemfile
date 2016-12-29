@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 ### Basic Framework
-gem 'rails', '~> 5.0.0.rc1'
+# gem 'rails', '~> 5.0.0.rc1'
+gem 'rails', '~> 5.0.0'
 gem 'pg'
 gem 'slim-rails'
-gem 'haml-rails'
 gem 'migration_data'
 gem 'hashie'
 gem 'local_time'
@@ -12,7 +12,7 @@ gem 'local_time'
 ### Model
 gem 'bcrypt-ruby', require: 'bcrypt'
 # TODO https://github.com/mbleigh/acts-as-taggable-on/issues/736
-gem 'acts-as-taggable-on', github: 'mbleigh/acts-as-taggable-on'
+gem 'acts-as-taggable-on' #, github: 'mbleigh/acts-as-taggable-on'
 
 ### Utils
 gem 'ruby-progressbar'
@@ -63,14 +63,13 @@ end
 
 group :development do
   gem 'habtm_generator'
-  gem 'quiet_assets'
   gem 'listen'
   gem 'annotate'
   gem 'i18n-tasks', '~> 0.9.8'
 end
 
 group :test do
-  gem 'rspec-rails', '~> 3.5.0.beta3'
+  gem 'rspec-rails', '~> 3.5'
 end
 
 group :development, :test do
