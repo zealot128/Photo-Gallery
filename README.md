@@ -19,10 +19,11 @@ This is a Rails-App, which acts as an api server for different (Android) photo u
   * Video: Videos will be uploaded, a smaller preview version encoded and displayed via Video.js player
 * works on mobile (responsive + touch support by LightGallery)
 * Storage: It can either use local storage or S3 (only then rekognition feature can be used)
-* **AWS Rekognition API**: Photos will be sent to AWS Rekognition API and app will store all "labels" and "faces" recognized by AWS. There is some kind of wizard process to assign faces to person names to search for photos with specific people
-  * **WARNING**: This can be a little pricy, to process 1000 pictures cost $1. To get the labels AND faces, we need to issue 2 calls per picture, so $1/500 pictures. Only pictures that are tagged with either "People" or "Person"/"Child" are process for face detection though to reduce cost.
+* **AWS Rekognition API**: Photos will be sent to AWS Rekognition API and app will store all "labels" and "faces" recognized by AWS. The app provides some kind of wizard process to assign faces to person names to search for photos with specific people
+  * **WARNING**: This can be a little pricy, to process 1000 pictures cost $1. To get the labels AND faces, we need to issue 2 calls per picture, so $1/500 pictures. Only pictures that are tagged with either "People" or "Person"/"Child" are process for face detection though to reduce cost. There is a free tier of 5000 calls per month, which should cover most private uses after an initial import
   * Also *storing* the face vectors on AWS costs a little money, but is far less: $ 0.01 / 1000 faces. One photo could have more than one face in it, some have none. There is a clean-up option, to remove unneeded faces (background person, wrongly detected faces, etc.)
   * Data protection: According to AWS' policy, the images are not stored and are not used for their data model in any way.
+* Photo search: "Show me all photos with me and my daughter taken from 2016-01-01 with an aperture of 1.2-2.5"
 
 Shares + Tags
 * Photos/Videos can be tagged (private) and added to shares (public). Those shares have each an unique long URL and can be handed to other people
@@ -37,7 +38,7 @@ Shares + Tags
 * Imagemagick
 * PostgreSQL
 * (optional) ffmpeg for video upload
-* (optional) AWS account and S3 configuration
+* (optional but recommended) AWS account and S3 configuration
 * At this point, only tested on (x64) linux architecture and OSX
 
 
@@ -55,7 +56,7 @@ rails server -p 3000
 ```
 
 This will also create a new user with name "share" and password "password". This can be changed later.
-Configuration for AutoShare is explained after login.
+Configuration for AutoShare is explained after login. Make sure to visit the admin->Settings page to fill in the missing credentials and adjust settings.
 
 ## AWS
 
