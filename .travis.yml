@@ -32,5 +32,6 @@ before_script:
 
 script:
   - bundle exec rspec -b
+  - bundle exec i18n-tasks health
 
 bundler_args: "--without development production"
