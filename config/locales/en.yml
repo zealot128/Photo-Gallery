@@ -1,111 +1,110 @@
+---
 en:
-  simple_form:
-    labels:
-    hints:
-      photo:
-        tag_list: Tags are for categorizing content in private
-        shares: Intended to be shared securely to other people. Everythin in Public will be shown on the home-page
-        new_share: Ad-Hoc creation of a new share
-
+  admin:
+    settings:
+      index:
+        current_value: Current value
+        edit: Edit
+  image_faces:
+    face:
+      all_faces_on_date: "%{count} Photos shot on %{date}"
+      appears_in: Appears on
+  nav:
+    admin: Admin
+    already_uploaded: Find already uploaded
+    change_password: Change Password
+    cloud_metrics: Cloud metrics
+    impressum: Impressum
+    log_out: Log out
+    login: login
+    photos: Photos
+    profile: Profile
+    search: Search
+    settings: Settings
+    shares: Shares
+    tags: Tags
+    unassigned_faces: Unassigned Faces
+    upload: Upload
+    upload_logs: Upload logs
+    users: Users
   pages:
     index:
-      title: "Photo-Blog"
-      intro: "This is my photo publishing and archiving app. Here are some of the public shots"
-
-  title: "Photo-Blog"
-  twitter: "https://www.twitter.com/stefanwienert"
+      intro: This is my photo publishing and archiving app. Here are some of the public shots
+      title: Photo-Blog
   photos:
     index:
       last_upload: "%{time} ago"
       recently_uploaded: Recently Uploaded
-
   search:
     index:
+      aperture: Aperture (1..30)
+      button: Search
       by_content: By content
       by_meta_data: By meta data
+      file_size: File size
+      file_size_from: Files larger than <span class='label label-default'>%{min}</span>
+      file_size_from_to: File size larger than <span class='label label-default'>%{min}</span> and smaller than <span class='label label-default'>%{max}</span>.
+      file_size_to: Files smaller than <span class='label label-default'>%{max}</span>
+      found_media_in_time: 'Found <mark>%{count}</mark> photos/videos from <span class=''label label-default''>%{from}</span> to <span class=''label label-default''>%{to}</span>. '
+      from_date: From (Date)
       labels: Rekognized labels/tags
       people: People
-      from_date: From (Date)
-      to_date: To (Date)
-      button: Search
+      per_page: Per page
       popular_tags_in_result_set: Popular tags in found pictures
-      found_media_in_time: "Found <mark>%{count}</mark> photos/videos from <span class='label label-default'>%{from}</span> to <span class='label label-default'>%{to}</span>. "
-      file_size_from_to: "File size larger than <span class='label label-default'>%{min}</span> and smaller than <span class='label label-default'>%{max}</span>."
-      file_size_from: "Files larger than <span class='label label-default'>%{min}</span>"
-      file_size_to: "Files smaller than <span class='label label-default'>%{max}</span>"
-
-
-  nav:
-    users: Users
-    photos: Photos
-    search: Search
-    profile: Profile
-    change_password: Change Password
-    log_out: Log out
-    shares: Shares
-    upload: Upload
-    admin: Admin
-    upload_logs: Upload logs
-    cloud_metrics: Cloud metrics
-    tags: Tags
-    already_uploaded: Find already uploaded
-    unassigned_faces: Unassigned Faces
-    login: login
-    impressum: Impressum
-
-  vue_templates:
-    face:
-      appears_on: "Assign more photos to {{face.person_name}}"
-      whos_this: "Who's this?"
-      create_or_assign_selected: Create Person/Assign all selected faces to that person
-      similarity: Similarity (%)
-      max_matches: Max. number of matches
-      confidence: Min. confidence (%)
-      refresh: Refresh
-      instructions: "Add all selected faces to a person. Deselect all, which are not the person. Then, enter the person's name or select an existing person."
-      create_or_assign: Merge faces to person / create person if not exist
-      person_name: Name of person
-      quick_select: Similar faces by already existing people. Click on aperson to select him/her.
-      select_all: Select all
-      unselect_all: Deselect all
-      no_new_found: "No new pictures found!"
-      similar_images_found: "{{allSimilar.length}} similar faces found by AWS."
-    bulk_edit:
-      button: Edit all
-      title: "Edit {{files.length}} media files"
-      new_tag: New tag
-      new_share: New share
-    photo:
-      title: "found people in this picture"
-      aperture: Aperture
-      exposure: Exposure Time
-      camera: Camera model
-      file_size: File size
-      edit: Edit
-      rotate: Rotate
-    video:
-      duration: Duration
-      file_size: File Size
-
-  unassigned:
-    title: Unassigned faces
-    intro: Click on a face to start assigning that face and similar faces to a person
-    found: "%{count} faces found."
-
+      to_date: To (Date)
+  settings: Settings
   simple_form:
-    labels:
-      user:
-        username: Username (Login)
-        password: Password
-        password_confirmation: Password confirmation
-        email: email
-        timezone: Time zone
-        locale: Language
-        admin: User is administrator
     hints:
       user:
         timezone: Timezone is crucial when uploading JPEG photos. The EXIF meta date from jepg does not contain a timezone. So if you travel, also adjust the time zone here.
-  image_faces:
+    labels:
+      user:
+        admin: User is administrator
+        email: email
+        locale: Language
+        password: Password
+        password_confirmation: Password confirmation
+        timezone: Time zone
+        username: Username (Login)
+  title: Photo-Blog
+  twitter: https://www.twitter.com/stefanwienert
+  unassigned:
+    found: "%{count} faces found."
+    intro: Click on a face to start assigning that face and similar faces to a person
+    title: Unassigned faces
+  vue_templates:
+    bulk_edit:
+      button: Edit all
+      new_share: New share
+      new_tag: New tag
+      title: Edit {{files.length}} media files
     face:
-      appears_in: Appears on
-      all_faces_on_date: "%{count} Photos shot on %{date}"
+      appears_on: Assign more photos to {{face.person_name}}
+      confidence: Min. confidence (%)
+      create_or_assign: Merge faces to person / create person if not exist
+      create_or_assign_selected: Create Person/Assign all selected faces to that person
+      instructions: "Add all selected faces to a person. Deselect all, which are not the person. Then, enter the person's name or select an existing person."
+      max_matches: Max. number of matches
+      no_new_found: No new pictures found!
+      person_name: Name of person
+      quick_select: Similar faces by already existing people. Click on aperson to select him/her.
+      refresh: Refresh
+      select_all: Select all
+      similar_images_found: "{{allSimilar.length}} similar faces found by AWS."
+      similarity: Similarity (%)
+      unselect_all: Deselect all
+      whos_this: "Who's this?"
+    face_manager:
+      confirm_deletion: Confirm deletion
+      start_delete_mode: Start Clean up mode
+    photo:
+      aperture: Aperture
+      camera: Camera model
+      edit: Edit
+      exposure: Exposure Time
+      file_size: File size
+      rotate: Rotate
+      title: found people in this picture
+    video:
+      duration: Duration
+      file_size: File Size

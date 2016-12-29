@@ -1,122 +1,112 @@
+---
 de:
-  simple_form:
-    labels:
-    hints:
-      photo:
-        tag_list: Schlagworte nutzen, um Inhalte für private Zwecke zu kategorisieren
-        shares: Benutze Shares um Inhalte mit anderen Personen zu teilen. Alles im Share "Public" wird auf der Startseite angezeigt
-        new_share: Ad-Hoc-Erstellung eines neuen Shares
-
-  pages:
-    index:
-      title: "Photo-App"
-      intro: "Dies ist meine private Foto-Archivierung App. Hier kommen ein paar private öffentliche Fotos von mir"
-
-  title: "Foto-App"
-  twitter: "https://www.twitter.com/stefanwienert"
-  photos:
-    index:
-      last_upload: "vor %{time}"
-      recently_uploaded: Zuletzt hochgeladen
-
-  search:
-    index:
-      by_content: Nach Inhalten
-      by_meta_data: Nach Meta-Daten
-      labels: Erkannte Labels/Schlagworte
-      people: Enthaltene Personen
-      from_date: Von (Datum)
-      to_date: Bis (Datum)
-      button: Suche
-      popular_tags_in_result_set: Meist gefundene Tags in der Ergebnismenge
-      found_media_in_time: "<mark>%{count}</mark> Fotos/Videos gefunden beginnend ab <span class='label label-default'>%{from}</span> bis <span class='label label-default'>%{to}</span>. "
-      file_size_from_to: "Nur Dateien größer als <span class='label label-default'>%{min}</span> und kleiner als <span class='label label-default'>%{max}</span>."
-      file_size_from: "Dateien größer als <span class='label label-default'>%{min}</span>"
-      file_size_to: "Dateien kleiner als <span class='label label-default'>%{max}</span>"
-      aperture: Blende (1..30)
-  nav:
-    settings: Einstellungen
-    users: Nutzer
-    photos: Fotos
-    search: Suche
-    profile: Profil
-    change_password: Profil/Passwort
-    log_out: Ausloggen
-    shares: Shares
-    upload: Hochladen
-    admin: Admin
-    upload_logs: Upload Logs
-    cloud_metrics: Cloud Metrics
-    tags: Tags
-    already_uploaded: Bereits hochgeladene abgleichen
-    unassigned_faces: Nicht zugewiesene Gesichter
-    login: Einloggen
-    impressum: Impressum
-
-  vue_templates:
-    face:
-      appears_on: "Weitere Bilder zu {{face.person_name}}  hinzufügen"
-      whos_this: "Wer ist das?"
-      create_or_assign_selected: Gesicht und alle ausgewählten zu Person zuweisen
-      similarity: Ähnlichkeit (%)
-      max_matches: Max. Matches
-      confidence: Min. Konfidenz (%)
-      refresh: Neu laden
-      instructions: Alle ausgewählten Gesichter zu einer Person hinzufügen. Alle abwählen, die nicht zur Person gehören, dann Person eintragen oder auswählen und speichern.
-      create_or_assign: Zusammenführen und Person ggf. anlegen
-      person_name: Name der Person
-      quick_select: Ähnliche Gesichter von bereits zugewiesenen Personen. Person anklicken um diese auszuwählen.
-      select_all: Alle auswählen
-      unselect_all: Alle abwählen
-      no_new_found: Keine neuen Bilder gefunden!
-      similar_images_found: "{{allSimilar.length}} ähnliche Bilder von AWS gefunden."
-    bulk_edit:
-      button: Alle bearbeiten
-      title: "{{files.length}} Bilder bearbeiten"
-      new_tag: Neues Schlagwort
-      new_share: Neuer Share
-    photo:
-      title: "gefundene Personen in diesem Bild"
-      aperture: Blende
-      exposure: Belichtungszeit
-      camera: Kamera-Modell
-      file_size: Dateigröße
-      edit: Bearbeiten
-      rotate: Drehen
-    video:
-      duration: Dauer
-      file_size: Dateigröße
-    face_manager:
-      start_delete_mode: Aufräumen starten
-
-  unassigned:
-    title: Nicht zugewiesene Gesichter
-    intro: Klicke auf ein Gesicht um es und weitere Ähnliche einer Person zuzuweisen.
-    found: "%{count} Gesichter gefunden."
-
-  image_faces:
-    face:
-      appears_in: Erscheint in diesem Bild
-      all_faces_on_date:
-        one: "Kein weiteres Fotos am %{date} aufgenommen"
-        other: "Ingesamt %{count} Fotos am %{date} aufgenommen"
-
   admin:
     settings:
       index:
         current_value: Aktueller Wert
         edit: Bearbeiten
-
+  image_faces:
+    face:
+      all_faces_on_date:
+        one: Kein weiteres Fotos am %{date} aufgenommen
+        other: Ingesamt %{count} Fotos am %{date} aufgenommen
+      appears_in: Erscheint in diesem Bild
+  nav:
+    admin: Admin
+    already_uploaded: Bereits hochgeladene abgleichen
+    change_password: Profil/Passwort
+    cloud_metrics: Cloud Metrics
+    impressum: Impressum
+    log_out: Ausloggen
+    login: Einloggen
+    photos: Fotos
+    profile: Profil
+    search: Suche
+    settings: Einstellungen
+    shares: Shares
+    tags: Tags
+    unassigned_faces: Nicht zugewiesene Gesichter
+    upload: Hochladen
+    upload_logs: Upload Logs
+    users: Nutzer
+  pages:
+    index:
+      intro: Dies ist meine private Foto-Archivierung App. Hier kommen ein paar private öffentliche Fotos von mir
+      title: Photo-App
+  photos:
+    index:
+      last_upload: vor %{time}
+      recently_uploaded: Zuletzt hochgeladen
+  search:
+    index:
+      aperture: Blende (1..30)
+      button: Suche
+      by_content: Nach Inhalten
+      by_meta_data: Nach Meta-Daten
+      file_size: Dateigröße
+      file_size_from: Dateien größer als <span class='label label-default'>%{min}</span>
+      file_size_from_to: Nur Dateien größer als <span class='label label-default'>%{min}</span> und kleiner als <span class='label label-default'>%{max}</span>.
+      file_size_to: Dateien kleiner als <span class='label label-default'>%{max}</span>
+      found_media_in_time: "<mark>%{count}</mark> Fotos/Videos gefunden beginnend ab <span class='label label-default'>%{from}</span> bis <span class='label label-default'>%{to}</span>. "
+      from_date: Von (Datum)
+      labels: Erkannte Labels/Schlagworte
+      people: Enthaltene Personen
+      per_page: Anzahl pro Seite
+      popular_tags_in_result_set: Meist gefundene Tags in der Ergebnismenge
+      to_date: Bis (Datum)
+  settings: Einstellungen
   simple_form:
-    labels:
-      user:
-        username: Nutzername (Login)
-        password: Passwort
-        password_confirmation: Passwort wiederholen
-        email: e-Mail
-        timezone: Zeitzone
-        locale: Sprache
-        admin: Nutzer ist Administrator
     hints:
       user:
         timezone: Zeitzone ist sehr wichtig beim upload von JPEG Bildern, da die EXIF Informationen von JPEG leider keine Zeitzone enthalten. Wenn du verreist, ändere hier die Zeitzone mit, damit die Fotos richtig zugeordnet werden
+    labels:
+      user:
+        admin: Nutzer ist Administrator
+        email: e-Mail
+        locale: Sprache
+        password: Passwort
+        password_confirmation: Passwort wiederholen
+        timezone: Zeitzone
+        username: Nutzername (Login)
+  title: Foto-App
+  twitter: https://www.twitter.com/stefanwienert
+  unassigned:
+    found: "%{count} Gesichter gefunden."
+    intro: Klicke auf ein Gesicht um es und weitere Ähnliche einer Person zuzuweisen.
+    title: Nicht zugewiesene Gesichter
+  vue_templates:
+    bulk_edit:
+      button: Alle bearbeiten
+      new_share: Neuer Share
+      new_tag: Neues Schlagwort
+      title: "{{files.length}} Bilder bearbeiten"
+    face:
+      appears_on: Weitere Bilder zu {{face.person_name}}  hinzufügen
+      confidence: Min. Konfidenz (%)
+      create_or_assign: Zusammenführen und Person ggf. anlegen
+      create_or_assign_selected: Gesicht und alle ausgewählten zu Person zuweisen
+      instructions: Alle ausgewählten Gesichter zu einer Person hinzufügen. Alle abwählen, die nicht zur Person gehören, dann Person eintragen oder auswählen und speichern.
+      max_matches: Max. Matches
+      no_new_found: Keine neuen Bilder gefunden!
+      person_name: Name der Person
+      quick_select: Ähnliche Gesichter von bereits zugewiesenen Personen. Person anklicken um diese auszuwählen.
+      refresh: Neu laden
+      select_all: Alle auswählen
+      similar_images_found: "{{allSimilar.length}} ähnliche Bilder von AWS gefunden."
+      similarity: Ähnlichkeit (%)
+      unselect_all: Alle abwählen
+      whos_this: Wer ist das?
+    face_manager:
+      confirm_deletion: Löschen bestätigen
+      start_delete_mode: Aufräumen starten
+    photo:
+      aperture: Blende
+      camera: Kamera-Modell
+      edit: Bearbeiten
+      exposure: Belichtungszeit
+      file_size: Dateigröße
+      rotate: Drehen
+      title: gefundene Personen in diesem Bild
+    video:
+      duration: Dauer
+      file_size: Dateigröße

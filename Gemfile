@@ -66,6 +66,7 @@ group :development do
   gem 'quiet_assets'
   gem 'listen'
   gem 'annotate'
+  gem 'i18n-tasks', '~> 0.9.8'
 end
 
 group :test do
