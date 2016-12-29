@@ -32,7 +32,7 @@ before_script:
 
 script:
   - bundle exec rspec -b
-  - gem install i18n-tasks
-  - bundle exec i18n-tasks health
+  - gem install i18n-tasks && i18n-tasks health
+  - gem install bundler-audit && bundle-audit update && bundle-audit
 
 bundler_args: "--without development production"
