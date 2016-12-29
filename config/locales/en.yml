@@ -52,7 +52,6 @@ en:
       per_page: Per page
       popular_tags_in_result_set: Popular tags in found pictures
       to_date: To (Date)
-  settings: Settings
   simple_form:
     hints:
       user:
@@ -83,7 +82,7 @@ en:
       confidence: Min. confidence (%)
       create_or_assign: Merge faces to person / create person if not exist
       create_or_assign_selected: Create Person/Assign all selected faces to that person
-      instructions: "Add all selected faces to a person. Deselect all, which are not the person. Then, enter the person's name or select an existing person."
+      instructions: Add all selected faces to a person. Deselect all, which are not the person. Then, enter the person's name or select an existing person.
       max_matches: Max. number of matches
       no_new_found: No new pictures found!
       person_name: Name of person
@@ -93,7 +92,7 @@ en:
       similar_images_found: "{{allSimilar.length}} similar faces found by AWS."
       similarity: Similarity (%)
       unselect_all: Deselect all
-      whos_this: "Who's this?"
+      whos_this: Who's this?
     face_manager:
       confirm_deletion: Confirm deletion
       start_delete_mode: Start Clean up mode

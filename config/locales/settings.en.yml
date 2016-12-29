@@ -1,0 +1,80 @@
+---
+en:
+  settings:
+    audio_codec:
+      description: Audio codec which will be used when encoding a smaller version. Sometimes, faac is not available, so use aac which is mostly good enough.
+      type: string
+    aws:
+      access_key_id:
+        description: IAM Access Key ID
+        type: string
+      access_key_secret:
+        description: IAM Access Key Secret
+        type: string
+      account_id:
+        description: AWS Account ID (12 digit number). Used for displaying budgets.
+        type: string
+      acl:
+        description: S3 Standard ACL
+        type: string
+      bucket:
+        description: S3 Bucket
+        type: string
+      region:
+        description: S3 Region - When using Rekognition, the S3 Region must support rekognition API.
+        type: string
+    default_timezone:
+      description: Standard time zone for all users. Important, for correctly assume the date when uploading new meda, as EXIF meta data does not specify time zone.
+      type: string
+    elasticsearch:
+      enabled:
+        description: "[EXPERIMENTAL] ElasticSearch"
+        type: boolean
+    ocr:
+      enabled:
+        description: "[EXPERIMENTAL] OCR"
+        type: boolean
+    proxy:
+      description: nginx/apache - Changes send-file headers to improve download of Shares zip file
+      type: string
+    rekognition:
+      enabled:
+        description: 'Rekognition labels activated: New photos will be sent to AWS Rekognition'
+        type: boolean
+      faces:
+        auto_assign:
+          enabled:
+            description: Automatically assign pictures to existing people, if all of the following conditions match:
+            type: boolean
+          max_faces:
+            description: Those number of top most similar faces will be requested for a new found face. If there is only one already existing person in this set, it will be assigned
+            type: integer
+          min_existing_faces:
+            description: From the max_faces, those number of faces most be present from that person, e.g. 10 of the 15 most similar photos most be from the same existing person
+            type: integer
+          threshold:
+            description: Minimum similarity in percent
+            type: integer
+        enabled:
+          description: 'Rekognition Faces activated: Photos, which are tagged with Person/People/Child, will be sent to Rekognition indexFaces.'
+          type: boolean
+        rekognition_collection:
+          description: 'Name of the "Rekognition Collection" on AWS'
+          type: string
+      labels:
+        max_labels:
+          description: Maximum number of labels, which are saved from AWS
+          type: integer
+        min_confidence:
+          description: Min. percent confidence for labels
+          type: integer
+    storage:
+      default:
+        description: Storage location for all smaller variants (small/preview images, day montage images, faces) (file = file system under /public/uploads, aws = S3 Bucket)
+        type: string
+      large:
+        description: Storage location for all 'Large' preview variants (file = file system under /public/uploads, aws = S3 Bucket)
+        type: string
+      original:
+        description: Storage location for all 'Original' files (file = locale file system under /public/uploads, aws = S3 Bucket)
+        type: string

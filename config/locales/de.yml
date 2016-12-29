@@ -54,7 +54,6 @@ de:
       per_page: Anzahl pro Seite
       popular_tags_in_result_set: Meist gefundene Tags in der Ergebnismenge
       to_date: Bis (Datum)
-  settings: Einstellungen
   simple_form:
     hints:
       user:
