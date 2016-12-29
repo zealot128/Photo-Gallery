@@ -4,7 +4,6 @@ de:
     settings:
       index:
         current_value: Aktueller Wert
-        edit: Bearbeiten
   image_faces:
     face:
       all_faces_on_date:
@@ -68,7 +67,6 @@ de:
         timezone: Zeitzone
         username: Nutzername (Login)
   title: Foto-App
-  twitter: https://www.twitter.com/stefanwienert
   unassigned:
     found: "%{count} Gesichter gefunden."
     intro: Klicke auf ein Gesicht um es und weitere Ähnliche einer Person zuzuweisen.

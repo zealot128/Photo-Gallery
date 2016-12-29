@@ -4,7 +4,6 @@ en:
     settings:
       index:
         current_value: Current value
-        edit: Edit
   image_faces:
     face:
       all_faces_on_date: "%{count} Photos shot on %{date}"
@@ -66,7 +65,6 @@ en:
         timezone: Time zone
         username: Username (Login)
   title: Photo-Blog
-  twitter: https://www.twitter.com/stefanwienert
   unassigned:
     found: "%{count} faces found."
     intro: Click on a face to start assigning that face and similar faces to a person

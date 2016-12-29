@@ -44,7 +44,7 @@ en:
       faces:
         auto_assign:
           enabled:
-            description: Automatically assign pictures to existing people, if all of the following conditions match:
+            description: "Automatically assign pictures to existing people, if all of the following conditions match:"
             type: boolean
           max_faces:
             description: Those number of top most similar faces will be requested for a new found face. If there is only one already existing person in this set, it will be assigned

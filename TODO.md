@@ -29,11 +29,19 @@
   * Timezone
   * Rekgonition Setup, Price point
 
-Setting editierbar
-  * Auto Assigning
-  * Rekognition Collection
-  * AWS Stuff
-  * Settings page
-  * Features
-  * Reload application beim aendern
+* MetaData als FlatFiles mit abspeichern
+  * Je Day eine json Datei:
+  {
+    "file": "IMG_...",
+    "labels": [..],
+    "faces: [..]
+  }
+  * Oder HiddenFile?
+    Labels=A,B,C
+    People=Lili,Stefan
+    ShotAt=2016-..
+
+* SMTP configurable (?)
+* Real multi user with groups=families
+* Video Encoding async
 
