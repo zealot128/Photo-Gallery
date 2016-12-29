@@ -80,6 +80,18 @@ e.g. OSX:
 brew reinstall ffmpeg --with-faac
 ```
 
+
+## Production deployment
+
+Sorry, there is no automatic process at the moment, as a lot of people have different needs for deployment. Here are some of the things which are important:
+
+* This is a more or less standard Rails app. In general, I recommend Passenger + Nginx/Apache2 which is easy to configure
+* Make installation like development, but set ``export RAILS_ENV=production`` before.
+* Compile assets: ``bundle exec rake assets:precompile``
+* Change exception notification email recipients and smtp settings in ``config/environments/production.rb``
+* Install cronjobs: ``bundle exec whenever --update-crontab``
+* The app enforces ssl connections for all user interactions (upload can happen in plain text to also support ancient software, like AutoShare which can't handle too much modern SSL). If you can't install a valid certificate, remove that requirement from app/controllers/application_controller.rb
+
 ## Initial import of existing lots
 
 * TODO, Rekognition, Day disabling etc.
