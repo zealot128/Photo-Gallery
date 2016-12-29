@@ -1,6 +1,6 @@
 # Web Image Gallery for Autoshare Android Phone
 
-[![Build Status](https://travis-ci.org/zealot128/AutoShare-Gallery.svg?branch=master)](https://travis-ci.org/zealot128/AutoShare-Gallery)
+[![Build Status](https://travis-ci.org/zealot128/Photo-Gallery.svg?branch=master)](https://travis-ci.org/zealot128/Photo-Gallery)
 
 This is a Rails-App, which acts as an api server for different (Android) photo upload apps and private image-gallery.
 
