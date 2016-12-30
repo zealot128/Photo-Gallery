@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228175709) do
+ActiveRecord::Schema.define(version: 20161230101729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,6 +187,14 @@ ActiveRecord::Schema.define(version: 20161228175709) do
     t.boolean  "admin"
     t.string   "timezone"
     t.string   "locale"
+  end
+
+  create_table "video_thumbnails", force: :cascade do |t|
+    t.integer "video_id"
+    t.string  "file"
+    t.integer "at_time"
+    t.index ["video_id", "at_time"], name: "index_video_thumbnails_on_video_id_and_at_time", using: :btree
+    t.index ["video_id"], name: "index_video_thumbnails_on_video_id", using: :btree
   end
 
   create_table "years", force: :cascade do |t|

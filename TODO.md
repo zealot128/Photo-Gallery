@@ -11,8 +11,6 @@
 * Bilder
   * Geodaten -> Map in Day view
 
-* Rails 5.1
-
 * README
   * Timezone
   * Rekgonition Setup, Price point

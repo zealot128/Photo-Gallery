@@ -27,6 +27,7 @@
 
 class Video < BaseFile
   mount_uploader :file, VideoUploader
+  has_many :video_thumbnails
 
   def exif
     {
