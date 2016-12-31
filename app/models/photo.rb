@@ -23,6 +23,7 @@
 #  rekognition_labels_run :boolean          default(FALSE)
 #  rekognition_faces_run  :boolean          default(FALSE)
 #  aperture               :decimal(5, 2)
+#  video_processed        :boolean          default(FALSE)
 #
 
 class Photo < BaseFile

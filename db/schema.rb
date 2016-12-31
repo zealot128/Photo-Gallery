@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161230101729) do
+ActiveRecord::Schema.define(version: 20161231140957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20161230101729) do
     t.boolean  "rekognition_labels_run",                         default: false
     t.boolean  "rekognition_faces_run",                          default: false
     t.decimal  "aperture",               precision: 5, scale: 2
+    t.boolean  "video_processed",                                default: false
     t.index ["aperture"], name: "index_photos_on_aperture", using: :btree
     t.index ["day_id"], name: "index_photos_on_day_id", using: :btree
     t.index ["file_size"], name: "index_photos_on_file_size", using: :btree

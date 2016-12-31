@@ -23,16 +23,35 @@
 #  rekognition_labels_run :boolean          default(FALSE)
 #  rekognition_faces_run  :boolean          default(FALSE)
 #  aperture               :decimal(5, 2)
+#  video_processed        :boolean          default(FALSE)
 #
 
 class Video < BaseFile
   mount_uploader :file, VideoUploader
-  has_many :video_thumbnails
+  has_many :video_thumbnails, dependent: :destroy
 
   def exif
     {
-      duration: (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).to_f.round
+      duration: duration,
+      durationHuman: duration_human
     }
+  end
+
+  def duration_human
+    return "" if !duration
+    Video.seconds_to_time_string(duration)
+  end
+
+  def self.seconds_to_time_string(seconds)
+    sec_num = seconds.to_f
+    hours   = (sec_num / 3600).floor
+    minutes = ((sec_num - (hours * 3600)) / 60).floor
+    seconds = sec_num - (hours * 3600) - (minutes * 60)
+    sprintf "%02d:%02d:%02d", hours, minutes, seconds
+  end
+
+  def duration
+    (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).to_f.round
   end
 
   def self.create_from_upload(file, user)
@@ -56,6 +75,30 @@ class Video < BaseFile
     video
   end
 
+  def process_versions!
+    file.process_now = true
+    file.recreate_versions!
+    save
+    create_preview_thumbnails
+    update video_processed: true
+  end
+
+  def create_preview_thumbnails
+    return if !duration
+    number_of_thumbnails = [ duration.to_i**(Rational(2,5)), 5].max.round
+
+    thumbnail_every_second = duration.to_f / (number_of_thumbnails)
+    points = []
+    number_of_thumbnails.times do |i|
+      points << (thumbnail_every_second * i).round
+    end
+    video_thumbnails.destroy_all
+
+    points.each do |point|
+      video_thumbnails.create(at_time: point)
+    end
+  end
+
   def update_gps(save: true)
     tags = meta_data.fetch('ffprobe', {}).fetch('tags', {})
     gps = tags['location'] || tags['location-eng']
@@ -66,6 +109,12 @@ class Video < BaseFile
       reverse_geocode
       self.save if save
     end
+  end
 
+  def as_json(opts={})
+    super.merge({
+      thumbnails: video_thumbnails.map{|i| i.file.url },
+      video_processed: video_processed,
+    })
   end
 end

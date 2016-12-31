@@ -22,4 +22,14 @@ module Cronjobs
 
   end
 
+  def self.process_videos(limit: 5)
+    Video.order('shot_at desc').where(video_processed: false).limit(limit).each do |video|
+      binding.pry
+      begin
+        video.process_versions!
+      rescue Aws::S3::Errors::NoSuchKey
+      end
+    end
+  end
+
 end

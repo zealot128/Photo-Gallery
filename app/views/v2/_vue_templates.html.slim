@@ -82,11 +82,14 @@ script type="x-template" id='tpl-photo'
 
 script type="x-template" id='tpl-video-preview'
   .gallery-box
-    a.gallery-element(v-bind:data-poster="file.versions.preview" v-bind:data-html='"#" + subHtmlId'  v-bind:data-download-url='file.download_url' v-bind:data-sub-html='"#" + subHtmlId + "_caption"')
+    a.gallery-element(v-bind:data-poster="file.versions.preview" v-bind:data-html='"#" + subHtmlId'  v-bind:data-download-url='file.download_url' v-bind:data-sub-html='"#" + subHtmlId + "_caption"' v-on:mouseenter="onMouseOver" v-on:mouseleave="onMouseOut")
       i.fa.fa-play-circle.play-icon>
-      img v-bind:src='file.versions.preview' v-bind:title='title'
+      img v-bind:src='currentFrame' v-bind:title='title' v-if='file.video_processed'
+      .unprocessed v-if='!file.video_processed'
+        = t 'vue_templates.video.unprocessed'
       .duration
         | {{duration}}
+      / img v-for='tb in file.thumbnails' v-bind:src='tb'
 
 script type="x-template" id='tpl-video'
   div

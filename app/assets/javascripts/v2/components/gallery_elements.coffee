@@ -22,9 +22,6 @@ file = {
         else
           img.parent().find('.bb-face').remove()
           img.parent().append(bbs).attr('style', '')
-
-
-
   },
   computed: {
     subHtmlId: -> "subhtml-#{this.file.id}"
@@ -37,6 +34,37 @@ file = {
 }
 
 video = {
+  mounted: ->
+    console.log this.file.video_processed
+    this.resetFrame()
+  data: ->
+    currentFrame: null
+    currentFrameIndex: 0
+    mouseIsOver: false
+  methods:
+    resetFrame: ->
+      this.currentFrame = this.file.versions.preview
+      this.currentFrameIndex = 0
+    onMouseOver: (e)->
+      this.mouseIsOver = true
+      this.frame()
+    onMouseOut: (e)->
+      this.mouseIsOver = false
+      this.resetFrame()
+
+    frame: ->
+      return unless this.mouseIsOver
+      next_image = this.file.thumbnails[this.currentFrameIndex]
+      if next_image
+        this.currentFrame = next_image
+        this.currentFrameIndex += 1
+      else
+        this.resetFrame()
+      that = this
+      setTimeout ->
+        that.frame()
+      , 500
+
   computed: {
     duration: ->
       sec_num = this.file.exif.duration

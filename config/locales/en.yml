@@ -105,3 +105,4 @@ en:
     video:
       duration: Duration
       file_size: File Size
+      unprocessed: Unprocessed video
