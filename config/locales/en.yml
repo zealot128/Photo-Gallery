@@ -27,6 +27,31 @@ en:
     upload_logs: Upload logs
     users: Users
   pages:
+    upload:
+      title: Automatic upload
+      autoshare:
+        title: Android Autoshare
+        configuration: Configuration
+        description: |
+          <ul>
+          <li>Webserver</li>
+          <li>Active (Yes)</li>
+          <li>Server Address: <pre><code>%{upload_url}</code></pre><br/>%{qr_image}</li>
+          <li>Username / Password: (blank) not needed with unique token url</li>
+          <li>Upload some photos with Autoshare or configure it for auto upload of new photos</li>
+          </ul>
+
+      photobackup:
+        title: Photobackup (Android, script)
+        description: |
+          <p> Using <a href='https://photobackup.github.io'>PhotoUpload protocol</a>. Only available on Android <a href='https://play.google.com/store/apps/details?id=fr.s13d.photobackup'>Play Store</a> or F-Droid + CLI clients.</p>
+          <br/>
+          <br/>
+          Configuration
+          <ul>
+            <li> Address: <pre><code>%{address}</code></pre></li>
+            <li> Your custom pseudo-Password: <pre><code>%{pseudo_password}</code></pre> <small>Only valid for upload from app, not login!</small></li>
+          </ul>
     index:
       intro: This is my photo publishing and archiving app. Here are some of the public shots
       title: Photo-Blog

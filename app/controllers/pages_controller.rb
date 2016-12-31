@@ -12,6 +12,11 @@ class PagesController < ApplicationController
   end
 
   def upload
+    unless current_user.pseudo_password
+      require 'generate_pseudo_password'
+      current_user.pseudo_password = generate_pseudo_password
+      current_user.save
+    end
   end
 
   private

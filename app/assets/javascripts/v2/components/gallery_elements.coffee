@@ -35,7 +35,6 @@ file = {
 
 video = {
   mounted: ->
-    console.log this.file.video_processed
     this.resetFrame()
   data: ->
     currentFrame: null
