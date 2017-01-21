@@ -4,6 +4,11 @@ class UploadController < ApplicationController
   layout false
 
   def create
+    # request.body.read
+    if request.method == 'PUT' # webdav
+      filename = params[:filename]
+      params[:file] = ActionDispatch::Http::UploadedFile.new(tempfile: request.body, filename: filename )
+    end
     FileUtils.mkdir_p('tmp')
     Filelock "tmp/upload-#{@user.id}.lock", timeout: 600 do
       file = params[:userfile] || params[:upfile] || params[:file]
@@ -43,24 +48,29 @@ class UploadController < ApplicationController
     end
   end
 
-
   protected
+
+  def find_pseudo_password(password)
+    User.all.find{|user|
+      user.pseudo_password && (Digest::SHA512.hexdigest(user.pseudo_password) == password || password == user.pseudo_password)
+    }
+  end
 
   def http_basic_auth
     if params[:token]
       return @user = User.where(token: params[:token]).first!
     elsif params[:password]
-      @user = User.all.find{|user|
-        Digest::SHA512.hexdigest(user.pseudo_password) == params[:password]
-      }
+      @user = find_pseudo_password(params[:password])
       return @user if @user
     end
     if by_ip       = User.authenticate_by_ip(request)
       return @user = by_ip
     end
     authenticate_or_request_with_http_basic do |username, password|
-      if by_username = User.authenticate(username, password)
-        @user = by_username
+      try = User.authenticate(username, password)
+      try ||= find_pseudo_password(password)
+      if try
+        @user = try
         true
       else
         false

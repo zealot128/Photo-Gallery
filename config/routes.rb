@@ -18,6 +18,8 @@ SimpleGallery::Application.routes.draw do
     end
   end
 
+  put 'dav/:filename' => 'upload#create'
+
   get "download/:id/:filename" => 'photos#download', filename: /.*/
 
   namespace :admin do
