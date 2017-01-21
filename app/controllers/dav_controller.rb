@@ -17,7 +17,7 @@ class DavController < UploadController
     rescue StandardError => e
       exception = e
       ExceptionNotifier.notify_exception(exception, env: request.env) if defined?(ExceptionNotifier)
-      render status: 500, text: "Server Error", layout: false
+      render status: 500, text: "Server Error (#{e.inspect})\n\n#{e.backtrace.inspect}", layout: false
       return
     end
     UploadLog.handle_file(@photo, file, self, exception)
