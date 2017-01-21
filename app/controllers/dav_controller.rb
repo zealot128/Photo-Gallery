@@ -2,13 +2,13 @@ class DavController < UploadController
 
   def create
     filename = params[:filename].split('/').last
-    if request.body.is_a?(StringIO)
+    if request.body.respond_to?(:path)
+      tf = request.body
+    else
       tf = Tempfile.new(['webdavupload', File.extname(filename)])
       tf.binmode
       tf.write(request.body.read)
       tf.flush
-    else
-      tf = request.body
     end
     file = ActionDispatch::Http::UploadedFile.new(tempfile: tf, filename: filename )
 
