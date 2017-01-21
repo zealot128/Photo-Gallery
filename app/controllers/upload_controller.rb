@@ -4,11 +4,6 @@ class UploadController < ApplicationController
   layout false
 
   def create
-    # request.body.read
-    if request.method == 'PUT' # webdav
-      filename = params[:filename]
-      params[:file] = ActionDispatch::Http::UploadedFile.new(tempfile: request.body, filename: filename )
-    end
     FileUtils.mkdir_p('tmp')
     Filelock "tmp/upload-#{@user.id}.lock", timeout: 600 do
       file = params[:userfile] || params[:upfile] || params[:file]
@@ -23,10 +18,10 @@ class UploadController < ApplicationController
         return
       end
       UploadLog.handle_file(@photo, file, self, exception)
-      if @photo.new_record?
-        render plain: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409, layout: false
-      else
+      if !@photo.new_record?
         render plain: 'OK', layout: false
+      else
+        render plain: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409, layout: false
       end
     end
   end

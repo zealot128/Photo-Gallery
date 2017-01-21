@@ -1,10 +1,10 @@
 br
 h3.text-center = t 'pages.upload.title'
 .row
-  .col-sm-6
+  .col-sm-6.col-md-4
     .panel.panel-default
       .panel-heading: h3.panel-title
-        h4 = t 'pages.upload.autoshare.title'
+        = t 'pages.upload.autoshare.title'
       .panel-body
         = link_to "Google Play", "https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result"
         br
@@ -13,9 +13,15 @@ h3.text-center = t 'pages.upload.title'
         = raw t('pages.upload.autoshare.description',
           upload_url: token_upload_url(token: current_user.token),
           qr_image: image_tag(qrcode_image_url(token_upload_url(token: current_user.token))))
-  .col-sm-6
+  .col-sm-6.col-md-4
     .panel.panel-default
       .panel-heading: h3.panel-title
-        h4 = t 'pages.upload.photobackup.title'
+        = t 'pages.upload.photobackup.title'
       .panel-body
         = raw t('pages.upload.photobackup.description', address: root_url, pseudo_password: current_user.pseudo_password)
+  .col-sm-6.col-md-4
+    .panel.panel-default
+      .panel-heading: h3.panel-title
+        = t 'pages.upload.camerasync.title'
+      .panel-body
+        = raw t('pages.upload.camerasync.description', address: root_url, pseudo_password: current_user.pseudo_password, username: current_user.username)
