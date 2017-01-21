@@ -97,7 +97,7 @@ class BaseFile < ActiveRecord::Base
   end
 
   def self.create_from_upload(file, current_user)
-    path = file.try(:tempfile).try(:path) || file.try(:path) || binding.pry
+    path = file.try(:tempfile).try(:path) || file.try(:path)
     mime_type = `file #{Shellwords.escape(path)} --mime-type`.split(':').last.strip
     klass =
       case mime_type

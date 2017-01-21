@@ -38,7 +38,6 @@ class PhotosController < ApplicationController
     rescue StandardError => e
       ExceptionNotifier.notify_exception(e, env: request.env) if defined?(ExceptionNotifier)
       exception = e
-      binding.pry
     end
     UploadLog.handle_file(photo, params[:file], self, exception)
     render json: photo.attributes.except('exif_info').merge(
