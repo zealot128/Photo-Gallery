@@ -67,8 +67,8 @@ class Photo < BaseFile
           label = ImageLabel.where(name: aws_label.name).first_or_create
           image_labels << label
         end
-      update_column :rekognition_labels_run, true
     end
+    update_column :rekognition_labels_run, true
   rescue Aws::Rekognition::Errors::InvalidS3ObjectException
   end
 
@@ -80,8 +80,8 @@ class Photo < BaseFile
         faces.face_records.each do |face|
           image_faces.where(aws_id: face.face.face_id).first_or_create(bounding_box: face.face.bounding_box.as_json, confidence: face.face.confidence)
         end
-        update_column :rekognition_faces_run, true
       end
+      update_column :rekognition_faces_run, true
     end
   end
 

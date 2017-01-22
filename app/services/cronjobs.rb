@@ -4,6 +4,7 @@ module Cronjobs
       Photo.where('created_at > ?', time_limit).limit(500).where(rekognition_labels_run: false).each do |file|
         begin
           file.rekognize_labels
+          file.update rekognition_labels_run: true
         rescue StandardError => e
           Rails.logger.error "Error while rekognizing labels #{file.id} -> #{e.inspect}"
         end
