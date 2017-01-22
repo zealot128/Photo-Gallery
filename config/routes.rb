@@ -19,6 +19,7 @@ SimpleGallery::Application.routes.draw do
   end
 
   put 'dav/:filename' => 'dav#create', filename: /.*/
+  match 'dav/:filename' => 'dav#proppatch', filename: /.*/, via: :proppatch
   match 'dav' => 'dav#index', via: :propfind
 
   get "download/:id/:filename" => 'photos#download', filename: /.*/

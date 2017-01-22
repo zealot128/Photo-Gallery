@@ -29,5 +29,20 @@ class DavController < UploadController
   end
 
   def index
+    respond_to do |f|
+      f.xml
+      f.html {
+        _r = request.body.try(:read)
+        puts _r
+        headers['Content-Type'] = 'application/xml; charset="utf-8"'
+        render 'index.xml', status: 207
+        puts response.body
+        # render text: "OK", layout: false
+      }
+    end
+  end
+
+  def proppatch
+    render 'proppatch.xml', status: 207
   end
 end
