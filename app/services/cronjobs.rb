@@ -1,7 +1,7 @@
 module Cronjobs
-  def self.rekognize
+  def self.rekognize(time_limit: 2.days.ago)
     if Setting['rekognition.enabled']
-      Photo.where('created_at > ?', 2.days.ago).where(rekognition_labels_run: false).each do |file|
+      Photo.where('created_at > ?', time_limit).limit(500).where(rekognition_labels_run: false).each do |file|
         begin
           file.rekognize_labels
         rescue StandardError => e
@@ -11,7 +11,7 @@ module Cronjobs
     end
 
     if Setting['rekognition.faces.enabled']
-      Photo.where('created_at > ?', 2.days.ago).where(rekognition_labels_run: true, rekognition_faces_run: false).each do |file|
+      Photo.where('created_at > ?', time_limit).limit(500).where(rekognition_labels_run: true, rekognition_faces_run: false).each do |file|
         begin
           file.rekognize_faces
         rescue StandardError => e
