@@ -11,10 +11,6 @@
 * Bilder
   * Geodaten -> Map in Day view
 
-* README
-  * Timezone
-  * Rekgonition Setup, Price point
-
 * MetaData als FlatFiles mit abspeichern
   * Je Day eine json Datei:
   {
@@ -29,6 +25,8 @@
 
 * SMTP configurable (?)
 * Real multi user with groups=families
-* Video Encoding async
 * Jpegoptim?
 
+* WebDAV: andere Apps, wie Owncloud checken
+* S3 import?
+* public/uploads/tmp wird nicht gecleart, je release; symlnk fehlt noch beim ansible
