@@ -76,11 +76,14 @@ class Video < BaseFile
   end
 
   def process_versions!
+    Rails.logger.info "Starting processing of #{video.id}"
     file.process_now = true
     file.recreate_versions!
-    save
+    save!
     create_preview_thumbnails
     update video_processed: true
+    save!
+    Rails.logger.info "Finished processing of #{video.id}"
   end
 
   def create_preview_thumbnails

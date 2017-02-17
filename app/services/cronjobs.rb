@@ -31,6 +31,9 @@ module Cronjobs
       rescue Aws::S3::Errors::NoSuchKey, CarrierWave::ProcessingError => e
         Rails.logger.error "ERROR Processing Video #{video.id} - #{e.inspect}"
         video.update error_on_processing: true
+      rescue StandardError => e
+        Rails.logger.error "UNKNOWN ERROR Processing Video #{video.id} - #{e.inspect}"
+        video.update error_on_processing: true
       end
     end
   end
