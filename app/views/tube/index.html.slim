@@ -1,0 +1,31 @@
+.player-container
+  video.video-js.vjs-default-skin#video(controls preload style='width: 100%')
+  br
+  br
+  .vjs-playlist
+
+= will_paginate @videos
+
+javascript:
+  var player = videojs('video');
+	player.playlistUi();
+  player.playlist(#{@json.to_json.html_safe})
+  player.playlist.autoadvance(0);
+
+  $(document).on('click', '.next', function(ev) {
+    ev.preventDefault();
+    player.playlist.next();
+  })
+  $(document).on('click', '.prev', function(ev) {
+    ev.preventDefault();
+    player.playlist.previous();
+  })
+  $('<button class="next vjs-control vjs-button vjs-paused" type="button" aria-live="polite"><i class="fa fa-2x fa-step-forward"></i><span class="vjs-control-text">Next</span></button>').insertAfter($('.vjs-remaining-time'))
+  $('<button class="prev vjs-control vjs-button vjs-paused" type="button" aria-live="polite"><i class="fa fa-2x fa-step-backward"></i><span class="vjs-control-text">Prev</span></button>').insertAfter($('.vjs-remaining-time'))
+
+css:
+  .vjs-playlist .vjs-playlist-item {
+    width: 300px;
+    height: 300px;
+    float: left;
+  }

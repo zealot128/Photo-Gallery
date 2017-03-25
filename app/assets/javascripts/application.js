@@ -9,6 +9,8 @@
 //= require dropzone
 //= require moment
 //= require videojs/video.js
+//= require videojs-playlist.js
+//= require videojs-playlist-ui.js
 //= require videojs-resolution-switcher.js
 //= require lightgallery/lightgallery-all.js
 //= require select2
