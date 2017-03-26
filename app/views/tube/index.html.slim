@@ -23,6 +23,12 @@ javascript:
   $('<button class="next vjs-control vjs-button vjs-paused" type="button" aria-live="polite"><i class="fa fa-2x fa-step-forward"></i><span class="vjs-control-text">Next</span></button>').insertAfter($('.vjs-remaining-time'))
   $('<button class="prev vjs-control vjs-button vjs-paused" type="button" aria-live="polite"><i class="fa fa-2x fa-step-backward"></i><span class="vjs-control-text">Prev</span></button>').insertAfter($('.vjs-remaining-time'))
 
+
+  $(document).on('click', '.vjs-playlist-item', function(ev) {
+    $(window).scrollTop(100);
+    player.play();
+    player.requestFullscreen()
+  })
 css:
   .vjs-playlist .vjs-playlist-item {
     width: 300px;
@@ -33,4 +39,7 @@ css:
     list-style: none;
     margin-left: 0;
     padding-left: 0;
+  }
+  .videojs {
+    font-size: 3rem;
   }
