@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-base = Photo.where('shot_at > ?',2.months.ago)
+base = BaseFile.where('shot_at > ?',2.months.ago)
 
 dupes = base.group(:file).having('count(file) > 1').count
 dupes.each do |dupe,counts|
