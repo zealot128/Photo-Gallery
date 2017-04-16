@@ -2,10 +2,10 @@ class TubeController < ApplicationController
   before_action :login_required
 
   def index
-    @videos = Video.order('shot_at desc').paginate(per_page: 100, page: params[:page])
+    @videos = Video.visible.where('duration >= 10').order('shot_at desc').paginate(per_page: 100, page: params[:page])
     @json = @videos.map { |video|
       {
-				name: video.read_attribute("file"),
+				name: video.id.to_s + "-" + video.read_attribute("file"),
         poster: video.file.url(:preview),
 				thumbnail: [
 					{

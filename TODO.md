@@ -1,3 +1,17 @@
+
+* Loeschen loescht zuviel!!
+* Statt Loeschen -> Mark as delete und nach ein paar Tagen loeschen.
+* Cookie login
+* Unbearbietete/Fehlende Videos in tube
+* Tube mit Size auswahl/Preloading
+* Tube verlinken
+
+* "Star" von items
+  * eigene View
+  * nicht loeschbar
+
+
+
 # TODO
 
 * Search

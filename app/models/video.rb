@@ -30,6 +30,10 @@ class Video < BaseFile
   mount_uploader :file, VideoUploader
   has_many :video_thumbnails, dependent: :destroy
 
+  def duration_from_metadata
+    (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).to_f.round
+  end
+
   def exif
     {
       duration: duration,
@@ -50,8 +54,8 @@ class Video < BaseFile
     sprintf "%02d:%02d:%02d", hours, minutes, seconds
   end
 
-  def duration
-    (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).to_f.round
+  before_save do
+    self.duration = duration_from_metadata
   end
 
   def self.create_from_upload(file, user)

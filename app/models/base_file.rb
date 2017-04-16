@@ -37,6 +37,7 @@ class BaseFile < ActiveRecord::Base
   has_and_belongs_to_many :shares, join_table: "photos_shares", foreign_key: 'photo_id'
   acts_as_taggable
   scope :dates, -> { group(:shot_at).select(:shot_at).order("shot_at desc") }
+  scope :visible, -> { all }
   validates :md5, :uniqueness => true, presence: true
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
