@@ -22,7 +22,6 @@ class V2::ImageFacesController < ApplicationController
         }.sort_by{|a| -(a.similarity || 0)}
         render json: similarities
       }
-
     end
   end
 

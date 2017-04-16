@@ -24,7 +24,7 @@ class Day < ActiveRecord::Base
   end
 
   def make_montage
-    images = photos.order("shot_at asc").map{|i|i.file.versions[:thumb].path }
+    images = photos.visible.order("shot_at asc").map{|i| i.file.versions[:thumb].path }
     image_args = Shellwords.shelljoin images
     width = [images.count, 15].min
     Tempfile.open(['montage', '.jpg']) do |f|
@@ -62,5 +62,4 @@ class Day < ActiveRecord::Base
       self.month = Month.find_or_make(date)
     end
   end
-
 end

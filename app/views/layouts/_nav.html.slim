@@ -100,6 +100,10 @@ nav.navbar.navbar-default role='navigation'
                   a href='/v2/assign_faces/unassigned'
                     i.fa.fa-user.fa-fw>
                     = t 'nav.unassigned_faces'
+                li
+                  a href='/admin/mark_as_deleted'
+                    i.fa.fa-undo.fa-fw>
+                    = t 'nav.deleted'
 
         - else
           li = link_to login_path do

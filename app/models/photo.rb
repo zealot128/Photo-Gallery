@@ -24,6 +24,9 @@
 #  rekognition_faces_run  :boolean          default(FALSE)
 #  aperture               :decimal(5, 2)
 #  video_processed        :boolean          default(FALSE)
+#  error_on_processing    :boolean          default(FALSE)
+#  duration               :integer
+#  mark_as_deleted_on     :datetime
 #
 
 class Photo < BaseFile

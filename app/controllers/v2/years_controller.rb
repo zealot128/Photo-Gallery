@@ -2,7 +2,7 @@ class V2::YearsController < ApplicationController
   before_action :login_required
 
   def index
-    @recent = BaseFile.order("created_at desc").limit(20)
+    @recent = BaseFile.visible.order("created_at desc").limit(20)
     @years = Year.order('name desc')
   end
 

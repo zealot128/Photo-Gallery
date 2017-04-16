@@ -8,9 +8,7 @@ class PhotosController < ApplicationController
 
   def destroy
     @photo = BaseFile.find(params[:id])
-    d = @photo.day
-    @photo.destroy
-    d.update_me
+    @photo.mark_as_delete!
     respond_to do |f|
       f.html {
         redirect_to photos_path

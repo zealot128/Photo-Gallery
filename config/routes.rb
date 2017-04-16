@@ -31,6 +31,7 @@ SimpleGallery::Application.routes.draw do
     resources :users
     get 'settings' => 'settings#index'
     post 'settings' => 'settings#update'
+    get 'mark_as_deleted' => 'misc#mark_as_deleted'
   end
 
   namespace :v2 do

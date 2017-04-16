@@ -24,6 +24,9 @@
 #  rekognition_faces_run  :boolean          default(FALSE)
 #  aperture               :decimal(5, 2)
 #  video_processed        :boolean          default(FALSE)
+#  error_on_processing    :boolean          default(FALSE)
+#  duration               :integer
+#  mark_as_deleted_on     :datetime
 #
 
 class BaseFile < ActiveRecord::Base
@@ -37,8 +40,8 @@ class BaseFile < ActiveRecord::Base
   has_and_belongs_to_many :shares, join_table: "photos_shares", foreign_key: 'photo_id'
   acts_as_taggable
   scope :dates, -> { group(:shot_at).select(:shot_at).order("shot_at desc") }
-  scope :visible, -> { all }
-  validates :md5, :uniqueness => true, presence: true
+  scope :visible, -> { where(mark_as_deleted_on: nil) }
+  validates :md5, uniqueness: true, presence: true
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
 
@@ -53,8 +56,8 @@ class BaseFile < ActiveRecord::Base
 
   before_validation do
     if !md5?
-      if !(File.exists?(file.path)) && !file.cached? #File already gone
-        self.md5 ||= Digest::MD5.hexdigest file.read.to_s
+      if !(File.exists?(file.path)) && !file.cached?
+        self.md5 ||= Digest::MD5.hexdigest(file.read.to_s)
       end
       self.md5 ||= Digest::MD5.file(file.path)
     end
@@ -95,6 +98,12 @@ class BaseFile < ActiveRecord::Base
     file.retrieve_from_cache!(file.cache_name)
     yield(file.file)
     file.recreate_versions!
+  end
+
+  def mark_as_delete!
+    d = day
+    update_column :mark_as_deleted_on, Time.zone.now
+    d.update_me
   end
 
   def self.create_from_upload(file, current_user)

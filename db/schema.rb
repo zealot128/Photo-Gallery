@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170416185356) do
+ActiveRecord::Schema.define(version: 20170416200241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20170416185356) do
     t.boolean  "video_processed",                                default: false
     t.boolean  "error_on_processing",                            default: false
     t.integer  "duration"
+    t.datetime "mark_as_deleted_on"
     t.index ["aperture"], name: "index_photos_on_aperture", using: :btree
     t.index ["day_id"], name: "index_photos_on_day_id", using: :btree
     t.index ["file_size"], name: "index_photos_on_file_size", using: :btree
