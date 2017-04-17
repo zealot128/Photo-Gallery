@@ -79,7 +79,7 @@ class BaseFile < ActiveRecord::Base
   before_save do
     self.year = self.shot_at.year
     self.month = self.shot_at.month
-    self.file_size = self.file.size
+    self.file_size ||= self.file.size
   end
 
   after_commit do
