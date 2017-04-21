@@ -42,6 +42,18 @@ window.Api = {
       method: "DELETE"
       success: (e) ->
         callback(e) if callback
+  undeleteImage: (id, callback) ->
+    if !id?
+      callback()
+      return
+    url = "/photos/#{id}"
+    $.ajax
+      url: "/photos/#{id}/undelete"
+      dataType: "json"
+      method: "POST"
+      success: (e) ->
+        callback(e) if callback
+
 
   createPerson: (person_name, face_ids, unselected_face_ids, callback) ->
     $.ajax

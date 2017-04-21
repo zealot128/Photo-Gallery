@@ -143,6 +143,7 @@ class BaseFile < ActiveRecord::Base
       description:          description,
       versions:             file.versions.map{|k,v| [k,v.url] }.to_h,
       download_url:         "/download/#{id}/#{attributes['file']}",
+      marked_as_deleted:    !!mark_as_deleted_on,
       exif:                 exif
     }
   end
@@ -174,5 +175,4 @@ class BaseFile < ActiveRecord::Base
       end
     end
   end
-
 end

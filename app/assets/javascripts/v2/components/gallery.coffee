@@ -1,6 +1,6 @@
 window.Gallery = (domEl, state) ->
   el = $(domEl)
-  recent =  window.location.pathname.indexOf('/recent') != -1
+  recent = window.location.pathname.indexOf('/recent') != -1
 
   g = new Vue({
     el: el[0],
@@ -25,7 +25,7 @@ window.Gallery = (domEl, state) ->
 
     methods: {
       buildGallery: ->
-        lgOptions =  {
+        lgOptions = {
           selector: '.gallery-element',
           showThumbByDefault: false
           videojs: true
@@ -80,3 +80,4 @@ window.Gallery = (domEl, state) ->
     template: '#tpl-photo-gallery'
   })
   g
+  el.data('gallery', g)

@@ -5,6 +5,10 @@ file = {
     image_width: 0
     image_height: 0
   methods: {
+    undoDelete: () ->
+      Api.undeleteImage(this.file.id)
+      alert("Image restored. Reload page to reflect trash - sorry too lazy to implement proper")
+
     toggleFaces: ()->
       this.showFaces = !this.showFaces
       img = $('.lg-current .lg-image')
@@ -96,4 +100,9 @@ $(document).on('click', '.js-toggle-faces', (e)->
   e.preventDefault()
   vueInstance = $("#" + $(this).parent().parent()[0].dataset.id)[0].__vue__
   vueInstance.toggleFaces()
+)
+$(document).on('click', '.js-undelete', (e)->
+  e.preventDefault()
+  vueInstance = $("#" + $(this).closest('p')[0].dataset.id)[0].__vue__
+  vueInstance.undoDelete()
 )

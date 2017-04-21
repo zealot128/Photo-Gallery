@@ -24,6 +24,7 @@ script type="x-template" id='tpl-year'
 
 
 
+/ Whole Gallery
 script type="x-template" id='tpl-photo-gallery'
   div.gallery-set
     div.hidden-elements.hidden
@@ -41,18 +42,19 @@ script type="x-template" id='tpl-photo-gallery'
     div v-if='editMode'
       vue-edit v-bind:file='currentImage' v-bind:state='state'
 
+/ Photo Preview
 script type="x-template" id='tpl-photo-preview'
   .gallery-box
     a.gallery-element v-bind:href='file.versions.large' v-bind:data-sub-html='"#" + subHtmlId' v-bind:data-download-url="file.download_url"
       img v-bind:src='file.versions.preview' v-bind:title='title'
 
+/ Photo Large
 script type="x-template" id='tpl-photo'
   div v-bind:id="subHtmlId"
     .js-bbs.hide
       bounding-box v-bind:face='face' v-for='face in file.faces' v-bind:width='image_width' v-bind:height='image_height'
     p v-bind:data-id="subHtmlId"
       span<>(v-if='faces_count > 0')
-        / a(v-bind:href='"/v2/assign_faces/" + file.id' target='_blank' v-bind:title='faces_count + " " + #{t('vue_templates.photo.title').to_json}')
         a.js-toggle-faces(href='#' v-bind:title='faces_count + " " + #{t('vue_templates.photo.title').to_json}')
           span.badge(v-if='unassigned_faces_count > 0')
             |{{unassigned_faces_count}}
@@ -73,6 +75,8 @@ script type="x-template" id='tpl-photo'
         i.fa.fa-hdd-o.fa-fw> title='#{t('vue_templates.photo.file_size')}'
         span.duration
           |{{file.file_size_formatted}}
+      a.btn.btn-xs.btn-default.js-undelete.image-info(v-if='file.marked_as_deleted' href='#')
+        i.fa.fa-undo.fa-fw title='#{t('vue_templates.photo.undelete')}'
 
       span<>(v-for='tag in file.labels' style='margin-left: 1px')
         span.label.label-default<>

@@ -15,7 +15,6 @@ Delete.prototype.init = ->
         # this.core.$el.find('.lg-thumb-item').get(this.core.index).remove()
         # this.core.$el.find('.lg-item').get(this.core.index).remove()
   )
-
 Delete.prototype.destroy = ->
   true
 

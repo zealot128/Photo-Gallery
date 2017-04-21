@@ -19,6 +19,19 @@ class PhotosController < ApplicationController
     end
   end
 
+  def undelete
+    @photo = BaseFile.find(params[:id])
+    @photo.update_column :mark_as_deleted_on, nil
+    respond_to do |f|
+      f.html {
+        redirect_to photos_path
+      }
+      f.json {
+        render json: { status: 'success' }
+      }
+    end
+  end
+
   def shared
     response.headers['Content-Type'] = 'image/jpeg'
     response.headers['Content-Disposition'] = 'inline'
