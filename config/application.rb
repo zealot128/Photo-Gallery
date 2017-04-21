@@ -18,6 +18,7 @@ module SimpleGallery
     config.action_cable.mount_path = '/websocket'
     config.filter_parameters += [:password]
     config.assets.enabled = true
+    config.assets.paths << Rails.root.join('node_modules')
     config.assets.version = '1.0'
     config.action_controller.permit_all_parameters = true
     config.i18n.default_locale = :de

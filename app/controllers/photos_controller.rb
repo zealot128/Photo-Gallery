@@ -90,4 +90,16 @@ class PhotosController < ApplicationController
     @photo = BaseFile.find(params[:id])
     @photo.ocr
   end
+
+  def like
+    @photo = BaseFile.find(params[:id])
+    @photo.liked_by << current_user unless @photo.liked_by.include?(current_user)
+    render json: { file: @photo.as_json }
+  end
+
+  def unlike
+    @photo = BaseFile.find(params[:id])
+    @photo.liked_by -= [current_user] if @photo.liked_by.include?(current_user)
+    render json: { file: @photo.as_json }
+  end
 end

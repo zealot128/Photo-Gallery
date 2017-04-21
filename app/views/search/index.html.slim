@@ -32,6 +32,10 @@
         = f.label :type, class: '' do
           = f.check_box :type, { multiple: true }, 'videos', ''
           | Videos
+      .checkbox
+        = f.label :type, class: '' do
+          = f.check_box :favorite, {}, '1', ''
+          | Favourite
     .col-sm-6
       .panel.panel-default
         .panel-heading
@@ -67,10 +71,13 @@
 
 br
 br
-div: strong = t('search.index.popular_tags_in_result_set')
-- @search.label_facets.each do |name, count|
-  span.label.label-default<>
-    |#{name} <span class='badge'>#{count}</span>
+div: strong
+  a href='#tags' data-toggle='collapse'
+    = t('search.index.popular_tags_in_result_set')
+.collapse#tags
+  - @search.label_facets.each do |name, count|
+    span.label.label-default<>
+      |#{name} <span class='badge'>#{count}</span>
 
 - @media = @search.media.paginate(page: params[:page], per_page: @search.per_page)
 p

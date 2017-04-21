@@ -9,6 +9,7 @@ class MediaSearch
   attr_accessor :per_page
   attr_accessor :file_size
   attr_accessor :aperture
+  attr_accessor :favorite
 
   attr_reader :file_size_min, :file_size_max
 
@@ -81,6 +82,9 @@ class MediaSearch
       sql = sql.where('aperture is not null and aperture >= ?', @aperture_min) if @aperture_min
       sql = sql.where('aperture is not null and aperture <= ?', @aperture_max) if @aperture_max
     end
-    sql.order('shot_at desc').includes(:image_faces, :image_labels)
+    if favorite == '1'
+      sql = sql.where('(select 1 from likes where base_file_id = photos.id) is not null')
+    end
+    sql.order('shot_at desc').includes(:image_faces, :image_labels, :liked_by)
   end
 end

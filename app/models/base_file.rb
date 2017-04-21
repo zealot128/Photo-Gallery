@@ -34,6 +34,8 @@ class BaseFile < ActiveRecord::Base
   has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
   has_many :image_faces, dependent: :destroy
   has_many :people, through: :image_faces
+  has_many :likes
+  has_many :liked_by, through: :likes, class_name: "User", source: :user
 
   belongs_to :user
   belongs_to :day
@@ -144,6 +146,7 @@ class BaseFile < ActiveRecord::Base
       versions:             file.versions.map{|k,v| [k,v.url] }.to_h,
       download_url:         "/download/#{id}/#{attributes['file']}",
       marked_as_deleted:    !!mark_as_deleted_on,
+      liked_by:             liked_by.map(&:username),
       exif:                 exif
     }
   end

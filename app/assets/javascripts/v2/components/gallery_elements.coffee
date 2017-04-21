@@ -9,6 +9,21 @@ file = {
       Api.undeleteImage(this.file.id)
       alert("Image restored. Reload page to reflect trash - sorry too lazy to implement proper")
 
+    like: ($event) ->
+      Api.like(this.file.id)
+      $event.preventDefault()
+      $event.stopPropagation()
+      this.file.liked_by = Array.concat(this.file.liked_by, currentUser)
+      this.$forceUpdate()
+
+    unlike: ($event) ->
+      Api.unlike(this.file.id)
+      $event.preventDefault()
+      $event.stopPropagation()
+      index = this.file.liked_by.indexOf(currentUser)
+      if index != -1
+        this.file.liked_by.splice(index, 1)
+
     toggleFaces: ()->
       this.showFaces = !this.showFaces
       img = $('.lg-current .lg-image')
@@ -28,6 +43,7 @@ file = {
           img.parent().append(bbs).attr('style', '')
   },
   computed: {
+    liked: -> this.file.liked_by.indexOf(currentUser) != -1
     subHtmlId: -> "subhtml-#{this.file.id}"
     title: -> "#{this.file.caption || ""} (Shot-At: #{this.file.shot_at_formatted})"
     faces_count: -> this.file.faces.length

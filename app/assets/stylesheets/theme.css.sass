@@ -76,19 +76,23 @@ span.checkbox
 .gallery
   display: flex
   flex-wrap: wrap
-  justify-content: space-around
+  // justify-content: space-around
 .gallery-box
-  width: 300px
-  height: 210px
-  margin: 5px
+  min-width: 50px
+  position: relative
 .gallery-element
+  transition: all .2s ease-in-out
+  &:hover
+    transform: scale(1.05)
+    z-index: 1
+    box-shadow: 0 0 8px #333
   display: flex
-  width: 300px
+  // width: 300px
   height: 200px
   position: relative
   text-align: center
   background: #f4f3f4
-  border: 1px solid #ddd
+  // border: 1px solid #ddd
   margin: auto
   .duration
     position: absolute
@@ -174,3 +178,11 @@ span.checkbox
   &.active
     background-color: $brand-primary
 
+.like-button
+  position: absolute
+  right: 0
+  top: 0
+  font-size: 120%
+  a
+    text-shadow: 0 0 2px #000
+    color: #ddd

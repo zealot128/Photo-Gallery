@@ -9,6 +9,20 @@ window.Api = {
         direction: direction
       success: callback
 
+  like: (id, callback) ->
+    $.ajax
+      dataType: 'json'
+      url: "/photos/#{id}/like"
+      method: 'POST'
+      success: callback
+
+  unlike: (id, callback) ->
+    $.ajax
+      dataType: 'json'
+      url: "/photos/#{id}/like"
+      method: 'DELETE'
+      success: callback
+
   bulkUpdate: (request, callback, error) ->
     $.ajax
       dataType: 'json'

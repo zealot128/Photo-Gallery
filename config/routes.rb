@@ -69,6 +69,8 @@ SimpleGallery::Application.routes.draw do
       post :rotate
       post :ocr
       post :undelete
+      post :like
+      delete :like, action: :unlike
     end
   end
   get 'tag/:id',  to: 'pages#tag', as: 'pages_tag'
