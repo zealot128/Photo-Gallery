@@ -1,5 +1,5 @@
 class Admin::SettingsController < ApplicationController
-	before_filter :admin_required
+	before_action :admin_required
 
 	def index
 		@settings = Setting.get_all
