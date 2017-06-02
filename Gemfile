@@ -22,7 +22,11 @@ gem "rails-settings-cached"
 ### Image analysis / conversion
 gem 'carrierwave'
 gem 'carrierwave-aws'
-gem 'carrierwave-video'
+
+# Nervt https://github.com/rheaton/carrierwave-video/issues/44
+gem 'streamio-ffmpeg', '= 2.0.0'
+
+gem 'carrierwave-video', git: 'https://github.com/zealot128-os/carrierwave-video.git'
 gem 'mini_magick'
 gem 'mini_exiftool_vendored'
 gem 'mini_exiftool'

@@ -45,7 +45,7 @@ class Video < BaseFile
   end
 
   def duration_human
-    return "" if !duration
+    return "" unless duration
     Video.seconds_to_time_string(duration)
   end
 
@@ -94,10 +94,10 @@ class Video < BaseFile
   end
 
   def create_preview_thumbnails
-    return if !duration
-    number_of_thumbnails = [ duration.to_i**(Rational(2,5)), 5].max.round
+    return unless duration
+    number_of_thumbnails = [duration.to_i**(Rational(2, 5)), 5].max.round
 
-    thumbnail_every_second = duration.to_f / (number_of_thumbnails)
+    thumbnail_every_second = duration.to_f / number_of_thumbnails
     points = []
     number_of_thumbnails.times do |i|
       points << (thumbnail_every_second * i).round
@@ -121,10 +121,10 @@ class Video < BaseFile
     end
   end
 
-  def as_json(opts={})
-    super.merge({
-      thumbnails: video_thumbnails.map{|i| i.file.url },
+  def as_json(opts = {})
+    super.merge(
+      thumbnails: video_thumbnails.map { |i| i.file.url },
       video_processed: video_processed,
-    })
+    )
   end
 end

@@ -44,5 +44,4 @@ module Cronjobs
       end
     end
   end
-
 end
