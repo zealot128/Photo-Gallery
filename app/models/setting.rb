@@ -16,7 +16,6 @@ class Setting < RailsSettings::Base
   source Rails.root.join("config/app.yml")
   namespace Rails.env
 
-
   def self.definitions
     ts = I18n.t('settings')
     def_descend(ts, [])

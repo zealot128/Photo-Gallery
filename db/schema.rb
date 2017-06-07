@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170421212202) do
+ActiveRecord::Schema.define(version: 20170607073738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,13 @@ ActiveRecord::Schema.define(version: 20170421212202) do
     t.index ["base_file_id"], name: "index_likes_on_base_file_id"
     t.index ["user_id", "base_file_id"], name: "index_likes_on_user_id_and_base_file_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "logging_entries", force: :cascade do |t|
+    t.integer "severity", default: 0
+    t.text "message"
+    t.text "backtrace"
+    t.datetime "created_at"
   end
 
   create_table "months", id: :serial, force: :cascade do |t|

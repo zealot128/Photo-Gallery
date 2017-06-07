@@ -1,0 +1,20 @@
+h2 Logs
+
+p
+  = form_tag '', class: 'form-inline', method: 'get' do
+    - LoggingEntry.group(:severity).count.each do |key, count|
+      a.btn.btn-xs.btn-default href='#{admin_logging_entries_path(severity: key)}'
+        | #{key} (#{count})
+    input.form-control<>(placeholder='Filter...' name='q' value='#{params[:q]}')
+    button.btn.btn-default(type='submit') Filter
+
+
+table.table
+  - @logging_entries.each do |le|
+    tr
+      td = le.created_at.to_s
+      td = le.severity
+      td
+        = le.message
+        br
+        small == le.backtrace.gsub("<", '&lt;').gsub("\n", "<br>")

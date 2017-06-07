@@ -11,8 +11,7 @@ gem 'local_time'
 
 ### Model
 gem 'bcrypt-ruby', require: 'bcrypt'
-# TODO https://github.com/mbleigh/acts-as-taggable-on/issues/736
-gem 'acts-as-taggable-on' #, github: 'mbleigh/acts-as-taggable-on'
+gem 'acts-as-taggable-on', git: 'https://github.com/mbleigh/acts-as-taggable-on.git'
 
 ### Utils
 gem 'ruby-progressbar'
