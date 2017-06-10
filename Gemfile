@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ### Basic Framework
 # gem 'rails', '~> 5.0.0.rc1'
-gem 'rails', '~> 5.1.0.rc2'
+gem 'rails', '~> 5.1.0'
 gem 'pg'
 gem 'slim-rails'
 gem 'migration_data'
