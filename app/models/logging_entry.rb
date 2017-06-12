@@ -32,8 +32,16 @@ class LoggingEntry < ApplicationRecord
       my_add(severity, message, progname, caller, &block)
     end
 
+    def silence(a = nil, &block)
+      @silence = true
+      yield
+    ensure
+      @silence = false
+    end
+
     def my_add(severity, message = nil, progname = nil, callee = nil, &block)
       return if @level > SEVERITIES.index(severity)
+      return if @silence
       message = (message || (block && block.call) || progname).to_s
       LoggingEntry.create(severity: severity, message: message, backtrace: callee.reject { |i| i['gems'] || i['/ruby/'] }.join("\n"))
     end

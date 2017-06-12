@@ -11,6 +11,7 @@ en:
   nav:
     admin: Admin
     already_uploaded: Find already uploaded
+    app_logs: App/Server logs
     change_password: Change Password
     cloud_metrics: Cloud metrics
     impressum: Impressum

@@ -13,6 +13,7 @@ de:
   nav:
     admin: Admin
     already_uploaded: Bereits hochgeladene abgleichen
+    app_logs: App/Server Logs
     change_password: Profil/Passwort
     cloud_metrics: Cloud Metrics
     impressum: Impressum
