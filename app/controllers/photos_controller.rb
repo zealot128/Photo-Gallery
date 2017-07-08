@@ -37,7 +37,6 @@ class PhotosController < ApplicationController
     response.headers['Content-Disposition'] = 'inline'
 
     path = BaseFile.find_by_share_hash!(params[:hash]).file.path(:large)
-    #render :text => open(path, "rb").read
     self.response_body = open(path, "rb")
   end
 
@@ -50,12 +49,23 @@ class PhotosController < ApplicationController
       ExceptionNotifier.notify_exception(e, env: request.env) if defined?(ExceptionNotifier)
       exception = e
     end
+    if exception
+      Rails.logger.error "ERROR WHILE UPLOAD: #{e.inspect}"
+    end
     UploadLog.handle_file(photo, params[:file], self, exception)
-    render json: photo.attributes.except('exif_info').merge(
-      valid: photo.valid?,
-      errors: photo.errors,
-      success: photo.valid?
-    )
+    if photo
+      render json: photo.attributes.except('exif_info').merge(
+        valid: photo.valid?,
+        errors: photo.errors,
+        success: photo.valid?
+      )
+    else
+      render json: {
+        valid: false,
+        errors: [exception.inspect],
+        success: false
+      }
+    end
   end
 
   def edit
