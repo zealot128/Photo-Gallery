@@ -32,14 +32,13 @@
 require 'spec_helper'
 
 describe Photo do
-
   let(:picture) { Rails.root.join("spec/fixtures/tiger.jpg") }
   let(:other_picture) { Rails.root.join("spec/fixtures/somestuff.jpg") }
   let(:user) { valid_user }
 
   it "should store the uniq by hash" do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    expect(photo.md5).to eq(Digest::MD5.hexdigest( picture.read ))
+    expect(photo.md5).to eq(Digest::MD5.hexdigest(picture.read))
   end
 
   it "should validate by uniqness" do
@@ -77,16 +76,16 @@ describe Photo do
     Photo.slow_callbacks = true
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     day = photo.day
-    photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
+    photo.update_attributes(shot_at: Time.zone.parse("2012-10-01 12:00"))
     photo.reload
-    expect(File.exists?(photo.file.path)).to eq(true)
+    expect(File.exist?(photo.file.path)).to eq(true)
 
-    photo.file.versions.each do |key,version|
-      expect(File.exists?(version.path)).to eq(true)
+    photo.file.versions.each do |_key, version|
+      expect(File.exist?(version.path)).to eq(true)
     end
 
-    old_path = photo.file.path.gsub('/2012/','/2010/').gsub('2012-10-01', day.date.to_s)
-    expect(File.exists?(old_path)).to eq(false)
+    old_path = photo.file.path.gsub('/2012/', '/2010/').gsub('2012-10-01', day.date.to_s)
+    expect(File.exist?(old_path)).to eq(false)
 
     Day.where(date: "2012-10-01").first.tap do |d|
       expect(d.photos).to eq([photo])
@@ -171,11 +170,11 @@ describe Photo do
       old_path = photo.file.file.path
       day = photo.day
       expect(day).to receive(:update_me)
-      photo.update_attributes(:shot_at => Time.parse("2012-10-01 12:00"))
+      photo.update_attributes(shot_at: Time.zone.parse("2012-10-01 12:00"))
       photo = Photo.find photo.id
       expect(photo.file.file.exists?).to eq(true)
       expect(photo.file.path).to eq('photos/original/2012/2012-10-01/tiger.jpg')
-      photo.file.versions.each do |key,version|
+      photo.file.versions.each do |_key, version|
         expect(version.file.exists?).to eq(true)
       end
 

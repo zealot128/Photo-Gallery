@@ -2,7 +2,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   include CarrierWave::Video
 
   def process_now?(img = nil)
-    !! @process_now
+    (!!@process_now) || model.video_processed?
   end
 
   attr_writer :process_now

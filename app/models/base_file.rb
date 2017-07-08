@@ -47,8 +47,8 @@ class BaseFile < ActiveRecord::Base
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true
 
-  reverse_geocoded_by :lat, :lng do |obj,results|
-    if geo = results.first
+  reverse_geocoded_by :lat, :lng do |obj, results|
+    if (geo = results.first)
       parts = [geo.city]
       parts << geo.address_components_of_type("establishment").first["short_name"]  rescue nil
       parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
@@ -57,8 +57,8 @@ class BaseFile < ActiveRecord::Base
   end
 
   before_validation do
-    if !md5?
-      if !(File.exists?(file.path)) && !file.cached?
+    unless md5?
+      if !(File.exist?(file.path)) && !file.cached?
         self.md5 ||= Digest::MD5.hexdigest(file.read.to_s)
       end
       self.md5 ||= Digest::MD5.file(file.path)
@@ -66,22 +66,20 @@ class BaseFile < ActiveRecord::Base
   end
 
   before_save do
-    if (self.shot_at_changed? and self.shot_at_was.present?)
+    if shot_at_changed? and shot_at_was.present?
       move_file_after_shot_at_changed
     end
-    new_day = Day.date(self.shot_at)
+    new_day = Day.date(shot_at)
+    self.day = new_day
     if new_day != day and shot_at_was.present?
-      self.day = new_day
       move_file_after_shot_at_changed
-    else
-      self.day = new_day
     end
   end
 
   before_save do
-    self.year = self.shot_at.year
-    self.month = self.shot_at.month
-    self.file_size ||= self.file.size
+    self.year = shot_at.year
+    self.month = shot_at.month
+    self.file_size ||= file.size
   end
 
   after_commit do
@@ -115,20 +113,20 @@ class BaseFile < ActiveRecord::Base
       case mime_type
       when %r{image/}, nil then Photo
       when %r{video/|mp4} then Video
-      else raise NotImplementedError.new("Unknown content type: #{mime_type}")
+      else raise NotImplementedError, "Unknown content type: #{mime_type}"
       end
-    klass.create_from_upload(file,current_user)
+    klass.create_from_upload(file, current_user)
   end
 
   def shot_at_without_timezone
-    self.day.try(:date) || shot_at.to_date
+    day.try(:date) || shot_at.to_date
   end
 
   def check_uniqueness
     valid?
   end
 
-  def as_json(op={})
+  def as_json(op = {})
     {
       id:                   id,
       type:                 type,
@@ -143,7 +141,7 @@ class BaseFile < ActiveRecord::Base
       file_size_formatted:  ApplicationController.helpers.number_to_human_size(file_size),
       caption:              caption,
       description:          description,
-      versions:             file.versions.map{|k,v| [k,v.url] }.to_h,
+      versions:             file.versions.map { |k, v| [k, v.url] }.to_h,
       download_url:         "/download/#{id}/#{attributes['file']}",
       marked_as_deleted:    !!mark_as_deleted_on,
       liked_by:             liked_by.map(&:username),
@@ -152,19 +150,19 @@ class BaseFile < ActiveRecord::Base
   end
 
   def move_file_after_shot_at_changed
-    @old_day = self.day
+    @old_day = day
     old = shot_at_was
     new = shot_at
     old_str = old.strftime("%Y-%m-%d")
     new_str = new.strftime("%Y-%m-%d")
     return if old_str == new_str
 
-    ([[:original, file]] + file.versions.to_a ).each do |key,version|
-      from = version.path.gsub(new_str, old_str).gsub(%r{/#{new.year.to_s}/}, "/#{old.year.to_s}/")
-      to = version.path.gsub(old_str, new_str).gsub(%r{/#{old.year.to_s}/}, "/#{new.year.to_s}/")
+    ([[:original, file]] + file.versions.to_a).each do |_key, version|
+      from = version.path.gsub(new_str, old_str).gsub(%r{/#{new.year}/}, "/#{old.year}/")
+      to = version.path.gsub(old_str, new_str).gsub(%r{/#{old.year}/}, "/#{new.year}/")
       Rails.logger.info "[photo] Moving #{from} -> #{to}"
-      Rails.logger.info "  #{from} exists? -> #{File.exists?(from)}"
-      Rails.logger.info "  #{to}   exists? -> #{File.exists?(to)}"
+      Rails.logger.info "  #{from} exists? -> #{File.exist?(from)}"
+      Rails.logger.info "  #{to}   exists? -> #{File.exist?(to)}"
 
       case version.file.class.to_s
       when 'CarrierWave::Storage::Fog::File'
@@ -175,6 +173,9 @@ class BaseFile < ActiveRecord::Base
       else
         version.cache!
         version.store!
+        if File.exist?(from)
+          File.unlink(from)
+        end
       end
     end
   end
