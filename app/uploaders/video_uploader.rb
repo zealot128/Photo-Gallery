@@ -48,7 +48,7 @@ class VideoUploader < CarrierWave::Uploader::Base
   version :large, if: :process_now? do
     storage Setting['storage.large'].to_sym
     # process encode_video: [:mp4, resolution: '640x360', preserve_aspect_ratio: :width, audio_codec: Setting['audio_codec']]
-    process encode_video: [:mp4, custom: '-s 640x360 -vf scale=w=640:h=360:force_original_aspect_ratio=decrease', audio_codec: Setting['audio_codec']]
+    process encode_video: [:mp4, custom: '-strict -2 -s 640x360 -vf scale=w=640:h=360:force_original_aspect_ratio=decrease', audio_codec: Setting['audio_codec']]
 
     def store_dir
       store_dir_version('large')
