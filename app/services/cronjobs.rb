@@ -24,8 +24,8 @@ module Cronjobs
     end
   end
 
-  def self.process_videos(limit: 5)
-    Video.order('shot_at desc').where(video_processed: false, error_on_processing: false).limit(limit).each do |video|
+  def self.process_videos(limit: 5, videos: Video.order('shot_at desc').where(video_processed: false, error_on_processing: false).limit(limit))
+    videos.each do |video|
       begin
         video.process_versions!
       rescue Aws::S3::Errors::NoSuchKey, CarrierWave::ProcessingError => e
