@@ -3,6 +3,7 @@ module PhotoMetadata
     def exif
       {}
     end
+
     def gps
     end
   end
@@ -18,7 +19,7 @@ module PhotoMetadata
     end
 
     def top_colors=(val)
-      super val.to_json
+      super(val.to_json)
     end
   end
 
@@ -27,14 +28,14 @@ module PhotoMetadata
   end
 
   def get_fingerprint!
-    if !self.file.cached?
+    unless file.cached?
       file.cache!
     end
     self.fingerprint = Phashion::Image.new(file.path).fingerprint rescue nil
   end
 
   def set_metadata
-    return if !file.present?
+    return unless file.present?
     self.meta_data ||= {}
     self.meta_data = MetaDataParser.new(file.path).as_json
     self.aperture = case meta_data['f_number']
@@ -42,20 +43,20 @@ module PhotoMetadata
                     when nil, "" then nil
                     else meta_data['f_number'].to_f
                     end
-    self.meta_data_will_change!
+    meta_data_will_change!
     if Photo.slow_callbacks
       set_top_colors
     end
-    self.update_gps save: false
-    self.save
+    update_gps(save: false)
+    save
   end
 
   def set_top_colors
     self.top_colors =  begin
                          r = `convert #{file.path} -posterize 5 -define histogram:unique-colors=true -colorspace HSL -format %c histogram:info:- | sort -n -r | head`
-                         r.split("\n").map{|i|
+                         r.split("\n").map { |i|
                            Hash[
-                             [:h,:s,:l].zip( i[/\(([^\)]*)\)/, 1].strip.split(/[, ]+/).map(&:to_i) )
+                             [:h, :s, :l].zip(i[/\(([^\)]*)\)/, 1].strip.split(/[, ]+/).map(&:to_i))
                            ]
                          }
                        end
@@ -65,22 +66,20 @@ module PhotoMetadata
     (self.meta_data || {}).except('fingerprint', 'top_colors')
   end
 
-
   def ocr
-    return if !Setting['elasticsearch.enabled']
+    return unless Setting['elasticsearch.enabled']
     path = Shellwords.escape file.path(:original)
-    t = Tempfile.new( [File.basename(path), ".tif"] )
+    t = Tempfile.new([File.basename(path), ".tif"])
 
     Rails.logger.info `convert -depth 8 -colorspace Gray -auto-orient #{path} #{t.path}`
     unless $?.success?
-      raise Exception.new("Error with converting grayscale image")
+      raise StandardError, "Error with converting grayscale image"
     end
     Rails.logger.info `tesseract #{t.path} #{t.path} -l deu 2>&1`
     unless $?.success?
-      raise Exception.new("Error with tesseract-ocr")
+      raise StandardError, "Error with tesseract-ocr"
     end
     self.description = File.read(t.path + ".txt")
-    self.save
+    save
   end
-
 end

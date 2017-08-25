@@ -108,7 +108,6 @@ sh upload.sh *.jpg
 this will upload each file and DELETE IT AFTERWARDS if uploaded successfully. As it only uses sh and curl, it can also run on most platforms, like NAS or Android phones (adb shell...) ;)
 
 
-
 ## License
 
 

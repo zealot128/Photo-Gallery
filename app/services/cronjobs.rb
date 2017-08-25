@@ -5,7 +5,7 @@ module Cronjobs
     lock_file = Rails.root.join('tmp', 'cron.lock')
     Filelock lock_file, wait: 1.minute, timeout: 15.minutes do
       Rails.logger.info "Cronjobs.run started"
-      SqsQueueWorker.run
+      S3Import.run
       process_videos(limit: 2)
       rekognize_labels
       rekognize_faces

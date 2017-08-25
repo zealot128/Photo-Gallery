@@ -37,9 +37,6 @@ de:
     proxy:
       description: nginx/apache - Ändert die Sendfile Header, um den Download von Shares.zip zu beschleunigen
       type: string
-    sqs_queue_name:
-      description: Name of AWS queue. Required to handle incoming files via S3
-      type: string
     rekognition:
       enabled:
         description: 'Rekognition Labels aktiviert: Neue Bilder automatisch an AWS Rekognition schicken'
