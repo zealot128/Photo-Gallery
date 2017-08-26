@@ -106,4 +106,6 @@ Style/SymbolArray:
 Style/AsciiComments:
   Enabled: false
 
+Style/RescueModifier:
+  Enabled: False
 

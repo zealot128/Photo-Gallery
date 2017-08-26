@@ -50,7 +50,7 @@ class BaseFile < ActiveRecord::Base
   reverse_geocoded_by :lat, :lng do |obj, results|
     if (geo = results.first)
       parts = [geo.city]
-      parts << geo.address_components_of_type("establishment").first["short_name"]  rescue nil
+      parts << geo.address_components_of_type("establishment").first["short_name"] rescue nil
       parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
       obj.update_attribute(:location, parts.join(" - "))
     end
@@ -85,7 +85,7 @@ class BaseFile < ActiveRecord::Base
   after_commit do
     if Photo.slow_callbacks
       day && day.update_me
-      @old_day.update_me if @old_day
+      @old_day && @old_day.update_me
     end
   end
 
