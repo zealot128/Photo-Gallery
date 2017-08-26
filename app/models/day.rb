@@ -33,7 +33,6 @@ class Day < ActiveRecord::Base
     Tempfile.open(['montage', '.jpg']) do |f|
       f.binmode
       command = "montage -geometry +0+0 -tile #{width}x #{image_args} #{f.path}"
-      puts command
       system command
 
       self.montage = f

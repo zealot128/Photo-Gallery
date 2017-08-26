@@ -1,5 +1,4 @@
 class DavController < UploadController
-
   def create
     filename = params[:filename].split('/').last
     if request.body.respond_to?(:path)
@@ -10,7 +9,7 @@ class DavController < UploadController
       tf.write(request.body.read)
       tf.flush
     end
-    file = ActionDispatch::Http::UploadedFile.new(tempfile: tf, filename: filename )
+    file = ActionDispatch::Http::UploadedFile.new(tempfile: tf, filename: filename)
 
     begin
       @photo = BaseFile.create_from_upload(file, @user)
@@ -21,7 +20,7 @@ class DavController < UploadController
       return
     end
     UploadLog.handle_file(@photo, file, self, exception)
-    if !@photo.new_record? || (@photo.errors[:md5].present?)
+    if !@photo.new_record? || @photo.errors[:md5].present?
       render plain: 'OK', layout: false
     else
       render plain: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409, layout: false
@@ -33,10 +32,8 @@ class DavController < UploadController
       f.xml
       f.html {
         _r = request.body.try(:read)
-        puts _r
         headers['Content-Type'] = 'application/xml; charset="utf-8"'
         render 'index.xml', status: 207
-        puts response.body
         # render text: "OK", layout: false
       }
     end
