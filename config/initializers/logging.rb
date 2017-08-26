@@ -8,3 +8,8 @@ unless Rails.env.test?
   rescue StandardError
   end
 end
+require 'silencer/logger'
+
+Rails.application.configure do
+  config.middleware.swap Rails::Rack::Logger, Silencer::Logger, silence: [%r{(^/assets/|^/photos)}]
+end

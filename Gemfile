@@ -87,3 +87,4 @@ group :production do
   gem 'exception_notification'
   gem 'lograge'
 end
+gem 'silencer'
