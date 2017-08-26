@@ -14,6 +14,7 @@ en:
     app_logs: App/Server logs
     change_password: Change Password
     cloud_metrics: Cloud metrics
+    deleted: Trash
     impressum: Impressum
     log_out: Log out
     login: login
@@ -141,6 +142,7 @@ en:
       file_size: File size
       rotate: Rotate
       title: found people in this picture
+      undelete: Undo delete
     video:
       duration: Duration
       file_size: File Size
