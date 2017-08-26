@@ -8,7 +8,7 @@
           small = t 'photos.index.last_upload', time: time_ago_in_words(last_upload)
         .pull-right
           - @recent.each do |photo|
-            - if photo.file.present?
+            - if photo.file.present? && photo.file.url(:thumb)
               = image_tag photo.file.url(:thumb)
 
 

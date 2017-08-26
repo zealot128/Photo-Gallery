@@ -24,12 +24,16 @@ class Day < ActiveRecord::Base
   end
 
   def make_montage
-    images = photos.visible.order("shot_at asc").map{|i| i.file.versions[:thumb].path }
+    images = photos.visible.order("shot_at asc").select{ |i|
+      i.is_a?(Photo) || i.video_processed
+    }.map { |i| i.file.versions[:thumb].path }
     image_args = Shellwords.shelljoin images
     width = [images.count, 15].min
+    return if images.blank?
     Tempfile.open(['montage', '.jpg']) do |f|
       f.binmode
       command = "montage -geometry +0+0 -tile #{width}x #{image_args} #{f.path}"
+      puts command
       system command
 
       self.montage = f
