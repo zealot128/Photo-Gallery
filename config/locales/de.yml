@@ -16,6 +16,7 @@ de:
     app_logs: App/Server Logs
     change_password: Profil/Passwort
     cloud_metrics: Cloud Metrics
+    deleted: Papierkorb
     impressum: Impressum
     log_out: Ausloggen
     login: Einloggen
@@ -25,30 +26,16 @@ de:
     settings: Einstellungen
     shares: Shares
     tags: Tags
+    tube: OurTube™
     unassigned_faces: Nicht zugewiesene Gesichter
     upload: Hochladen
     upload_logs: Upload Logs
     users: Nutzer
-    deleted: Papierkorb
-    tube: OurTube™
   pages:
     index:
       intro: Dies ist meine private Foto-Archivierung App. Hier kommen ein paar private öffentliche Fotos von mir
       title: Photo-App
     upload:
-      camerasync:
-        title: CameraSync (iOS) WebDAV
-        description: |
-          <p>Nutzt WebDAV Minimalimplementation. Mit CameraSync funktioniert es, andere Tools könnten Probleme haben, da nicht alle WebDAV Calls implementiert sind. <a href='https://itunes.apple.com/de/app/camerasync/id406645727?mt=8'>App-Store</a></p>
-          <h4>Konfiguration</h4>
-          <dl>
-          <dt> Server-Adress:
-          <dd><pre><code>%{address}dav</code></pre>
-          <dt> Nutzername:
-          <dd><pre><code>%{username}</code></pre>
-          <dt> Passwort:
-          <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
-          </dl>
       autoshare:
         configuration: Konfiguration
         description: |
@@ -61,6 +48,19 @@ de:
           </dl>
           Lade eingie photos mit Autoshare hoch oder konfiguriere Autoshare zum automatischen Upload. AutoShare kann manuell auch Videos hochladen, tut dies aber nicht im automatischen Modus
         title: AutoShare (Android)
+      camerasync:
+        description: |
+          <p>Nutzt WebDAV Minimalimplementation. Mit CameraSync funktioniert es, andere Tools könnten Probleme haben, da nicht alle WebDAV Calls implementiert sind. <a href='https://itunes.apple.com/de/app/camerasync/id406645727?mt=8'>App-Store</a></p>
+          <h4>Konfiguration</h4>
+          <dl>
+          <dt> Server-Adress:
+          <dd><pre><code>%{address}dav</code></pre>
+          <dt> Nutzername:
+          <dd><pre><code>%{username}</code></pre>
+          <dt> Passwort:
+          <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
+          </dl>
+        title: CameraSync (iOS) WebDAV
       photobackup:
         description: |
           <p> Nutzt das <a href='https://photobackup.github.io'>PhotoUpload Protokoll</a>. Bisher auch nur verfügbar für Android <a href='https://play.google.com/store/apps/details?id=fr.s13d.photobackup'> im Play Store</a> oder F-Droid. Alternativ auch CLI clients. Im Gegensatz zu Autoshare beherrscht es auch moderne SSL-Standards und hat eigene Upload-UI. Leider ist es auf Dauer nicht ganz so stabil und deaktiviert sich unregelmäßig</p>
