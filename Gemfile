@@ -56,6 +56,7 @@ gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-will_paginate'
 gem 'select2-rails'
+gem 'webpacker', '~> 2.0'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-dropzone'

@@ -26,3 +26,5 @@ public/uploads
 config/secrets.yml
 .DS_Store
 node_modules/*
+/public/packs
+/node_modules

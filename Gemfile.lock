@@ -307,6 +307,10 @@ GEM
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.1.2)
+    webpacker (2.0)
+      activesupport (>= 4.2)
+      multi_json (~> 1.2)
+      railties (>= 4.2)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -374,6 +378,7 @@ DEPENDENCIES
   sys-filesystem
   tesseract-ocr
   uglifier (>= 1.0.3)
+  webpacker (~> 2.0)
   whenever
   zip-zip
 
