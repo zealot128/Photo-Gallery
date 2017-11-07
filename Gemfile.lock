@@ -107,12 +107,13 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    crass (1.0.2)
     diff-lcs (1.2.5)
     easy_translate (0.5.0)
       json
       thread
       thread_safe
-    erubi (1.6.1)
+    erubi (1.7.0)
     erubis (2.7.0)
     exception_notification (4.1.1)
       actionmailer (>= 3.0.4)
@@ -133,7 +134,8 @@ GEM
       activerecord
     hashie (3.4.4)
     highline (1.7.8)
-    i18n (0.8.6)
+    i18n (0.9.1)
+      concurrent-ruby (~> 1.0)
     i18n-tasks (0.9.8)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
@@ -160,7 +162,8 @@ GEM
       actionpack (>= 3)
       activesupport (>= 3)
       railties (>= 3)
-    loofah (2.0.3)
+    loofah (2.1.1)
+      crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.6)
       mime-types (>= 1.16, < 4)
@@ -173,13 +176,13 @@ GEM
     mini_exiftool_vendored (9.2.7.v1)
       mini_exiftool (>= 1.6.0)
     mini_magick (4.5.1)
-    mini_portile2 (2.2.0)
+    mini_portile2 (2.3.0)
     minitest (5.10.3)
     msgpack (1.1.0)
-    multi_json (1.12.1)
+    multi_json (1.12.2)
     nio4r (2.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     parallel (1.8.0)
     parser (2.3.3.1)
       ast (~> 2.2)
@@ -193,6 +196,8 @@ GEM
       pry (>= 0.9.10)
     puma (3.4.0)
     rack (2.0.3)
+    rack-proxy (0.6.2)
+      rack
     rack-raw-upload (1.1.1)
       multi_json
     rack-test (0.6.3)
@@ -302,14 +307,14 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.5)
     tins (1.13.0)
-    tzinfo (1.2.3)
+    tzinfo (1.2.4)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.1.2)
-    webpacker (2.0)
+    webpacker (3.0.2)
       activesupport (>= 4.2)
-      multi_json (~> 1.2)
+      rack-proxy (>= 0.6.1)
       railties (>= 4.2)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
@@ -378,7 +383,7 @@ DEPENDENCIES
   sys-filesystem
   tesseract-ocr
   uglifier (>= 1.0.3)
-  webpacker (~> 2.0)
+  webpacker (~> 3.0)
   whenever
   zip-zip
 

@@ -19,6 +19,10 @@ class PagesController < ApplicationController
     end
   end
 
+  def v3
+    render layout: false
+  end
+
   private
 
 end

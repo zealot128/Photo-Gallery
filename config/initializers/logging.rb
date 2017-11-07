@@ -1,4 +1,4 @@
-unless Rails.env.test?
+if !Rails.env.test? && !Rails.env.development?
   begin
     LoggingEntry.count
     Rails.logger = LoggingEntry::LoggerProxy.new(nil, 0)

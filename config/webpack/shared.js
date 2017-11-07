@@ -46,6 +46,9 @@ module.exports = {
 
   resolve: {
     extensions: settings.extensions,
+    // alias: {
+    //   vue: 'vue/dist/vue.js'
+    // },
     modules: [
       resolve(settings.source_path),
       'node_modules'

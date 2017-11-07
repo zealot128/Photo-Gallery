@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <p>{{ message }}</p>
+    <i class="mdi mdi-bell"></i>
   </div>
 </template>
 

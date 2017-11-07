@@ -79,6 +79,8 @@ SimpleGallery::Application.routes.draw do
 
   get 'tube' => 'tube#index'
 
+  get 'v3' => 'pages#v3'
+
   get '/', to: 'pages#index', as: 'root'
   post '/', to: 'upload#create'
 end
