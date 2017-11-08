@@ -2,34 +2,24 @@
   #app
     //p {{message}}
     //i(class="mdi mdi-bell")
-    div(v-if='photos.length > 0')
-      v-gallery(:images="photos" :index="galleryIndex" @close="galleryIndex = null" ref='gallery' @onslide='onSlide')
+    .gallery-container(v-if='photos.length > 0')
+      v-gallery(:images="photos" :index="galleryControlIndex" @close="galleryControlIndex = null" ref='gallery' @onslide='onSlide')
         div(slot='controls'): .gallery-controls(v-if='currentFile')
-          small(v-if='currentFile.data.type == "Photo"')
-            |{{currentFile.data.exif.model}}
-            span.photo-stats(v-if='currentFile.data.exif.focal_length')
-              i.mdi.mdi-camera
-              |{{currentFile.data.exif.focal_length}}
-              i.mdi.mdi-camera-iris
-              |{{currentFile.data.exif.aperture}}
-              i.mdi.mdi-timer
-              |{{currentFile.data.exif.exposure_time}}
-            br
-            |{{currentFile.data.location}}
-          a(:href='currentFile.data.download_url' target='_blank') {{currentFile.data.file_size_formatted}}
+          info-bar(:current-file='currentFile' @delete='removeCurrentFile')
 
-      div.image-preview(
-        v-for="(image, imageIndex) in photos"
-        :key="imageIndex"
-        @click="galleryIndex = imageIndex"
-        :style="{ backgroundImage: 'url(' + image.preview + ')', width: '300px', height: '200px' }"
-      )
+      .gallery-element(v-for='(image, imageIndex) in photos' :key='image.id')
+        photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='galleryControlIndex = imageIndex')
+        video-preview(v-if='image.data.type == "Video"' :video='image' @click='galleryControlIndex = imageIndex')
 </template>
 
 <script>
 import VGallery from 'picapp/VGallery';
+import 'blueimp-gallery/css/blueimp-gallery-video.css';
+import PhotoPreview from 'picapp/components/photo-preview';
+import VideoPreview from 'picapp/components/video-preview';
+import InfoBar from 'picapp/components/info-bar';
 
-class Photo {
+class UploadedFile {
   constructor(data) {
     this.data = data;
     this.title = data.shot_at_formatted
@@ -46,10 +36,11 @@ class Photo {
 }
 
 export default {
-  components: { VGallery },
+  components: { VGallery, PhotoPreview, VideoPreview, InfoBar },
   data() {
     return {
       galleryIndex: 0,
+      galleryControlIndex: 0,
       currentFile: null,
       photos: [],
       pagination: {
@@ -57,17 +48,15 @@ export default {
         totalPages: 1,
         totalCount: 0
       },
-      message: "Hello Vue!"
     }
   },
   created() {
     this.$http.get('/v3/api/photos', {
     }).then(r => {
-      this.photos = r.data.data.map(d => new Photo(d))
+      this.photos = r.data.data.map(d => new UploadedFile(d))
       this.pagination.currentPage = 1
       this.pagination.totalPages = r.data.meta.total_pages
       this.pagination.totalCount = r.data.meta.total_count
-      console.log(this.photos)
     }).catch(error => {
       console.error(error)
     })
@@ -75,19 +64,23 @@ export default {
   methods: {
     onSlide(payload) {
       const { index } = payload
+      this.galleryIndex = index
       this.currentFile = this.photos[index]
+    },
+    removeCurrentFile() {
+      console.log(this.$refs.gallery.instance)
+      this.$delete(this.photos, this.galleryIndex)
+      this.$refs.gallery.instance.initSlides(true)
+      this.$refs.gallery.instance.next()
+      this.currentFile = null
+      this.galleryIndex = null
     }
   }
 }
 </script>
 
 <style lang='scss'>
-.image-preview {
-  display: inline-block;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
+.gallery-element { display: inline-block }
 .blueimp-gallery .gallery-controls {
   position: absolute;
   top: 45px;
@@ -109,4 +102,15 @@ export default {
     margin-left: 0;
   }
 }
+.blueimp-gallery > .slides > .slide > .video-content > video {
+  display: block;
+}
+body {
+  background-color: rgba(22,22,22,0.9);
+}
+.gallery-container {
+  padding: 20px;
+}
+
+
 </style>

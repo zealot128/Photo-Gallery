@@ -19,6 +19,7 @@
 <script>
   import 'blueimp-gallery/css/blueimp-gallery.min.css';
   import 'blueimp-gallery/js/blueimp-gallery-fullscreen.js';
+  import 'blueimp-gallery/js/blueimp-gallery-video.js';
   import blueimp from 'blueimp-gallery/js/blueimp-gallery.js';
 
   export default {
@@ -29,14 +30,12 @@
           return [];
         },
       },
-
       options: {
         type: Object,
         default() {
           return {};
         },
       },
-
       carousel: {
         type: Boolean,
         default: false,
@@ -45,44 +44,37 @@
       index: {
         type: Number,
       },
-
       id: {
         type: String,
         default: 'blueimp-gallery',
       },
     },
-
     data() {
       return {
         instance: null,
       };
     },
-
     watch: {
       index(value) {
         if (this.carousel) {
           return;
         }
-
         if (value !== null) {
           this.open(value);
         } else {
           if (this.instance) {
             this.instance.close();
           }
-
           this.$emit('close');
         }
       },
     },
-
     mounted() {
       if (this.carousel) {
         this.open();
       }
     },
-
-    destoryed() {
+    destroyed() {
       this.instance.close();
       this.instance = null;
     },

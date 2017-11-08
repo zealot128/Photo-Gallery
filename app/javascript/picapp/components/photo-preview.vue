@@ -1,0 +1,37 @@
+<template lang="pug">
+  .image-preview(:style="{ backgroundImage: 'url(' + image.preview + ')' }" @click='onClick')
+    like-button(:file='image')
+</template>
+
+<script>
+  import LikeButton from 'picapp/components/like-button';
+  export default {
+    components: { LikeButton },
+    props: ['image', 'index'],
+    methods: {
+      onClick() { this.$emit('click') }
+    }
+  }
+</script>
+
+<style lang='scss' scoped>
+.image-preview {
+  background-color: rgba(22,22,22,0.9);
+  transition: all .2s ease-in-out;
+  position: relative;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 300px;
+  height: 200px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.10);
+    z-index: 1;
+    box-shadow: 0 0 8px #333;
+    background-size: contain;
+    background-color: rgba(22,22,22,0.9);
+  }
+}
+</style>
