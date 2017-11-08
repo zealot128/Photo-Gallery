@@ -13,6 +13,9 @@
       |{{currentFile.data.location}}
     a.button.is-small.is-dark(@click='onDelete')
       i.mdi.mdi-delete
+    a.button.is-small.is-dark(@click='onFullscreen')
+      i.mdi.mdi-fullscreen
+
     br
     a(:href='currentFile.data.download_url' target='_blank') {{currentFile.data.file_size_formatted}}
 </template>
@@ -24,7 +27,8 @@
       exif() { return this.currentFile.data.exif }
     },
     methods: {
-      onDelete() { this.$emit('delete', this.currentFile) }
+      onDelete() { this.$emit('delete', this.currentFile) },
+      onFullscreen() { this.$emit('fullscreen', this.currentFile) },
     }
   }
 </script>

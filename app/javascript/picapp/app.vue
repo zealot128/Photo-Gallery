@@ -5,7 +5,7 @@
     .gallery-container(v-if='photos.length > 0')
       v-gallery(:images="photos" :index="galleryControlIndex" @close="galleryControlIndex = null" ref='gallery' @onslide='onSlide')
         div(slot='controls'): .gallery-controls(v-if='currentFile')
-          info-bar(:current-file='currentFile' @delete='removeCurrentFile')
+          info-bar(:current-file='currentFile' @delete='removeCurrentFile' @fullscreen='toggleFullscreen')
 
       .gallery-element(v-for='(image, imageIndex) in photos' :key='image.id')
         photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='galleryControlIndex = imageIndex')
@@ -39,8 +39,8 @@ export default {
   components: { VGallery, PhotoPreview, VideoPreview, InfoBar },
   data() {
     return {
-      galleryIndex: 0,
-      galleryControlIndex: 0,
+      galleryIndex: -1,
+      galleryControlIndex: -1,
       currentFile: null,
       photos: [],
       pagination: {
@@ -68,12 +68,20 @@ export default {
       this.currentFile = this.photos[index]
     },
     removeCurrentFile() {
-      console.log(this.$refs.gallery.instance)
       this.$delete(this.photos, this.galleryIndex)
       this.$refs.gallery.instance.initSlides(true)
       this.$refs.gallery.instance.next()
       this.currentFile = null
       this.galleryIndex = null
+    },
+    toggleFullscreen() {
+      const instance = this.$refs.gallery.instance;
+      const container = document.querySelector('#blueimp-gallery')
+      if (instance.getFullScreenElement()) {
+        instance.exitFullScreen()
+      } else {
+        instance.requestFullScreen(container)
+      }
     }
   }
 }
