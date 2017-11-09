@@ -75,11 +75,16 @@
       }
     },
     destroyed() {
-      this.instance.close();
-      this.instance = null;
+      this.destroy()
     },
 
     methods: {
+      destroy() {
+        if (this.instance != null) {
+          this.instance.close();
+          this.instance = null;
+        }
+      },
       open(index = 0) {
         const instance = typeof blueimp.Gallery !== 'undefined' ? blueimp.Gallery : blueimp;
 

@@ -1,3 +1,31 @@
+#### REWRITE
+
+Basisfunktionalitaet:
+
+* Loeschen / Undelete
+  * Star nicht loeschbar
+* Bearbeiten:
+  * Rotieren
+  * Assigning von Tags/Shares (Bearbeiten)
+  * Caption
+  * ShotAt aendern
+* Faces Toggle
+  * Neues Face malen
+
+* Mobile Back Button
+
+---
+
+* Filter Sidebar
+  * Datum, Range: "2017"  "November 2016", "Nov 2017" als Range moeglich
+  * Filter: Videos/Photos
+  * Filter: Personen And/Or
+  * Filter: Favs
+  * Filter: Geloescht
+  * Option Alle Photos desselben Tages mit einbeziehen
+  * Orte (+Alle Photos desselben Tages)
+
+###############
 
 * Loeschen loescht zuviel!!
 * Statt Loeschen -> Mark as delete und nach ein paar Tagen loeschen.
@@ -5,11 +33,6 @@
 * Unbearbietete/Fehlende Videos in tube
 * Tube mit Size auswahl/Preloading
 * Tube verlinken
-
-* "Star" von items
-  * eigene View
-  * nicht loeschbar
-
 
 
 # TODO

@@ -2,7 +2,7 @@ module V3
   class ApiController < ApplicationController
     before_action :login_required
     def photos
-      @recent = BaseFile.visible.order("created_at desc").paginate(page: nil, per_page: 30)
+      @recent = BaseFile.visible.order("shot_at desc").paginate(page: params[:page], per_page: 10)
       render json: {
         data: @recent,
         meta: {

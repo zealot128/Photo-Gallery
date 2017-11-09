@@ -1,0 +1,40 @@
+.gallery-element { display: inline-block }
+.blueimp-gallery .gallery-controls {
+  position: absolute;
+  top: 45px;
+  left: 15px;
+  color: #fff;
+  display: none;
+}
+.blueimp-gallery-controls .gallery-controls {
+  display: block;
+}
+.photo-stats {
+  color: #999;
+  display: block;
+  .mdi {
+    margin-left: 10px;
+    margin-right: 3px;
+  }
+  .mdi:first-child {
+    margin-left: 0;
+  }
+}
+.blueimp-gallery > .slides > .slide > .video-content > video {
+  display: block;
+}
+body {
+  background-color: rgba(22,22,22,0.9);
+}
+.gallery-container {
+  .title, .subtitle {
+    color: #999;
+  }
+  .day {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .hero.is-dark .hero-body {
+    padding: 1.5rem;
+  }
+}
