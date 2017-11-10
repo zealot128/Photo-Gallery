@@ -2,9 +2,9 @@
   #app(v-infinite-scroll="loadMore" infinite-scroll-distance="100" infinite-scroll-immediate-check infinite-scroll-disabled="disableScrollWatch")
     filter-bar()
     .gallery-container(v-if='photos.length > 0')
-      v-gallery(:images="photos" :index="galleryControlIndex" @close="galleryControlIndex = null" ref='gallery' @onslide='onSlide')
+      v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
         div(slot='controls'): .gallery-controls(v-if='currentFile')
-          info-bar(:current-file='currentFile' @delete='removeCurrentFile' @fullscreen='toggleFullscreen')
+          info-bar(:current-file='currentFile' @delete='openDeleteModal' @fullscreen='toggleFullscreen')
 
       div(v-for='([year, months], i) in Object.entries(years).reverse()')
         section.hero.is-light
@@ -18,6 +18,8 @@
             .gallery-element(v-for='(image, imageIndex) in entries' :key='image.id')
               photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='openGallery(image)')
               video-preview(v-if='image.data.type == "Video"' :video='image' @click='openGallery(image)')
+
+    delete-modal(:active.sync='deleteModalIsOpen' @yes='removeCurrentFile' @no='closeDeleteModal')
 </template>
 
 <script>
@@ -25,9 +27,11 @@ import VGallery from 'picapp/VGallery';
 import 'blueimp-gallery/css/blueimp-gallery-video.css';
 import PhotoPreview from 'picapp/components/photo-preview';
 import VideoPreview from 'picapp/components/video-preview';
+import DeleteModal from 'picapp/components/delete-modal';
 import InfoBar from 'picapp/components/info-bar';
 import FilterBar from 'picapp/components/filter-bar';
 import UploadedFile from 'picapp/uploaded-file';
+import Api from 'picapp/api';
 
 import 'picapp/style.scss'
 
@@ -36,12 +40,19 @@ import { groupBy, mapValues, sortBy } from 'lodash';
 var round = require('sugar/number/round');
 
 export default {
-  components: { VGallery, PhotoPreview, VideoPreview, InfoBar, FilterBar },
+  components: { VGallery, PhotoPreview, VideoPreview, InfoBar, FilterBar, DeleteModal },
   data() {
     return {
-      galleryIndex: -1,
-      galleryControlIndex: null,
+      // Falls Gallery offen ist, dann ist das das aktuell angezeigte Photo
+      currentGalleryIndex: -1,
       currentFile: null,
+
+      // das steuert die gallery - wenn das gesetzt wird geht die Gallery auf
+      galleryControlIndex: null,
+
+      deleteModalIsOpen: null,
+
+      // ajax stuff
       loadingItems: true,
       photos: [],
       pagination: {
@@ -57,11 +68,8 @@ export default {
   methods: {
     getPhotos(page) {
       this.loadingItems = true
-      this.$http.get('/v3/api/photos', {
-        params: {
-          page: page
-        }
-      }).then(r => {
+      this.api.getPhotos(page).then(r => {
+        console.log(r)
         if (page == 1) {
           this.photos = r.data.data.map(d => new UploadedFile(d, this.$moment))
         } else {
@@ -73,9 +81,6 @@ export default {
         this.loadingItems = false
         if (this.$refs.gallery) {
           this.galleryControlIndex = null
-          // this.$refs.gallery.instance.unloadAllSlides()
-          // this.$refs.gallery.instance.unloadElements()
-          // this.$refs.gallery.destroy()
         }
       }).catch(error => {
         console.error(error)
@@ -83,15 +88,16 @@ export default {
     },
     onSlide(payload) {
       const { index } = payload
-      this.galleryIndex = index
+      this.currentGalleryIndex = index
       this.currentFile = this.photos[index]
     },
     removeCurrentFile() {
-      this.$delete(this.photos, this.galleryIndex)
-      this.$refs.gallery.instance.initSlides(true)
-      this.$refs.gallery.instance.next()
+      this.deleteModalIsOpen = false
+      this.$delete(this.photos, this.currentGalleryIndex)
+      this.$refs.gallery.deleteCurrentPhoto()
       this.currentFile = null
-      this.galleryIndex = null
+      this.currentGalleryIndex = null
+      this.closeDeleteModal()
     },
     loadMore() {
       this.loadingItems = true
@@ -109,10 +115,50 @@ export default {
       }
     },
     openGallery(file) {
+      window.addEventListener('keyup', this.keyup.bind(this), true)
       this.galleryControlIndex = this.photos.indexOf(file)
+    },
+    closeGallery() {
+      window.removeEventListener('keyup', this.keyup.bind(this), true)
+      this.galleryControlIndex = null
+    },
+    openDeleteModal() {
+      this.deleteModalIsOpen = true
+      this.$refs.gallery.pauseEventListeners()
+    },
+    closeDeleteModal() {
+      console.log('escape')
+      this.deleteModalIsOpen = null
+      this.$refs.gallery.resumeEventListeners()
+    },
+    keyup(event) {
+      switch(event.which) {
+        case 68:
+        case 46:
+          this.openDeleteModal()
+          event.preventDefault();
+          break;
+        case 69:
+          // edit
+          console.log("EDIT")
+          event.preventDefault()
+        case 13: // Enter
+          if (this.deleteModalIsOpen) {
+            this.removeCurrentFile.bind(this)()
+            event.preventDefault()
+            event.stopPropagation()
+          }
+        case 27: // Esc
+          if (this.deleteModalIsOpen) {
+            this.closeDeleteModal()
+            event.preventDefault()
+            event.stopPropagation()
+          }
+      }
     }
   },
   computed: {
+    api() { return new Api(this.$http) },
     disableScrollWatch() {
       return this.loadingItems || this.galleryControlIndex !== null;
     },

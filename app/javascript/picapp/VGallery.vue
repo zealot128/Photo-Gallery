@@ -40,7 +40,6 @@
         type: Boolean,
         default: false,
       },
-
       index: {
         type: Number,
       },
@@ -79,6 +78,17 @@
     },
 
     methods: {
+      deleteCurrentPhoto() {
+        this.instance.initSlides(true)
+        //this.$refs.gallery.instance.next()
+        this.open(this.index)
+      },
+      pauseEventListeners() {
+        this.instance.destroyEventListeners()
+      },
+      resumeEventListeners() {
+        this.instance.initEventListeners()
+      },
       destroy() {
         if (this.instance != null) {
           this.instance.close();
