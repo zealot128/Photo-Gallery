@@ -7,22 +7,24 @@
 </template>
 
 <script>
+  import Api from 'picapp/api';
+  const api = new Api
   /* globals currentUser */
   export default {
     props: ['file'],
     computed: {
       liked() { return this.likedBy.indexOf(currentUser) !== -1 },
-      likedBy() { return this.file.data.liked_by }
+      likedBy() { return this.file.data.liked_by },
     },
     methods: {
       like() {
-        this.$http.post(`/photos/${this.file.data.id}/like`).then(e => e)
+        api.like(this.file.data.id)
         if (!this.liked) {
           this.file.data.liked_by = [...this.file.data.liked_by, currentUser]
         }
       },
       unlike() {
-        this.$http.delete(`/photos/${this.file.data.id}/like`).then(e => e)
+        api.unlike(this.file.data.id)
         const index = this.likedBy.indexOf(currentUser)
         if(index != -1) {
           this.$delete(this.likedBy, index)

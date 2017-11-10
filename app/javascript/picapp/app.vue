@@ -69,7 +69,6 @@ export default {
     getPhotos(page) {
       this.loadingItems = true
       this.api.getPhotos(page).then(r => {
-        console.log(r)
         if (page == 1) {
           this.photos = r.data.data.map(d => new UploadedFile(d, this.$moment))
         } else {
@@ -158,7 +157,7 @@ export default {
     }
   },
   computed: {
-    api() { return new Api(this.$http) },
+    api() { return new Api() },
     disableScrollWatch() {
       return this.loadingItems || this.galleryControlIndex !== null;
     },
