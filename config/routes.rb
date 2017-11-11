@@ -82,6 +82,7 @@ SimpleGallery::Application.routes.draw do
   get 'v3' => 'pages#v3'
   namespace :v3 do
     get 'api/photos' => 'api#photos'
+    get 'api/people' => 'api#people'
   end
 
   get '/', to: 'pages#index', as: 'root'

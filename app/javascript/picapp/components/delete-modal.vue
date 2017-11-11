@@ -11,11 +11,11 @@
 </template>
 
 <script>
-  export default {
-    props: ['active'],
-    methods: {
-      yes() { this.$emit('yes') },
-      no() { this.$emit('no') }
-    }
+export default {
+  props: ['active'],
+  methods: {
+    yes() { this.$emit('yes') },
+    no() { this.$emit('no') }
   }
+}
 </script>

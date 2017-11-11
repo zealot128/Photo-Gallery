@@ -18,9 +18,7 @@ Basisfunktionalitaet:
 
 * Filter Sidebar
   * Datum, Range: "2017"  "November 2016", "Nov 2017" als Range moeglich
-  * Filter: Videos/Photos
   * Filter: Personen And/Or
-  * Filter: Favs
   * Filter: Geloescht
   * Option Alle Photos desselben Tages mit einbeziehen
   * Orte (+Alle Photos desselben Tages)

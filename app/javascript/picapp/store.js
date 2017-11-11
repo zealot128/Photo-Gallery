@@ -1,21 +1,25 @@
-import * as Vue from 'vue/dist/vue.common.js';
-import Vuex from 'vuex/dist/vuex.esm';
+import Vue from 'vue/dist/vue';
+import Vuex from 'vuex'
+// import isEqual from 'lodash/isEqual'
 
 Vue.use(Vuex)
 
-const { currentUser } = window
+// const { currentUser } = window
 
-export const store = new Vuex.Store({
+const debug = process.env.NODE_ENV !== 'production'
+
+const store = new Vuex.Store({
   state: {
     csrfToken: null,
-    filter: {
-    },
   },
   mutations: {
     SET_CSRF_TOKEN(state, token) {
       state.csrfToken = token
-    }
-  }
+    },
+  },
+  actions: {
+  },
+  strict: debug
 })
 
 export default store;

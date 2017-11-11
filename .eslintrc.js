@@ -19,6 +19,8 @@ module.exports = {
       'js': 'never',
       'vue': 'never'
     }],
+    'import/newline-after-import': 'off',
+    'import/first': 'off',
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/extensions': 'off',
