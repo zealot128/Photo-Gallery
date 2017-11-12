@@ -3,7 +3,7 @@ import store from 'picapp/store'
 
 axios.defaults.baseURL = '/';
 axios.defaults.withCredentials = false;
-axios.defaults.Headers = { Accept: 'application/json' }
+axios.defaults.headers.common = { Accept: 'application/json', 'Content-Type': 'application/json' }
 
 /* eslint class-methods-use-this: 0 */
 
@@ -24,7 +24,6 @@ class Api {
     return axios.get('/v3/api/people', {}).then(r => r.data)
   }
   deletePhoto(id) {
-    debugger
     return axios.delete(`/photos/${id}`)
   }
   unDeletePhoto(id) {

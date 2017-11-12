@@ -5,7 +5,7 @@
       .gallery-container(v-if='photos.length > 0')
         v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
           div(slot='controls'): .gallery-controls(v-if='currentFile')
-            info-bar(:current-file='currentFile' @delete='openDeleteModal' @fullscreen='toggleFullscreen')
+            info-bar(:current-file='currentFile' @delete='openDeleteModal' @fullscreen='toggleFullscreen' :gallery='$refs.gallery')
 
         div(v-for='([year, months], i) in Object.entries(years).reverse()')
           section.hero.is-light

@@ -43,6 +43,7 @@ class BaseFile < ActiveRecord::Base
   acts_as_taggable
   scope :dates, -> { group(:shot_at).select(:shot_at).order("shot_at desc") }
   scope :visible, -> { where(mark_as_deleted_on: nil) }
+  scope :deleted, -> { where.not(mark_as_deleted_on: nil) }
   validates :md5, uniqueness: true, presence: true
   cattr_accessor :slow_callbacks
   self.slow_callbacks = true

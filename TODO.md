@@ -2,8 +2,6 @@
 
 Basisfunktionalitaet:
 
-* Loeschen / Undelete
-  * Star nicht loeschbar
 * Bearbeiten:
   * Rotieren
   * Assigning von Tags/Shares (Bearbeiten)

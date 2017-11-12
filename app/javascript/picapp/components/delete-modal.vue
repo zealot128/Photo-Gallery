@@ -1,5 +1,5 @@
 <template lang="pug">
-  b-modal(:active.sync="active")
+  b-modal(:active="active")
     .card
       .card-content
         p Dieses Element wirklich löschen?
