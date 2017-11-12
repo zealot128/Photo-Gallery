@@ -32,7 +32,7 @@ import DeleteModal from 'picapp/components/delete-modal';
 import InfoBar from 'picapp/components/info-bar';
 import FilterBar from 'picapp/components/filter-bar';
 import MediaLoader from 'picapp/components/media-loader'
-// import Api from 'picapp/api';
+import Api from 'picapp/api';
 
 import 'picapp/style.scss'
 
@@ -59,6 +59,7 @@ export default {
         fileTypes: ['photo', 'video'],
         favorite: null,
         peopleIds: [],
+        includeWholeDay: false
       }
     }
   },
@@ -69,12 +70,14 @@ export default {
       this.currentFile = this.photos[index]
     },
     removeCurrentFile() {
-      this.deleteModalIsOpen = false
-      this.$delete(this.photos, this.currentGalleryIndex)
-      this.$refs.gallery.deleteCurrentPhoto()
-      this.currentFile = null
-      this.currentGalleryIndex = null
-      this.closeDeleteModal()
+      this.api.deletePhoto(this.currentFile.id).then((_) => {
+        this.deleteModalIsOpen = false
+        this.$delete(this.photos, this.currentGalleryIndex)
+        this.$refs.gallery.deleteCurrentPhoto()
+        this.currentFile = null
+        this.currentGalleryIndex = null
+        this.closeDeleteModal()
+      })
     },
     toggleFullscreen() {
       const instance = this.$refs.gallery.instance;
@@ -94,6 +97,9 @@ export default {
       this.galleryControlIndex = null
     },
     openDeleteModal() {
+      if (this.currentFile.isLiked()) {
+        return
+      }
       this.deleteModalIsOpen = true
       this.$refs.gallery.pauseEventListeners()
     },

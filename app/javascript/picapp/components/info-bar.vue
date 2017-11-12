@@ -11,8 +11,10 @@
         |{{exif.exposure_time}}
       br
       |{{currentFile.data.location}}
+    small(v-if='currentFile.data.type == "Video"')
+      br
     .buttons.has-addons(v-if='currentUser')
-      b-tooltip(label="Löschen")
+      b-tooltip(label="Löschen" v-if='!liked')
         a.button.is-dark(@click='onDelete')
           i.mdi.mdi-delete
       b-tooltip(label="Bearbeiten")
@@ -34,20 +36,22 @@
 </template>
 
 <script>
-  export default {
-    props: ['currentFile'],
-    methods: {
-      onDelete() { this.$emit('delete', this.currentFile) },
-      onEdit() { this.$emit('edit', this.currentFile) },
-      onRotateLeft() { this.$emit('rotate', { direction: 'left', file: this.currentFile }) },
-      onRotateRight() { this.$emit('rotate', { direction: 'right', file: this.currentFile }) },
-      onFullscreen() { this.$emit('fullscreen', this.currentFile) },
+/* globals currentUser */
+export default {
+  props: ['currentFile'],
+  methods: {
+    onDelete() { this.$emit('delete', this.currentFile) },
+    onEdit() { this.$emit('edit', this.currentFile) },
+    onRotateLeft() { this.$emit('rotate', { direction: 'left', file: this.currentFile }) },
+    onRotateRight() { this.$emit('rotate', { direction: 'right', file: this.currentFile }) },
+    onFullscreen() { this.$emit('fullscreen', this.currentFile) },
+  },
+  computed: {
+    exif() { return this.currentFile.exif },
+    currentUser() {
+      return currentUser;
     },
-    computed: {
-      exif() { return this.currentFile.data.exif },
-      currentUser() {
-        return currentUser;
-      }
-    }
+    liked() { return this.currentFile.isLiked() }
   }
+}
 </script>

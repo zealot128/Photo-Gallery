@@ -24,6 +24,7 @@ class Api {
     return axios.get('/v3/api/people', {}).then(r => r.data)
   }
   deletePhoto(id) {
+    debugger
     return axios.delete(`/photos/${id}`)
   }
   unDeletePhoto(id) {

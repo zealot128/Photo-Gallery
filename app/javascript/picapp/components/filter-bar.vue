@@ -32,6 +32,8 @@
                   img(:src='person.preview')
                   |
                   small {{person.name}}
+            .block
+              b-checkbox(v-model="value.includeWholeDay") Dateien des gleichen Tages wie Gefundene mit anzeigen
           .card-footer
             a.card-footer-item(@click='openAddPersonModal = false')
               |Schließen

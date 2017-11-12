@@ -21,6 +21,7 @@ class V3::Search
   attr_accessor :page
   attr_reader :file_size_min, :file_size_max
   attr_reader :parsed_from, :parsed_to
+  attr_accessor :include_whole_day
 
   def label_facets
     ImageLabel.joins(:base_files).
@@ -86,8 +87,15 @@ class V3::Search
 
   add_filter(:people_ids, array: true) do |sql|
     people = Person.where(id: people_ids)
+    people_sql = sql
     people.each do |person|
-      sql = sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
+      people_sql = people_sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
+    end
+    if include_whole_day == 'true'
+      dates = people_sql.select("(shot_at at time zone 'Europe/Berlin')::date")
+      sql = sql.where("(shot_at at time zone 'Europe/Berlin')::date in (?)", dates)
+    else
+      sql = people_sql
     end
     sql
   end
