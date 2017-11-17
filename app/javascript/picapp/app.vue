@@ -5,7 +5,7 @@
       .gallery-container(v-if='photos.length > 0')
         v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
           div(slot='controls'): .gallery-controls(v-if='currentFile')
-            info-bar(:current-file='currentFile' @delete='openDeleteModal' @fullscreen='toggleFullscreen' :gallery='$refs.gallery')
+            info-bar(:current-file='currentFile' @delete='openDeleteModal' @fullscreen='toggleFullscreen' :gallery='$refs.gallery' @rotate='onRotate' :disable-rotation='rotationInProgress')
 
         div(v-for='([year, months], i) in Object.entries(years).reverse()')
           section.hero.is-light
@@ -52,11 +52,14 @@ export default {
       // das steuert die gallery - wenn das gesetzt wird geht die Gallery auf
       galleryControlIndex: null,
 
+      rotationInProgress: false,
       deleteModalIsOpen: null,
 
       photos: [],
       filter: {
         fileTypes: ['photo', 'video'],
+        from: null,
+        to: null,
         favorite: null,
         peopleIds: [],
         includeWholeDay: false
@@ -64,6 +67,22 @@ export default {
     }
   },
   methods: {
+    onRotate({ direction, file }) {
+      const addBust = string => string.replace(/\?.*/, "") + "?" + (new Date()).getTime()
+      this.rotationInProgress = true
+      const currentImage = this.$refs.gallery.instance.slides[this.currentGalleryIndex].children[0]
+      if (direction === 'right') {
+        currentImage.style.transform = 'rotate(90deg)'
+      } else if (direction === 'left') {
+        currentImage.children[0].style.transform = 'rotate(-90deg)'
+      }
+      this.api.rotate(file.id, direction).then(() => {
+        this.rotationInProgress = false
+        currentImage.src = addBust(currentImage.src)
+        this.currentFile.preview = addBust(this.currentFile.preview)
+        this.currentFile.thumbnail = addBust(this.currentFile.thumbnail)
+      })
+    },
     onSlide(payload) {
       const { index } = payload
       this.currentGalleryIndex = index

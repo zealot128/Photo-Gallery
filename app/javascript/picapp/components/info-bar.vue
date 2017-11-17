@@ -103,4 +103,7 @@ export default {
   color: white;
   text-align: center;
 }
+img.slide-content {
+  transition: all 0.3s ease-in-out;
+}
 </style>

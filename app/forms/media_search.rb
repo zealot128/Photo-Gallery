@@ -12,7 +12,6 @@ class MediaSearch
   attr_accessor :favorite
 
   attr_reader :file_size_min, :file_size_max
-
   attr_reader :parsed_from, :parsed_to
 
   def label_facets

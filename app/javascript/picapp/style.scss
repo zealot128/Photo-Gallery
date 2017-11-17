@@ -41,3 +41,12 @@ body {
 .modal {
   z-index: 2000000 !important;
 }
+.blueimp-gallery, .blueimp-gallery > .slides > .slide > .slide-content {
+  transition: all 0.3s ease-in-out !important;
+}
+
+.mdi-fw {
+  width: 1.28571em;
+  text-align: center;
+}
+

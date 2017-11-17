@@ -1,5 +1,5 @@
-const Sugar = require('sugar/date')
+const Sugar = require('sugar-date')
 
-require('sugar/locales/de');
+require('sugar-date/locales/de');
 
 export default Sugar.Date

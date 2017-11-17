@@ -1,6 +1,6 @@
 <template lang="pug">
   .search-container
-    b-dropdown(position="is-bottom-left")
+    b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
       a.button.is-primary.is-large.is-outlined(slot="trigger")
         i.mdi.mdi-magnify
         i.mdi.mdi-menu-down
@@ -14,10 +14,12 @@
             .block
               b-checkbox(v-model="value.favorite") Favoriten
             .block
+              date-parse-modal(v-model='value')
+            .block
               div: span(v-for='personId in value.peopleIds')
                 img(:src='findPerson(personId).preview' style='height: 30px')
-              button.button.is-small(@click='openAddPersonModal = true')
-                i.mdi.mdi-plus
+              button.button(@click='openAddPersonModal = true')
+                i.mdi.mdi-face-profile.mdi-fw
                 |
                 |Person suchen
             button.button.is-primary(@click='apply') Anwenden
@@ -43,10 +45,11 @@
 
 <script>
 import Api from 'picapp/api';
+import DateParseModal from 'picapp/components/date-parse-modal';
 const api = new Api()
-// import SugarDate from 'picapp/sugar-date'
 
 export default {
+  components: { DateParseModal },
   props: {
     value: {
       type: Object,
@@ -56,6 +59,7 @@ export default {
   data() {
     return {
       openAddPersonModal: false,
+      dropdownOpen: false,
       people: []
     }
   },
@@ -66,6 +70,7 @@ export default {
   },
   methods: {
     apply() {
+      this.dropdownOpen = true
       const newHash = { ...this.value }
       this.$emit('input', newHash)
     },

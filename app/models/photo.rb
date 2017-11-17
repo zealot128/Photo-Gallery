@@ -34,7 +34,7 @@ class Photo < BaseFile
 
   include PhotoMetadata
 
-	# after_create :rekognize_labels, :rekognize_faces
+  # after_create :rekognize_labels, :rekognize_faces
 
   def self.parse_date(file, current_user)
     date = MetaDataParser.new(file.path).shot_at_date
@@ -76,16 +76,15 @@ class Photo < BaseFile
   end
 
   def rekognize_faces
-    if Setting['rekognition.faces.rekognition_collection']
-      labels = image_labels.pluck(:name)
-      if labels.include?("People") || labels.include?("Person") || labels.include?("Child")
-        faces = RekognitionClient.index_faces(self)
-        faces.face_records.each do |face|
-          image_faces.where(aws_id: face.face.face_id).first_or_create(bounding_box: face.face.bounding_box.as_json, confidence: face.face.confidence)
-        end
+    return unless Setting['rekognition.faces.rekognition_collection']
+    labels = image_labels.pluck(:name)
+    if labels.include?("People") || labels.include?("Person") || labels.include?("Child")
+      faces = RekognitionClient.index_faces(self)
+      faces.face_records.each do |face|
+        image_faces.where(aws_id: face.face.face_id).first_or_create(bounding_box: face.face.bounding_box.as_json, confidence: face.face.confidence)
       end
-      update_column :rekognition_faces_run, true
     end
+    update_column :rekognition_faces_run, true
   end
 
   def rotate!(direction)
@@ -106,9 +105,7 @@ class Photo < BaseFile
     save
   end
 
-  def as_json(op={})
-    super.merge({
-      'faces' => image_faces.as_json
-    })
+  def as_json(op = {})
+    super.merge('faces' => image_faces.as_json)
   end
 end
