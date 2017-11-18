@@ -1,5 +1,4 @@
 SimpleGallery::Application.routes.draw do
-
   # Api compliance for Photobackup
   post '/test' => 'upload#test'
 

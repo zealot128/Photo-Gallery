@@ -22,7 +22,6 @@ import store from 'picapp/store'
 document.addEventListener('DOMContentLoaded', () => {
   const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
   store.commit('SET_CSRF_TOKEN', token)
-  console.log(store);
   /* eslint no-new: 0 */
   new Vue({
     render: h => h(App),

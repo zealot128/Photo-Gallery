@@ -5,7 +5,8 @@
       .gallery-container(v-if='photos.length > 0')
         v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
           div(slot='controls'): .gallery-controls(v-if='currentFile')
-            info-bar(:current-file='currentFile' @delete='openDeleteModal' @fullscreen='toggleFullscreen' :gallery='$refs.gallery' @rotate='onRotate' :disable-rotation='rotationInProgress')
+            info-bar(:current-file='currentFile' :gallery='$refs.gallery' :disable-rotation='rotationInProgress'
+              @delete='openDeleteModal' @fullscreen='toggleFullscreen' @rotate='onRotate' @edit='openEditModal')
 
         div(v-for='([year, months], i) in Object.entries(years).reverse()')
           section.hero.is-light
@@ -20,6 +21,7 @@
                 photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='openGallery(image)')
                 video-preview(v-if='image.data.type == "Video"' :video='image' @click='openGallery(image)')
 
+      edit-modal(v-model='editModalIsOpen' :current-file='currentFile' @update='updateCurrentFile')
       delete-modal(:active.sync='deleteModalIsOpen' @yes='removeCurrentFile' @no='closeDeleteModal')
 </template>
 
@@ -29,6 +31,7 @@ import 'blueimp-gallery/css/blueimp-gallery-video.css';
 import PhotoPreview from 'picapp/components/photo-preview';
 import VideoPreview from 'picapp/components/video-preview';
 import DeleteModal from 'picapp/components/delete-modal';
+import EditModal from 'picapp/components/edit-modal';
 import InfoBar from 'picapp/components/info-bar';
 import FilterBar from 'picapp/components/filter-bar';
 import MediaLoader from 'picapp/components/media-loader'
@@ -41,7 +44,7 @@ import { groupBy, mapValues } from 'lodash';
 
 export default {
   components: {
-    VGallery, PhotoPreview, VideoPreview, InfoBar, FilterBar, DeleteModal, MediaLoader
+    VGallery, PhotoPreview, VideoPreview, InfoBar, FilterBar, DeleteModal, MediaLoader, EditModal
   },
   data() {
     return {
@@ -54,6 +57,7 @@ export default {
 
       rotationInProgress: false,
       deleteModalIsOpen: null,
+      editModalIsOpen: false,
 
       photos: [],
       filter: {
@@ -67,6 +71,10 @@ export default {
     }
   },
   methods: {
+    updateCurrentFile(file) {
+      this.photos[this.currentGalleryIndex] = this.currentFile
+      this.currentFile = file
+    },
     onRotate({ direction, file }) {
       const addBust = string => string.replace(/\?.*/, "") + "?" + (new Date()).getTime()
       this.rotationInProgress = true
@@ -126,17 +134,24 @@ export default {
       this.deleteModalIsOpen = null
       this.$refs.gallery.resumeEventListeners()
     },
+    openEditModal() {
+      this.editModalIsOpen = true
+    },
     keyup(event) {
       switch (event.which) {
-        case 68:
-        case 46:
-          this.openDeleteModal()
-          event.preventDefault();
+        case 68: // backspace
+        case 46: // d
+          if (!this.editModalIsOpen) {
+            this.openDeleteModal()
+            event.preventDefault();
+          }
           break;
-        case 69:
-          // edit
-          console.log("EDIT")
-          event.preventDefault()
+        case 69: // e
+          if (!this.editModalIsOpen) {
+            // edit
+            this.openEditModal()
+            event.preventDefault()
+          }
           break;
         case 13: // Enter
           if (this.deleteModalIsOpen) {
@@ -148,6 +163,11 @@ export default {
         case 27: // Esc
           if (this.deleteModalIsOpen) {
             this.closeDeleteModal()
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          if (this.editModalIsOpen) {
+            this.editModalIsOpen = false
             event.preventDefault()
             event.stopPropagation()
           }

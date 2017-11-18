@@ -8,15 +8,14 @@ Basisfunktionalitaet:
   * Caption
   * ShotAt aendern
   * Neues Face malen
+  * Bulk Update
 
 * Mobile Back Button
 
 ---
 
 * Filter Sidebar
-  * Datum, Range: "2017"  "November 2016", "Nov 2017" als Range moeglich
   * Filter: Personen And/Or
-  * Filter: Geloescht
   * Orte (+Alle Photos desselben Tages)
 
 ---

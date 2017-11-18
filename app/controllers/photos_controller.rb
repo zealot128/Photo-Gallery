@@ -82,8 +82,8 @@ class PhotosController < ApplicationController
       share = Share.where(name: new_share).first_or_create(user: current_user)
       @photo.shares << share unless @photo.shares.include?(share)
     end
-    if request.xhr?
-      render json: { status: "OK", photo: @photo.as_json}
+    if request.xhr? || request.format.json?
+      render json: { status: "OK", photo: @photo.as_json }
     else
       redirect_to photos_path
     end

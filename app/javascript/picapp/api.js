@@ -38,6 +38,20 @@ class Api {
   rotate(id, direction) {
     return axios.post(`/photos/${id}/rotate`, { params: { direction } })
   }
+  getTags() {
+    return axios.get(`/v2/tags.json`)
+  }
+  getShares() {
+    return axios.get(`/v2/shares.json`)
+  }
+  updateFile(id, attributes) {
+    return axios.patch(`/photos/${id}`, {
+      photo: attributes
+    })
+  }
+  bulkUpdate(request) {
+    return axios.post("/v2/bulk_update", request)
+  }
 }
 
 export default Api

@@ -1,4 +1,14 @@
-import SugarDate from 'picapp/sugar-date'
+import SugarDate from 'picapp/util/sugar-date'
+
+/* eslint no-restricted-globals: 0 */
+
+const checkInvalid = (date) => {
+  if (isNaN(date.getTime())) {
+    return null
+  } else {
+    return date;
+  }
+}
 
 const dateParser = (string) => {
   let from;
@@ -33,6 +43,21 @@ const dateParser = (string) => {
   if (match) {
     from = SugarDate.create(match[1])
     to = SugarDate.create(match[2])
+    return [from, to]
+  }
+
+  SugarDate.setLocale('de')
+  let range = SugarDate.range(string)
+  from = checkInvalid(range.start)
+  to = checkInvalid(range.end)
+  if (from || to) {
+    return [from, to]
+  }
+  SugarDate.setLocale('en')
+  range = SugarDate.range(string)
+  from = checkInvalid(range.start)
+  to = checkInvalid(range.end)
+  if (from || to) {
     return [from, to]
   }
 

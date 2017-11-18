@@ -4,16 +4,15 @@
       i.mdi.mdi-calendar-check.mdi-fw
       |
       |Zeitraum einschränken
-    div(style='margin-top: 5px')
-      span.tags.has-addons(v-if='value.from')
+    .field.is-grouped.is-grouped-multiline(style='margin-top: 5px')
+      .control: span.tags.has-addons(v-if='value.from')
         span.tag.is-dark von
-        span.tag.is-info {{value.from | moment("LL") }}
+        span.tag.is-primary {{value.from | moment("LL") }}
         a.tag.is-delete(@click='deleteTag("from")')
 
-      |
-      span.tags.has-addons(v-if='value.to')
+      .control: span.tags.has-addons(v-if='value.to')
         span.tag.is-dark bis
-        span.tag.is-info {{value.to | moment("LL") }}
+        span.tag.is-primary {{value.to | moment("LL") }}
         a.tag.is-delete(@click='deleteTag("to")')
 
     b-modal(:active.sync="modalOpen")
@@ -24,19 +23,17 @@
             b-input(v-model="dateInput" @keyup.native='calculateRange' @change.native='calculateRange' autofocus)
             p.control
               button.button(@click='close') OK
-
-
-          div(v-if='value.from')
+          div(v-if='from')
             dl
               dt Von:
-              dd {{value.from | moment("LL") }}
+              dd {{from | moment("LL") }}
               dt Bis:
-              dd {{value.to | moment("LL") }}
+              dd {{to | moment("LL") }}
 
 </template>
 
 <script>
-import dateParse from 'picapp/date-parser'
+import dateParse from 'picapp/util/date-parser'
 
 export default {
   props: ['value'],
@@ -55,6 +52,8 @@ export default {
     },
     close() {
       this.modalOpen = false
+      this.value.from = this.from
+      this.value.to = this.to
       if (this.value.from) {
         this.value.from = this.$moment(this.value.from).utcOffset(0, true).format("YYYY-MM-DD")
       }
@@ -70,7 +69,7 @@ export default {
       }
       const answer = dateParse(this.dateInput)
       if (answer) {
-        [this.value.from, this.value.to] = answer
+        [this.from, this.to] = answer
       }
     }
   }

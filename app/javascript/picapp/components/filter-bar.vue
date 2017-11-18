@@ -1,44 +1,46 @@
 <template lang="pug">
   .search-container
-    b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
-      a.button.is-primary.is-large.is-outlined(slot="trigger")
-        i.mdi.mdi-magnify
-        i.mdi.mdi-menu-down
-      b-dropdown-item(custom paddingless)
-        .modal-card(style='min-width: 300px; max-width: 600px')
-          section.modal-card-body
-            |Filter
-            .block
-              b-checkbox(v-model="value.fileTypes" native-value="photo") Photos
-              b-checkbox(v-model="value.fileTypes" native-value="video") Videos
-            .block
-              b-checkbox(v-model="value.favorite") Favoriten
-            .block
-              date-parse-modal(v-model='value')
-            .block
-              div: span(v-for='personId in value.peopleIds')
-                img(:src='findPerson(personId).preview' style='height: 30px')
-              button.button(@click='openAddPersonModal = true')
-                i.mdi.mdi-face-profile.mdi-fw
-                |
-                |Person suchen
-            button.button.is-primary(@click='apply') Anwenden
-
-      b-modal(:active.sync="openAddPersonModal" v-if='people.length > 0')
-        .card
-          .card-content
-            p Person hinzufügen
-            .block.face-select
-              b-checkbox(v-for='person in people' v-model='value.peopleIds'
-                :native-value='person.id' :key='person.id' :name='"person" +person.id')
-                  img(:src='person.preview')
+    .field.has-addons
+      .control: nav-icon
+      .control: b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
+        a.button.is-primary.is-large.is-outlined(slot="trigger")
+          i.mdi.mdi-magnify
+          i.mdi.mdi-menu-down
+        b-dropdown-item(custom paddingless)
+          .modal-card(style='min-width: 300px; max-width: 600px')
+            section.modal-card-body
+              |Filter
+              .block
+                b-checkbox(v-model="value.fileTypes" native-value="photo") Photos
+                b-checkbox(v-model="value.fileTypes" native-value="video") Videos
+              .block
+                b-checkbox(v-model="value.favorite") Favoriten
+              .block
+                date-parse-modal(v-model='value')
+              .block
+                div: span(v-for='personId in value.peopleIds')
+                  img(:src='findPerson(personId).preview' style='height: 30px')
+                button.button(@click='openAddPersonModal = true')
+                  i.mdi.mdi-face-profile.mdi-fw
                   |
-                  small {{person.name}}
-            .block
-              b-checkbox(v-model="value.includeWholeDay") Dateien des gleichen Tages wie Gefundene mit anzeigen
-          .card-footer
-            a.card-footer-item(@click='openAddPersonModal = false')
-              |Schließen
+                  |Person suchen
+              button.button.is-primary(@click='apply') Anwenden
+
+        b-modal(:active.sync="openAddPersonModal" v-if='people.length > 0')
+          .card
+            .card-content
+              p Person hinzufügen
+              .block.face-select
+                b-checkbox(v-for='person in people' v-model='value.peopleIds'
+                  :native-value='person.id' :key='person.id' :name='"person" +person.id')
+                    img(:src='person.preview')
+                    |
+                    small {{person.name}}
+              .block
+                b-checkbox(v-model="value.includeWholeDay") Dateien des gleichen Tages wie Gefundene mit anzeigen
+            .card-footer
+              a.card-footer-item(@click='openAddPersonModal = false')
+                |Schließen
 
 
 </template>
@@ -46,10 +48,11 @@
 <script>
 import Api from 'picapp/api';
 import DateParseModal from 'picapp/components/date-parse-modal';
+import NavIcon from 'picapp/components/nav-icon';
 const api = new Api()
 
 export default {
-  components: { DateParseModal },
+  components: { DateParseModal, NavIcon },
   props: {
     value: {
       type: Object,
