@@ -29,7 +29,7 @@
 #  mark_as_deleted_on     :datetime
 #
 
-class BaseFile < ActiveRecord::Base
+class BaseFile < ApplicationRecord
   self.table_name = 'photos'
   has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
   has_many :image_faces, dependent: :destroy
@@ -136,8 +136,8 @@ class BaseFile < ActiveRecord::Base
       shot_at_formatted:    I18n.l(shot_at, format: :short),
       file_size:            file_size,
       tag_ids:              tag_ids,
-      tags:                 tag_list,
-      labels:               image_labels.pluck(:name),
+      tags:                 tags.loaded? ? tags.map(&:name) : tag_list,
+      labels:               image_labels.loaded? ? image_labels.map(&:name) : image_labels.pluck(:name),
       share_ids:            share_ids,
       file_size_formatted:  ApplicationController.helpers.number_to_human_size(file_size),
       caption:              caption,

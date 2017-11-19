@@ -44,7 +44,7 @@ class V3::Search
   def media
     sql = BaseFile.visible.
       order('shot_at desc').
-      includes(:image_faces, :image_labels, :liked_by)
+      includes(:image_faces, :image_labels, :liked_by, :people, :shares, :tags, :day)
     self.class.filters.each do |column, filter|
       next if send(column).blank?
       new_sql = instance_exec(sql, &filter)
