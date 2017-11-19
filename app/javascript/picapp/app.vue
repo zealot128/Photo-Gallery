@@ -15,7 +15,9 @@
           template(v-for='([month, entries], i) in Object.entries(months)')
             section.hero.is-dark
               .hero-body
-                h4.subtitle.is-5.is-marginless {{ entries[0].shotAt.format("dddd, DD. MMM") }}
+                h4.subtitle.is-5.is-marginless
+                  |{{ entries[0].shotAt.format("dddd, DD. MMM") }}
+                  bulk-update(:files='entries' @input='updateFiles')
             .day.container.is-fluid
               .gallery-element(v-for='(image, imageIndex) in entries' :key='image.id')
                 photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='openGallery(image)')
@@ -35,6 +37,7 @@ import EditModal from 'picapp/components/edit-modal';
 import InfoBar from 'picapp/components/info-bar';
 import FilterBar from 'picapp/components/filter-bar';
 import MediaLoader from 'picapp/components/media-loader'
+import BulkUpdate from 'picapp/components/bulk-update'
 import Api from 'picapp/api';
 
 import 'picapp/style.scss'
@@ -44,7 +47,7 @@ import { groupBy, mapValues } from 'lodash';
 
 export default {
   components: {
-    VGallery, PhotoPreview, VideoPreview, InfoBar, FilterBar, DeleteModal, MediaLoader, EditModal
+    VGallery, PhotoPreview, VideoPreview, InfoBar, FilterBar, DeleteModal, MediaLoader, EditModal, BulkUpdate
   },
   data() {
     return {
@@ -74,6 +77,15 @@ export default {
     updateCurrentFile(file) {
       this.photos[this.currentGalleryIndex] = this.currentFile
       this.currentFile = file
+    },
+    updateFiles(photos) {
+      let index;
+      photos.forEach((f) => {
+        index = this.photos.findIndex(o => o.id === f.id)
+        if (index) {
+          this.photos[index] = f
+        }
+      })
     },
     onRotate({ direction, file }) {
       const addBust = string => string.replace(/\?.*/, "") + "?" + (new Date()).getTime()

@@ -1,5 +1,4 @@
 class BulkUpdate
-
   attr_reader :files
 
   def initialize(params, current_user)

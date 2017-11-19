@@ -21,5 +21,10 @@ module V3
       @people = Person.all
       render json: @people
     end
+
+    def shares
+      shares = Share.sorted.as_json
+      render json: shares
+    end
   end
 end

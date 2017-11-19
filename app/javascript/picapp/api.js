@@ -42,7 +42,7 @@ class Api {
     return axios.get(`/v2/tags.json`)
   }
   getShares() {
-    return axios.get(`/v2/shares.json`)
+    return axios.get(`/v3/api/shares.json`)
   }
   updateFile(id, attributes) {
     return axios.patch(`/photos/${id}`, {

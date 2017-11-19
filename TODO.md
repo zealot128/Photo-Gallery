@@ -4,11 +4,9 @@ Basisfunktionalitaet:
 
 * Bearbeiten:
   * Rotieren
-  * Assigning von Tags/Shares (Bearbeiten)
   * Caption
   * ShotAt aendern
   * Neues Face malen
-  * Bulk Update
 
 * Mobile Back Button
 

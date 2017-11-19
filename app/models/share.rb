@@ -19,7 +19,7 @@ class Share < ActiveRecord::Base
 
   has_and_belongs_to_many :photos, join_table: "photos_shares", association_foreign_key: 'photo_id'
   belongs_to :user
-  validates_presence_of :name
+  validates :name, presence: true
 
   def to_param
     token
@@ -30,10 +30,17 @@ class Share < ActiveRecord::Base
   end
 
   def file_size
-    photos.map{|i| i.file_size.to_i }.sum
+    photos.map { |i| i.file_size.to_i }.sum
   end
 
   def to_s
     name
+  end
+
+  def as_json(opts = {})
+    super.merge(
+      'file_size' => file_size,
+      'file_count' => photos.count
+    )
   end
 end
