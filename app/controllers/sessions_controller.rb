@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-
   def new
   end
 
@@ -7,11 +6,13 @@ class SessionsController < ApplicationController
     user = User.authenticate(params[:login], params[:password])
     if user
       session[:user_id] = user.id
-      cookies.signed[:user_id] = user.id
+      if params[:remember_me] == '1'
+        cookies.signed[:user_id] = { value: user.id, expires: 1.month.from_now }
+      end
       redirect_to_target_or_default '/photos', notice: "Erfolgreich eingeloggt"
     else
       flash.now[:alert] = "Invalid login or password."
-      render :action => 'new'
+      render :new
     end
   end
 

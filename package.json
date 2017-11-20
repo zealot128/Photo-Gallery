@@ -36,6 +36,7 @@
     "sugar-date": "^2.0.4",
     "vue": "^2.4.2",
     "vue-axios": "^2.0.2",
+    "vue-clip": "^1.0.0",
     "vue-gallery": "^1.2.2",
     "vue-infinite-scroll": "^2.0.2",
     "vue-loader": "^13.0.4",

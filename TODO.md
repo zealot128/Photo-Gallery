@@ -15,11 +15,9 @@ Basisfunktionalitaet:
 * Filter Sidebar
   * Filter: Personen And/Or
   * Orte (+Alle Photos desselben Tages)
+* Direct Upload
 
 ---
-
-* aws private
-* Cookie login
 
 * Bilder
   * Geodaten -> Map in Day view

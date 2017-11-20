@@ -11,6 +11,9 @@ Vue.use(VueGallery)
 import infiniteScroll from 'vue-infinite-scroll'
 Vue.use(infiniteScroll)
 
+import VueClip from 'vue-clip'
+Vue.use(VueClip)
+
 const moment = require('moment')
 require('moment/locale/de')
 Vue.use(require('vue-moment'), { moment })

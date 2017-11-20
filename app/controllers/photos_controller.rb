@@ -58,13 +58,13 @@ class PhotosController < ApplicationController
         valid: photo.valid?,
         errors: photo.errors,
         success: photo.valid?
-      )
+      ), status: photo.valid? ? 201 : 422
     else
       render json: {
         valid: false,
         errors: [exception.inspect],
         success: false
-      }
+      }, status: 422
     end
   end
 

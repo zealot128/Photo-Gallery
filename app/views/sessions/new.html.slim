@@ -7,5 +7,10 @@
     .form-group
       = label_tag :password
       = password_field_tag :password, '', class: 'form-control'
+    .form-group
+      = label_tag :remember_me, class: 'control-label'
+        = check_box_tag :remember_me, '1'
+        = ' '
+        | Eingeloggt bleiben
     p
       = submit_tag "Log in", class: "btn-primary btn btn-block"

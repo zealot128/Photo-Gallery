@@ -1,6 +1,7 @@
 <template lang="pug">
   .search-container
     .field.has-addons
+      .control: upload-bar
       .control: nav-icon
       .control: b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
         a.button.is-primary.is-large.is-outlined(slot="trigger")
@@ -49,10 +50,11 @@
 import Api from 'picapp/api';
 import DateParseModal from 'picapp/components/date-parse-modal';
 import NavIcon from 'picapp/components/nav-icon';
+import UploadBar from 'picapp/components/upload-bar';
 const api = new Api()
 
 export default {
-  components: { DateParseModal, NavIcon },
+  components: { DateParseModal, NavIcon, UploadBar },
   props: {
     value: {
       type: Object,
