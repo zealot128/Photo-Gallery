@@ -1,17 +1,17 @@
 <template lang="pug">
   .image-preview(:style="{ backgroundImage: 'url(' + image.preview + ')' }" @click='onClick')
-    like-button(:file='image')
+    pic-like-button(:file='image')
 </template>
 
 <script>
-  import LikeButton from 'picapp/components/like-button';
-  export default {
-    components: { LikeButton },
-    props: ['image', 'index'],
-    methods: {
-      onClick() { this.$emit('click') }
-    }
+import PicLikeButton from 'picapp/components/show/like-button';
+export default {
+  components: { PicLikeButton },
+  props: ['image', 'index'],
+  methods: {
+    onClick() { this.$emit('click') }
   }
+}
 </script>
 
 <style lang='scss' scoped>

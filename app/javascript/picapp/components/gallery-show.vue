@@ -39,14 +39,14 @@
         a.button.is-inverted.is-outlined.is-primary(:href='currentFile.data.download_url' target='_blank') {{currentFile.data.file_size_formatted}}
     div.face-wrapper(v-show='faceMode')
       .face-box(:style='{ width: imageWidth + "px", height: imageHeight + "px"}')
-        bounding-box(v-for='face in currentFile.data.faces' :face='face' :width='imageWidth' :height='imageHeight' key='face.id')
+        pic-bounding-box(v-for='face in currentFile.data.faces' :face='face' :width='imageWidth' :height='imageHeight' key='face.id')
 </template>
 
 <script>
-import BoundingBox from 'picapp/components/bounding-box'
+import PicBoundingBox from 'picapp/components/show/bounding-box'
 /* globals currentUser */
 export default {
-  components: { BoundingBox },
+  components: { PicBoundingBox },
   props: ['currentFile', 'gallery'],
   data() {
     return {

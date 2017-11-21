@@ -26,5 +26,24 @@ module V3
       shares = Share.sorted.as_json
       render json: shares
     end
+
+    def tags
+      tags = ActsAsTaggableOn::Tag.order(:name).as_json
+      render json: tags
+    end
+
+    def exif
+      json = Rails.cache.fetch('api.exif', expires_in: 0) do
+        {
+          camera_models: Photo.group("(meta_data->>'model')::text").order('count_all desc').limit(30).count.delete_if { |k, _| k.blank? }.map { |k, v|
+            {
+              name: k,
+              count: v
+            }
+          }
+        }
+      end
+      render json: json
+    end
   end
 end

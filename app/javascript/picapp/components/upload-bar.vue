@@ -3,8 +3,9 @@
     b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
       a.button.is-primary.is-large.is-outlined(slot="trigger")
         i.mdi.mdi-cloud-upload
+        span.internal-progress(v-if='uploadInProgress' :style='{ height: progress + "%"}')
       b-dropdown-item(custom)
-        vue-clip(:options="uploaderOptions" :on-added-file="startUpload" :on-complete='fileUploaded' :on-total-progress='totalProgress')
+        vue-clip(:options="uploaderOptions" :on-queue-complete="onQueueComplete" :on-added-file="onStartUpload" :on-complete='onFileUploaded' :on-total-progress='onTotalProgress')
           template(slot="clip-uploader-action" slot-scope="params")
             .uploader-action(v-bind:class="{'is-dragging': params.dragging}" )
               div(class="dz-message"): h2 Click or Drag and Drop files here upload
@@ -16,7 +17,7 @@
                 span.has-text-success.indicator(v-if='file.status == "success"')
                   i.mdi.mdi-checkbox-marked-circle
                 span.has-text-danger.indicator(v-if='file.status == "error"')
-                  b-tooltip(:label="file.errorMessage" position="is-bottom")
+                  b-tooltip(:label="JSON.stringify(file.errorMessage)" position="is-bottom" type='is-danger')
                     i.mdi.mdi-alert-circle
 
               .card-content
@@ -35,18 +36,23 @@ export default {
     }
   },
   methods: {
-    totalProgress(progress, _totalBytes, _bytesSent) {
+    onTotalProgress(progress, _totalBytes, _bytesSent) {
       this.progress = progress;
     },
-    fileUploaded(file) {
+    onQueueComplete() {
+      this.uploadInProgress = false
+    },
+    onFileUploaded(file) {
       if (file.status === 'success') {
-      } else if (file.xhrResponse && file.xhrResponse.statusCode === 422) {
+        return
+      }
+      if (file.xhrResponse && file.xhrResponse.statusCode === 422) {
         file.errorMessage = file.errorMessage.errors
       } else if (file.xhrResponse && file.xhrResponse.statusCode >= 400) {
         file.errorMessage = file.errorMessage.errors
       }
     },
-    startUpload(_file) {
+    onStartUpload(_file) {
       this.progress = 0
       this.uploadInProgress = true
     },
@@ -76,7 +82,7 @@ export default {
       background: #f2f2f2;
     }
   }
-  .image-preview {
+  .uploader-action .image-preview {
     max-width: 120px !important;
     progress {
       position: absolute;
@@ -87,5 +93,14 @@ export default {
       right: 0;
       font-size: 2rem;
     }
+  }
+  .internal-progress {
+    height: 50%;
+    width: 4px;
+    background-color: #7957d5;
+    position: absolute;
+    transition: height 0.3s ease-in-out;
+    right: 0;
+    bottom: 0;
   }
 </style>

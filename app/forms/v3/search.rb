@@ -125,4 +125,8 @@ class V3::Search
         select('photos.id'))
     end
   end
+
+  add_filter(:camera_models, array: true) do |sql|
+    sql.where("(meta_data->>'model')::text in (?)", camera_models)
+  end
 end

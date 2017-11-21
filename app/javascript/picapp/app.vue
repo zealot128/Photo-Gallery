@@ -5,7 +5,7 @@
       .gallery-container(v-if='photos.length > 0')
         v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
           div(slot='controls'): .gallery-controls(v-if='currentFile')
-            info-bar(:current-file='currentFile' :gallery='$refs.gallery' :disable-rotation='rotationInProgress'
+            pic-gallery-show(:current-file='currentFile' :gallery='$refs.gallery' :disable-rotation='rotationInProgress'
               @delete='openDeleteModal' @fullscreen='toggleFullscreen' @rotate='onRotate' @edit='openEditModal')
 
         div(v-for='([year, months], i) in Object.entries(years).reverse()')
@@ -23,8 +23,8 @@
                 photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='openGallery(image)')
                 video-preview(v-if='image.data.type == "Video"' :video='image' @click='openGallery(image)')
 
-      edit-modal(v-model='editModalIsOpen' :current-file='currentFile' @update='updateCurrentFile')
-      delete-modal(:active.sync='deleteModalIsOpen' @yes='removeCurrentFile' @no='closeDeleteModal')
+      pic-edit-modal(v-model='editModalIsOpen' :current-file='currentFile' @update='updateCurrentFile')
+      pic-delete-modal(:active.sync='deleteModalIsOpen' @yes='removeCurrentFile' @no='closeDeleteModal')
 </template>
 
 <script>
@@ -32,9 +32,9 @@ import VGallery from 'picapp/VGallery';
 import 'blueimp-gallery/css/blueimp-gallery-video.css';
 import PhotoPreview from 'picapp/components/photo-preview';
 import VideoPreview from 'picapp/components/video-preview';
-import DeleteModal from 'picapp/components/delete-modal';
-import EditModal from 'picapp/components/edit-modal';
-import InfoBar from 'picapp/components/info-bar';
+import PicDeleteModal from 'picapp/components/show/delete-modal';
+import PicEditModal from 'picapp/components/show/edit-modal';
+import PicGalleryShow from 'picapp/components/gallery-show';
 import FilterBar from 'picapp/components/filter-bar';
 import MediaLoader from 'picapp/components/media-loader'
 import BulkUpdate from 'picapp/components/bulk-update'
@@ -47,7 +47,7 @@ import { groupBy, mapValues } from 'lodash';
 
 export default {
   components: {
-    VGallery, PhotoPreview, VideoPreview, InfoBar, FilterBar, DeleteModal, MediaLoader, EditModal, BulkUpdate
+    VGallery, PhotoPreview, VideoPreview, PicGalleryShow, FilterBar, PicDeleteModal, MediaLoader, PicEditModal, BulkUpdate
   },
   data() {
     return {
@@ -69,7 +69,8 @@ export default {
         to: null,
         favorite: null,
         peopleIds: [],
-        includeWholeDay: false
+        includeWholeDay: false,
+        cameraModels: []
       }
     }
   },

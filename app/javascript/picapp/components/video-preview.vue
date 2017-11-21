@@ -6,53 +6,53 @@
     .duration
       | {{duration}}
     img.preload(v-for='tb in video.data.thumbnails' :src='tb' v-if='mouseIsOver')
-    like-button(:file='video')
+    pic-like-button(:file='video')
 </template>
 
 <script>
-  import LikeButton from 'picapp/components/like-button';
-  export default {
-    components: { LikeButton },
-    props: ['video', 'index'],
-    data() {
-      return {
-        currentFrame: this.video.preview,
-        mouseIsOver: false,
-        currentFrameIndex: 0
-      }
-    },
-    methods: {
-      onClick() { this.$emit('click') },
-      resetFrame() {
-        this.currentFrame = this.video.preview
-        this.currentFrameIndex = 0
-      },
-      onMouseEnter(e) {
-        this.mouseIsOver = true
-        this.frame()
-      },
-      onMouseLeave(e) {
-        this.mouseIsOver = false
-        this.resetFrame()
-      },
-      frame() {
-        if (!this.mouseIsOver) {
-          return
-        }
-        const next_image = this.video.data.thumbnails[this.currentFrameIndex]
-        if(next_image) {
-          this.currentFrame = next_image
-          this.currentFrameIndex += 1
-        } else {
-          this.resetFrame()
-        }
-        setTimeout( () => this.frame(), 500 )
-      }
-    },
-    computed: {
-      duration() { return this.video.data.exif.durationHuman }
+import PicLikeButton from 'picapp/components/show/like-button';
+export default {
+  components: { PicLikeButton },
+  props: ['video', 'index'],
+  data() {
+    return {
+      currentFrame: this.video.preview,
+      mouseIsOver: false,
+      currentFrameIndex: 0
     }
+  },
+  methods: {
+    onClick() { this.$emit('click') },
+    resetFrame() {
+      this.currentFrame = this.video.preview
+      this.currentFrameIndex = 0
+    },
+    onMouseEnter(e) {
+      this.mouseIsOver = true
+      this.frame()
+    },
+    onMouseLeave(e) {
+      this.mouseIsOver = false
+      this.resetFrame()
+    },
+    frame() {
+      if (!this.mouseIsOver) {
+        return
+      }
+      const next_image = this.video.data.thumbnails[this.currentFrameIndex]
+      if(next_image) {
+        this.currentFrame = next_image
+        this.currentFrameIndex += 1
+      } else {
+        this.resetFrame()
+      }
+      setTimeout( () => this.frame(), 500 )
+    }
+  },
+  computed: {
+    duration() { return this.video.data.exif.durationHuman }
   }
+}
 </script>
 
 <style lang='scss'>

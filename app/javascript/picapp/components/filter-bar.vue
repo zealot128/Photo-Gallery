@@ -1,8 +1,8 @@
 <template lang="pug">
   .search-container
     .field.has-addons
-      .control: upload-bar
-      .control: nav-icon
+      .control: pic-upload-bar
+      .control: pic-nav-icon
       .control: b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
         a.button.is-primary.is-large.is-outlined(slot="trigger")
           i.mdi.mdi-magnify
@@ -11,13 +11,17 @@
           .modal-card(style='min-width: 300px; max-width: 600px')
             section.modal-card-body
               |Filter
-              .block
-                b-checkbox(v-model="value.fileTypes" native-value="photo") Photos
-                b-checkbox(v-model="value.fileTypes" native-value="video") Videos
-              .block
-                b-checkbox(v-model="value.favorite") Favoriten
-              .block
-                date-parse-modal(v-model='value')
+              .columns.block
+                .column
+                  b-checkbox(v-model="value.fileTypes" native-value="photo") Photos
+                  b-checkbox(v-model="value.fileTypes" native-value="video") Videos
+                .column
+                  b-checkbox(v-model="value.favorite") Favoriten
+              .columns.block
+                .column
+                  pic-date-parse-modal(v-model='value')
+                .column
+                  pic-camera-filter(v-model='value')
               .block
                 div: span(v-for='personId in value.peopleIds')
                   img(:src='findPerson(personId).preview' style='height: 30px')
@@ -48,13 +52,16 @@
 
 <script>
 import Api from 'picapp/api';
-import DateParseModal from 'picapp/components/date-parse-modal';
-import NavIcon from 'picapp/components/nav-icon';
-import UploadBar from 'picapp/components/upload-bar';
+import PicDateParseModal from 'picapp/components/filter/date-parse-modal';
+import PicCameraFilter from 'picapp/components/filter/camera-filter';
+import PicNavIcon from 'picapp/components/nav-icon';
+import PicUploadBar from 'picapp/components/upload-bar';
 const api = new Api()
 
 export default {
-  components: { DateParseModal, NavIcon, UploadBar },
+  components: {
+    PicDateParseModal, PicNavIcon, PicUploadBar, PicCameraFilter
+  },
   props: {
     value: {
       type: Object,
