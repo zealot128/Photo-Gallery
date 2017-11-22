@@ -86,6 +86,6 @@ end
 
 group :production do
   gem 'exception_notification'
-  gem 'lograge'
+  # gem 'lograge'
 end
 gem 'silencer'
