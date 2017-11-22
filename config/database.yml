@@ -2,8 +2,10 @@ development:
   adapter: postgresql
   database: photos_development
 
-
 test:
   adapter: postgresql
   database: photos_test
 
+production:
+  adapter: postgresql
+  database: photos_production

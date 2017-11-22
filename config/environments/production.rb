@@ -73,7 +73,9 @@ SimpleGallery::Application.configure do
   config.i18n.fallbacks = true
   config.action_mailer.delivery_method = :smtp
 
-  ActionMailer::Base.smtp_settings = YAML.load_file('config/email.yml')
+  if File.exist?('config/email.yml')
+    ActionMailer::Base.smtp_settings = YAML.load_file('config/email.yml')
+  end
   config.action_mailer.default_url_options = { :host => "pics.stefanwienert.de" }
 
   config.middleware.use ExceptionNotification::Rack,
