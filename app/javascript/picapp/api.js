@@ -39,7 +39,7 @@ class Api {
     return axios.post(`/photos/${id}/rotate`, { params: { direction } })
   }
   getTags() {
-    return axios.get(`/v3/tags.json`)
+    return axios.get(`/v3/api/tags.json`)
   }
   getShares() {
     return axios.get(`/v3/api/shares.json`)

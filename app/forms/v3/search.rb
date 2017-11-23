@@ -50,7 +50,7 @@ class V3::Search
       new_sql = instance_exec(sql, &filter)
       sql = new_sql if new_sql
     end
-    sql.paginate(page: page, per_page: 10)
+    sql.paginate(page: page, per_page: 50)
   end
 
   add_filter(:favorite) do |sql|
