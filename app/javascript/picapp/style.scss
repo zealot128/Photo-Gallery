@@ -31,11 +31,19 @@ body {
     color: #999;
   }
   .day {
+    transition: all 0.3s ease-in-out;
     margin-top: 20px;
     margin-bottom: 20px;
   }
   .hero.is-dark .hero-body {
     padding: 1.5rem;
+    transition: all 0.3s ease-in-out;
+  }
+  .hero.is-gray {
+    background: #4b4952;
+    .hero-body {
+      padding: 1.5rem;
+    }
   }
 }
 .modal {
@@ -50,3 +58,18 @@ body {
   text-align: center;
 }
 
+.small-mode {
+  .day {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .hero.is-dark .hero-body {
+    padding: 0.75rem 1.5rem;
+    .subtitle.is-5 {
+      font-size: 1rem;
+    }
+  }
+}
+.subtitle.is-5 {
+  transition: font-size 0.3s ease-in-out;
+}

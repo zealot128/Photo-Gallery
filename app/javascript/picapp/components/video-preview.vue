@@ -1,19 +1,19 @@
 <template lang="pug">
-  .video-preview(:style="{ backgroundImage: 'url(' + currentFrame + ')' }" @click='onClick' @mouseenter='onMouseEnter' @mouseleave='onMouseLeave')
+  .video-preview(:style="style" @click='onClick' @mouseenter='onMouseEnter' @mouseleave='onMouseLeave')
     i.mdi.mdi-play-circle.play-icon
     span(v-if='!video.data.video_processed')
       |unprocessed
     .duration
       | {{duration}}
     img.preload(v-for='tb in video.data.thumbnails' :src='tb' v-if='mouseIsOver')
-    pic-like-button(:file='video')
+    pic-like-button(:file='video' v-show='!isSmall')
 </template>
 
 <script>
 import PicLikeButton from 'picapp/components/show/like-button';
 export default {
   components: { PicLikeButton },
-  props: ['video', 'index'],
+  props: ['video', 'index', 'isSmall'],
   data() {
     return {
       currentFrame: this.video.preview,
@@ -50,6 +50,19 @@ export default {
     }
   },
   computed: {
+    width() {
+      return this.isSmall ? 50 : 300
+    },
+    height() {
+      return Math.round(this.width * 2 / 3);
+    },
+    style() {
+      return {
+        backgroundImage: `url(${this.currentFrame})`,
+        width: `${this.width}px`,
+        height: `${this.height}px`
+      }
+    },
     duration() { return this.video.data.exif.durationHuman }
   }
 }
@@ -62,8 +75,6 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  width: 300px;
-  height: 200px;
   position: relative;
   text-align: center;
   cursor: pointer;
@@ -109,6 +120,15 @@ export default {
     font-size: 30px;
     width: auto;
     transition: color 0.3s ease;
+  }
+  .small-mode & {
+    .duration, .unprocessed {
+      display: none;
+    }
+    .play-icon {
+      top: 15px;
+      font-size: 14px;
+    }
   }
   .preload {
     opacity: 0;

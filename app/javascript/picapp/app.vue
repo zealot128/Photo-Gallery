@@ -2,7 +2,9 @@
   media-loader(v-model='photos' :disable-auto-loading='galleryControlIndex != null' :filter='filter')
     #app
       filter-bar(v-model='filter')
-      .gallery-container(v-if='photos.length > 0')
+        button.button.is-primary.is-large(@click='isSmall = !isSmall' :class='{"is-outlined": !isSmall}')
+          i.mdi.mdi-fw.mdi-map
+      .gallery-container(v-if='photos.length > 0' :class='{ "small-mode": isSmall }')
         v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
           div(slot='controls'): .gallery-controls(v-if='currentFile')
             pic-gallery-show(:current-file='currentFile' :gallery='$refs.gallery' :disable-rotation='rotationInProgress'
@@ -12,16 +14,21 @@
           section.hero.is-light
             .hero-body
               h3.title.is-4.is-marginless {{year}}
-          template(v-for='([month, entries], i) in Object.entries(months)')
-            section.hero.is-dark
+          template(v-for='([month, days], i) in Object.entries(months)')
+            section.hero.is-gray
               .hero-body
                 h4.subtitle.is-5.is-marginless
-                  |{{ entries[0].shotAt.format("dddd, DD. MMM") }}
-                  bulk-update(:files='entries' @input='updateFiles')
-            .day.container.is-fluid
-              .gallery-element(v-for='(image, imageIndex) in entries' :key='image.id')
-                photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='openGallery(image)')
-                video-preview(v-if='image.data.type == "Video"' :video='image' @click='openGallery(image)')
+                  |{{ month.split(' ')[1] }}
+            template(v-for='([day, entries], i) in Object.entries(days)')
+              section.hero.is-dark
+                .hero-body
+                  h4.subtitle.is-5.is-marginless
+                    bulk-update(:files='entries' @input='updateFiles')
+                    |{{ entries[0].shotAt.format("dddd, DD. MMM") }}
+              .day.container.is-fluid
+                .gallery-element(v-for='(image, imageIndex) in entries' :key='image.id')
+                  photo-preview(v-if='image.data.type == "Photo"' :image='image' @click='openGallery(image)' :is-small='isSmall')
+                  video-preview(v-if='image.data.type == "Video"' :video='image' @click='openGallery(image)' :is-small='isSmall')
 
       pic-edit-modal(v-model='editModalIsOpen' :current-file='currentFile' @update='updateCurrentFile')
       pic-delete-modal(:active.sync='deleteModalIsOpen' @yes='removeCurrentFile' @no='closeDeleteModal')
@@ -53,6 +60,7 @@ export default {
     return {
       // Falls Gallery offen ist, dann ist das das aktuell angezeigte Photo
       currentGalleryIndex: -1,
+      isSmall: false,
       currentFile: null,
 
       // das steuert die gallery - wenn das gesetzt wird geht die Gallery auf
@@ -191,7 +199,10 @@ export default {
     api() { return new Api() },
     years() {
       const yearGroups = groupBy(this.photos, p => p.shotAt.format('YYYY'))
-      return mapValues(yearGroups, files => groupBy(files, p => p.shotAt.format("MM MMMM")))
+      return mapValues(yearGroups, (files) => {
+        const months = groupBy(files, p => p.shotAt.format("MM MMMM"))
+        return mapValues(months, monthFiles => groupBy(monthFiles, p => p.shotAt.format("DD DDDD")))
+      })
     }
   }
 }

@@ -1,13 +1,28 @@
 <template lang="pug">
-  .image-preview(:style="{ backgroundImage: 'url(' + image.preview + ')' }" @click='onClick')
-    pic-like-button(:file='image')
+  .image-preview(:style="style" @click='onClick')
+    pic-like-button(:file='image' v-show='!isSmall')
 </template>
 
 <script>
 import PicLikeButton from 'picapp/components/show/like-button';
 export default {
   components: { PicLikeButton },
-  props: ['image', 'index'],
+  props: ['image', 'index', 'isSmall'],
+  computed: {
+    width() {
+      return this.isSmall ? 50 : 300
+    },
+    height() {
+      return Math.round(this.width * 2 / 3);
+    },
+    style() {
+      return {
+        backgroundImage: `url(${this.image.preview})`,
+        width: `${this.width}px`,
+        height: `${this.height}px`
+      }
+    }
+  },
   methods: {
     onClick() { this.$emit('click') }
   }
@@ -23,8 +38,6 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  width: 300px;
-  height: 200px;
   cursor: pointer;
   &:hover {
     transform: scale(1.10);

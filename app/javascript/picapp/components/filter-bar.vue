@@ -4,7 +4,7 @@
       .control: pic-upload-bar
       .control: pic-nav-icon
       .control: b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
-        a.button.is-primary.is-large.is-outlined(slot="trigger")
+        a.button.is-primary.is-large(slot="trigger" :class='{"is-outlined": !dropdownOpen}')
           i.mdi.mdi-magnify
           i.mdi.mdi-menu-down
         b-dropdown-item(custom paddingless)
@@ -46,6 +46,7 @@
             .card-footer
               a.card-footer-item(@click='openAddPersonModal = false')
                 |Schließen
+      .control: slot
 
 
 </template>
