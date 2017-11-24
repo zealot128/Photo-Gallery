@@ -1,19 +1,20 @@
 <template lang="pug">
   div
-    small(v-if='currentFile.data.type == "Photo"')
-      |{{exif.model}}
-      span.photo-stats(v-if='exif.focal_length')
-        i.mdi.mdi-camera
-        |{{exif.focal_length}}
-        i.mdi.mdi-camera-iris
-        |{{exif.aperture}}
-        i.mdi.mdi-timer
-        |{{exif.exposure_time}}
-      br
-      |{{currentFile.data.location}}
-    small(v-if='currentFile.data.type == "Video"')
-      br
-    .buttons.has-addons(v-if='currentUser')
+    .is-hidden-mobile
+      small(v-if='currentFile.data.type == "Photo"')
+        |{{exif.model}}
+        span.photo-stats(v-if='exif.focal_length')
+          i.mdi.mdi-camera
+          |{{exif.focal_length}}
+          i.mdi.mdi-camera-iris
+          |{{exif.aperture}}
+          i.mdi.mdi-timer
+          |{{exif.exposure_time}}
+        br
+        |{{currentFile.data.location}}
+      small(v-if='currentFile.data.type == "Video"')
+        br
+    .buttons.has-addons.is-hidden-mobile(v-if='currentUser')
       b-tooltip(label="Löschen" v-if='!liked')
         a.button.is-dark(@click='onDelete')
           i.mdi.mdi-delete
@@ -105,5 +106,15 @@ export default {
 }
 img.slide-content {
   transition: all 0.3s ease-in-out;
+}
+@media screen and (max-width: 768px) {
+  .gallery-container .blueimp-gallery .gallery-controls {
+    position: absolute;
+    top: auto;
+    left: auto;
+    bottom: 5px;
+    right: 5px;
+  }
+
 }
 </style>

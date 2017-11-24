@@ -19,6 +19,9 @@ require('moment/locale/de')
 Vue.use(require('vue-moment'), { moment })
 moment.locale('de');
 
+const vueSmoothScroll = require('vue-smoothscroll');
+Vue.use(vueSmoothScroll);
+
 import 'mdi/css/materialdesignicons.css'
 import store from 'picapp/store'
 

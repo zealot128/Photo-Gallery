@@ -73,3 +73,16 @@ body {
 .subtitle.is-5 {
   transition: font-size 0.3s ease-in-out;
 }
+
+.mdi-spin:before {
+	animation: md-spin 1s infinite linear !important;
+}
+@keyframes md-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(359deg);
+	}
+}
+

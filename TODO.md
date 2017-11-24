@@ -1,3 +1,5 @@
+* Picture-Modal: Icon Leiste im Mobile verstecken
+
 #### REWRITE
 
 Basisfunktionalitaet:

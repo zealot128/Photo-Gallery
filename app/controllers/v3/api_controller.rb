@@ -34,12 +34,11 @@ module V3
 
     def exif
       json = Rails.cache.fetch('api.exif', expires_in: 0) do
+        groups = Photo.group("(regexp_replace(meta_data::text, '\\\\u0000', '', 'g'))::json->>'model'")
+          .order('count_all desc').limit(30).count.delete_if { |k, _| k.blank? }
         {
-          camera_models: Photo.group("(meta_data->>'model')::text").order('count_all desc').limit(30).count.delete_if { |k, _| k.blank? }.map { |k, v|
-            {
-              name: k,
-              count: v
-            }
+          camera_models: groups.map { |k, v|
+            { name: k, count: v }
           }
         }
       end

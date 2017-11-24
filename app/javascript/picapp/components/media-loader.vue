@@ -1,12 +1,14 @@
 <template lang="pug">
   div(v-infinite-scroll="loadMore" infinite-scroll-distance="100" infinite-scroll-immediate-check infinite-scroll-disabled="disableScrollWatch")
-    b-loading(:active.sync="loadingItems" v-if='loadingItems' :canCancel="true")
+    b-loading(:active.sync="loadingInitialItems" v-if='loadingInitialItems' :canCancel="true")
     transition(name="slide-fade"): slot(v-if='!loadingItems || value.length > 0')
     transition(name="slide-fade")
       b-message(title="Fehler beim Laden" type="is-danger" v-if='loadingError')
         button.button.is-primary(@click='retry') Erneut versuchen
         br
         |{{loadingError}}
+    div.loading-bottom(v-if='loadingItems && !loadingInitialItems')
+      i.mdi.mdi-spin.mdi-loading
 
 </template>
 <script>
@@ -30,6 +32,7 @@ export default {
   data() {
     return {
       loadingItems: true,
+      loadingInitialItems: true,
       loadingError: null,
       pagination: {
         currentPage: 1,
@@ -39,7 +42,10 @@ export default {
     }
   },
   watch: {
-    filter() { this.initialLoad() }
+    filter() {
+      this.resetScroll()
+      this.initialLoad()
+    }
   },
   computed: {
     api() { return new Api() },
@@ -51,6 +57,11 @@ export default {
     this.initialLoad()
   },
   methods: {
+    resetScroll() {
+      if (window.scrollY > 50) {
+        this.$SmoothScroll(0)
+      }
+    },
     loadMore() {
       if (this.pagination.totalPages > this.pagination.currentPage) {
         this.loadingItems = true
@@ -58,6 +69,7 @@ export default {
       }
     },
     initialLoad() {
+      this.loadingInitialItems = true
       this.loadPage(1)
     },
     retry() {
@@ -78,12 +90,14 @@ export default {
         this.pagination.totalPages = r.data.meta.total_pages
         this.pagination.totalCount = r.data.meta.total_count
         this.loadingItems = false
+        this.loadingInitialItems = false
         if (this.$refs.gallery) {
           this.galleryControlIndex = null
         }
       }).catch((error) => {
         this.loadingError = error.response
         this.loadingItems = false
+        this.loadingInitialItems = false
       })
     },
   }
@@ -99,5 +113,13 @@ export default {
 .slide-fade-enter, .slide-fade-leave-to {
   transform: translateX(10px);
   opacity: 0;
+}
+.loading-bottom {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  font-size: 2rem;
+  color: white;
+  text-shadow: 0 0 2px #444;
 }
 </style>

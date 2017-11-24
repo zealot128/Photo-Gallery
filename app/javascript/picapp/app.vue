@@ -2,8 +2,7 @@
   media-loader(v-model='photos' :disable-auto-loading='galleryControlIndex != null' :filter='filter')
     #app
       filter-bar(v-model='filter')
-        button.button.is-primary.is-large(@click='isSmall = !isSmall' :class='{"is-outlined": !isSmall}')
-          i.mdi.mdi-fw.mdi-map
+        landscape-toggler(v-model='isSmall')
       .gallery-container(v-if='photos.length > 0' :class='{ "small-mode": isSmall }')
         v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
           div(slot='controls'): .gallery-controls(v-if='currentFile')
@@ -45,6 +44,7 @@ import PicGalleryShow from 'picapp/components/gallery-show';
 import FilterBar from 'picapp/components/filter-bar';
 import MediaLoader from 'picapp/components/media-loader'
 import BulkUpdate from 'picapp/components/bulk-update'
+import LandscapeToggler from 'picapp/components/landscape-toggler';
 import Api from 'picapp/api';
 
 import 'picapp/style.scss'
@@ -54,7 +54,7 @@ import { groupBy, mapValues } from 'lodash';
 
 export default {
   components: {
-    VGallery, PhotoPreview, VideoPreview, PicGalleryShow, FilterBar, PicDeleteModal, MediaLoader, PicEditModal, BulkUpdate
+    VGallery, PhotoPreview, VideoPreview, PicGalleryShow, FilterBar, PicDeleteModal, MediaLoader, PicEditModal, BulkUpdate, LandscapeToggler
   },
   data() {
     return {
