@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607073738) do
+ActiveRecord::Schema.define(version: 20171125231053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,13 @@ ActiveRecord::Schema.define(version: 20170607073738) do
     t.index ["year_id"], name: "index_months_on_year_id"
   end
 
+  create_table "ocr_results", force: :cascade do |t|
+    t.integer "base_file_id"
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "people", id: :serial, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -109,6 +116,7 @@ ActiveRecord::Schema.define(version: 20170607073738) do
     t.boolean "error_on_processing", default: false
     t.integer "duration"
     t.datetime "mark_as_deleted_on"
+    t.boolean "rekognition_ocr_run", default: false
     t.index ["aperture"], name: "index_photos_on_aperture"
     t.index ["day_id"], name: "index_photos_on_day_id"
     t.index ["file_size"], name: "index_photos_on_file_size"

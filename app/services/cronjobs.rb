@@ -10,7 +10,7 @@ module Cronjobs
       rekognize_labels
       rekognize_faces
       Rails.logger.info "Cronjobs.run finished"
-      LoggingEntry.where('created_at < ?', KEEP_LOG).delete_all
+      LoggingEntry.where('created_at < ?', KEEP_LOG.ago).delete_all
     end
   end
 
@@ -39,6 +39,22 @@ module Cronjobs
       rescue StandardError => e
         file.update error_on_processing: true
         Rails.logger.error "Error while rekognizing faces #{file.id} -> #{e.inspect}"
+      end
+    end
+  end
+
+  def self.rekognize_ocr(time_limit: 2.days.ago)
+    allowed_tags = ["Text", "Page", "Label", "Brochure", "Flyer", "Paper", "Poster", "File", "Webpage", "Screen", "Letter", "Paper"]
+    return unless Setting['rekognition.enabled']
+    Photo.where('created_at > ?', time_limit).limit(500).where(rekognition_ocr_run: false, error_on_processing: false).each do |file|
+      Rails.logger.info "Cronjobs.rekognize_ocr -> #{file.id}"
+      begin
+        if file.image_labels.blank? || (file.image_labels.pluck(:name) & allowed_tags).any?
+        file.rekognize_ocr
+        file.update rekognition_ocr_run: true
+      rescue StandardError => e
+        file.update error_on_processing: true
+        Rails.logger.error "Error while rekognizing ocr #{file.id} -> #{e.inspect}"
       end
     end
   end

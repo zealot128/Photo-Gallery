@@ -1,6 +1,8 @@
 * AWS: OCR
-* Neues Face
-* Face Autocompletion
+* Faces
+  * Autocompletion Name
+  * Weiter
+  * Neues Face malen
 * ShotAt aendern
 * Rotate
 * Geodaten -> Map in Day view?

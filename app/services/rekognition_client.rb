@@ -33,6 +33,15 @@ class RekognitionClient
       resp
     end
 
+    def ocr(photo)
+      client.detect_text({ image: {
+        s3_object: {
+          bucket: Setting['aws.bucket'],
+          name: photo.file.file.path,
+        },
+      }})
+    end
+
     def index_faces(photo)
 			client.index_faces({
         collection_id: rekognition_collection,

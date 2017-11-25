@@ -27,6 +27,7 @@
 #  error_on_processing    :boolean          default(FALSE)
 #  duration               :integer
 #  mark_as_deleted_on     :datetime
+#  rekognition_ocr_run    :boolean          default(FALSE)
 #
 
 require 'spec_helper'

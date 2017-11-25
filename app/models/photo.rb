@@ -27,6 +27,7 @@
 #  error_on_processing    :boolean          default(FALSE)
 #  duration               :integer
 #  mark_as_deleted_on     :datetime
+#  rekognition_ocr_run    :boolean          default(FALSE)
 #
 
 class Photo < BaseFile
@@ -72,6 +73,18 @@ class Photo < BaseFile
         end
     end
     update_column :rekognition_labels_run, true
+  rescue Aws::Rekognition::Errors::InvalidS3ObjectException
+  end
+
+  def rekognize_ocr
+    aws = RekognitionClient.ocr(self)
+    text = aws.text_detections.map{ |i| i.detected_text }.join(' ')
+    if text.strip.present? && text.length > 10
+      ocr_result || build_ocr_result
+      ocr_result.text = text
+      ocr_result.save!
+    end
+    # update_column :rekognition_ocr_run, true
   rescue Aws::Rekognition::Errors::InvalidS3ObjectException
   end
 

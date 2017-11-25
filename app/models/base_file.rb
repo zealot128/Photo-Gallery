@@ -27,6 +27,7 @@
 #  error_on_processing    :boolean          default(FALSE)
 #  duration               :integer
 #  mark_as_deleted_on     :datetime
+#  rekognition_ocr_run    :boolean          default(FALSE)
 #
 
 class BaseFile < ApplicationRecord
@@ -36,6 +37,7 @@ class BaseFile < ApplicationRecord
   has_many :people, through: :image_faces
   has_many :likes
   has_many :liked_by, through: :likes, class_name: "User", source: :user
+  has_one :ocr_result
 
   belongs_to :user
   belongs_to :day
