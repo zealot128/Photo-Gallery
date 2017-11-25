@@ -10,7 +10,7 @@ module V3
           labels: search.label_facets,
         },
         meta: {
-          current_page: search.page,
+          current_page: search.page || 1,
           total_pages: @recent.total_pages,
           total_count: @recent.total_entries
         }
@@ -33,7 +33,7 @@ module V3
     end
 
     def exif
-      json = Rails.cache.fetch('api.exif', expires_in: 0) do
+      json = Rails.cache.fetch('api.exif', expires_in: 15.minutes) do
         groups = Photo.group("(regexp_replace(meta_data::text, '\\\\u0000', '', 'g'))::json->>'model'")
           .order('count_all desc').limit(30).count.delete_if { |k, _| k.blank? }
         {

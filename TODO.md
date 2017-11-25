@@ -1,28 +1,17 @@
-* Picture-Modal: Icon Leiste im Mobile verstecken
+* AWS: OCR
+* Neues Face
+* Face Autocompletion
+* ShotAt aendern
+* Rotate
+* Geodaten -> Map in Day view?
+* Mobile FF retained nicht position :(
 
 #### REWRITE
 
-Basisfunktionalitaet:
-
-* Bearbeiten:
-  * Rotieren
-  * Caption
-  * ShotAt aendern
-  * Neues Face malen
-
 * Mobile Back Button
 
----
-
-* Filter Sidebar
-  * Filter: Personen And/Or
-  * Orte (+Alle Photos desselben Tages)
-* Direct Upload
 
 ---
-
-* Bilder
-  * Geodaten -> Map in Day view
 
 * MetaData als FlatFiles mit abspeichern
   * Je Day eine json Datei:
@@ -37,8 +26,6 @@ Basisfunktionalitaet:
     ShotAt=2016-..
 
 * SMTP configurable (?)
-* Real multi user with groups=families
-* Jpegoptim?
 
 * WebDAV: andere Apps, wie Owncloud checken
 * S3 import?

@@ -1,5 +1,6 @@
 # rubocop:disable Style/ClassVars
 class V3::Search
+  DATE_COLUMN = "(shot_at at time zone 'Europe/Berlin')::date"
   class << self
     attr_accessor :filters
     def add_filter(column, array: false, &block)
@@ -92,8 +93,8 @@ class V3::Search
       people_sql = people_sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
     end
     if include_whole_day == 'true'
-      dates = people_sql.select("(shot_at at time zone 'Europe/Berlin')::date")
-      sql = sql.where("(shot_at at time zone 'Europe/Berlin')::date in (?)", dates)
+      dates = people_sql.select(DATE_COLUMN)
+      sql = sql.where("#{DATE_COLUMN} in (?)", dates)
     else
       sql = people_sql
     end
@@ -104,7 +105,7 @@ class V3::Search
     d = date_parse(from)
     if d
       @parsed_from = d.to_date
-      sql.where('shot_at >= ?', @parsed_from)
+      sql.where("#{DATE_COLUMN} >= ?", @parsed_from)
     end
   end
 
@@ -112,7 +113,7 @@ class V3::Search
     d = date_parse(to)
     if d
       @parsed_to = d.to_date
-      sql.where('shot_at <= ?', @parsed_to)
+      sql.where("#{DATE_COLUMN} <= ?", @parsed_to)
     end
   end
 
@@ -127,6 +128,6 @@ class V3::Search
   end
 
   add_filter(:camera_models, array: true) do |sql|
-    sql.where("(meta_data->>'model')::text in (?)", camera_models)
+    sql.where("(regexp_replace(meta_data::text, '\\\\u0000', '', 'g'))::json->>'model' in (?)", camera_models)
   end
 end
