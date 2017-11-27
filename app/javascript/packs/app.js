@@ -5,3 +5,4 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 require('picapp')
+require('face-selection')

@@ -1,0 +1,18 @@
+doctype 5
+html lang="en"
+  head
+    meta charset="utf-8" /
+    meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"
+    title Picture App
+    = csrf_meta_tags
+    /![if lt IE 9]
+      = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
+    = stylesheet_pack_tag 'app'
+    = javascript_pack_tag 'app'
+    link href="#{image_path('logo.png')}" rel="shortcut icon"
+    javascript:
+      window.currentUser = #{raw current_user.try(:username).to_json}
+
+  body
+    #face-selection
+

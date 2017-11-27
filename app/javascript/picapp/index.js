@@ -26,6 +26,9 @@ import 'mdi/css/materialdesignicons.css'
 import store from 'picapp/store'
 
 document.addEventListener('DOMContentLoaded', () => {
+  if (!document.getElementById('vue-entry')) {
+    return
+  }
   const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
   store.commit('SET_CSRF_TOKEN', token)
   /* eslint no-new: 0 */

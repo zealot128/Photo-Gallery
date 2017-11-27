@@ -30,10 +30,10 @@ class ImageFace < ApplicationRecord
 
   after_destroy do
     begin
-      RekognitionClient.delete_faces(self.aws_id)
-    rescue Exception => e
+      RekognitionClient.delete_faces(aws_id)
+    rescue StandardError => e
       ExceptionNotifier.notify_exception(e) if defined?(ExceptionNotifier)
-      p e if !Rails.env.production?
+      p e unless Rails.env.production?
       nil
     end
   end
@@ -51,25 +51,24 @@ class ImageFace < ApplicationRecord
     image.crop("#{w}x#{h}+#{left}+#{top}")
     image.resize 'x100>'
     self.file = File.open(image.path)
-    self.save
+    save
   end
 
   def auto_assign_person
-    return if !Setting['rekognition.faces.auto_assign.enabled']
-    if !person
-      similar = RekognitionClient.search_faces(aws_id, threshold: AUTO_ASSIGN_THRESHOLD, max_faces: AUTO_ASSIGN_MAX_FACES)
-      if similar.face_matches.count >= AUTO_ASSIGN_MIN_EXISTING_FACES
-        aws_ids = similar.face_matches.map{|i| i.face.face_id }
-        face_histogram = ImageFace.unscoped.where(aws_id: aws_ids).map(&:person_id).compact.group_by(&:itself).map{|a,b|[a,b.count]}.to_h
-        if face_histogram.length == 1 && face_histogram.values.first >= AUTO_ASSIGN_MIN_EXISTING_FACES
-          person_id = face_histogram.keys.first
-          update person_id: person_id
-        end
+    return unless Setting['rekognition.faces.auto_assign.enabled']
+    return if person
+    similar = RekognitionClient.search_faces(aws_id, threshold: AUTO_ASSIGN_THRESHOLD, max_faces: AUTO_ASSIGN_MAX_FACES)
+    if similar.face_matches.count >= AUTO_ASSIGN_MIN_EXISTING_FACES
+      aws_ids = similar.face_matches.map { |i| i.face.face_id }
+      face_histogram = ImageFace.unscoped.where(aws_id: aws_ids).map(&:person_id).compact.group_by(&:itself).map { |a, b| [a, b.count] }.to_h
+      if face_histogram.length == 1 && face_histogram.values.first >= AUTO_ASSIGN_MIN_EXISTING_FACES
+        person_id = face_histogram.keys.first
+        update person_id: person_id
       end
     end
   end
 
-  def as_json(opts={})
+  def as_json(opts = {})
     {
       id: id,
       preview: file.url,
@@ -77,6 +76,7 @@ class ImageFace < ApplicationRecord
       similarity: similarity,
       confidence: confidence,
       person_id: person_id,
+      file_id: base_file_id,
       person_name: person.try(:name)
     }
   end

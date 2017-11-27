@@ -55,6 +55,26 @@ class Api {
   bulkUpdate(request) {
     return axios.post("/v2/bulk_update", request)
   }
+  getUnassignedFaces() {
+    return axios.get('/v3/api/unassigned').then(r => r.data)
+  }
+  getSimilarImages(face, max, threshold) {
+    return axios.get(`/v2/faces/${face.id}`, {
+      params: { max, threshold }
+    }).then(r => r.data)
+  }
+  deleteFaces(faceIds) {
+    return axios.delete(`/v2/faces`, {
+      params: { face_ids: faceIds }
+    }).then(r => r.data)
+  }
+  setFaces(personName, faceIds, unselectedFaceIds) {
+    return axios.post('/v2/assign_faces', {
+      person_name: personName,
+      face_ids: faceIds,
+      unselected_face_ids: unselectedFaceIds,
+    })
+  }
 }
 
 export default Api

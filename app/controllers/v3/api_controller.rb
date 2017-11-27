@@ -44,5 +44,12 @@ module V3
       end
       render json: json
     end
+
+    def unassigned
+      @filter = UnassignedFilter.new
+      @filter.assign_attributes(params[:unassigned_filter]) if params[:unassigned_filter]
+      @image_faces = @filter.image_faces.paginate(page: params[:page], per_page: 200)
+      render json: @image_faces
+    end
   end
 end

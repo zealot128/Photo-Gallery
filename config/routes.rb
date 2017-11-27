@@ -79,12 +79,14 @@ SimpleGallery::Application.routes.draw do
   get 'tube' => 'tube#index'
 
   get 'v3' => 'pages#v3'
+  get 'v3/faces' => 'pages#v3_faces'
   namespace :v3 do
     get 'api/photos' => 'api#photos'
     get 'api/people' => 'api#people'
     get 'api/tags' => 'api#tags'
     get 'api/shares' => 'api#shares'
     get 'api/exif' => 'api#exif'
+    get 'api/unassigned' => 'api#unassigned'
   end
 
   get '/', to: 'pages#index', as: 'root'
