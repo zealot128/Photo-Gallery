@@ -1,27 +1,28 @@
 br
 h3.text-center = t 'pages.upload.title'
+
+- i18n_args = { upload_url: token_upload_url(token: current_user.token),
+                username: current_user.username,
+                bucket: Setting['aws.bucket'],
+                address: root_url, pseudo_password: current_user.pseudo_password,
+                qr_image: image_tag(qrcode_image_url(token_upload_url(token: current_user.token))) }
+
 .row
-  .col-sm-6.col-md-4
-    .panel.panel-default
-      .panel-heading: h3.panel-title
-        = t 'pages.upload.autoshare.title'
-      .panel-body
-        = link_to "Google Play", "https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result"
-        br
-        br
-        = t 'pages.upload.autoshare.configuration'
-        = raw t('pages.upload.autoshare.description',
-          upload_url: token_upload_url(token: current_user.token),
-          qr_image: image_tag(qrcode_image_url(token_upload_url(token: current_user.token))))
-  .col-sm-6.col-md-4
-    .panel.panel-default
-      .panel-heading: h3.panel-title
-        = t 'pages.upload.photobackup.title'
-      .panel-body
-        = raw t('pages.upload.photobackup.description', address: root_url, pseudo_password: current_user.pseudo_password)
-  .col-sm-6.col-md-4
-    .panel.panel-default
-      .panel-heading: h3.panel-title
-        = t 'pages.upload.camerasync.title'
-      .panel-body
-        = raw t('pages.upload.camerasync.description', address: root_url, pseudo_password: current_user.pseudo_password, username: current_user.username)
+  - t('pages.upload.apps').each_with_index do |(key, body), i|
+    - if i % 2 == 0
+      .clearfix.visible-sm
+    - if i % 3 == 0
+      .clearfix.hidden-xs.hidden-sm
+    .col-sm-6.col-md-4
+      .panel.panel-default
+        .panel-heading: h3.panel-title: a(data-toggle='collapse' href='#app_#{i}')
+          = body[:title]
+          span.pull-right.label.label-primary= body[:platform]
+          - if body[:paid]
+            span.pull-right.label.label-danger Paid
+        .panel-body.collapse(id='app_#{i}')
+          == t("pages.upload.apps.#{key}.description", i18n_args)
+        - if body[:link]
+          .panel-footer
+            = link_to "App", body[:link], class: 'btn btn-primary'
+

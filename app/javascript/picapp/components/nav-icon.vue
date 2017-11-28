@@ -5,10 +5,10 @@
         i.mdi.mdi-menu
       b-dropdown-item(has-link): a(@click.prevent='openModal')
         | Shares
-      b-dropdown-item(has-link): a(href='/v2/assign_faces/unassigned')
+      b-dropdown-item(has-link v-if='currentPage == "pics"'): a(href='/v3/faces')
         | Unzuwiesene Gesichter
-      b-dropdown-item(has-link): a(href='/upload')
-        | Upload
+      b-dropdown-item(has-link v-if='currentPage == "faces"'): a(href='/v3/faces')
+        | App
     b-modal(:active.sync="shareModalOpen")
       .card: .card-content
         .panel
@@ -27,6 +27,7 @@
 <script>
 import Api from 'picapp/api';
 export default {
+  props: ['currentPage'],
   data() {
     return {
       dropdownnavMenuOpen: false,

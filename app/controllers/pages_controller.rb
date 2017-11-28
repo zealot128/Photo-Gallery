@@ -16,6 +16,12 @@ class PagesController < ApplicationController
       current_user.pseudo_password = generate_pseudo_password
       current_user.save
     end
+    respond_to do |format|
+      format.html
+      format.sh {
+        headers['Content-Disposition'] = 'attachment; filename="upload.sh"'
+      }
+    end
   end
 
   def v3

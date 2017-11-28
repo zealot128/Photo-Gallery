@@ -2,7 +2,7 @@
   .search-container
     .field.has-addons
       .control: pic-upload-bar
-      .control: pic-nav-icon
+      .control: pic-nav-icon(current-page='pics')
       .control: b-dropdown(position="is-bottom-left" v-model='dropdownOpen')
         a.button.is-primary.is-large(slot="trigger" :class='{"is-outlined": !dropdownOpen}')
           i.mdi.mdi-magnify

@@ -1,0 +1,43 @@
+url="<%= root_url %>"
+token="<%= current_user.token %>"
+function delete() {
+       	echo "- Deleting $1"
+       	rm "$1"
+}
+function upload() {
+       	status=`curl --progress-bar -i -k -XPOST $url/?token=$token -F file="@$1"`
+       	case "$status" in
+       		*Status:\ 500*)
+       			echo "SERVER error"
+       			echo $status
+       		;;
+       		*Status:\ 200*)
+       			echo "- upload complete"
+       			delete "$file"
+       		;;
+       		*)
+       			echo "SERVER error"
+       			echo $status
+       		;;
+       	esac
+}
+for file in "$@"
+do
+       	echo $file
+       	du=`du -hs "$file"`
+       	echo "- $du"
+       	md5=(`md5sum "$file"`)
+       	status=`curl -s -i -k $url/api/exists\?md5=$md5\&token=$token  | grep 'Status:'`
+       	case "$status" in
+       		*404*)
+       			echo "- uploading"
+       			upload "$file"
+       		;;
+       		*200*)
+       			echo "- 200 already exists"
+       			delete "$file"
+       		;;
+       		*)
+       			echo "- ?? $status"
+       	esac
+done

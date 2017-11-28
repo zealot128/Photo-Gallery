@@ -1,8 +1,9 @@
 class S3Import
   class S3Api
-    def initialize
+    def initialize(max: 5)
       @client = Aws::S3::Client.new(CarrierWave::Uploader::Base.aws_credentials)
       @bucket = Setting['aws.bucket']
+      @max = 5
     end
 
     def get_file(path)
@@ -14,7 +15,7 @@ class S3Import
     end
 
     def list_objects(prefix)
-      @client.list_objects(prefix: prefix, bucket: @bucket, max_keys: 5).contents
+      @client.list_objects(prefix: prefix, bucket: @bucket, max_keys: @max).contents
     end
 
     def file_exists?(path)
@@ -24,8 +25,8 @@ class S3Import
     end
   end
 
-  def self.run
-    api = S3Api.new
+  def self.run(max: 5, folder: 'incoming/')
+    api = S3Api.new(max: max)
     api.list_objects('incoming/').select { |i| i.size > 0 }.each do |file|
       new(file).run
     end

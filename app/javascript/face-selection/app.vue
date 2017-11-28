@@ -1,5 +1,8 @@
 <template lang='pug'>
 div
+  .search-container
+    .field.has-addons
+      .control: pic-nav-icon(current-page='faces')
   section.hero.is-dark
     .hero-body
       h3.title.is-4 Gesichter zuweisen
@@ -16,9 +19,10 @@ div
 <script>
 import Api from 'picapp/api'
 import FaceEdit from 'face-selection/face-edit'
+import PicNavIcon from 'picapp/components/nav-icon';
 
 export default {
-  components: { FaceEdit },
+  components: { FaceEdit, PicNavIcon },
   data() {
     return {
       selectedFace: null,
@@ -48,3 +52,12 @@ export default {
   }
 }
 </script>
+
+<style lang='scss'>
+.search-container {
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  z-index: 2;
+}
+</style>

@@ -36,41 +36,78 @@ de:
       intro: Dies ist meine private Foto-Archivierung App. Hier kommen ein paar private öffentliche Fotos von mir
       title: Photo-App
     upload:
-      autoshare:
-        configuration: Konfiguration
-        description: |
-          <dl>
-          <dt>Typ <dd>Webserver
-          <dt>Active <dd>(Yes)
-          <dt>Server Address: <dd><pre><code>%{upload_url}</code></pre>%{qr_image}
-          <dt>Username / Password: <dd>(leer) nicht benötigt, da die Token-URL eindeutig ist
-          <dt>
-          </dl>
-          Lade eingie photos mit Autoshare hoch oder konfiguriere Autoshare zum automatischen Upload. AutoShare kann manuell auch Videos hochladen, tut dies aber nicht im automatischen Modus
-        title: AutoShare (Android)
-      camerasync:
-        description: |
-          <p>Nutzt WebDAV Minimalimplementation. Mit CameraSync funktioniert es, andere Tools könnten Probleme haben, da nicht alle WebDAV Calls implementiert sind. <a href='https://itunes.apple.com/de/app/camerasync/id406645727?mt=8'>App-Store</a></p>
-          <h4>Konfiguration</h4>
-          <dl>
-          <dt> Server-Adress:
-          <dd><pre><code>%{address}dav</code></pre>
-          <dt> Nutzername:
-          <dd><pre><code>%{username}</code></pre>
-          <dt> Passwort:
-          <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
-          </dl>
-        title: CameraSync (iOS) WebDAV
-      photobackup:
-        description: |
-          <p> Nutzt das <a href='https://photobackup.github.io'>PhotoUpload Protokoll</a>. Bisher auch nur verfügbar für Android <a href='https://play.google.com/store/apps/details?id=fr.s13d.photobackup'> im Play Store</a> oder F-Droid. Alternativ auch CLI clients. Im Gegensatz zu Autoshare beherrscht es auch moderne SSL-Standards und hat eigene Upload-UI. Leider ist es auf Dauer nicht ganz so stabil und deaktiviert sich unregelmäßig</p>
-          Konfiguration
-          <dl>
-            <dt>Server-Adresse: <dd><pre><code>%{address}</code></pre>
-            <dt>Eigenes (Pseudo)-Passwort: <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
-          </dl>
-        title: Photobackup (Android, script)
       title: Automatischer Upload von mobilen Geräten
+      apps:
+        autoshare:
+          title: AutoShare
+          link: "https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result"
+          platform: Android
+          description: |
+            <dl>
+            <dt>Typ <dd>Webserver
+            <dt>Active <dd>(Yes)
+            <dt>Server Address: <dd><pre><code>%{upload_url}</code></pre>%{qr_image}
+            <dt>Username / Password: <dd>(leer) nicht benötigt, da die Token-URL eindeutig ist
+            <dt>
+            </dl>
+            Lade einige Photos mit Autoshare hoch oder konfiguriere Autoshare zum automatischen Upload. AutoShare kann manuell auch Videos hochladen, tut dies aber nicht im automatischen Modus
+        camerasync:
+          title: CameraSync (iOS) WebDAV
+          paid: yes
+          platform: iOS
+          link: "https://itunes.apple.com/de/app/camerasync/id406645727?mt=8"
+          description: |
+            <p>Nutzt WebDAV Minimalimplementation. Mit CameraSync funktioniert es, andere Tools könnten Probleme haben, da nicht alle WebDAV Calls implementiert sind. <a href='https://itunes.apple.com/de/app/camerasync/id406645727?mt=8'>App-Store</a></p>
+            <h4>Konfiguration</h4>
+            <dl>
+            <dt> Server-Adress:
+            <dd><pre><code>%{address}dav</code></pre>
+            <dt> Nutzername:
+            <dd><pre><code>%{username}</code></pre>
+            <dt> Passwort:
+            <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
+            </dl>
+        photobackup:
+          link: 'https://play.google.com/store/apps/details?id=fr.s13d.photobackup'
+          platform: 'Android'
+          description: |
+            <p> Nutzt das <a href='https://photobackup.github.io'>PhotoUpload Protokoll</a>. Bisher auch nur verfügbar für Android <a href='https://play.google.com/store/apps/details?id=fr.s13d.photobackup'> im Play Store</a> oder F-Droid. Alternativ auch CLI clients. Im Gegensatz zu Autoshare beherrscht es auch moderne SSL-Standards und hat eigene Upload-UI. Leider ist es auf Dauer nicht ganz so stabil und deaktiviert sich unregelmäßig</p>
+            Konfiguration
+            <dl>
+              <dt>Server-Adresse: <dd><pre><code>%{address}</code></pre>
+              <dt>Eigenes (Pseudo)-Passwort: <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
+            </dl>
+          title: Photobackup
+        bash:
+          title: Bash-Script
+          platform: 'Linux/OSX'
+          link: '/upload.sh'
+          description: |
+             <p> Bash Script das Files hochlädt und danach löscht. Braucht curl installiert. Läuft auf Linux, OSX, und sogar manchen Android (adb shell). Das Script führt vorher md5 checks aus und lädt bereits hochgeladene nicht nocheinmal hoch.
+             <br>Nutzung:</p>
+             <pre><code>~/path/to/upload.sh *.jpg</code></pre>
+        s3:
+          title: S3-Import (alpha)
+          platform: 'Alle'
+          description: |
+            <p> Lade einfach Medienobjekte in folgendes Bucket:<code></code></p><pre><code>Bucket %{bucket}<br>Order: /incoming/</code></pre>
+            <p> Der Cronjob schaut alle 10 min dort nach und verarbeitet neue Dateien. Gefundene Dateien werden bei erfolgreichem Import gelöscht! </p>
+            <p> Es werden je Lauf maximal 5 Objekte importiert. Nutze rails console um mehr zu importieren:</p>
+            <pre><code>S3Import.run(max: 5, folder: 'incoming/')</code></pre>
+        photosync:
+          title: PhotoSync
+          paid: yes
+          platform: Android, iOS
+          link: 'https://www.photosync-app.com/'
+          description: |
+            <p>Ziel: WebDAV</p>
+            <p>WebDAV-Zugang konfigurieren: %{address}/dav</p>
+            <p>Port: 443</p>
+            <p>Anmeldung: %{username}</p>
+            <p>Kennwort: %{pseudo_password}</p>
+            <p>Verzeichnis: dav</p>
+            <p>Ziel-Ordner: /</p>
+            <p>Transfer-Einstellungen: Volle Qualität</p>
   photos:
     index:
       last_upload: vor %{time}
