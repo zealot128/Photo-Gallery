@@ -48,13 +48,6 @@ script type="x-template" id='tpl-photo-preview'
     a.gallery-element v-bind:href='file.versions.large' v-bind:data-sub-html='"#" + subHtmlId' v-bind:data-download-url="file.download_url"
       img v-bind:src='file.versions.preview' v-bind:title='title'
 
-      .like-button
-        a(v-if='liked' href='#' v-on:click='unlike($event)')
-          i.fa.fa-star.fa-fw title=''
-        a(v-if='!liked' href='#' v-on:click='like($event)')
-          i.fa.fa-star-o.fa-fw title=''
-
-
 / Photo Large
 script type="x-template" id='tpl-photo'
   div v-bind:id="subHtmlId"
@@ -95,11 +88,6 @@ script type="x-template" id='tpl-video-preview'
       .duration
         | {{duration}}
       / img v-for='tb in file.thumbnails' v-bind:src='tb'
-      .like-button
-        a(v-if='liked' href='#' v-on:click='unlike($event)')
-          i.fa.fa-star.fa-fw title=''
-        a(v-if='!liked' href='#' v-on:click='like($event)')
-          i.fa.fa-star-o.fa-fw title=''
 
 script type="x-template" id='tpl-video'
   div
