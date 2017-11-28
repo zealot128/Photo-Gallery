@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'picture_upload_tool'
-
-PictureUploadTool::App.start
