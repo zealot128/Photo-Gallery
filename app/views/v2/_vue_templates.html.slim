@@ -58,14 +58,7 @@ script type="x-template" id='tpl-photo-preview'
 / Photo Large
 script type="x-template" id='tpl-photo'
   div v-bind:id="subHtmlId"
-    .js-bbs.hide
-      bounding-box v-bind:face='face' v-for='face in file.faces' v-bind:width='image_width' v-bind:height='image_height'
     p v-bind:data-id="subHtmlId"
-      span<>(v-if='faces_count > 0')
-        a.js-toggle-faces(href='#' v-bind:title='faces_count + " " + #{t('vue_templates.photo.title').to_json}')
-          span.badge(v-if='unassigned_faces_count > 0')
-            |{{unassigned_faces_count}}
-          i.fa.fa-user.fa-fw<>
       span.image-info<
         i.fa.fa-clock-o.fa-fw>
         |{{file.shot_at_formatted}}
@@ -85,7 +78,6 @@ script type="x-template" id='tpl-photo'
 
       a.btn.btn-xs.btn-default.js-undelete.image-info(v-if='file.marked_as_deleted' href='#')
         i.fa.fa-undo.fa-fw title='#{t('vue_templates.photo.undelete')}'
-
 
       span<>(v-for='tag in file.labels' style='margin-left: 1px')
         span.label.label-default<>

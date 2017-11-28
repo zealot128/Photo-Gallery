@@ -34,8 +34,6 @@ window.Gallery = (domEl, state) ->
         this.gallery = $el.lightGallery(lgOptions).data('lightGallery')
         $el.on('onBeforeOpen.lg', => this.galleryOpen = true)
         $el.on('onCloseAfter.lg', => this.galleryOpen = false)
-        $el.on('deleteImage.lg', (a,b)=> this.deleteImage(b))
-        $el.on('editImage.lg', (a,b) => this.editImage(b))
 
       editImage: (gallery)->
         this.currentImage = this.files[gallery.index]
@@ -55,24 +53,6 @@ window.Gallery = (domEl, state) ->
           this.gallery.goToNextSlide = this.savedCallbacks.nextSlide
           this.gallery.goToPrevSlide = this.savedCallbacks.prevSlide
 
-      deleteImage: (gallery)->
-        file = this.files[gallery.index]
-        return if !file?
-        Api.deleteImage(file.id)
-        index = gallery.index
-        item_count = gallery.$items.length
-        gallery.destroy(true)
-        index = this.files.indexOf(file)
-        this.files.splice(index, 1)
-        that = this
-        Vue.nextTick ->
-          if item_count > 1
-            elements = $(that.$el).find('.gallery-element')
-            newIndex = Math.min(elements.length - 1, index)
-            that.buildGallery()
-            setTimeout ->
-              $(elements.get(newIndex)).click()
-            , 200
       handleKeyboardNav: (e)->
         if currentUser
           KeyboardNavigation(e, this, this.gallery)

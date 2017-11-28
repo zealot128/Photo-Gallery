@@ -45,17 +45,6 @@ window.Api = {
       complete: (e)->
         error(e) if error
 
-  deleteImage: (id, callback)->
-    if !id?
-      callback()
-      return
-    url = "/photos/#{id}"
-    $.ajax
-      url: "/photos/#{id}"
-      dataType: "json"
-      method: "DELETE"
-      success: (e) ->
-        callback(e) if callback
   undeleteImage: (id, callback) ->
     if !id?
       callback()
@@ -122,16 +111,6 @@ window.KeyboardNavigation = (event, vueInstance, gallery)->
         vueEdit = vueInstance.$children.filter((e)->  e.constructor.name == 'VueEdit' )[0]
         if vueEdit?
           vueEdit.closeModal()
-
-  else if vueInstance.galleryOpen
-    switch event.which
-      when 68, 46 # d, delete #delete image
-        if confirm("Really delete image?")
-          vueInstance.deleteImage(gallery)
-          event.preventDefault()
-      when 69 # e
-        vueInstance.editImage(gallery)
-        event.preventDefault()
   else
     switch event.which
       when 37 # left arrow
