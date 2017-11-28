@@ -66,7 +66,7 @@ class Api {
   deleteFaces(faceIds) {
     return axios.delete(`/v2/faces`, {
       params: { face_ids: faceIds }
-    }).then(r => r.data)
+    })
   }
   setFaces(personName, faceIds, unselectedFaceIds) {
     return axios.post('/v2/assign_faces', {

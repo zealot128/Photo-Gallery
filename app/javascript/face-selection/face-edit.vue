@@ -116,7 +116,7 @@ export default {
     },
     deleteFace() {
       this.api.deleteFaces([this.face.id]).then(() => {
-        this.$emit('delete', this.face)
+        this.$emit('delete', this.face.id)
       })
     },
     nextFace() {
