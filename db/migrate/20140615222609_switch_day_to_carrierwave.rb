@@ -1,4 +1,4 @@
-class SwitchDayToCarrierwave < ActiveRecord::Migration
+class SwitchDayToCarrierwave < ActiveRecord::Migration[4.2]
   def change
 
     add_column :days, :montage, :string

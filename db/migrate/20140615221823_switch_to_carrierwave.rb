@@ -1,4 +1,4 @@
-class SwitchToCarrierwave < ActiveRecord::Migration
+class SwitchToCarrierwave < ActiveRecord::Migration[4.2]
   def change
     add_column :photos, :file, :string
     remove_column :photos, "file_file_name"

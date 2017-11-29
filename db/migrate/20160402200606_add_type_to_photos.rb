@@ -1,4 +1,4 @@
-class AddTypeToPhotos < ActiveRecord::Migration
+class AddTypeToPhotos < ActiveRecord::Migration[4.2]
   def change
     add_column :photos, :type, :string
     add_index :photos, :type

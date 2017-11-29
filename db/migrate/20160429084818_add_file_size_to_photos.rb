@@ -1,4 +1,4 @@
-class AddFileSizeToPhotos < ActiveRecord::Migration
+class AddFileSizeToPhotos < ActiveRecord::Migration[4.2]
   def change
     add_column :photos, :file_size, :integer, limit: 8
   end

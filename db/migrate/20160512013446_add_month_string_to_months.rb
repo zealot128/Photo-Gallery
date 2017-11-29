@@ -1,4 +1,4 @@
-class AddMonthStringToMonths < ActiveRecord::Migration
+class AddMonthStringToMonths < ActiveRecord::Migration[4.2]
   def change
     add_column :months, :month_string, :string
   end

@@ -1,5 +1,5 @@
 require 'generate_pseudo_password'
-class DefinePseudoPasswords < ActiveRecord::Migration
+class DefinePseudoPasswords < ActiveRecord::Migration[4.2]
   class User < ActiveRecord::Base
   end
   def change

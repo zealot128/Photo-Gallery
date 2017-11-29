@@ -1,4 +1,4 @@
-class CreateYears < ActiveRecord::Migration
+class CreateYears < ActiveRecord::Migration[4.2]
   def change
     change_table :days do |t|
       t.remove :year

@@ -1,4 +1,4 @@
-class AddBackupFileToPhotos < ActiveRecord::Migration
+class AddBackupFileToPhotos < ActiveRecord::Migration[4.2]
   def change
   end
 end

@@ -1,4 +1,4 @@
-class CreateMonths < ActiveRecord::Migration
+class CreateMonths < ActiveRecord::Migration[4.2]
   def change
     create_table :months do |t|
       t.integer :month_number

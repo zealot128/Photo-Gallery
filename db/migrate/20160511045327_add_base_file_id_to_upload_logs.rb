@@ -1,4 +1,4 @@
-class AddBaseFileIdToUploadLogs < ActiveRecord::Migration
+class AddBaseFileIdToUploadLogs < ActiveRecord::Migration[4.2]
   def change
     add_column :upload_logs, :base_file_id, :integer
   end
