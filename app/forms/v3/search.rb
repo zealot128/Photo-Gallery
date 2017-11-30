@@ -20,6 +20,7 @@ class V3::Search
   attr_accessor :per_page
   attr_accessor :file_size
   attr_accessor :page
+  attr_accessor :query
   attr_reader :file_size_min, :file_size_max
   attr_reader :parsed_from, :parsed_to
   attr_accessor :include_whole_day
@@ -58,6 +59,17 @@ class V3::Search
     if favorite == 'true'
       sql.where('(select 1 from likes where base_file_id = photos.id) is not null')
     end
+  end
+
+  add_filter(:query) do |sql|
+    words = query.split(" ").map{|i| "%#{i}%" }
+    ocr = OcrResult.where('text ilike any (array[?])', words).select('base_file_id')
+    tags = ActsAsTaggableOn::Tag.
+      where('name ilike any (array[?])', words).
+      joins(:taggings).
+      where('taggable_type = ?', 'BaseFile').select("taggable_id")
+
+    sql.where("photos.id in (?) or photos.id in (?)", ocr, tags)
   end
 
   add_filter(:file_types, array: true) do |sql|

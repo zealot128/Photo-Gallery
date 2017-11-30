@@ -9,6 +9,14 @@
         |{{loadingError}}
     div.loading-bottom(v-if='loadingItems && !loadingInitialItems')
       i.mdi.mdi-spin.mdi-loading
+    template(v-if='!loadingItems && value.length == 0')
+      section.hero.is-light
+        .hero-body
+          h3.title.is-4.is-marginless Keine Photos gefunden.
+      section.hero.is-dark
+        .hero-body
+
+
 
 </template>
 <script>

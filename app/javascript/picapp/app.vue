@@ -73,6 +73,7 @@ export default {
       photos: [],
       filter: {
         fileTypes: ['photo', 'video'],
+        query: null,
         from: null,
         to: null,
         favorite: null,

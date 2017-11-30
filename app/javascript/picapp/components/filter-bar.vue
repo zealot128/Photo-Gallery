@@ -23,6 +23,9 @@
                 .column
                   pic-camera-filter(v-model='value')
               .block
+                b-field(label='Suchbegriff/Schlagwort')
+                  b-input(v-model='value.query' @keyup.native.enter='apply')
+              .block
                 div: span(v-for='personId in value.peopleIds')
                   img(:src='findPerson(personId).preview' style='height: 30px')
                 button.button(@click='openAddPersonModal = true')
