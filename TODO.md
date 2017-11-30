@@ -1,7 +1,7 @@
 * AWS: OCR
+  * Suche
+  * Text anzeigen
 * Faces
-  * Autocompletion Name
-  * Weiter
   * Neues Face malen
 * ShotAt aendern
 * Rotate
@@ -30,5 +30,4 @@
 * SMTP configurable (?)
 
 * WebDAV: andere Apps, wie Owncloud checken
-* S3 import?
 * public/uploads/tmp wird nicht gecleart, je release; symlnk fehlt noch beim ansible
