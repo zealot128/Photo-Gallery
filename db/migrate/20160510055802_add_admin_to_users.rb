@@ -4,6 +4,6 @@ class AddAdminToUsers < ActiveRecord::Migration[4.2]
   end
 
   def data
-    User.order('id').first.update_attribute :admin, true
+    User.order('id').first.try(:update_attribute, :admin, true)
   end
 end
