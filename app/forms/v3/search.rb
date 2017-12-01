@@ -68,8 +68,11 @@ class V3::Search
       where('name ilike any (array[?])', words).
       joins(:taggings).
       where('taggable_type = ?', 'BaseFile').select("taggable_id")
+    labels = ImageLabel.where('name ilike any (array[?])', words).
+      joins("INNER JOIN \"base_files_image_labels\" ON \"base_files_image_labels\".\"image_label_id\" = \"image_labels\".\"id\"").
+      select('base_file_id')
 
-    sql.where("photos.id in (?) or photos.id in (?)", ocr, tags)
+    sql.where("photos.id in (?) or photos.id in (?) or photos.id in (?)", ocr, tags, labels)
   end
 
   add_filter(:file_types, array: true) do |sql|
