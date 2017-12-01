@@ -122,7 +122,7 @@ class BaseFile < ApplicationRecord
   end
 
   def shot_at_without_timezone
-    day.try(:date) || shot_at.to_date
+    day.try(:date) || shot_at.utc.to_date
   end
 
   def check_uniqueness
