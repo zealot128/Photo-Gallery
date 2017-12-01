@@ -68,7 +68,7 @@ class V3::Search
       where('name ilike any (array[?])', words).
       joins(:taggings).
       where('taggable_type = ?', 'BaseFile').select("taggable_id")
-    labels = ImageLabel.where('name ilike any (array[?])', words).
+    labels = ImageLabel.where('name ilike any (array[?]) or name_de ilike any (array[?])', words, words).
       joins("INNER JOIN \"base_files_image_labels\" ON \"base_files_image_labels\".\"image_label_id\" = \"image_labels\".\"id\"").
       select('base_file_id')
 

@@ -34,7 +34,6 @@ de:
       intro: Dies ist meine private Foto-Archivierung App. Hier kommen ein paar private öffentliche Fotos von mir
       title: Photo-App
     upload:
-      title: Automatischer Upload von mobilen Geräten
       apps:
         autoshare:
           description: |
@@ -106,6 +105,7 @@ de:
             <pre><code>S3Import.run(max: 5, folder: 'incoming/')</code></pre>
           platform: Alle
           title: S3-Import (alpha)
+      title: Automatischer Upload von mobilen Geräten
   photos:
     index:
       last_upload: vor %{time}
