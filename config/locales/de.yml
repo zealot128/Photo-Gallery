@@ -24,8 +24,6 @@ de:
     profile: Profil
     search: Suche
     settings: Einstellungen
-    shares: Shares
-    tags: Tags
     tube: OurTube™
     unassigned_faces: Nicht zugewiesene Gesichter
     upload: Hochladen
@@ -39,9 +37,6 @@ de:
       title: Automatischer Upload von mobilen Geräten
       apps:
         autoshare:
-          title: AutoShare
-          link: "https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result"
-          platform: Android
           description: |
             <dl>
             <dt>Typ <dd>Webserver
@@ -51,11 +46,18 @@ de:
             <dt>
             </dl>
             Lade einige Photos mit Autoshare hoch oder konfiguriere Autoshare zum automatischen Upload. AutoShare kann manuell auch Videos hochladen, tut dies aber nicht im automatischen Modus
+          link: https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result
+          platform: Android
+          title: AutoShare
+        bash:
+          description: |
+            <p> Bash Script das Files hochlädt und danach löscht. Braucht curl installiert. Läuft auf Linux, OSX, und sogar manchen Android (adb shell). Das Script führt vorher md5 checks aus und lädt bereits hochgeladene nicht nocheinmal hoch.
+            <br>Nutzung:</p>
+            <pre><code>~/path/to/upload.sh *.jpg</code></pre>
+          link: "/upload.sh"
+          platform: Linux/OSX
+          title: Bash-Script
         camerasync:
-          title: CameraSync (iOS) WebDAV
-          paid: yes
-          platform: iOS
-          link: "https://itunes.apple.com/de/app/camerasync/id406645727?mt=8"
           description: |
             <p>Nutzt WebDAV Minimalimplementation. Mit CameraSync funktioniert es, andere Tools könnten Probleme haben, da nicht alle WebDAV Calls implementiert sind. <a href='https://itunes.apple.com/de/app/camerasync/id406645727?mt=8'>App-Store</a></p>
             <h4>Konfiguration</h4>
@@ -67,9 +69,11 @@ de:
             <dt> Passwort:
             <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
             </dl>
+          link: https://itunes.apple.com/de/app/camerasync/id406645727?mt=8
+          paid: true
+          platform: iOS
+          title: CameraSync (iOS) WebDAV
         photobackup:
-          link: 'https://play.google.com/store/apps/details?id=fr.s13d.photobackup'
-          platform: 'Android'
           description: |
             <p> Nutzt das <a href='https://photobackup.github.io'>PhotoUpload Protokoll</a>. Bisher auch nur verfügbar für Android <a href='https://play.google.com/store/apps/details?id=fr.s13d.photobackup'> im Play Store</a> oder F-Droid. Alternativ auch CLI clients. Im Gegensatz zu Autoshare beherrscht es auch moderne SSL-Standards und hat eigene Upload-UI. Leider ist es auf Dauer nicht ganz so stabil und deaktiviert sich unregelmäßig</p>
             Konfiguration
@@ -77,28 +81,10 @@ de:
               <dt>Server-Adresse: <dd><pre><code>%{address}</code></pre>
               <dt>Eigenes (Pseudo)-Passwort: <dd><pre><code>%{pseudo_password}</code></pre> <small>Dieses Passwort ist nur zum Upload gültig, nicht aber um sich hier einzuloggen!</small>
             </dl>
+          link: https://play.google.com/store/apps/details?id=fr.s13d.photobackup
+          platform: Android
           title: Photobackup
-        bash:
-          title: Bash-Script
-          platform: 'Linux/OSX'
-          link: '/upload.sh'
-          description: |
-             <p> Bash Script das Files hochlädt und danach löscht. Braucht curl installiert. Läuft auf Linux, OSX, und sogar manchen Android (adb shell). Das Script führt vorher md5 checks aus und lädt bereits hochgeladene nicht nocheinmal hoch.
-             <br>Nutzung:</p>
-             <pre><code>~/path/to/upload.sh *.jpg</code></pre>
-        s3:
-          title: S3-Import (alpha)
-          platform: 'Alle'
-          description: |
-            <p> Lade einfach Medienobjekte in folgendes Bucket:<code></code></p><pre><code>Bucket %{bucket}<br>Order: /incoming/</code></pre>
-            <p> Der Cronjob schaut alle 10 min dort nach und verarbeitet neue Dateien. Gefundene Dateien werden bei erfolgreichem Import gelöscht! </p>
-            <p> Es werden je Lauf maximal 5 Objekte importiert. Nutze rails console um mehr zu importieren:</p>
-            <pre><code>S3Import.run(max: 5, folder: 'incoming/')</code></pre>
         photosync:
-          title: PhotoSync
-          paid: yes
-          platform: Android, iOS
-          link: 'https://www.photosync-app.com/'
           description: |
             <p>Ziel: WebDAV</p>
             <p>WebDAV-Zugang konfigurieren: %{address}/dav</p>
@@ -108,6 +94,18 @@ de:
             <p>Verzeichnis: dav</p>
             <p>Ziel-Ordner: /</p>
             <p>Transfer-Einstellungen: Volle Qualität</p>
+          link: https://www.photosync-app.com/
+          paid: true
+          platform: Android, iOS
+          title: PhotoSync
+        s3:
+          description: |
+            <p> Lade einfach Medienobjekte in folgendes Bucket:<code></code></p><pre><code>Bucket %{bucket}<br>Order: /incoming/</code></pre>
+            <p> Der Cronjob schaut alle 10 min dort nach und verarbeitet neue Dateien. Gefundene Dateien werden bei erfolgreichem Import gelöscht! </p>
+            <p> Es werden je Lauf maximal 5 Objekte importiert. Nutze rails console um mehr zu importieren:</p>
+            <pre><code>S3Import.run(max: 5, folder: 'incoming/')</code></pre>
+          platform: Alle
+          title: S3-Import (alpha)
   photos:
     index:
       last_upload: vor %{time}
@@ -179,7 +177,6 @@ de:
       exposure: Belichtungszeit
       file_size: Dateigröße
       rotate: Drehen
-      title: gefundene Personen in diesem Bild
       undelete: Löschen rückgängig machen
     video:
       duration: Dauer

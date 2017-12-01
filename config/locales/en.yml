@@ -22,8 +22,6 @@ en:
     profile: Profile
     search: Search
     settings: Settings
-    shares: Shares
-    tags: Tags
     tube: OurTube™
     unassigned_faces: Unassigned Faces
     upload: Upload
@@ -34,9 +32,9 @@ en:
       intro: This is my photo publishing and archiving app. Here are some of the public shots
       title: Photo-Blog
     upload:
+      title: Automatic upload of mobile devices
       apps:
         autoshare:
-          configuration: Configuration
           description: |
             <dl>
             <dt>Type <dd>Webserver
@@ -45,7 +43,17 @@ en:
             <dt>Username / Password: <dd>(blank) not needed with unique token url
             </dl>
             Upload some photos with Autoshare or configure it for auto upload of new photos
+          link: https://play.google.com/store/apps/details?id=com.dngames.autoshare&feature=search_result
+          platform: Android
           title: Android Autoshare
+        bash:
+          description: |
+            <p> Bash script uploads the files and deletes them afterwards. Needs curl installed. Runs on Linux, OSX, and even some Android (adb shell). The script runs md5 checks before and uploads already uploaded not again high.
+            <br> use: </ p>
+            <pre><code>~/path/to/upload.sh *.jpg </code> </pre>
+          link: "/upload.sh"
+          platform: OSX Linux /
+          title: Bash script
         camerasync:
           description: |
             <p>Uses WebDAV minimal implementation that works for CameraSync. <a href='https://itunes.apple.com/de/app/camerasync/id406645727?mt=8'>App-Store</a></p>
@@ -58,17 +66,43 @@ en:
             <dt> Password:
             <dd><pre><code>%{pseudo_password}</code></pre> <small>This password is only valid for upload, not work log in via website</small>
             </dl>
+          link: https://itunes.apple.com/de/app/camerasync/id406645727?mt=8
+          paid: true
+          platform: iOS
           title: CameraSync (iOS) WebDAV
         photobackup:
           description: |
-            <p> Using <a href='https://photobackup.github.io'>PhotoUpload protocol</a>. Only available on Android <a href='https://play.google.com/store/apps/details?id=fr.s13d.photobackup'>Play Store</a> or F-Droid + CLI clients.</p>
+            <p>Using <a href='https://photobackup.github.io'>PhotoUpload protocol</a>. Only available on Android <a href='https://play.google.com/store/apps/details?id=fr.s13d.photobackup'>Play Store</a> or F-Droid + CLI clients.</p>
             <h4>Configuration</h4>
             <dl>
-              <dt> Address: <dd><pre><code>%{address}</code></pre>
-              <dt> Your custom pseudo-Password: <dd><pre><code>%{pseudo_password}</code></pre> <small>Only valid for upload from app, not login!</small>
+              <dt>Address: <dd><pre><code>%{address}</code></pre>
+              <dt>Your custom pseudo-Password: <dd><pre><code>%{pseudo_password}</code></pre> <small>Only valid for upload from app, not login!</small>
             </dl>
+          link: https://play.google.com/store/apps/details?id=fr.s13d.photobackup
+          platform: Android
           title: Photobackup (Android, script)
-        title: Automatic upload
+        photosync:
+          description: |
+            <p>Destination: WebDAV </p>
+            <p>Configure WebDAV access: %{address} / dav </p>
+            <p>Port: 443 </p>
+            <p>Login: %{username} </p>
+            <p>Password: %{pseudo_password} </p>
+            <p>Directory: dav </p>
+            <p>Destination Folder: / </p>
+            <p>Transfer Settings: Full Quality </p>
+          link: https://www.photosync-app.com/
+          paid: true
+          platform: Android, iOS
+          title: PhotoSync
+        s3:
+          description: |
+            <p>Just load media objects into the following bucket: <code> </ code> </ p> <pre> <code> Bucket %{bucket} <br>Folder: /incoming/ </code></pre>
+            <p>The cronjob looks there every 10 minutes and processes new files. Found files are deleted on successful import!</p>
+            <p>A maximum of 5 objects are imported per run. Use rails console to import more: </p>
+            <pre><code>S3Import.run (max: 5, folder: 'incoming /') </code> </pre>
+          platform: All
+          title: S3 import (alpha)
   photos:
     index:
       last_upload: "%{time} ago"
@@ -140,7 +174,6 @@ en:
       exposure: Exposure Time
       file_size: File size
       rotate: Rotate
-      title: found people in this picture
       undelete: Undo delete
     video:
       duration: Duration
