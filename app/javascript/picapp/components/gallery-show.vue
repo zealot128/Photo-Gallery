@@ -77,7 +77,7 @@ export default {
       return currentUser;
     },
     liked() { return this.currentFile.isLiked() },
-    faceCount() { return this.currentFile.data.faces.length },
+    faceCount() { return this.currentFile.data.faces && this.currentFile.data.faces.length },
     hasFaces() {
       return this.faceCount > 0
     }

@@ -4,7 +4,7 @@
       filter-bar(v-model='filter')
         landscape-toggler(v-model='isSmall')
       .gallery-container(v-if='photos.length > 0' :class='{ "small-mode": isSmall }')
-        v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" ref='gallery' @onslide='onSlide')
+        v-gallery(:images="photos" :index="galleryControlIndex" @close="closeGallery" @closed='closeGallery' ref='gallery' @onslide='onSlide')
           div(slot='controls'): .gallery-controls(v-if='currentFile')
             pic-gallery-show(:current-file='currentFile' :gallery='$refs.gallery' :disable-rotation='rotationInProgress'
               @delete='openDeleteModal' @fullscreen='toggleFullscreen' @rotate='onRotate' @edit='openEditModal')
@@ -43,7 +43,7 @@ import PicEditModal from 'picapp/components/show/edit-modal';
 import PicGalleryShow from 'picapp/components/gallery-show';
 import FilterBar from 'picapp/components/filter-bar';
 import MediaLoader from 'picapp/components/media-loader'
-import BulkUpdate from 'picapp/components/bulk-update'
+import BulkUpdate from 'picapp/components/bulk-update';
 import LandscapeToggler from 'picapp/components/landscape-toggler';
 import Api from 'picapp/api';
 
@@ -51,6 +51,7 @@ import 'picapp/style.scss'
 
 import { groupBy, mapValues } from 'lodash';
 
+let keyCallback = null;
 
 export default {
   components: {
@@ -138,11 +139,12 @@ export default {
       }
     },
     openGallery(file) {
-      window.addEventListener('keyup', this.keyup.bind(this), true)
+      keyCallback = this.keyup.bind(this)
+      window.addEventListener('keyup', keyCallback, true)
       this.galleryControlIndex = this.photos.indexOf(file)
     },
     closeGallery() {
-      window.removeEventListener('keyup', this.keyup.bind(this), true)
+      window.removeEventListener('keyup', keyCallback, true)
       this.galleryControlIndex = null
     },
     openDeleteModal() {
