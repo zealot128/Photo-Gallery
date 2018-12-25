@@ -37,13 +37,13 @@
         b-modal(:active.sync="openAddPersonModal" v-if='people.length > 0')
           .card
             .card-content
-              p Person hinzufügen
+              p Person hinzufügen (nur Photos)
               .block.face-select
                 b-checkbox(v-for='person in people' v-model='value.peopleIds'
                   :native-value='person.id' :key='person.id' :name='"person" +person.id')
                     img(:src='person.preview')
                     |
-                    small {{person.name}}
+                    small.is-text-overflow {{person.name}}
               .block
                 b-checkbox(v-model="value.includeWholeDay") Dateien des gleichen Tages wie Gefundene mit anzeigen
             .card-footer
@@ -105,15 +105,19 @@ export default {
   z-index: 2;
 }
 .face-select {
+  .b-checkbox {
+    width: 80px;
+  }
   .control-label {
+    overflow: hidden;
     display: flex;
-    margin-right: 15px;
+    flex-direction: column;
     img {
       height: 40px;
-      margin-right: 10px;
+      width: 40px;
     }
     small {
-      align-self: center;
+      text-align: center;
     }
   }
 }

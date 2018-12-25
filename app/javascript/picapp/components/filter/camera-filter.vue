@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     button.button(@click='open')
-      i.mdi.mdi-camera.mdi-f
+      i.mdi.mdi-camera.mdi-fw
       |
       |EXIF Eigenschaften
 

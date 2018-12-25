@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.date-parse-modal
     button.button(@click='modalOpen = true')
       i.mdi.mdi-calendar-check.mdi-fw
       |
@@ -19,16 +19,15 @@
       .card
         .card-content
           p Datum einschränken
-          b-field
-            b-input(v-model="dateInput" @keyup.native='calculateRange' @change.native='calculateRange' autofocus)
-            p.control
-              button.button(@click='close') OK
-          div(v-if='from')
-            dl
-              dt Von:
-              dd {{from | moment("LL") }}
-              dt Bis:
-              dd {{to | moment("LL") }}
+          .columns
+            .column
+              b-field
+                b-datepicker(v-model='from' icon="calendar-today" placeholder='Von' :max-date='maxDate')
+            .column
+              b-field
+                b-datepicker(v-model='to' icon="calendar-today" placeholder='Bis' :max-date='maxDate')
+          p.control
+            button.button(@click='close') OK
 
 </template>
 
@@ -43,6 +42,11 @@ export default {
       dateInput: "",
       from: null,
       to: null
+    }
+  },
+  computed: {
+    maxDate() {
+      return new Date()
     }
   },
   methods: {
@@ -75,3 +79,11 @@ export default {
   }
 }
 </script>
+
+<style lang='scss'>
+.date-parse-modal {
+  .modal, .animation-content, .card {
+    overflow: visible !important;
+  }
+}
+</style>

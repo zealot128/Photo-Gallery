@@ -86,3 +86,9 @@ body {
 	}
 }
 
+.is-text-overflow {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
