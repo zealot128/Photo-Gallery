@@ -4,7 +4,18 @@ module ControllerAuthentication
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    @current_user ||= User.find(session[:user_id]) if session[:user_id] || @current_user
+  end
+
+  def login_by_token
+    if (auth = request.headers.to_h['HTTP_AUTHORIZATION']) and (token = auth[/^Bearer (.+)$/, 1])
+      if app_token = AppToken.includes(:user).find_by(token: token)
+        app_token.update_column :last_used, Time.zone.now
+        @current_user = app_token.user
+      else
+        render json: { error: "Login failed" }, status: 400
+      end
+    end
   end
 
   def logged_in?

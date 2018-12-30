@@ -43,16 +43,25 @@ class V3::Search
     @file_types = other.reject(&:blank?)
   end
 
+  def overview
+    filtered_sql.group_by_month(:shot_at).count
+  end
+
   def media
-    sql = BaseFile.visible.
+    filtered_sql.
       order('shot_at desc').
+      paginate(page: page, per_page: 50)
+  end
+
+  def filtered_sql
+    sql = BaseFile.visible.
       includes(:image_faces, :image_labels, :liked_by, :people, :shares, :tags, :day)
     self.class.filters.each do |column, filter|
       next if send(column).blank?
       new_sql = instance_exec(sql, &filter)
       sql = new_sql if new_sql
     end
-    sql.paginate(page: page, per_page: 50)
+    sql
   end
 
   add_filter(:favorite) do |sql|

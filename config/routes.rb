@@ -87,6 +87,8 @@ SimpleGallery::Application.routes.draw do
     get 'api/shares' => 'api#shares'
     get 'api/exif' => 'api#exif'
     get 'api/unassigned' => 'api#unassigned'
+    get 'api/overview' => 'api#overview'
+    post 'api/sign_in' => 'api#sign_in'
   end
 
   get '/', to: 'pages#index', as: 'root'

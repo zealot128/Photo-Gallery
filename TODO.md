@@ -1,3 +1,4 @@
+* Landscape View
 * AWS: OCR
   * Suche
   * Text anzeigen

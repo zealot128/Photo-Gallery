@@ -16,9 +16,8 @@
       section.hero.is-dark
         .hero-body
 
-
-
 </template>
+
 <script>
 import Api from 'picapp/api';
 import UploadedFile from 'picapp/uploaded-file';

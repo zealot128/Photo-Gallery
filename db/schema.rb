@@ -10,11 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171201221923) do
+ActiveRecord::Schema.define(version: 20181229222958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "app_tokens", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "token"
+    t.datetime "user_agent"
+    t.datetime "last_used"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_app_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_app_tokens_on_user_id"
+  end
 
   create_table "base_files_image_labels", id: false, force: :cascade do |t|
     t.integer "base_file_id"
@@ -233,6 +244,7 @@ ActiveRecord::Schema.define(version: 20171201221923) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "app_tokens", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "upload_logs", "users"
 end

@@ -1,6 +1,19 @@
 module V3
   class ApiController < ApplicationController
-    before_action :login_required
+    before_action :login_by_token
+
+    before_action :login_required, except: :sign_in
+
+    def sign_in
+      user = User.authenticate(params[:username], params[:password])
+      if user
+        token = user.app_tokens.create(user_agent: request.user_agent)
+        render json: { token: token.token }, status: 201
+      else
+        render json: { error: "User not found" }, status: 400
+      end
+    end
+
     def photos
       search = V3::Search.new(params.transform_keys(&:underscore).permit!.except('controller', 'action').to_h)
       @recent = search.media
@@ -14,6 +27,13 @@ module V3
           total_pages: @recent.total_pages,
           total_count: @recent.total_entries
         }
+      }
+    end
+
+    def overview
+      search = V3::Search.new(params.transform_keys(&:underscore).permit!.except('controller', 'action').to_h)
+      render json: {
+        months: search.overview
       }
     end
 
