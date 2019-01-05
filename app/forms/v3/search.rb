@@ -50,7 +50,7 @@ class V3::Search
   def media
     filtered_sql.
       order('shot_at desc').
-      paginate(page: page, per_page: 50)
+      paginate(page: page, per_page: per_page.presence || 50)
   end
 
   def filtered_sql

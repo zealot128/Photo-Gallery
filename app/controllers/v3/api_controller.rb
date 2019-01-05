@@ -1,7 +1,7 @@
 module V3
   class ApiController < ApplicationController
+		skip_before_action :verify_authenticity_token
     before_action :login_by_token
-
     before_action :login_required, except: :sign_in
 
     def sign_in
@@ -10,7 +10,7 @@ module V3
         token = user.app_tokens.create(user_agent: request.user_agent)
         render json: { token: token.token }, status: 201
       else
-        render json: { error: "User not found" }, status: 400
+        render json: { error: "User not found" }, status: 401
       end
     end
 
