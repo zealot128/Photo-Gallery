@@ -7,6 +7,9 @@ class V3::Search
       attr_accessor column
       if array
         define_method("#{column}=") { |val|
+          if val.is_a?(String)
+            val = val.split(',')
+          end
           instance_variable_set("@#{column}", val.try(:reject, &:blank?))
         }
       end
@@ -24,6 +27,7 @@ class V3::Search
   attr_reader :file_size_min, :file_size_max
   attr_reader :parsed_from, :parsed_to
   attr_accessor :include_whole_day
+  attr_accessor :match_any_face
 
   def label_facets
     ImageLabel.joins(:base_files).
@@ -113,8 +117,12 @@ class V3::Search
   add_filter(:people_ids, array: true) do |sql|
     people = Person.where(id: people_ids)
     people_sql = sql
-    people.each do |person|
-      people_sql = people_sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
+    if match_any_face == 'true'
+       people_sql = people_sql.where('photos.id in (?)', people.joins(:image_faces).select('image_faces.base_file_id'))
+    else
+      people.each do |person|
+        people_sql = people_sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
+      end
     end
     if include_whole_day == 'true'
       dates = people_sql.select(DATE_COLUMN)
