@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181229222958) do
+ActiveRecord::Schema.define(version: 20190113150509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,13 @@ ActiveRecord::Schema.define(version: 20181229222958) do
     t.integer "month_id"
     t.index ["date"], name: "index_days_on_date"
     t.index ["month_id"], name: "index_days_on_month_id"
+  end
+
+  create_table "geohashes", force: :cascade do |t|
+    t.float "lat"
+    t.float "lng"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "image_faces", id: :serial, force: :cascade do |t|
@@ -129,6 +136,7 @@ ActiveRecord::Schema.define(version: 20181229222958) do
     t.integer "duration"
     t.datetime "mark_as_deleted_on"
     t.boolean "rekognition_ocr_run", default: false
+    t.integer "geohash"
     t.index ["aperture"], name: "index_photos_on_aperture"
     t.index ["day_id"], name: "index_photos_on_day_id"
     t.index ["file_size"], name: "index_photos_on_file_size"

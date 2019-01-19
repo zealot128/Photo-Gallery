@@ -59,6 +59,16 @@ class BaseFile < ApplicationRecord
     end
   end
 
+  before_save :update_geohash, if: :lat_changed?
+
+  def update_geohash
+    return unless lat? and lng?
+    floor_lon = ((lng + 180) * 10).to_i
+    floor_lat = ((lat + 90) * 10).to_i
+    self.geohash = (floor_lon * 0x1000) | floor_lat
+    Geohash.where(id: geohash).first_or_create(lat: lat, lng: lng)
+  end
+
   before_validation do
     unless md5?
       if !(File.exist?(file.path)) && !file.cached?

@@ -1,0 +1,2 @@
+class Geohash < ApplicationRecord
+end
