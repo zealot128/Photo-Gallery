@@ -1,5 +1,6 @@
 class UploadController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :login_by_token
   before_action :http_basic_auth
   layout false
 
@@ -52,6 +53,10 @@ class UploadController < ApplicationController
   end
 
   def http_basic_auth
+    if @current_user
+      @user = @current_user
+      return
+    end
     if params[:token]
       return @user = User.where(token: params[:token]).first!
     elsif params[:password]
