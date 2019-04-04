@@ -38,8 +38,8 @@ module V3
     end
 
     def people
-      @people = Person.all
-      render json: @people
+      @people = Person.select('people.*, (select count(*) from image_faces where image_faces.person_id = people.id) as photo_count')
+      render json: @people.sort_by { |i| [-(i.photo_count**(1/5r)).round, i.name] }
     end
 
     def shares
