@@ -33,6 +33,7 @@
 require 'spec_helper'
 
 describe Photo do
+  include_context "active_job_inline"
   let(:picture) { Rails.root.join("spec/fixtures/tiger.jpg") }
   let(:other_picture) { Rails.root.join("spec/fixtures/somestuff.jpg") }
   let(:user) { valid_user }
@@ -74,10 +75,9 @@ describe Photo do
   end
 
   specify "Changing the date should move the file" do
-    Photo.slow_callbacks = true
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     day = photo.day
-    photo.update_attributes(shot_at: Time.zone.parse("2012-10-01 12:00"))
+    photo.update(shot_at: Time.zone.parse("2012-10-01 12:00"))
     photo.reload
     expect(File.exist?(photo.file.path)).to eq(true)
 
@@ -103,7 +103,7 @@ describe Photo do
   specify 'Metadata' do
     picture = "spec/fixtures/eos600.jpg"
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
-    expect(photo.as_json).to be_present
+    expect(photo.reload.as_json).to be_present
     expect(photo.aperture).to be == 2.6
     expect(photo.exif['model']).to eq('GT-N7100')
   end
@@ -114,8 +114,19 @@ describe Photo do
     expect(date.to_date.to_s).to eq('2016-05-08')
   end
 
+  specify 'Apple HEIF' do
+    picture = 'spec/fixtures/IMG_1052.HEIC'
+    date = Photo.parse_date(File.open(picture), user)
+    expect(date.to_date.to_s).to eq('2019-12-27')
+
+    photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    expect(photo.as_json).to be_present
+    expect(photo.persisted?).to be_present
+    expect(photo.reload.aperture).to be == 1.8
+  end
+
   specify 'geocoding' do
-    Geocoder.configure(:lookup => :test)
+    Geocoder.configure(lookup: :test)
     Geocoder::Lookup::Test.add_stub(
       [50.068056, 8.385000], [
         {
@@ -128,7 +139,7 @@ describe Photo do
     )
     picture = "spec/fixtures/geocode.jpg"
     photo = Photo.create_from_upload(File.open(picture), user)
-    expect(photo.location).to eq('Hofheim am Taunus')
+    expect(photo.reload.location).to eq('Hofheim am Taunus')
   end
 
   if Setting['ocr.enabled']
@@ -164,7 +175,6 @@ describe Photo do
     end
 
     specify 'photo upload + rename' do
-      Photo.slow_callbacks = true
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
 
       expect(photo.file.file.exists?).to eq(true)

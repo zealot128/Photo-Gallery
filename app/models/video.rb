@@ -47,6 +47,7 @@ class Video < BaseFile
 
   def duration_human
     return "" unless duration
+
     Video.seconds_to_time_string(duration)
   end
 
@@ -78,8 +79,9 @@ class Video < BaseFile
     video.user = user
     video.file = file
     video.meta_data = { ffprobe: meta_data }
-    video.update_gps save: false
     video.save
+    video.create_versions_later
+    BaseFile::GeocodeJob.perform_later(video)
     video
   end
 
@@ -96,6 +98,7 @@ class Video < BaseFile
 
   def create_preview_thumbnails
     return unless duration
+
     number_of_thumbnails = [duration.to_i**(Rational(2, 5)), 5].max.round
 
     thumbnail_every_second = duration.to_f / number_of_thumbnails

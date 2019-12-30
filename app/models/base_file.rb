@@ -47,45 +47,30 @@ class BaseFile < ApplicationRecord
   scope :visible, -> { where(mark_as_deleted_on: nil) }
   scope :deleted, -> { where.not(mark_as_deleted_on: nil) }
   validates :md5, uniqueness: true, presence: true
-  cattr_accessor :slow_callbacks
-  self.slow_callbacks = true
 
   reverse_geocoded_by :lat, :lng do |obj, results|
     if (geo = results.first)
       parts = [geo.city]
-      parts << geo.address_components_of_type("establishment").first["short_name"] rescue nil
-      parts << geo.address_components_of_type("sublocality").first["short_name"] rescue nil
+      begin
+        parts << geo.address_components_of_type("establishment").first["short_name"]
+      rescue StandardError
+        nil
+      end
+      begin
+        parts << geo.address_components_of_type("sublocality").first["short_name"]
+      rescue StandardError
+        nil
+      end
       obj.update_attribute(:location, parts.join(" - "))
     end
   end
 
-  before_save :update_geohash, if: :lat_changed?
-
-  def update_geohash
-    return unless lat? and lng?
-    floor_lon = ((lng + 180) * 10).to_i
-    floor_lat = ((lat + 90) * 10).to_i
-    self.geohash = (floor_lon * 0x1000) | floor_lat
-    Geohash.where(id: geohash).first_or_create(lat: lat, lng: lng)
-  end
-
   before_validation do
-    unless md5?
-      if !(File.exist?(file.path)) && !file.cached?
+    if !md5? and file.path
+      if !File.exist?(file.path) && !file.cached?
         self.md5 ||= Digest::MD5.hexdigest(file.read.to_s)
       end
       self.md5 ||= Digest::MD5.file(file.path)
-    end
-  end
-
-  before_save do
-    if shot_at_changed? and shot_at_was.present?
-      move_file_after_shot_at_changed
-    end
-    new_day = Day.date(shot_at)
-    self.day = new_day
-    if new_day != day and shot_at_was.present?
-      move_file_after_shot_at_changed
     end
   end
 
@@ -95,15 +80,17 @@ class BaseFile < ApplicationRecord
     self.file_size ||= file.size
   end
 
-  after_commit do
-    if Photo.slow_callbacks
-      day && day.update_me
-      @old_day && @old_day.update_me
+  after_save do
+    new_day = Day.date(shot_at)
+    if (saved_change_to_shot_at? and shot_at_before_last_save.present?) || new_day != day
+      update_column(:day_id, new_day.id)
+
+      AssociateDayJob.set(wait: 5.seconds).perform_later(self, day, new_day)
     end
   end
 
   after_destroy do
-    day && day.update_me
+    Day::UpdateJob.perform_later(day) if day
   end
 
   def retrieve_and_reprocess(&block)
@@ -141,55 +128,28 @@ class BaseFile < ApplicationRecord
 
   def as_json(op = {})
     {
-      id:                   id,
-      type:                 type,
-      location:             location,
-      shot_at:              shot_at,
-      shot_at_formatted:    I18n.l(shot_at, format: :short),
-      file_size:            file_size,
-      tag_ids:              tag_ids,
-      tags:                 tags.loaded? ? tags.map(&:name) : tag_list,
-      labels:               image_labels.loaded? ? image_labels.map(&:name) : image_labels.pluck(:name),
-      share_ids:            share_ids,
-      file_size_formatted:  ApplicationController.helpers.number_to_human_size(file_size),
-      caption:              caption,
-      description:          description,
-      versions:             file.versions.map { |k, v| [k, v.url] }.to_h,
-      download_url:         "/download/#{id}/#{attributes['file']}",
-      marked_as_deleted:    !!mark_as_deleted_on,
-      liked_by:             liked_by.map(&:username),
-      exif:                 exif
+      id: id,
+      type: type,
+      location: location,
+      shot_at: shot_at,
+      shot_at_formatted: I18n.l(shot_at, format: :short),
+      file_size: file_size,
+      tag_ids: tag_ids,
+      tags: tags.loaded? ? tags.map(&:name) : tag_list,
+      labels: image_labels.loaded? ? image_labels.map(&:name) : image_labels.pluck(:name),
+      share_ids: share_ids,
+      file_size_formatted: ApplicationController.helpers.number_to_human_size(file_size),
+      caption: caption,
+      description: description,
+      versions: file.versions.map { |k, v| [k, v.url] }.to_h,
+      download_url: "/download/#{id}/#{attributes['file']}",
+      marked_as_deleted: !!mark_as_deleted_on,
+      liked_by: liked_by.map(&:username),
+      exif: exif
     }
   end
 
-  def move_file_after_shot_at_changed
-    @old_day = day
-    old = shot_at_was
-    new = shot_at
-    old_str = old.strftime("%Y-%m-%d")
-    new_str = new.strftime("%Y-%m-%d")
-    return if old_str == new_str
-
-    ([[:original, file]] + file.versions.to_a).each do |_key, version|
-      from = version.path.gsub(new_str, old_str).gsub(%r{/#{new.year}/}, "/#{old.year}/")
-      to = version.path.gsub(old_str, new_str).gsub(%r{/#{old.year}/}, "/#{new.year}/")
-      Rails.logger.info "[photo] Moving #{from} -> #{to}"
-      Rails.logger.info "  #{from} exists? -> #{File.exist?(from)}"
-      Rails.logger.info "  #{to}   exists? -> #{File.exist?(to)}"
-
-      case version.file.class.to_s
-      when 'CarrierWave::Storage::Fog::File'
-        self.shot_at = old
-        version.cache!
-        self.shot_at = new
-        version.store!
-      else
-        version.cache!
-        version.store!
-        if File.exist?(from)
-          File.unlink(from)
-        end
-      end
-    end
+  def create_versions_later
+    BaseFile::RecreateVersionsJob.set(wait: 1.second).perform_later(self)
   end
 end

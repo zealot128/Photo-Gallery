@@ -14,9 +14,6 @@ html lang="en"
     javascript:
       window.currentUser = #{raw current_user.try(:username).to_json}
     = javascript_include_tag "application"
-    / - if current_user
-    /   = action_cable_meta_tag
-    /   = javascript_include_tag 'cable'
 
   body
     = render 'layouts/nav'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190113150509) do
+ActiveRecord::Schema.define(version: 20191230143449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20190113150509) do
 
   create_table "days", id: :serial, force: :cascade do |t|
     t.date "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "locations"
     t.string "montage"
     t.integer "month_id"
@@ -115,12 +115,12 @@ ActiveRecord::Schema.define(version: 20190113150509) do
     t.float "lat"
     t.float "lng"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "location"
     t.string "md5"
-    t.integer "year"
-    t.integer "month"
+    t.integer "year", limit: 2
+    t.integer "month", limit: 2
     t.integer "day_id"
     t.string "caption"
     t.text "description"
@@ -137,9 +137,11 @@ ActiveRecord::Schema.define(version: 20190113150509) do
     t.datetime "mark_as_deleted_on"
     t.boolean "rekognition_ocr_run", default: false
     t.integer "geohash"
+    t.string "fingerprint"
     t.index ["aperture"], name: "index_photos_on_aperture"
     t.index ["day_id"], name: "index_photos_on_day_id"
     t.index ["file_size"], name: "index_photos_on_file_size"
+    t.index ["fingerprint"], name: "index_photos_on_fingerprint"
     t.index ["md5"], name: "index_photos_on_md5", unique: true
     t.index ["month"], name: "index_photos_on_month"
     t.index ["shot_at"], name: "index_photos_on_shot_at"
@@ -167,8 +169,8 @@ ActiveRecord::Schema.define(version: 20190113150509) do
     t.string "name"
     t.string "type"
     t.string "token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer "user_id"
     t.index ["token"], name: "index_shares_on_token", unique: true
     t.index ["type"], name: "index_shares_on_type"
@@ -184,10 +186,10 @@ ActiveRecord::Schema.define(version: 20190113150509) do
 
   create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
-    t.integer "taggable_id"
     t.string "taggable_type"
-    t.integer "tagger_id"
+    t.integer "taggable_id"
     t.string "tagger_type"
+    t.integer "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at"
     t.index ["context"], name: "index_taggings_on_context"
@@ -226,8 +228,8 @@ ActiveRecord::Schema.define(version: 20190113150509) do
     t.string "email"
     t.string "password_hash"
     t.string "password_salt"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "last_ip"
     t.datetime "last_upload"
     t.boolean "allowed_ip_storing"

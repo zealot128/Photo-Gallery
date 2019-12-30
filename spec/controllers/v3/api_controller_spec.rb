@@ -32,7 +32,6 @@ describe V3::ApiController do
                           email: "info@example.com",
                           password_confirmation: "123123123")
       allow(@controller).to receive(:current_user).and_return(user)
-      Photo.slow_callbacks = false
     end
     let(:photo) { Photo.new(shot_at: "2012-02-01 12:00:00", md5: '123').tap { |p| p.save!(validate: false) } }
 

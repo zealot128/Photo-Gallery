@@ -33,9 +33,19 @@
 class Photo < BaseFile
   mount_uploader :file, ImageUploader
 
-  include PhotoMetadata
+  def exif
+    (self.meta_data || {}).except('fingerprint', 'top_colors')
+  end
 
-  # after_create :rekognize_labels, :rekognize_faces
+  def mime_type
+    `file #{Shellwords.escape file.path} --mime-type -b`.strip
+  end
+
+  after_create_commit :enqueue_jobs
+
+  def enqueue_jobs
+    Photo::MetaDataJob.set(wait: 5.seconds).perform_later(self)
+  end
 
   def self.parse_date(file, current_user)
     date = MetaDataParser.new(file.path).shot_at_date
@@ -51,53 +61,17 @@ class Photo < BaseFile
       photo.file = file
       photo.save
     end
+    photo.create_versions_later if photo.persisted?
     photo
   end
 
-  protected def update_gps(save: true)
+  def update_gps(save: true)
     if meta_data && meta_data['gps_latitude']
       self.lat = meta_data['gps_latitude']
       self.lng = meta_data['gps_longitude']
       reverse_geocode
       self.save if save
     end
-  end
-
-  def rekognize_labels
-    aws_labels = RekognitionClient.labels(self)
-    aws_labels.labels.each do |aws_label|
-      image_labels.where(name: aws_label.name).first ||
-        begin
-          label = ImageLabel.where(name: aws_label.name).first_or_create
-          image_labels << label
-        end
-    end
-    update_column :rekognition_labels_run, true
-  rescue Aws::Rekognition::Errors::InvalidS3ObjectException
-  end
-
-  def rekognize_ocr
-    aws = RekognitionClient.ocr(self)
-    text = aws.text_detections.map{ |i| i.detected_text }.join(' ')
-    if text.strip.present? && text.length > 10
-      ocr_result || build_ocr_result
-      ocr_result.text = text
-      ocr_result.save!
-    end
-    # update_column :rekognition_ocr_run, true
-  rescue Aws::Rekognition::Errors::InvalidS3ObjectException
-  end
-
-  def rekognize_faces
-    return unless Setting['rekognition.faces.rekognition_collection']
-    labels = image_labels.pluck(:name)
-    if labels.include?("People") || labels.include?("Person") || labels.include?("Child")
-      faces = RekognitionClient.index_faces(self)
-      faces.face_records.each do |face|
-        image_faces.where(aws_id: face.face.face_id).first_or_create(bounding_box: face.face.bounding_box.as_json, confidence: face.face.confidence)
-      end
-    end
-    update_column :rekognition_faces_run, true
   end
 
   def rotate!(direction)
@@ -114,11 +88,19 @@ class Photo < BaseFile
       cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path)}"
       `#{cmd}`
     end
-    self.fingerprint = nil
+    self.fingerprint = Phashion::Image.new(file.path).fingerprint rescue nil
     save
   end
 
   def as_json(op = {})
     super.merge('faces' => image_faces.as_json)
+  end
+
+  def process_versions!
+    Rails.logger.info "Starting processing of #{id}"
+    file.process_now = true
+    file.recreate_versions!
+    save!
+    Rails.logger.info "Finished processing of #{id}"
   end
 end

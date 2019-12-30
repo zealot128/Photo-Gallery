@@ -1,6 +1,24 @@
+HEIF:
+
+- Rotate
+
+Jobs:
+
+- Version generation
+
+Deploy:
+
+- Tomo
+
+- Rails 6 Upgrade
+- Test im Development mit AWS Krams
+
+---
+
+
 * Landscape View
 * AWS: OCR
-  * Suche
+  * Suche - PG Search
   * Text anzeigen
 * Faces
   * Neues Face malen

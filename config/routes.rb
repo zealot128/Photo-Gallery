@@ -1,3 +1,9 @@
+class AdminRestriction
+  def self.matches?(request)
+    request.session["user_id"]
+  end
+end
+
 SimpleGallery::Application.routes.draw do
   # Api compliance for Photobackup
   post '/test' => 'upload#test'
@@ -93,4 +99,5 @@ SimpleGallery::Application.routes.draw do
 
   get '/', to: 'pages#index', as: 'root'
   post '/', to: 'upload#create'
+  mount Sidekiq::Web => '/rails/sidekiq', constraints: AdminRestriction
 end

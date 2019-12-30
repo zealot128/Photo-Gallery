@@ -1,6 +1,13 @@
 require_relative 'boot'
 
-require 'rails/all'
+require 'active_record/railtie'
+require 'action_controller/railtie'
+require 'action_view/railtie'
+# require 'action_mailer/railtie'
+require 'active_job/railtie'
+# require 'action_cable/engine'
+require 'rails/test_unit/railtie'
+require 'sprockets/railtie'
 
 Bundler.require(*Rails.groups)
 
@@ -15,7 +22,7 @@ module SimpleGallery
       g.test_framework false
     end
 
-    config.action_cable.mount_path = '/websocket'
+    # config.action_cable.mount_path = '/websocket'
     config.filter_parameters += [:password]
     config.assets.enabled = true
     config.assets.paths << Rails.root.join('node_modules')

@@ -3,7 +3,6 @@ task :import => :environment do
 
   require "progressbar"
   user = User.first
-  Photo.slow_callbacks = false
   files = Dir[Rails.root.join("import/*")]
   pbar = ProgressBar.create(total: files.count)
   files.each do |file|
@@ -20,7 +19,6 @@ p e
 
 end
   end
-  Photo.slow_callbacks = true
   Day.all.each do |day|
     day.update_me
   end

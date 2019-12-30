@@ -12,7 +12,7 @@
 #
 
 class Day < ActiveRecord::Base
-  validates_presence_of :date
+  validates :date, presence: true
   has_many :photos, class_name: 'BaseFile'
   belongs_to :month
   has_one :year, through: :month
@@ -24,19 +24,20 @@ class Day < ActiveRecord::Base
   end
 
   def make_montage
-    images = photos.visible.order("shot_at asc").select{ |i|
+    images = photos.visible.order("shot_at asc").select { |i|
       i.is_a?(Photo) || i.video_processed
-    }.map { |i| i.file.versions[:thumb].path }
+    }.map { |i| i.file.versions[:thumb].path }.compact
     image_args = Shellwords.shelljoin images
     width = [images.count, 15].min
     return if images.blank?
+
     Tempfile.open(['montage', '.jpg']) do |f|
       f.binmode
       command = "montage -geometry +0+0 -tile #{width}x #{image_args} #{f.path}"
       system command
 
       self.montage = f
-      self.save
+      save
     end
   end
 
@@ -55,9 +56,10 @@ class Day < ActiveRecord::Base
   end
 
   def update_me
-    return destroy if self.photos.count == 0
+    return destroy if photos.count == 0
+
     make_montage
-    self.update_attribute :locations, photos.pluck(:location).reject(&:blank?).uniq.join(", ")
+    update_attribute :locations, photos.pluck(:location).reject(&:blank?).uniq.join(", ")
   end
 
   def assign_month

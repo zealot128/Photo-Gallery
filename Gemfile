@@ -21,13 +21,17 @@ gem "rails-settings-cached"
 ### Image analysis / conversion
 gem 'carrierwave'
 gem 'carrierwave-aws'
+gem 'carrierwave-vips'
+gem 'aws-sdk-rekognition'
+# gem 'vips'
 
 # Nervt https://github.com/rheaton/carrierwave-video/issues/44
 gem 'streamio-ffmpeg', '= 2.0.0'
 
 gem 'carrierwave-video', git: 'https://github.com/zealot128-os/carrierwave-video.git'
 gem 'mini_magick'
-gem 'mini_exiftool_vendored'
+# TODO: PR
+gem 'mini_exiftool_vendored', git: 'https://github.com/zealot128-os/mini_exiftool_vendored.git'
 gem 'mini_exiftool'
 gem 'geocoder'
 gem 'phashion'
@@ -68,6 +72,11 @@ source 'https://rails-assets.org' do
 end
 
 group :development do
+  gem 'pludoni_rspec', git: 'https://github.com/pludoni/pludoni_rspec.git'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'solargraph', require: false
   gem 'habtm_generator'
   gem 'listen'
   gem 'annotate'
@@ -90,3 +99,5 @@ group :production do
   # gem 'lograge'
 end
 gem 'silencer'
+
+gem "sidekiq", "~> 6.0"

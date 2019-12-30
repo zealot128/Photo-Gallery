@@ -3,13 +3,12 @@ require 'spec_helper'
 describe V2::ApiController do
   before :each do
     user = User.create!(username: "stefan",
-                 password: "123123123",
-                 email: "info@example.com",
-                 password_confirmation: "123123123")
+                        password: "123123123",
+                        email: "info@example.com",
+                        password_confirmation: "123123123")
     allow(@controller).to receive(:current_user).and_return(user)
   end
   let :photo do
-    Photo.slow_callbacks = false
     p = Photo.new shot_at: "2012-02-01"
     p.save! validate: false
     p
