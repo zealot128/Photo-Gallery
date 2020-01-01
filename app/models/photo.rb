@@ -2,49 +2,51 @@
 #
 # Table name: photos
 #
-#  id                     :integer          not null, primary key
-#  shot_at                :datetime
-#  lat                    :float
-#  lng                    :float
-#  user_id                :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  location               :string
-#  md5                    :string
-#  year                   :integer
-#  month                  :integer
-#  day_id                 :integer
-#  caption                :string
-#  description            :text
-#  file                   :string
-#  meta_data              :json
-#  type                   :string
-#  file_size              :integer
-#  rekognition_labels_run :boolean          default(FALSE)
-#  rekognition_faces_run  :boolean          default(FALSE)
-#  aperture               :decimal(5, 2)
-#  video_processed        :boolean          default(FALSE)
-#  error_on_processing    :boolean          default(FALSE)
-#  duration               :integer
-#  mark_as_deleted_on     :datetime
-#  rekognition_ocr_run    :boolean          default(FALSE)
+#  id                 :integer          not null, primary key
+#  shot_at            :datetime
+#  lat                :float
+#  lng                :float
+#  user_id            :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#  location           :string
+#  md5                :string
+#  year               :integer
+#  month              :integer
+#  day_id             :integer
+#  caption            :string
+#  description        :text
+#  old_file           :string
+#  type               :string
+#  mark_as_deleted_on :datetime
+#  geohash            :integer
+#  fingerprint        :string
+#  file_data          :jsonb
+#  processing_flags   :jsonb
 #
 
 class Photo < BaseFile
-  mount_uploader :file, ImageUploader
+  mount_uploader :old_file, ImageUploader
+  include Rewrite::ImageUploader::Attachment.new(:file)
 
   def exif
-    (self.meta_data || {}).except('fingerprint', 'top_colors')
+    meta_data&.[]('exif')
   end
 
-  def mime_type
-    `file #{Shellwords.escape file.path} --mime-type -b`.strip
+  def aperture
+    exif&.[]('aperture')
   end
-
-  after_create_commit :enqueue_jobs
 
   def enqueue_jobs
-    Photo::MetaDataJob.set(wait: 5.seconds).perform_later(self)
+    if !processed?(:labels) and Setting['rekognition.enabled']
+      Photo::RecognizeLabelsJob.perform_later(self)
+    end
+    if !processed?(:ocr) and Setting.tesseract_installed?
+      Photo::OcrJob.perform_later(self)
+    end
+    if !processed?(:geocoding)
+      BaseFile::GeocodeJob.perform_later(self)
+    end
   end
 
   def self.parse_date(file, current_user)
@@ -61,46 +63,36 @@ class Photo < BaseFile
       photo.file = file
       photo.save
     end
-    photo.create_versions_later if photo.persisted?
     photo
   end
 
   def update_gps(save: true)
-    if meta_data && meta_data['gps_latitude']
-      self.lat = meta_data['gps_latitude']
-      self.lng = meta_data['gps_longitude']
+    if meta_data && meta_data.dig('exif', 'gps_latitude')
+      self.lat = meta_data['exif']['gps_latitude']
+      self.lng = meta_data['exif']['gps_longitude']
       reverse_geocode
       self.save if save
     end
   end
 
   def rotate!(direction)
-    degrees =  case direction.to_sym
-               when :left
-                 -90
-               when :flip
-                 180
-               else
-                 90
-               end
+    raise
 
-    retrieve_and_reprocess do |file|
-      cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path)}"
-      `#{cmd}`
-    end
-    self.fingerprint = Phashion::Image.new(file.path).fingerprint rescue nil
+    degrees = case direction.to_sym
+              when :left
+                -90
+              when :flip
+                180
+              else
+                90
+              end
+
+    cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path)}"
+    `#{cmd}`
     save
   end
 
-  def as_json(op = {})
+  def as_json(options = {})
     super.merge('faces' => image_faces.as_json)
-  end
-
-  def process_versions!
-    Rails.logger.info "Starting processing of #{id}"
-    file.process_now = true
-    file.recreate_versions!
-    save!
-    Rails.logger.info "Finished processing of #{id}"
   end
 end

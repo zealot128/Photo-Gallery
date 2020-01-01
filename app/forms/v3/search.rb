@@ -1,6 +1,6 @@
 # rubocop:disable Style/ClassVars
 class V3::Search
-  DATE_COLUMN = "(shot_at at time zone 'Europe/Berlin')::date"
+  DATE_COLUMN = "(shot_at)::date".freeze
   class << self
     attr_accessor :filters
     def add_filter(column, array: false, &block)
@@ -62,6 +62,7 @@ class V3::Search
       includes(:image_faces, :image_labels, :liked_by, :people, :shares, :tags, :day)
     self.class.filters.each do |column, filter|
       next if send(column).blank?
+
       new_sql = instance_exec(sql, &filter)
       sql = new_sql if new_sql
     end
@@ -75,7 +76,7 @@ class V3::Search
   end
 
   add_filter(:query) do |sql|
-    words = query.split(" ").map{|i| "%#{i}%" }
+    words = query.split(" ").map { |i| "%#{i}%" }
     ocr = OcrResult.where('text ilike any (array[?])', words).select('base_file_id')
     tags = ActsAsTaggableOn::Tag.
       where('name ilike any (array[?])', words).
@@ -90,6 +91,7 @@ class V3::Search
 
   add_filter(:file_types, array: true) do |sql|
     return sql if file_types.blank?
+
     allowed_types = []
     if file_types.include?('photo')
       allowed_types << 'Photo'
@@ -102,15 +104,15 @@ class V3::Search
 
   add_filter(:aperture) do |sql|
     @aperture_min, @aperture_max = parsed(aperture)
-    sql = sql.where('aperture is not null and aperture >= ?', @aperture_min) if @aperture_min
-    sql = sql.where('aperture is not null and aperture <= ?', @aperture_max) if @aperture_max
+    sql = sql.where("(file_data #>> '{metadata,exif,aperture}')::float >= ?", @aperture_min) if @aperture_min
+    sql = sql.where("(file_data #>> '{metadata,exif,aperture}')::float <= ?", @aperture_max) if @aperture_max
     sql
   end
 
   add_filter(:file_size) do |sql|
     @file_size_min, @file_size_max = parsed(file_size)
-    sql = sql.where('file_size >= ?', @file_size_min) if @file_size_min
-    sql = sql.where('file_size <= ?', @file_size_max) if @file_size_max
+    sql = sql.where("(file_data #>> '{metadata,size}')::int >= ?", @file_size_min) if @file_size_min
+    sql = sql.where("(file_data #>> '{metadata,size}')::int <= ?", @file_size_max) if @file_size_max
     sql
   end
 
@@ -118,7 +120,7 @@ class V3::Search
     people = Person.where(id: people_ids)
     people_sql = sql
     if match_any_face == 'true'
-       people_sql = people_sql.where('photos.id in (?)', people.joins(:image_faces).select('image_faces.base_file_id'))
+      people_sql = people_sql.where('photos.id in (?)', people.joins(:image_faces).select('image_faces.base_file_id'))
     else
       people.each do |person|
         people_sql = people_sql.where('photos.id in (?)', person.image_faces.select('image_faces.base_file_id')) if person.present?
@@ -153,13 +155,13 @@ class V3::Search
     aws_labels = ImageLabel.where('name ilike any (array[?])', labels).pluck(:id)
     if aws_labels.any?
       sql.where('photos.id in (?)',
-        BaseFile.joins(:image_labels).
-        where('image_labels.id in (?)', aws_labels).
-        select('photos.id'))
+                BaseFile.joins(:image_labels).
+                where('image_labels.id in (?)', aws_labels).
+                select('photos.id'))
     end
   end
 
   add_filter(:camera_models, array: true) do |sql|
-    sql.where("(regexp_replace(meta_data::text, '\\\\u0000', '', 'g'))::json->>'model' in (?)", camera_models)
+    sql.where("jsonb_extract_path_text(file_data, 'metadata', 'exif', 'model') in (?)", camera_models)
   end
 end

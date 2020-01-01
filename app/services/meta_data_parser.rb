@@ -6,7 +6,7 @@ class MetaDataParser
   end
 
   def exif
-    @exif_tool.as_json.transform_keys{|k| k.underscore }
+    @exif_tool.as_json.transform_keys(&:underscore)
   end
 
   def shot_at_date
@@ -14,6 +14,6 @@ class MetaDataParser
   end
 
   def as_json(opts = {})
-    exif.delete_if{|k,v| v.to_s['Binary data'] || k == 'user_comment' }
+    exif.delete_if { |k, v| v.to_s['Binary data'] || k == 'user_comment' }
   end
 end

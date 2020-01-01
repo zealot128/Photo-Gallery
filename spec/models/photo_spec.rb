@@ -1,38 +1,6 @@
-# == Schema Information
-#
-# Table name: photos
-#
-#  id                     :integer          not null, primary key
-#  shot_at                :datetime
-#  lat                    :float
-#  lng                    :float
-#  user_id                :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  location               :string
-#  md5                    :string
-#  year                   :integer
-#  month                  :integer
-#  day_id                 :integer
-#  caption                :string
-#  description            :text
-#  file                   :string
-#  meta_data              :json
-#  type                   :string
-#  file_size              :integer
-#  rekognition_labels_run :boolean          default(FALSE)
-#  rekognition_faces_run  :boolean          default(FALSE)
-#  aperture               :decimal(5, 2)
-#  video_processed        :boolean          default(FALSE)
-#  error_on_processing    :boolean          default(FALSE)
-#  duration               :integer
-#  mark_as_deleted_on     :datetime
-#  rekognition_ocr_run    :boolean          default(FALSE)
-#
-
 require 'spec_helper'
 
-describe Photo do
+RSpec.describe Photo do
   include_context "active_job_inline"
   let(:picture) { Rails.root.join("spec/fixtures/tiger.jpg") }
   let(:other_picture) { Rails.root.join("spec/fixtures/somestuff.jpg") }
@@ -40,7 +8,17 @@ describe Photo do
 
   it "should store the uniq by hash" do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    expect(photo.id).to be_present
+
+    photo.reload
     expect(photo.md5).to eq(Digest::MD5.hexdigest(picture.read))
+
+    expect(File.exist?("public/photos/test/photos/original/2010/2010-04-10/tiger-62a1a217cc144075488a2399c175909d.jpg")).to be == true
+    expect(File.exist?(photo.file.to_io)).to be == true
+
+    expect(photo.file_derivatives).to be_present
+
+    expect(photo.as_json).to be_present
   end
 
   it "should validate by uniqness" do
@@ -57,6 +35,8 @@ describe Photo do
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
     }.to change(Day, :count)
 
+    photo.reload
+
     expect(photo.day).to be_present
     Day.last.tap do |day|
       expect(day.date).to eq(photo.shot_at.to_date)
@@ -70,11 +50,13 @@ describe Photo do
     expect {
       photo = Photo.create_from_upload(File.open(other_picture), user)
     }.to_not change(Day, :count)
+    photo.reload
     expect(photo.day).to eq(d)
     expect(photo.reload.day).to eq(d)
   end
 
   specify "Changing the date should move the file" do
+    pending
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     day = photo.day
     photo.update(shot_at: Time.zone.parse("2012-10-01 12:00"))
@@ -142,11 +124,10 @@ describe Photo do
     expect(photo.reload.location).to eq('Hofheim am Taunus')
   end
 
-  if Setting['ocr.enabled']
+  if Setting.tesseract_installed?
     specify "OCR" do
       photo = Photo.create_from_upload(File.open("spec/fixtures/text.jpg"), user)
-      photo.ocr
-      expect(photo.description).to include "Mietsteigerung"
+      expect(photo.ocr_result.text).to include "Mietsteigerung"
     end
   end
 
@@ -155,14 +136,14 @@ describe Photo do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
 
     expect(photo.persisted?).to be == true
-    expect(photo.exif).to be_present
+    expect(photo.reload.exif).to be_present
   end
 
   describe 'FOG' do
     around do |ex|
       config = YAML.load_file('config/secrets.yml')['test']
       if config['fog'].blank? or config['fog']['aws_access_key_id'].blank?
-        $stderr.puts "Skipping AWS spec because no fog config found"
+        warn "Skipping AWS spec because no fog config found"
       else
         load_fog(config['fog'])
         ImageUploader.storage :aws
@@ -181,7 +162,7 @@ describe Photo do
       old_path = photo.file.file.path
       day = photo.day
       expect(day).to receive(:update_me)
-      photo.update_attributes(shot_at: Time.zone.parse("2012-10-01 12:00"))
+      photo.update(shot_at: Time.zone.parse("2012-10-01 12:00"))
       photo = Photo.find photo.id
       expect(photo.file.file.exists?).to eq(true)
       expect(photo.file.path).to eq('photos/original/2012/2012-10-01/tiger.jpg')

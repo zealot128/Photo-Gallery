@@ -161,9 +161,12 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
+    content_disposition (1.0.0)
     crass (1.0.5)
     diff-lcs (1.3)
     docile (1.3.2)
+    down (5.0.1)
+      addressable (~> 2.5)
     erubi (1.8.0)
     exception_notification (4.1.1)
       actionmailer (>= 3.0.4)
@@ -223,6 +226,8 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    marcel (0.3.3)
+      mimemagic (~> 0.3.2)
     maruku (0.7.3)
     method_source (0.8.2)
     migration_data (0.2.1)
@@ -233,7 +238,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.13.0)
     msgpack (1.1.0)
-    multi_json (1.12.2)
+    multi_json (1.14.1)
     nio4r (2.3.1)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
@@ -352,6 +357,9 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    shrine (3.2.0)
+      content_disposition (~> 1.0)
+      down (~> 5.0)
     sidekiq (6.0.4)
       connection_pool (>= 2.2.2)
       rack (>= 2.0.0)
@@ -393,7 +401,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    streamio-ffmpeg (2.0.0)
+    streamio-ffmpeg (3.0.2)
       multi_json (~> 1.8)
     sys-filesystem (1.1.6)
       ffi
@@ -454,9 +462,11 @@ DEPENDENCIES
   habtm_generator
   hashie
   i18n-tasks (~> 0.9.8)
+  image_processing (~> 1.8)
   jquery-rails
   listen
   local_time
+  marcel
   migration_data
   mini_exiftool
   mini_exiftool_vendored!
@@ -486,12 +496,13 @@ DEPENDENCIES
   sass-rails (>= 4.0.2)
   select2-rails
   send_file_with_range!
+  shrine (~> 3.0)
   sidekiq (~> 6.0)
   silencer
   simple_form
   slim-rails
   solargraph
-  streamio-ffmpeg (= 2.0.0)
+  streamio-ffmpeg
   sys-filesystem
   tesseract-ocr
   uglifier (>= 1.0.3)

@@ -23,10 +23,10 @@ gem 'carrierwave'
 gem 'carrierwave-aws'
 gem 'carrierwave-vips'
 gem 'aws-sdk-rekognition'
-# gem 'vips'
-
-# Nervt https://github.com/rheaton/carrierwave-video/issues/44
-gem 'streamio-ffmpeg', '= 2.0.0'
+gem "shrine", "~> 3.0"
+gem "image_processing", "~> 1.8"
+gem 'marcel'
+gem 'streamio-ffmpeg'
 
 gem 'carrierwave-video', git: 'https://github.com/zealot128-os/carrierwave-video.git'
 gem 'mini_magick'

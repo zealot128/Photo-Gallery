@@ -2,47 +2,45 @@
 #
 # Table name: photos
 #
-#  id                     :integer          not null, primary key
-#  shot_at                :datetime
-#  lat                    :float
-#  lng                    :float
-#  user_id                :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  location               :string
-#  md5                    :string
-#  year                   :integer
-#  month                  :integer
-#  day_id                 :integer
-#  caption                :string
-#  description            :text
-#  file                   :string
-#  meta_data              :json
-#  type                   :string
-#  file_size              :integer
-#  rekognition_labels_run :boolean          default(FALSE)
-#  rekognition_faces_run  :boolean          default(FALSE)
-#  aperture               :decimal(5, 2)
-#  video_processed        :boolean          default(FALSE)
-#  error_on_processing    :boolean          default(FALSE)
-#  duration               :integer
-#  mark_as_deleted_on     :datetime
-#  rekognition_ocr_run    :boolean          default(FALSE)
+#  id                 :integer          not null, primary key
+#  shot_at            :datetime
+#  lat                :float
+#  lng                :float
+#  user_id            :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#  location           :string
+#  md5                :string
+#  year               :integer
+#  month              :integer
+#  day_id             :integer
+#  caption            :string
+#  description        :text
+#  old_file           :string
+#  type               :string
+#  mark_as_deleted_on :datetime
+#  geohash            :integer
+#  fingerprint        :string
+#  file_data          :jsonb
+#  processing_flags   :jsonb
 #
 
 class Video < BaseFile
-  mount_uploader :file, VideoUploader
+  mount_uploader :old_file, VideoUploader
+  include Rewrite::VideoUploader::Attachment.new(:file)
   has_many :video_thumbnails, dependent: :destroy
 
-  def duration_from_metadata
-    (meta_data || {}).fetch("ffprobe", {}).fetch("duration", 0).to_f.round
+  def exif
+    meta_data.dig('ffprobe', 'tags').merge(
+      {
+        duration: duration,
+        durationHuman: duration_human
+      }
+    )
   end
 
-  def exif
-    {
-      duration: duration,
-      durationHuman: duration_human
-    }
+  def duration
+    meta_data.dig('ffprobe', 'duration')
   end
 
   def duration_human
@@ -59,41 +57,38 @@ class Video < BaseFile
     sprintf "%02d:%02d:%02d", hours, minutes, seconds
   end
 
-  before_save do
-    self.duration = duration_from_metadata
-  end
-
   def self.create_from_upload(file, user)
     r = `ffprobe #{Shellwords.escape(file.path)} -show_format -print_format json 2> /dev/null`
+
     if $?.success?
-      meta_data = JSON.load(r)['format']
+      meta_data = JSON.parse(r)['format']
     else
       Rails.logger.error 'Error running ffprobe, make sure ffmpeg is installed'
       meta_data = { 'tags' => {} }
     end
 
     meta_date = meta_data['tags']['creation_time']
-    date = FileDateParser.new(file: file, user: user, exif_date: meta_date).parsed_date
     video = Video.new
-    video.shot_at = date
-    video.user = user
-    video.file = file
-    video.meta_data = { ffprobe: meta_data }
-    video.save
-    video.create_versions_later
-    BaseFile::GeocodeJob.perform_later(video)
+    transaction do
+      date = FileDateParser.new(file: file, user: user, exif_date: meta_date).parsed_date
+      video.shot_at = date
+      video.user = user
+      video.file = file
+      video.save
+    end
     video
   end
 
+  def enqueue_jobs
+    if !processed?(:geocoding)
+      BaseFile::GeocodeJob.perform_later(self)
+    end
+  end
+
   def process_versions!
-    Rails.logger.info "Starting processing of #{id}"
-    file.process_now = true
-    file.recreate_versions!
-    save!
-    create_preview_thumbnails
-    update video_processed: true
-    save!
-    Rails.logger.info "Finished processing of #{id}"
+    super do
+      create_preview_thumbnails
+    end
   end
 
   def create_preview_thumbnails
@@ -114,6 +109,13 @@ class Video < BaseFile
   end
 
   def update_gps(save: true)
+    if meta_data && meta_data.dig('exif', 'gps_latitude')
+      self.lat = meta_data['exif']['gps_latitude']
+      self.lng = meta_data['exif']['gps_longitude']
+      reverse_geocode
+      self.save if save
+      return
+    end
     tags = meta_data.fetch('ffprobe', {}).fetch('tags', {})
     gps = tags['location'] || tags['location-eng']
     case gps
@@ -127,8 +129,8 @@ class Video < BaseFile
 
   def as_json(opts = {})
     super.merge(
-      thumbnails: video_thumbnails.map { |i| i.file.url },
-      video_processed: video_processed,
+      thumbnails: file_derivatives[:screenshots].map(&:url),
+      video_processed: file_derivatives.present?
     )
   end
 end

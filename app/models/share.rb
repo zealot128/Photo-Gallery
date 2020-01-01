@@ -6,8 +6,8 @@
 #  name       :string
 #  type       :string
 #  token      :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #  user_id    :integer
 #
 

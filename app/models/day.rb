@@ -4,8 +4,8 @@
 #
 #  id         :integer          not null, primary key
 #  date       :date
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #  locations  :string
 #  montage    :string
 #  month_id   :integer
@@ -24,12 +24,11 @@ class Day < ActiveRecord::Base
   end
 
   def make_montage
-    images = photos.visible.order("shot_at asc").select { |i|
-      i.is_a?(Photo) || i.video_processed
-    }.map { |i| i.file.versions[:thumb].path }.compact
-    image_args = Shellwords.shelljoin images
-    width = [images.count, 15].min
+    images = photos.visible.order("shot_at asc").select { |i| i.file_derivatives.present? }.map { |i| i.file_derivatives[:thumb].to_io }
     return if images.blank?
+
+    width = [images.count, 15].min
+    image_args = Shellwords.shelljoin(images.map(&:path))
 
     Tempfile.open(['montage', '.jpg']) do |f|
       f.binmode
@@ -39,6 +38,7 @@ class Day < ActiveRecord::Base
       self.montage = f
       save
     end
+    images.map(&:close)
   end
 
   def self.date(datetime)

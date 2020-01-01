@@ -2,32 +2,27 @@
 #
 # Table name: photos
 #
-#  id                     :integer          not null, primary key
-#  shot_at                :datetime
-#  lat                    :float
-#  lng                    :float
-#  user_id                :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  location               :string
-#  md5                    :string
-#  year                   :integer
-#  month                  :integer
-#  day_id                 :integer
-#  caption                :string
-#  description            :text
-#  file                   :string
-#  meta_data              :json
-#  type                   :string
-#  file_size              :integer
-#  rekognition_labels_run :boolean          default(FALSE)
-#  rekognition_faces_run  :boolean          default(FALSE)
-#  aperture               :decimal(5, 2)
-#  video_processed        :boolean          default(FALSE)
-#  error_on_processing    :boolean          default(FALSE)
-#  duration               :integer
-#  mark_as_deleted_on     :datetime
-#  rekognition_ocr_run    :boolean          default(FALSE)
+#  id                 :integer          not null, primary key
+#  shot_at            :datetime
+#  lat                :float
+#  lng                :float
+#  user_id            :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#  location           :string
+#  md5                :string
+#  year               :integer
+#  month              :integer
+#  day_id             :integer
+#  caption            :string
+#  description        :text
+#  old_file           :string
+#  type               :string
+#  mark_as_deleted_on :datetime
+#  geohash            :integer
+#  fingerprint        :string
+#  file_data          :jsonb
+#  processing_flags   :jsonb
 #
 
 class BaseFile < ApplicationRecord
@@ -66,38 +61,30 @@ class BaseFile < ApplicationRecord
   end
 
   before_validation do
-    if !md5? and file.path
-      if !File.exist?(file.path) && !file.cached?
-        self.md5 ||= Digest::MD5.hexdigest(file.read.to_s)
-      end
-      self.md5 ||= Digest::MD5.file(file.path)
-    end
+    self.md5 ||= file_data.dig('metadata', 'md5')
+    self.md5 ||= Digest::MD5.file(file.to_io).to_s
   end
 
   before_save do
     self.year = shot_at.year
     self.month = shot_at.month
-    self.file_size ||= file.size
   end
 
   after_save do
     new_day = Day.date(shot_at)
+    old_day = day || new_day
+
+    next if file_derivatives.blank?
+
     if (saved_change_to_shot_at? and shot_at_before_last_save.present?) || new_day != day
       update_column(:day_id, new_day.id)
 
-      AssociateDayJob.set(wait: 5.seconds).perform_later(self, day, new_day)
+      BaseFile::MoveDayJob.set(wait: 5.seconds).perform_later(self, old_day, new_day)
     end
   end
 
   after_destroy do
     Day::UpdateJob.perform_later(day) if day
-  end
-
-  def retrieve_and_reprocess(&block)
-    file.cache_stored_file!
-    file.retrieve_from_cache!(file.cache_name)
-    yield(file.file)
-    file.recreate_versions!
   end
 
   def mark_as_delete!
@@ -126,7 +113,7 @@ class BaseFile < ApplicationRecord
     valid?
   end
 
-  def as_json(op = {})
+  def as_json(options = {})
     {
       id: id,
       type: type,
@@ -141,7 +128,7 @@ class BaseFile < ApplicationRecord
       file_size_formatted: ApplicationController.helpers.number_to_human_size(file_size),
       caption: caption,
       description: description,
-      versions: file.versions.map { |k, v| [k, v.url] }.to_h,
+      versions: file_derivatives.except(:screenshots).transform_values(&:url),
       download_url: "/download/#{id}/#{attributes['file']}",
       marked_as_deleted: !!mark_as_deleted_on,
       liked_by: liked_by.map(&:username),
@@ -149,7 +136,19 @@ class BaseFile < ApplicationRecord
     }
   end
 
-  def create_versions_later
-    BaseFile::RecreateVersionsJob.set(wait: 1.second).perform_later(self)
+  def processed?(type)
+    processing_flags&.[](type.to_s)
   end
+
+  def processed_successfully!(type)
+    self.processing_flags ||= {}
+    self.processing_flags[type.to_s] = true
+    update_column :processing_flags, processing_flags
+  end
+
+  def meta_data
+    file.metadata
+  end
+
+  delegate :size, to: :file, prefix: true
 end

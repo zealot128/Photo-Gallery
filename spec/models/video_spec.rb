@@ -1,42 +1,26 @@
-# == Schema Information
-#
-# Table name: photos
-#
-#  id                     :integer          not null, primary key
-#  shot_at                :datetime
-#  lat                    :float
-#  lng                    :float
-#  user_id                :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  location               :string
-#  md5                    :string
-#  year                   :integer
-#  month                  :integer
-#  day_id                 :integer
-#  caption                :string
-#  description            :text
-#  file                   :string
-#  meta_data              :json
-#  type                   :string
-#  file_size              :integer
-#  rekognition_labels_run :boolean          default(FALSE)
-#  rekognition_faces_run  :boolean          default(FALSE)
-#  aperture               :decimal(5, 2)
-#  video_processed        :boolean          default(FALSE)
-#  error_on_processing    :boolean          default(FALSE)
-#  duration               :integer
-#  mark_as_deleted_on     :datetime
-#  rekognition_ocr_run    :boolean          default(FALSE)
-#
-
 require "spec_helper"
-describe Video do
-  let(:video) { Rails.root.join('spec/fixtures/testvideo-wechat.mp4') }
+RSpec.describe Video do
+  include_context "active_job_inline"
+  let(:path) { Rails.root.join('spec/fixtures/testvideo-wechat.mp4') }
   let(:user) { valid_user }
 
   it "should store the uniq by hash" do
-    photo = Video.create_from_upload(File.open(video), user)
-    expect(photo.md5).to eq(Digest::MD5.hexdigest( video.read ))
+    video = Video.create_from_upload(File.open(path), user)
+    video.reload
+    expect(video.md5).to eq(Digest::MD5.hexdigest(path.read))
+    expect(video.file_derivatives).to be_present
+    expect(video.file.metadata).to be_present
+    expect(video.duration).to be > 0
+
+    expect(
+      video.as_json[:thumbnails]
+    ).to be_present
+  end
+
+  it "should extract geo coordinates" do
+    video = Video.create_from_upload(File.open("spec/fixtures/video_with_gps.mov"), user)
+    video.reload
+    expect(video.lat).to be_present
+    expect(video.location).to be_present
   end
 end

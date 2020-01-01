@@ -13,7 +13,7 @@ class Photo::RecognizeLabelsJob < ApplicationJob
           photo.image_labels << label
         end
     end
-    photo.update_column :rekognition_labels_run, true
+    photo.processed_successfully! :labels
     labels = photo.image_labels.pluck(:name)
     if Setting['rekognition.faces.enabled'] and (ALLOWED_FACES_TAGS & labels).any?
       Photo::RecognizeFacesJob.perform_later(photo)

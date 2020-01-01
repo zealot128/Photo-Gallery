@@ -7,8 +7,8 @@
 #  email              :string
 #  password_hash      :string
 #  password_salt      :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  created_at         :datetime
+#  updated_at         :datetime
 #  last_ip            :string
 #  last_upload        :datetime
 #  allowed_ip_storing :boolean

@@ -5,6 +5,7 @@ defaults: &defaults
   # using sendfile header for Share Download
   proxy: 'nginx'
   default_timezone: 'Europe/Berlin'
+  tesseract_language: 'eng+deu'
   storage:
     original: 'aws'
     large: 'aws'

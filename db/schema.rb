@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191230143449) do
+ActiveRecord::Schema.define(version: 20200101155147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,23 +124,14 @@ ActiveRecord::Schema.define(version: 20191230143449) do
     t.integer "day_id"
     t.string "caption"
     t.text "description"
-    t.string "file"
-    t.json "meta_data"
+    t.string "old_file"
     t.string "type"
-    t.bigint "file_size"
-    t.boolean "rekognition_labels_run", default: false
-    t.boolean "rekognition_faces_run", default: false
-    t.decimal "aperture", precision: 5, scale: 2
-    t.boolean "video_processed", default: false
-    t.boolean "error_on_processing", default: false
-    t.integer "duration"
     t.datetime "mark_as_deleted_on"
-    t.boolean "rekognition_ocr_run", default: false
     t.integer "geohash"
     t.string "fingerprint"
-    t.index ["aperture"], name: "index_photos_on_aperture"
+    t.jsonb "file_data"
+    t.jsonb "processing_flags"
     t.index ["day_id"], name: "index_photos_on_day_id"
-    t.index ["file_size"], name: "index_photos_on_file_size"
     t.index ["fingerprint"], name: "index_photos_on_fingerprint"
     t.index ["md5"], name: "index_photos_on_md5", unique: true
     t.index ["month"], name: "index_photos_on_month"

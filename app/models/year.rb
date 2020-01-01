@@ -19,6 +19,10 @@ class Year < ActiveRecord::Base
     name
   end
 
+  def to_s
+    year
+  end
+
   def year
     name.to_i
   end

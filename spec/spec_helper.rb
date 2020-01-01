@@ -11,6 +11,10 @@ RSpec.configure do |config|
     end
   end
 
+  config.before(:all) do
+    FileUtils.rm_rf('public/photos/test')
+  end
+
   config.before(:each) do
     Setting['rekognition.enabled'] = false
   end

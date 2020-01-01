@@ -1,6 +1,6 @@
 module V3
   class ApiController < ApplicationController
-		skip_before_action :verify_authenticity_token
+    skip_before_action :verify_authenticity_token
     before_action :login_by_token
     before_action :login_required, except: :sign_in
 
@@ -8,9 +8,9 @@ module V3
       user = User.authenticate(params[:username], params[:password])
       if user
         token = user.app_tokens.create(user_agent: request.user_agent)
-        render json: { token: token.token }, status: 201
+        render json: { token: token.token }, status: :created
       else
-        render json: { error: "User not found" }, status: 401
+        render json: { error: "User not found" }, status: :unauthorized
       end
     end
 
@@ -54,12 +54,18 @@ module V3
 
     def exif
       json = Rails.cache.fetch('api.exif', expires_in: 15.minutes) do
-        groups = Photo.group("(regexp_replace(meta_data::text, '\\\\u0000', '', 'g'))::json->>'model'")
-          .order('count_all desc').limit(30).count.delete_if { |k, _| k.blank? }
+        base = Photo.visible.limit(30).order('count_all desc')
         {
-          camera_models: groups.map { |k, v|
-            { name: k, count: v }
-          }
+          camera_models: base.
+            group("jsonb_extract_path_text(file_data, 'metadata', 'exif', 'model')").
+            count.
+            delete_if { |k, _| k.blank? }.
+            map { |k, v| { name: k, count: v } },
+          aperture: base.
+            group("jsonb_extract_path_text(file_data, 'metadata', 'exif', 'aperture')").
+            count.
+            delete_if { |k, _| k.blank? }.
+            map { |k, v| { name: k, count: v } }
         }
       end
       render json: json
