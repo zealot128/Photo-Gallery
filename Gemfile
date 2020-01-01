@@ -1,8 +1,6 @@
 source 'https://rubygems.org'
 
-### Basic Framework
-# gem 'rails', '~> 5.0.0.rc1'
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.2.0'
 gem 'pg'
 gem 'slim-rails'
 gem 'migration_data'
@@ -56,7 +54,7 @@ gem 'pry'
 gem 'font-awesome-rails'
 gem 'coffee-rails'
 gem 'jquery-rails'
-gem 'sass-rails' , '>= 4.0.2'
+gem 'sass-rails', '>= 4.0.2'
 gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-will_paginate'

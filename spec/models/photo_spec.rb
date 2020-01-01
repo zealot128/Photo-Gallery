@@ -56,7 +56,6 @@ RSpec.describe Photo do
   end
 
   specify "Changing the date should move the file" do
-    pending
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
     day = photo.day
     photo.update(shot_at: Time.zone.parse("2012-10-01 12:00"))

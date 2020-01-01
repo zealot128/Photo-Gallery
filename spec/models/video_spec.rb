@@ -18,6 +18,7 @@ RSpec.describe Video do
   end
 
   it "should extract geo coordinates" do
+    Geocoder.configure(lookup: :nominatim)
     video = Video.create_from_upload(File.open("spec/fixtures/video_with_gps.mov"), user)
     video.reload
     expect(video.lat).to be_present
