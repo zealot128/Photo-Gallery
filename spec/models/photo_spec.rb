@@ -57,17 +57,17 @@ RSpec.describe Photo do
 
   specify "Changing the date should move the file" do
     photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    photo.reload
     day = photo.day
     photo.update(shot_at: Time.zone.parse("2012-10-01 12:00"))
-    photo.reload
-    expect(File.exist?(photo.file.path)).to eq(true)
 
-    photo.file.versions.each do |_key, version|
-      expect(File.exist?(version.path)).to eq(true)
-    end
+    path = Photo.find(photo.id).file.to_io.path
+    expect(File.exist?(path)).to be == true
+    expect(path).to include 'photos/test/photos/original/2012/2012-10-01/tiger-62a1a217cc144075488a2399c175909d.jpg'
 
-    old_path = photo.file.path.gsub('/2012/', '/2010/').gsub('2012-10-01', day.date.to_s)
-    expect(File.exist?(old_path)).to eq(false)
+    old_path = path.gsub('/2012/', '/2010/').gsub('2012-10-01', day.date.to_s)
+
+    expect(File.exist?(old_path)).to be == false
 
     Day.where(date: "2012-10-01").first.tap do |d|
       expect(d.photos).to eq([photo])

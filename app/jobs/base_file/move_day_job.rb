@@ -17,38 +17,17 @@ class BaseFile::MoveDayJob < ApplicationJob
       @old_str = old_day.date.strftime("%Y-%m-%d")
       @new_str = new.strftime("%Y-%m-%d")
       if @old_str != @new_str
-        ([[:original, base_file.file]] + base_file.file.versions.to_a).each do |_key, version|
-          move_version(version)
-        end
+        attacher = base_file.file_attacher
+        old_attacher = attacher.dup
+        attacher.set(attacher.upload(attacher.file)) # reupload file
+        attacher.set_derivatives(attacher.upload_derivatives(attacher.derivatives)) # reupload derivatives if you have derivatives
+
+        attacher.persist
+        old_attacher.destroy_attached
       end
     end
 
     Day::UpdateJob.perform_later(new_day)
     Day::UpdateJob.perform_later(old_day) if old_day
-  end
-
-  attr_reader :old_str, :new_str, :old_day, :new_day
-
-  def move_version(version)
-    # rubocop:disable Lint/RedundantStringCoercion
-    from = version.path.gsub(new_str, old_str).gsub(%r{/#{new_day.year.to_s}/}, "/#{old_day.year.to_s}/")
-    to = version.path.gsub(old_str, new_str).gsub(%r{/#{old_day.year.to_s}/}, "/#{new_day.year.to_s}/")
-    Rails.logger.info "[photo] Moving #{from} -> #{to}"
-    Rails.logger.info "  #{from} exists? -> #{File.exist?(from)}"
-    Rails.logger.info "  #{to}   exists? -> #{File.exist?(to)}"
-
-    case version.file.class.to_s
-    when 'CarrierWave::Storage::Fog::File'
-      @base_file.shot_at = old_str
-      version.cache!
-      @base_file.shot_at = new_str
-      version.store!
-    else
-      version.cache!
-      version.store!
-      if File.exist?(from)
-        File.unlink(from)
-      end
-    end
   end
 end

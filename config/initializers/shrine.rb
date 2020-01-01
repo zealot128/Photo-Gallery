@@ -43,7 +43,6 @@ Shrine.storage(/aws/) do
   )
 end
 
-
 Shrine.plugin :backgrounding # upload + metadata in bg
 Shrine::Attacher.promote_block do
   Shrine::PromoteJob.perform_later(self.class.name, record, name.to_s, file_data)
