@@ -12,16 +12,15 @@
 #
 
 class Day < ActiveRecord::Base
-  validates :date, presence: true
   has_many :photos, class_name: 'BaseFile'
-  belongs_to :month
+  belongs_to :month, optional: true
   has_one :year, through: :month
+
+  validates :date, presence: true
 
   mount_uploader :montage, MontageUploader
 
-  before_save do
-    assign_month
-  end
+  before_save :assign_month
 
   def make_montage
     images = photos.visible.order("shot_at asc").select { |i| i.file_derivatives.present? }.map { |i| i.file_derivatives[:thumb].to_io }

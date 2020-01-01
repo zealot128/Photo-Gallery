@@ -11,7 +11,7 @@
 #
 
 class Month < ActiveRecord::Base
-  belongs_to :year
+  belongs_to :year, optional: true
   has_many :days
   has_many :photos, through: :days
 
@@ -20,15 +20,14 @@ class Month < ActiveRecord::Base
   end
 
   before_save do
-    self.month_string ||= "#{year.name}-#{sprintf "%02d", month_number}"
+    self.month_string ||= "#{year.name}-#{sprintf '%02d', month_number}"
   end
 
-  def as_json(opts= {})
-    super.merge( 'to_s' => to_s,
+  def as_json(opts = {})
+    super.merge('to_s' => to_s,
                 'photo_count' => photos.count,
                 'preview_photos' => photos.limit(10).as_json(opts),
-                'url' => "/v2/years/#{year.name}/month/#{month_number}"
-               )
+                'url' => "/v2/years/#{year.name}/month/#{month_number}")
   end
 
   def self.find_or_make(date)

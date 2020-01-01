@@ -29,13 +29,10 @@ class ImageFace < ApplicationRecord
   attr_accessor :similarity
 
   after_destroy do
-    begin
-      RekognitionClient.delete_faces(aws_id)
-    rescue StandardError => e
-      ExceptionNotifier.notify_exception(e) if defined?(ExceptionNotifier)
-      p e unless Rails.env.production?
-      nil
-    end
+    RekognitionClient.delete_faces(aws_id)
+  rescue StandardError => e
+    p e unless Rails.env.production?
+    nil
   end
 
   def crop_bounding_box
@@ -57,6 +54,7 @@ class ImageFace < ApplicationRecord
   def auto_assign_person
     return unless Setting['rekognition.faces.auto_assign.enabled']
     return if person
+
     similar = RekognitionClient.search_faces(aws_id, threshold: AUTO_ASSIGN_THRESHOLD, max_faces: AUTO_ASSIGN_MAX_FACES)
     if similar.face_matches.count >= AUTO_ASSIGN_MIN_EXISTING_FACES
       aws_ids = similar.face_matches.map { |i| i.face.face_id }

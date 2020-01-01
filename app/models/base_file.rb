@@ -30,12 +30,11 @@ class BaseFile < ApplicationRecord
   has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
   has_many :image_faces, dependent: :destroy
   has_many :people, through: :image_faces
-  has_many :likes
+  has_many :likes, dependent: :destroy
   has_many :liked_by, through: :likes, class_name: "User", source: :user
-  has_one :ocr_result
-
-  belongs_to :user
-  belongs_to :day
+  has_one :ocr_result, dependent: :destroy
+  belongs_to :user, optional: true
+  belongs_to :day, optional: true
   has_and_belongs_to_many :shares, join_table: "photos_shares", foreign_key: 'photo_id'
   acts_as_taggable
   scope :dates, -> { group(:shot_at).select(:shot_at).order("shot_at desc") }

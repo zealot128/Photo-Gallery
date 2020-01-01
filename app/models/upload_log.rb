@@ -16,9 +16,9 @@
 #
 
 class UploadLog < ActiveRecord::Base
-  belongs_to :user
   enum status: [:success, :already_uploaded, :error]
-  belongs_to :base_file
+  belongs_to :user, optional: true
+  belongs_to :base_file, optional: true
 
   def self.handle_file(file_model, uploaded_file, controller, exception)
     log = new(

@@ -18,13 +18,14 @@ describe V2::ApiController do
 
   context "bulk update" do
     specify "New Share onthefly has higher priority" do
-      share = Share.create(name: 'meetup2016')
+      share = Share.create!(name: 'meetup2016')
       post :bulk_update, params: {
         file_ids: [photo.id],
         tag_ids: [], new_tag: 'foobar',
-        share_ids: [share.id], new_share: 'newshare123'
+        share_ids: [share.id],
+        new_share: 'newshare123'
       }
-      expect(photo.shares.map(&:name).sort).to eq(['meetup2016', 'newshare123'])
+      expect(photo.reload.shares.map(&:name).sort).to eq(['meetup2016', 'newshare123'])
       expect(photo.tag_list).to eq(['foobar'])
 
       get :tags

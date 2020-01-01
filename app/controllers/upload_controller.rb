@@ -15,14 +15,14 @@ class UploadController < ApplicationController
       rescue StandardError => e
         exception = e
         ExceptionNotifier.notify_exception(exception, env: request.env) if defined?(ExceptionNotifier)
-        render status: 500, text: "Server Error", layout: false
+        render status: :internal_server_error, text: "Server Error", layout: false
         return
       end
       UploadLog.handle_file(@photo, file, self, exception)
       if !@photo.new_record?
         render plain: 'OK', layout: false
       else
-        render plain: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: 409, layout: false
+        render plain: "ALREADY_UPLOADED: #{@photo.errors.full_messages}", status: :conflict, layout: false
       end
     end
   end
@@ -32,22 +32,22 @@ class UploadController < ApplicationController
   end
 
   def exists
-    if !params[:md5]
-      render json: { error: 'No md5 given' }, status: 400
+    unless params[:md5]
+      render json: { error: 'No md5 given' }, status: :bad_request
       return
     end
     exists = BaseFile.where(md5: params[:md5]).first
     if exists
       render json: { photo: exists }
     else
-      render json: { error: 'no photo found' }, status: 404
+      render json: { error: 'no photo found' }, status: :not_found
     end
   end
 
   protected
 
   def find_pseudo_password(password)
-    User.all.find{|user|
+    User.all.find { |user|
       user.pseudo_password && (Digest::SHA512.hexdigest(user.pseudo_password) == password || password == user.pseudo_password)
     }
   end
@@ -63,9 +63,10 @@ class UploadController < ApplicationController
       @user = find_pseudo_password(params[:password])
       return @user if @user
     end
-    if by_ip       = User.authenticate_by_ip(request)
+    if (by_ip = User.authenticate_by_ip(request))
       return @user = by_ip
     end
+
     authenticate_or_request_with_http_basic do |username, password|
       try = User.authenticate(username, password)
       try ||= find_pseudo_password(password)

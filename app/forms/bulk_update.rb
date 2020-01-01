@@ -15,6 +15,7 @@ class BulkUpdate
     if @new_share.present?
       shares += [Share.where(name: @new_share).first_or_create(user: @current_user)]
     end
+    binding.pry
     tags = ActsAsTaggableOn::Tag.where(id: @tag_ids).to_a
     if @new_tag.present?
       tags += [ActsAsTaggableOn::Tag.where(name: @new_tag.strip.downcase).first_or_create]

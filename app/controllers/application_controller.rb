@@ -1,5 +1,5 @@
+require 'controller_authentication'
 class ApplicationController < ActionController::Base
-  force_ssl if: :should_force_ssl?
   include ControllerAuthentication
   protect_from_forgery with: :null_session
 
@@ -8,11 +8,11 @@ class ApplicationController < ActionController::Base
   def shares
     Share.sorted
   end
+  helper_method :shares
 
   def tag_counts
     BaseFile.tag_counts.reorder(:name)
   end
-  helper_method :shares
   helper_method :tag_counts
 
   def can?(subject, object)
@@ -20,9 +20,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :can?
 
-  def should_force_ssl?
-    Rails.env.production? && request.format.html?
-  end
   before_action :set_locale_from_profile
 
   def set_locale_from_profile
@@ -33,10 +30,10 @@ class ApplicationController < ActionController::Base
         ActiveSupport::TimeZone[Rails.configuration.time_zone]
       end
     Time.zone = tz
-    if current_user && current_user.locale?
-      I18n.locale = current_user.locale
-    else
-      I18n.locale = I18n.default_locale
-    end
+    I18n.locale = if current_user && current_user.locale?
+                    current_user.locale
+                  else
+                    I18n.default_locale
+                  end
   end
 end

@@ -10,7 +10,7 @@ describe V3::ApiController do
     specify 'sign in with token' do
       user
       post :sign_in, params: { username: "stefan", password: "123123123" }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json['token']).to be_present
       expect(user.reload.app_tokens.count).to be == 1
     end
@@ -20,7 +20,7 @@ describe V3::ApiController do
 
       request.headers['Authorization'] = "Bearer #{token.token}"
       get :photos, params: {}
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -32,7 +32,7 @@ describe V3::ApiController do
     specify 'photos' do
       Photo.create_from_upload(File.open('spec/fixtures/aws.png'), user).tap(&:reload)
       get :photos, params: { from: '2016-05-17', to: '2016-05-18', file_types: ['photo'] }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json['data'].length).to be == 1
     end
 
@@ -45,15 +45,15 @@ describe V3::ApiController do
       expect(json['camera_models']).to be == [{ 'name' => 'Canon EOS 20D', 'count' => 1 }]
 
       get :photos, params: { camera_models: ['Canon EOS 20D'] }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json['data'].length).to be == 1
 
       get :photos, params: { file_size: '< 1mb' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json['data'].length).to be == 1
 
       get :photos, params: { aperture: '< 5.6' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json['data'].length).to be == 1
     end
   end
