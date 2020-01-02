@@ -1,15 +1,11 @@
-HEIF:
-
-- Rotate
-
-Jobs:
-
-- Version generation
+- Rotate (HEIF)
+- Test Coverage: Was fehlt noch?
+- Migration...
+- WebDAV besser? (iphone Dings will immer txtfile abspeichern)
+- Web testen
 
 Deploy:
-
-- Tomo
-
+- Sidekiq
 - Rails 6 Upgrade
 - Test im Development mit AWS Krams
 
@@ -46,7 +42,3 @@ Deploy:
     People=Lili,Stefan
     ShotAt=2016-..
 
-* SMTP configurable (?)
-
-* WebDAV: andere Apps, wie Owncloud checken
-* public/uploads/tmp wird nicht gecleart, je release; symlnk fehlt noch beim ansible

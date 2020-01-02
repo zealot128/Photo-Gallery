@@ -76,20 +76,21 @@ class Photo < BaseFile
   end
 
   def rotate!(direction)
-    raise
+    degrees =
+      case direction.to_sym
+      when :left then -90
+      when :flip then 180
+      else 90
+      end
 
-    degrees = case direction.to_sym
-              when :left
-                -90
-              when :flip
-                180
-              else
-                90
-              end
-
-    cmd = "mogrify -rotate #{degrees} #{Shellwords.escape(file.path)}"
-    `#{cmd}`
-    save
+    attacher = file_attacher
+    f = attacher.file.download
+    s = ImageProcessing::Vips.source(f).rotate!(degrees)
+    self.file = s
+    file_attacher.refresh_metadata!(background: true) # extract metadata
+    file_attacher.create_derivatives
+    file_attacher.promote
+    true
   end
 
   def as_json(options = {})

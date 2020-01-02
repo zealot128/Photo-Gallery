@@ -17,7 +17,7 @@ defaults: &defaults
     access_key_secret: ''
     region: 'eu-west-1'
     bucket: ''
-    acl: 'public-read'
+    acl: 'private'
 
   rekognition:
     enabled: true

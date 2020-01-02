@@ -143,3 +143,5 @@ Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: optional
 Style/NonNilCheck:
   Enabled: false
+Style/NegatedIf:
+  Enabled: false

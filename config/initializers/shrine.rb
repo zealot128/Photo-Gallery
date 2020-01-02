@@ -35,7 +35,7 @@ Shrine.storages = {
   derivates: Shrine::Storage::FileSystem.new("public", prefix: "photos"),
 }
 Shrine.storage(/aws/) do
-  Shrine::Storages::S3.new(
+  Shrine::Storage::S3.new(
     bucket: s.call('aws.bucket'),
     access_key_id: s.call('aws.access_key_id'),
     secret_access_key: s.call('aws.access_key_secret'),

@@ -138,40 +138,44 @@ RSpec.describe Photo do
     expect(photo.reload.exif).to be_present
   end
 
-  describe 'FOG' do
+  specify 'rotate' do
+    width = Vips::Image.new_from_file(picture.to_s).width
+    photo = Photo.create_from_upload(File.open(picture.to_s), user)
+    photo.reload
+    photo.rotate!(:left)
+
+    new_height = Vips::Image.new_from_file(photo.file.to_io.path).height
+    expect(width).to be == new_height
+  end
+
+  describe 'AWS' do
     around do |ex|
       config = YAML.load_file('config/secrets.yml')['test']
       if config['fog'].blank? or config['fog']['aws_access_key_id'].blank?
         warn "Skipping AWS spec because no fog config found"
       else
-        load_fog(config['fog'])
-        ImageUploader.storage :aws
-        begin
-          ex.run
-        ensure
-          ImageUploader.storage :file
-        end
+        Setting['storage.original'] = 'aws'
+        Setting['aws.access_key_id'] = Rails.application.secrets.fog[:aws_access_key_id]
+        Setting['aws.access_key_secret'] = Rails.application.secrets.fog[:aws_secret_access_key]
+        Setting['aws.region'] = Rails.application.secrets.fog[:region]
+        Setting['aws.bucket'] = Rails.application.secrets.fog[:bucket]
+        ex.run
       end
+    ensure
+      Setting['storage.original'] = 'file'
     end
 
-    specify 'photo upload + rename' do
+    specify 'photo upload' do
       photo = Photo.create_from_upload(File.open(picture.to_s), user)
+      photo.reload
+      expect(photo.md5).to eq(Digest::MD5.hexdigest(picture.read))
+      expect(photo.file_derivatives).to be_present
+      expect(photo.as_json).to be_present
 
-      expect(photo.file.file.exists?).to eq(true)
-      old_path = photo.file.file.path
-      day = photo.day
-      expect(day).to receive(:update_me)
-      photo.update(shot_at: Time.zone.parse("2012-10-01 12:00"))
-      photo = Photo.find photo.id
-      expect(photo.file.file.exists?).to eq(true)
-      expect(photo.file.path).to eq('photos/original/2012/2012-10-01/tiger.jpg')
-      photo.file.versions.each do |_key, version|
-        expect(version.file.exists?).to eq(true)
-      end
-
-      f = photo.file.file
-      f.instance_variable_set('@path', old_path)
-      expect(f.exists?).to eq(false)
+      expect(photo.file.url).to include "s3.eu-west-1.amazonaws.com"
+      expect(
+        Digest::MD5.file(Kernel.open(photo.file.url)).to_s
+      ).to be == photo.md5
     end
   end
 end
