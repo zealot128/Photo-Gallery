@@ -2,6 +2,9 @@ class PagesController < ApplicationController
   def index
     @share = Share.where(name: "Public").first || Share.create!(name: "Public")
     @photos = @share.photos.order("shot_at desc")
+    if current_user
+      redirect_to '/v3'
+    end
   end
 
   before_action :login_required, only: [:tag, :upload, :v3, :v3_faces]

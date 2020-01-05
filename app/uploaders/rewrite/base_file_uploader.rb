@@ -24,9 +24,9 @@ module Rewrite
       user_name = File.basename(metadata['filename'], extname)
       filename = "#{user_name}-#{metadata['md5']}#{extname}"
       if Rails.env.test?
-        "test/photos/#{version}/#{date.year}/#{date}/#{filename}"
+        "#{version}/#{date.year}/#{date}/#{filename}"
       else
-        "photos/#{version}/#{date.year}/#{date}/#{filename}"
+        "#{version}/#{date.year}/#{date}/#{filename}"
       end
     end
   end

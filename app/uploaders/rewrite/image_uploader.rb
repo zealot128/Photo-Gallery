@@ -6,6 +6,12 @@ module Rewrite
       MetaDataParser.new(io).exif
     end
 
+    add_metadata :id_hash do |io, derivate: nil, **options|
+      Shrine.with_file(io) { |file|
+        DHashVips::IDHash.fingerprint(file.path)
+      }
+    end
+
     Attacher.derivatives do |original|
       base = Setting.vips_installed? ? ImageProcessing::Vips : ImageProcessing::MiniMagick
 

@@ -27,6 +27,9 @@
 
 class BaseFile < ApplicationRecord
   self.table_name = 'photos'
+
+  include ShrineMigration
+
   has_and_belongs_to_many :image_labels, join_table: 'base_files_image_labels'
   has_many :image_faces, dependent: :destroy
   has_many :people, through: :image_faces
@@ -83,13 +86,12 @@ class BaseFile < ApplicationRecord
   end
 
   after_destroy do
-    Day::UpdateJob.perform_later(day) if day
+    day&.update_me_async
   end
 
   def mark_as_delete!
-    d = day
     update_column :mark_as_deleted_on, Time.zone.now
-    d.update_me
+    day&.update_me_async
   end
 
   def self.create_from_upload(file, current_user)

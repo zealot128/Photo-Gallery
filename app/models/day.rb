@@ -61,6 +61,10 @@ class Day < ActiveRecord::Base
     update_attribute :locations, photos.pluck(:location).reject(&:blank?).uniq.join(", ")
   end
 
+  def update_me_async
+    Day::UpdateJob.perform_later(self)
+  end
+
   def assign_month
     if date_changed? or month.blank?
       self.month = Month.find_or_make(date)

@@ -21,6 +21,8 @@ gem 'carrierwave'
 gem 'carrierwave-aws'
 gem 'carrierwave-vips'
 gem 'aws-sdk-rekognition'
+gem 'aws-sdk-cloudwatch'
+gem 'aws-sdk-budgets'
 gem "shrine", "~> 3.0"
 gem "image_processing", "~> 1.8"
 gem 'marcel'
@@ -32,7 +34,7 @@ gem 'mini_magick'
 gem 'mini_exiftool_vendored', git: 'https://github.com/zealot128-os/mini_exiftool_vendored.git'
 gem 'mini_exiftool'
 gem 'geocoder'
-gem 'phashion'
+gem "dhash-vips"
 gem 'rqrcode'
 gem 'tesseract-ocr', require: false
 gem 'chronic'

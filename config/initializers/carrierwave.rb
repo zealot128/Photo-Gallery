@@ -1,3 +1,5 @@
+return if ARGV.join.include?('assets:precompile')
+
 Rails.application.config.to_prepare do
   s = ->(key) {
     setting = begin

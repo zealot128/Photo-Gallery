@@ -30,10 +30,14 @@ s = ->(key) {
 #### Storages ####
 ##################
 Shrine.storages = {
-  cache: Shrine::Storage::FileSystem.new("public", prefix: "uploads/cache"),
+  cache: Shrine::Storage::FileSystem.new("public", prefix: "photos/cache"),
   file: Shrine::Storage::FileSystem.new("public", prefix: "photos"),
   derivates: Shrine::Storage::FileSystem.new("public", prefix: "photos"),
 }
+if Rails.env.test?
+  Shrine.storages[:file] = Shrine::Storage::FileSystem.new("public", prefix: "test/photos")
+  Shrine.storages[:derivatives] = Shrine::Storage::FileSystem.new("public", prefix: "test/photos")
+end
 Shrine.storage(/aws/) do
   Shrine::Storage::S3.new(
     bucket: s.call('aws.bucket'),

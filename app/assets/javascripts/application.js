@@ -16,6 +16,6 @@
 //= require select2
 //= require endless-scroll
 //= require bootstrap-datetimepicker.min.js
-//= require local_time
+//= require local-time
 //= require photos
 //= require v2

@@ -178,4 +178,17 @@ RSpec.describe Photo do
       ).to be == photo.md5
     end
   end
+
+  specify 'Migration' do
+    photo = Photo.create!(old_file: File.open(picture), shot_at: '2010-04-10T12:00', md5: Digest::MD5.hexdigest(picture.read))
+    expect(File.exist?("public/test/photos/thumb/2010/2010-04-10/thumb_tiger.jpg")).to be == true
+    photo.migrate!
+    photo.reload
+
+    expect(photo.file).to be_present
+    expect(photo.file.to_io).to be_present
+    expect(photo.file_derivatives[:thumb]).to be_present
+    expect(photo.old_file.url(:thumb)).to be == photo.file_derivatives[:thumb].url
+    expect(photo.file.url).to be == photo.file.url
+  end
 end

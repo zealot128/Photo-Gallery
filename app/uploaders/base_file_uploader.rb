@@ -1,7 +1,7 @@
 class BaseFileUploader < CarrierWave::Uploader::Base
   attr_writer :process_now
   def process_now?(img = nil)
-    (!!@process_now) || model.video_processed?
+    true
   end
 
   storage Setting['storage.original'].to_sym

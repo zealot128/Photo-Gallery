@@ -1,0 +1,49 @@
+version: '3.4'
+services:
+  db:
+    image: "postgres:12-alpine"
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+
+  app: &app_base
+    image: dockerrails_app_development
+    build:
+      context: .
+      args:
+        - ADDITIONAL_PACKAGES=nodejs yarn python2 build-base git
+        - RAILS_ENV=development
+    environment:
+      - REDIS_SIDEKIQ_URL=redis://redis:6379/0
+      - REDIS_CACHE_URL=redis://redis:6379/2
+      - SECRET_KEY_BASE=f0ee8496d1ddeb69fa0980d0580ff0f174262e61b53e8a318c990a193661f45f84b07a995d33ca8749eb6e0085d375201d319ed0fdaab9aa469e3b9b96f269d6
+      - DATABASE_URL='postgresql://postgres:mysecretpassword@db/pictures'
+      - RAILS_ENV=development
+      - RAILS_MAX_THREADS
+    ports:
+      - "3000"
+    links:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - gem-cache:/usr/local/bundle/gems/
+      - node-modules-cache:/app/node_modules
+      - local-photos:/app/public/photos
+
+  worker:
+    <<: *app_base
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    ports: []
+    depends_on:
+      - app
+
+volumes:
+  db-data:
+  local-photos:
+  gem-cache:
+  node-modules-cache:
