@@ -13,18 +13,18 @@
               |Filter
               .columns.block
                 .column
-                  b-checkbox(v-model="value.fileTypes" native-value="photo") Photos
-                  b-checkbox(v-model="value.fileTypes" native-value="video") Videos
+                  b-checkbox(v-model="valueProxy.fileTypes" native-value="photo") Photos
+                  b-checkbox(v-model="valueProxy.fileTypes" native-value="video") Videos
                 .column
-                  b-checkbox(v-model="value.favorite") Favoriten
+                  b-checkbox(v-model="valueProxy.favorite") Favoriten
               .columns.block
                 .column
-                  pic-date-parse-modal(v-model='value')
+                  pic-date-parse-modal(v-model='valueProxy')
                 .column
-                  pic-camera-filter(v-model='value')
+                  pic-exif-filter(v-model='valueProxy')
               .block
                 b-field(label='Suchbegriff/Schlagwort')
-                  b-input(v-model='value.query' @keyup.native.enter='apply')
+                  b-input(v-model='valueProxy.query' @keyup.native.enter='apply')
               .block
                 div: span(v-for='personId in value.peopleIds')
                   img(:src='findPerson(personId).preview' style='height: 30px')
@@ -39,13 +39,13 @@
             .card-content
               p Person hinzufügen (nur Photos)
               .block.face-select
-                b-checkbox(v-for='person in people' v-model='value.peopleIds'
+                b-checkbox(v-for='person in people' v-model='valueProxy.peopleIds'
                   :native-value='person.id' :key='person.id' :name='"person" +person.id')
                     img(:src='person.preview')
                     |
                     small.is-text-overflow {{person.name}}
               .block
-                b-checkbox(v-model="value.includeWholeDay") Dateien des gleichen Tages wie Gefundene mit anzeigen
+                b-checkbox(v-model="valueProxy.includeWholeDay") Dateien des gleichen Tages wie Gefundene mit anzeigen
             .card-footer
               a.card-footer-item(@click='openAddPersonModal = false')
                 |Schließen
@@ -57,14 +57,14 @@
 <script>
 import Api from 'picapp/api';
 import PicDateParseModal from 'picapp/components/filter/date-parse-modal';
-import PicCameraFilter from 'picapp/components/filter/camera-filter';
+import PicExifFilter from 'picapp/components/filter/exif-filter';
 import PicNavIcon from 'picapp/components/nav-icon';
 import PicUploadBar from 'picapp/components/upload-bar';
 const api = new Api()
 
 export default {
   components: {
-    PicDateParseModal, PicNavIcon, PicUploadBar, PicCameraFilter
+    PicDateParseModal, PicNavIcon, PicUploadBar, PicExifFilter
   },
   props: {
     value: {
@@ -77,6 +77,14 @@ export default {
       openAddPersonModal: false,
       dropdownOpen: false,
       people: []
+    }
+  },
+  computed: {
+    valueProxy: {
+      get() { return this.value },
+      set(val) {
+        this.$emit('input', val)
+      }
     }
   },
   created() {

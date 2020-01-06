@@ -19,7 +19,8 @@ export default {
       return {
         backgroundImage: `url(${this.image.preview})`,
         width: `${this.width}px`,
-        height: `${this.height}px`
+        height: `${this.height}px`,
+        transform: this.image.rotateDegrees ? `rotate(${this.image.rotateDegrees}deg)` : null,
       }
     }
   },

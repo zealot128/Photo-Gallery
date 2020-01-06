@@ -102,11 +102,8 @@ class V3::Search
     sql.where(type: allowed_types)
   end
 
-  add_filter(:aperture) do |sql|
-    @aperture_min, @aperture_max = parsed(aperture)
-    sql = sql.where("(file_data #>> '{metadata,exif,aperture}')::float >= ?", @aperture_min) if @aperture_min
-    sql = sql.where("(file_data #>> '{metadata,exif,aperture}')::float <= ?", @aperture_max) if @aperture_max
-    sql
+  add_filter(:apertures) do |sql|
+    sql.where("(file_data #>> '{metadata,exif,aperture}')::float in (?)", apertures)
   end
 
   add_filter(:file_size) do |sql|

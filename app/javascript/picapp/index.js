@@ -4,7 +4,7 @@ import App from 'picapp/app.vue'
 import Buefy from 'buefy'
 import VueGallery from 'vue-gallery';
 
-import 'buefy/lib/buefy.css'
+import 'buefy/dist/buefy.css'
 Vue.use(Buefy)
 Vue.use(VueGallery)
 

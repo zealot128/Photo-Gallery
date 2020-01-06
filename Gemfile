@@ -9,7 +9,7 @@ gem 'local_time'
 
 ### Model
 gem 'bcrypt-ruby', require: 'bcrypt'
-gem 'acts-as-taggable-on', git: 'https://github.com/mbleigh/acts-as-taggable-on.git'
+gem 'acts-as-taggable-on'
 
 ### Utils
 gem 'ruby-progressbar'
@@ -61,7 +61,7 @@ gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-will_paginate'
 gem 'select2-rails'
-gem 'webpacker', '~> 3.0'
+gem 'webpacker', '~> 4.0'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-dropzone'

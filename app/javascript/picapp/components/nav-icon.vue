@@ -9,7 +9,7 @@
         | Unzuwiesene Gesichter
       b-dropdown-item(has-link v-if='currentPage == "faces"'): a(href='/v3')
         | App
-      b-dropdown-item(has-link): a(href='/')
+      b-dropdown-item(has-link): a(href='/photos')
         | Alte App
     b-modal(:active.sync="shareModalOpen")
       .card: .card-content

@@ -80,7 +80,8 @@ export default {
         favorite: null,
         peopleIds: [],
         includeWholeDay: false,
-        cameraModels: []
+        cameraModels: [],
+        aperture: []
       }
     }
   },
@@ -102,16 +103,30 @@ export default {
       const addBust = string => string.replace(/\?.*/, "") + "?" + (new Date()).getTime()
       this.rotationInProgress = true
       const currentImage = this.$refs.gallery.instance.slides[this.currentGalleryIndex].children[0]
+      let degrees = parseInt(currentImage.style.transform.match(/-?\d+/) || 0, 10)
       if (direction === 'right') {
-        currentImage.style.transform = 'rotate(90deg)'
+        degrees += 90
       } else if (direction === 'left') {
-        currentImage.children[0].style.transform = 'rotate(-90deg)'
+        degrees -= 90
       }
+      currentImage.style.transform = `rotate(${degrees}deg)`
+
       this.api.rotate(file.id, direction).then(() => {
         this.rotationInProgress = false
         currentImage.src = addBust(currentImage.src)
         this.currentFile.preview = addBust(this.currentFile.preview)
         this.currentFile.thumbnail = addBust(this.currentFile.thumbnail)
+
+        this.photos = this.photos.map(ph => {
+          if (ph.id === file.id) {
+            return {
+              ...ph,
+              rotateDegrees: degrees,
+            }
+          } else {
+            return ph
+          }
+        })
       })
     },
     onSlide(payload) {

@@ -133,7 +133,7 @@ class BaseFile < ApplicationRecord
       download_url: "/download/#{id}/#{attributes['file']}",
       marked_as_deleted: !!mark_as_deleted_on,
       liked_by: liked_by.map(&:username),
-      exif: exif
+      exif: exif.slice('model', 'iso', 'exposure_time', 'aperture', 'focal_length')
     }
   end
 

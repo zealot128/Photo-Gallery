@@ -52,7 +52,7 @@ describe V3::ApiController do
       expect(response).to be_successful
       expect(json['data'].length).to be == 1
 
-      get :photos, params: { aperture: '< 5.6' }
+      get :photos, params: { apertures: '< 5.6' }
       expect(response).to be_successful
       expect(json['data'].length).to be == 1
     end

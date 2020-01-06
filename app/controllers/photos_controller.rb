@@ -36,8 +36,8 @@ class PhotosController < ApplicationController
     response.headers['Content-Type'] = 'image/jpeg'
     response.headers['Content-Disposition'] = 'inline'
 
-    path = BaseFile.find_by_share_hash!(params[:hash]).file.path(:large)
-    self.response_body = open(path, "rb")
+    path = BaseFile.find_by!(share_hash: params[:hash]).file.path(:large)
+    self.response_body = File.open(path, "rb").read
   end
 
   def upload
@@ -64,7 +64,7 @@ class PhotosController < ApplicationController
         valid: false,
         errors: [exception.inspect],
         success: false
-      }, status: 422
+      }, status: :unprocessable_entity
     end
   end
 
@@ -77,7 +77,8 @@ class PhotosController < ApplicationController
     @photo = BaseFile.find(params[:id])
     @photo.share_ids = params[:photo][:share_ids] || []
     new_share = params[:photo].delete(:new_share)
-    @photo.update_attributes!(params[:photo])
+    binding.pry
+    @photo.update!(params[:photo])
     if new_share.present?
       share = Share.where(name: new_share).first_or_create(user: current_user)
       @photo.shares << share unless @photo.shares.include?(share)
@@ -91,7 +92,7 @@ class PhotosController < ApplicationController
 
   def rotate
     @photo = BaseFile.find(params[:id])
-    @photo.rotate! params[:direction]
+    @photo.rotate!(params[:direction])
     @photo.save
     render json: { file: @photo.as_json }
   end

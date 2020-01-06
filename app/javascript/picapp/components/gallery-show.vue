@@ -10,34 +10,39 @@
           |{{exif.aperture}}
           i.mdi.mdi-timer
           |{{exif.exposure_time}}
+          |
+          small(style='margin-left: 5px') ISO
+          |
+          |{{exif.iso}}
         br
         |{{currentFile.data.location}}
       small(v-if='currentFile.data.type == "Video"')
         br
     .buttons.has-addons.is-hidden-mobile(v-if='currentUser')
-      b-tooltip(label="Löschen" v-if='!liked')
-        a.button.is-dark(@click='onDelete')
+      button.button.is-dark(@click='onDelete' v-if='!liked')
+        b-tooltip(label="Löschen")
           i.mdi.mdi-delete
-      b-tooltip(label="Bearbeiten")
-        a.button.is-dark(@click='onEdit')
+      button.button.is-dark(@click='onEdit')
+        b-tooltip(label="Bearbeiten")
           i.mdi.mdi-tag
-      b-tooltip(label="Nach links kippen (90 Grad)")
-        a.button.is-dark(@click='onRotateLeft')
+      button.button.is-dark(@click='onRotateLeft')
+        b-tooltip(label="Nach links kippen (90 Grad)")
           i.mdi.mdi-rotate-left
-      b-tooltip(label="Nach rechts kippen (90 Grad)")
-        a.button.is-dark(@click='onRotateRight')
+      button.button.is-dark(@click='onRotateRight')
+        b-tooltip(label="Nach rechts kippen (90 Grad)")
           i.mdi.mdi-rotate-right
     br
     .buttons.has-addons
-      b-tooltip(label="Gesichter anzeigen" v-if='hasFaces')
-        a.button.is-inverted.is-outlined(@click='toggleFaceMode' :class='{"is-dark": !faceMode }')
+      button.button.is-inverted.is-outlined(@click='toggleFaceMode' :class='{"is-dark": !faceMode }' v-if='hasFaces')
+        b-tooltip(label="Gesichter anzeigen")
           i.mdi.mdi-face
           small {{faceCount}}
-      b-tooltip(label="Full-Screen")
-        a.button.is-inverted.is-outlined.is-dark(@click='onFullscreen')
+      button.button.is-inverted.is-outlined.is-dark(@click='onFullscreen')
+        b-tooltip(label="Full-Screen")
           i.mdi.mdi-fullscreen
-      b-tooltip(label="Download der Original-Datei")
-        a.button.is-inverted.is-outlined.is-primary(:href='currentFile.data.download_url' target='_blank') {{currentFile.data.file_size_formatted}}
+      a.button.is-inverted.is-outlined.is-primary(:href='currentFile.data.download_url' target='_blank')
+        b-tooltip(label="Download der Original-Datei")
+          | {{currentFile.data.file_size_formatted}}
     div.face-wrapper(v-show='faceMode')
       .face-box(:style='{ width: imageWidth + "px", height: imageHeight + "px"}')
         pic-bounding-box(v-for='face in currentFile.data.faces' :face='face' :width='imageWidth' :height='imageHeight' key='face.id')
