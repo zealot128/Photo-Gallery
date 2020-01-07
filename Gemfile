@@ -61,7 +61,7 @@ gem 'bootstrap-sass'
 gem 'uglifier', '>= 1.0.3'
 gem 'bootstrap-will_paginate'
 gem 'select2-rails'
-gem 'webpacker', '~> 4.0'
+gem 'webpacker', '~> 5.0'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-dropzone'
@@ -100,4 +100,4 @@ group :production do
 end
 gem 'silencer'
 
-gem "sidekiq", "~> 6.0"
+gem "good_job", "~> 1.0"

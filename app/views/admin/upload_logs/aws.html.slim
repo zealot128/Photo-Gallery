@@ -25,6 +25,7 @@
           dt Number of faces
           dd = @aws.rekognition_collection_size
 
+  .col-sm-6
     .panel.panel-default
       .panel-heading: h3.panel-title Budgets
       .panel-body
@@ -32,18 +33,4 @@
           = render "budget", budget: budget
 
 
-
-
-  .col-sm-6
-    h1 Local storage
-
-    p Available: #{@aws.disk_usage[:available].round(1)}GB / #{@aws.disk_usage[:total].round(1)}GB
-
-    strong Upload dir stats:
-
-    table.table
-      - @aws.disk_usage[:upload_dir].each do |mb,dir|
-        tr
-          td = dir
-          td = mb
 

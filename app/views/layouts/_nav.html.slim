@@ -12,7 +12,8 @@ nav.navbar.navbar-default role='navigation'
     .collapse.navbar-collapse#navbar.js-navbar data-shares='#{shares.to_json}' data-tags='#{tag_counts.to_json}'
       ul.nav.navbar-nav
         - if current_user
-          li: a(href='/v3') App
+          li: a(href='/v4') App
+          li: a(href='/v3') Alte App
           li.dropdown
             a.dropdown-toggle data-toggle='dropdown' data-target='#'
               i.fa.fa-photo.fa-fw>

@@ -19,11 +19,13 @@ class RekognitionClient
     end
 
     def labels(photo, max_labels: Setting['rekognition.labels.max_labels'], min_confidence: Setting['rekognition.labels.min_confidence'])
+      return [] unless photo.file.storage_key == :aws
+
       resp = client.detect_labels(
         image: {
           s3_object: {
             bucket: Setting['aws.bucket'],
-            name: photo.file.file.path,
+            name: photo.file.id,
           },
         },
         max_labels: max_labels,
@@ -36,7 +38,7 @@ class RekognitionClient
       client.detect_text(image: {
                            s3_object: {
                              bucket: Setting['aws.bucket'],
-                             name: photo.file.file.path,
+                             name: photo.file.id,
                            },
                          })
     end
@@ -47,7 +49,7 @@ class RekognitionClient
         image: {
           s3_object: {
             bucket: Setting['aws.bucket'],
-            name: photo.file.file.path,
+            name: photo.file.id,
           },
         },
         external_image_id: photo.id.to_s,

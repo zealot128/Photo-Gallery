@@ -24,6 +24,10 @@ class Api {
     })
   }
 
+  status() {
+    return axios.get("/admin/status.json").then(r => r.data)
+  }
+
   getPeople() {
     return axios.get("/v3/api/people", {}).then(r => r.data)
   }

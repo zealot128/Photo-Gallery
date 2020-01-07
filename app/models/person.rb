@@ -14,7 +14,7 @@ class Person < ApplicationRecord
 
   def as_json(opts = {})
     Rails.cache.fetch("person.#{id}.json", expires_in: 1.day) do
-      preview = image_faces.order("(bounding_box->>'width')::float desc, confidence desc").first
+      preview = image_faces.order(Arel.sql("(bounding_box->>'width')::float desc, confidence desc")).first
       {
         id: id,
         name: name,

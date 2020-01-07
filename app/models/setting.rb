@@ -49,7 +49,7 @@ class Setting < RailsSettings::Base
       group
     else
       group.flat_map do |key, body|
-        def_descend(body, full_key + [ key ])
+        def_descend(body, full_key + [key])
       end
     end
   end

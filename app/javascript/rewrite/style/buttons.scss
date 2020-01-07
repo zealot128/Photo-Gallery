@@ -1,0 +1,22 @@
+.button {
+  padding: 10px;
+  border: 1px solid #888;
+  color: #ddd;
+  font-size: 0.9rem;
+  display: inline-block;
+  transition: all 0.1s ease-in;
+  cursor: pointer;
+  &:hover {
+    border-color: #aaa;
+    text-decoration: none;
+    color: #fff;
+  }
+  small {
+    color: #999;
+  }
+  &.active {
+    border-color: #eee;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}

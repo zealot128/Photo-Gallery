@@ -10,16 +10,16 @@ class V2::ImageFacesController < ApplicationController
       format.html
       format.json {
         similar = RekognitionClient.search_faces(@face.aws_id, threshold: params[:threshold].to_i, max_faces: params[:max].to_i)
-        out = similar.face_matches.map{|i| [i.face.face_id, [i.similarity, i.face.confidence]]}.to_h
-        similarities = ImageFace.where(aws_id: out.keys).tap{|i|
-          i.each{|face|
+        out = similar.face_matches.map { |i| [i.face.face_id, [i.similarity, i.face.confidence]] }.to_h
+        similarities = ImageFace.where(aws_id: out.keys).tap { |i|
+          i.each { |face|
             face.similarity, confidence = out[face.aws_id]
             if face.confidence.nil?
               face.confidence = confidence
               face.save
             end
           }
-        }.sort_by{|a| -(a.similarity || 0)}
+        }.sort_by { |a| -(a.similarity || 0) }
         render json: similarities
       }
     end
@@ -32,15 +32,16 @@ class V2::ImageFacesController < ApplicationController
   end
 
   def bulk_update
-    if !params[:person_name].present?
+    if params[:person_name].blank?
       head 422
       return
     end
-    Person.where(name: params[:person_name]).first_or_create
     existing = Person.where('lower(name) = lower(?)', params[:person_name].strip).first
-    person = existing || Person.create(params[:person_name])
+    person = existing || Person.create(name: params[:person_name])
     ImageFace.where(id: params[:face_ids]).update_all(person_id: person.id)
-    render json: {}
+    render json: {
+      person: person.as_json,
+    }
   end
 
   def bulk_delete

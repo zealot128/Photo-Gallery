@@ -1,6 +1,7 @@
 <template lang="pug">
-  a.bb-face(:style='styleObject' :href='faceUrl' target='_blank' :title='name')
+  span.bb-face(:style='styleObject' :href='faceUrl' target='_blank' :title='name')
     | {{name}}
+
 </template>
 
 <script>

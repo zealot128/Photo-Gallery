@@ -1,8 +1,0 @@
----
-:concurrency: 2
-:queues:
-  - important
-  - default
-  - mailers
-  - low
-

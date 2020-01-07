@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   before_action :login_required
 
   def download
-    file = BaseFile.where(id: params[:id], file: params[:filename]).first!
+    file = BaseFile.find(params[:id])
     redirect_to file.file.url
   end
 

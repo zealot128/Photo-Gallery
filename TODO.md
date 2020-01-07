@@ -1,44 +1,24 @@
-- Rotate (HEIF)
-- Test Coverage: Was fehlt noch?
+Rewrite Svelte:
+
 - Migration...
-- WebDAV besser? (iphone Dings will immer txtfile abspeichern)
-- Web testen
+- Deploy:
+  - Sidekiq
+  - Rails 6 Upgrade
 
-Deploy:
-- Sidekiq
-- Rails 6 Upgrade
-- Test im Development mit AWS Krams
+## Weiter
 
----
-
-
-* Landscape View
-* AWS: OCR
-  * Suche - PG Search
-  * Text anzeigen
+- Datum ändern
+- MassChange Date
+- Share
+- Change Labels (Label CRUD)
+- Router:
+  - Calendar View
+  - Map View
+  - Time Line
+- ical anbinden - Events mit Photos verknüpfen
 * Faces
   * Neues Face malen
-* ShotAt aendern
-* Rotate
-* Geodaten -> Map in Day view?
-* Mobile FF retained nicht position :(
 
-#### REWRITE
+- Web testen
 
-* Mobile Back Button
-
-
----
-
-* MetaData als FlatFiles mit abspeichern
-  * Je Day eine json Datei:
-  {
-    "file": "IMG_...",
-    "labels": [..],
-    "faces: [..]
-  }
-  * Oder HiddenFile?
-    Labels=A,B,C
-    People=Lili,Stefan
-    ShotAt=2016-..
 

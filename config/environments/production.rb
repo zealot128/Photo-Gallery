@@ -83,7 +83,7 @@ Rails.application.configure do
 
   #### CUSTOM ####
   config.i18n.fallbacks = true
-  config.active_job.queue_adapter = :sidekiq
+  config.active_job.queue_adapter = :good_job
   config.log_level = :info
   case Setting['proxy']
   when 'nginx'

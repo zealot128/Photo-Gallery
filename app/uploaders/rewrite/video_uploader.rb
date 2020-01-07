@@ -29,14 +29,13 @@ module Rewrite
       movie.screenshot(thumb.path, resolution: '30x30', preserve_aspect_ratio: :width)
 
       user_name = File.basename(original, File.extname(original))
-      large = Tempfile.new [user_name, ".jpg"]
+      large = Tempfile.new [user_name, ".mp4"]
       movie.transcode(large.path,
                       video_codec: "libx264",
                       audio_codec: Setting['audio_codec'],
-                      resolution: '800x500',
+                      width: 800,
                       preserve_aspect_ratio: :width,
                       threads: 2)
-
 
       duration = movie.duration
       number_of_thumbnails = [duration.to_i**(1/2r), 5].min.round

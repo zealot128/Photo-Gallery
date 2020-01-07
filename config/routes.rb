@@ -31,6 +31,7 @@ SimpleGallery::Application.routes.draw do
 
   namespace :admin do
     get 'upload_logs' => 'upload_logs#index'
+    get 'status' => 'status#index'
     get 'aws_statistics' => 'upload_logs#aws'
     match 'already_uploaded' => 'misc#already_uploaded', via: [:get, :post]
     resources :users
@@ -85,9 +86,12 @@ SimpleGallery::Application.routes.draw do
   get 'tube' => 'tube#index'
 
   get 'v3' => 'pages#v3'
+  get 'v4' => 'pages#v4'
+  get 'v4(*args)' => 'pages#v4'
   get 'v3/faces' => 'pages#v3_faces'
   namespace :v3 do
     get 'api/photos' => 'api#photos'
+    get 'api/facets' => 'api#facets'
     get 'api/people' => 'api#people'
     get 'api/tags' => 'api#tags'
     get 'api/shares' => 'api#shares'
@@ -99,5 +103,4 @@ SimpleGallery::Application.routes.draw do
 
   get '/', to: 'pages#index', as: 'root'
   post '/', to: 'upload#create'
-  mount Sidekiq::Web => '/rails/sidekiq', constraints: AdminRestriction
 end

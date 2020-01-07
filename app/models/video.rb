@@ -85,29 +85,6 @@ class Video < BaseFile
     end
   end
 
-  def process_versions!
-    super do
-      create_preview_thumbnails
-    end
-  end
-
-  def create_preview_thumbnails
-    return unless duration
-
-    number_of_thumbnails = [duration.to_i**(Rational(2, 5)), 5].max.round
-
-    thumbnail_every_second = duration.to_f / number_of_thumbnails
-    points = []
-    number_of_thumbnails.times do |i|
-      points << (thumbnail_every_second * i).round
-    end
-    video_thumbnails.destroy_all
-
-    points.each do |point|
-      video_thumbnails.create(at_time: point)
-    end
-  end
-
   def update_gps(save: true)
     if meta_data && meta_data.dig('exif', 'gps_latitude')
       self.lat = meta_data['exif']['gps_latitude']
@@ -130,7 +107,8 @@ class Video < BaseFile
   def as_json(opts = {})
     super.merge(
       thumbnails: file_derivatives[:screenshots].map(&:url),
-      video_processed: file_derivatives.present?
+      video_processed: file_derivatives.present?,
+      exif: exif,
     )
   end
 end

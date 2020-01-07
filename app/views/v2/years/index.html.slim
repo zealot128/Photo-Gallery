@@ -9,7 +9,7 @@
         .pull-right
           - @recent.each do |photo|
             - if photo.file.present? && photo.file_derivatives[:thumb]
-              = image_tag photo.file.file_derivatives[:thumb].url
+              = image_tag photo.file_derivatives[:thumb].url
 
 
 .js-years data-years='#{@years.to_json}'

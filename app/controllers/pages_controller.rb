@@ -31,6 +31,10 @@ class PagesController < ApplicationController
     render layout: false
   end
 
+  def v4
+    render layout: false
+  end
+
   def v3_faces
     render layout: false
   end

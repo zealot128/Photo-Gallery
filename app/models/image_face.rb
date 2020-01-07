@@ -19,7 +19,7 @@ class ImageFace < ApplicationRecord
   AUTO_ASSIGN_MIN_EXISTING_FACES = Setting['rekognition.faces.auto_assign.min_existing_faces']
 
   belongs_to :base_file
-  belongs_to :person
+  belongs_to :person, optional: true
 
   after_create :crop_bounding_box
   after_create :auto_assign_person
@@ -36,17 +36,18 @@ class ImageFace < ApplicationRecord
   end
 
   def crop_bounding_box
-    version = base_file.file.versions[:large]
-    version.cache!
-    image = MiniMagick::Image.open(version.path)
-    image_width = image.width
-    image_height = image.height
-    w = (bounding_box['width'] * image_width).round
-    h = (bounding_box['height'] * image_height).round
-    left = (bounding_box['left'] * image_width).round
-    top = (bounding_box['top'] * image_height).round
-    image.crop("#{w}x#{h}+#{left}+#{top}")
-    image.resize 'x100>'
+    image = nil
+    base_file.file_derivatives[:large].download do |file|
+      image = MiniMagick::Image.open(file.path)
+      image_width = image.width
+      image_height = image.height
+      w = (bounding_box['width'] * image_width).round
+      h = (bounding_box['height'] * image_height).round
+      left = (bounding_box['left'] * image_width).round
+      top = (bounding_box['top'] * image_height).round
+      image.crop("#{w}x#{h}+#{left}+#{top}")
+      image.resize 'x100>'
+    end
     self.file = File.open(image.path)
     save
   end

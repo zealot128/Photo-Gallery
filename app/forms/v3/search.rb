@@ -35,6 +35,31 @@ class V3::Search
       order('count_all desc').group(:name).limit(100).count
   end
 
+  def people_facets(limit: 50)
+    Person.joins(:image_faces).
+      where(image_faces: { base_file_id: media.select('photos.id') }).
+      group(:id).
+      limit(limit).
+      select('people.*, count(*) as image_count').
+      order('image_count desc')
+  end
+
+  def camera_facets(limit: 50)
+    media.
+      group("jsonb_extract_path_text(file_data, 'metadata', 'exif', 'model')").
+      limit(limit).
+      count.
+      delete_if { |k, _| k.blank? }
+  end
+
+  def aperture_facets(limit: 50)
+    media.
+      group("jsonb_extract_path_text(file_data, 'metadata', 'exif', 'aperture')").
+      limit(limit).
+      count.
+      delete_if { |k, _| k.blank? }
+  end
+
   def page=(val)
     @page = val.to_i
   end

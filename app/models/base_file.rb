@@ -89,6 +89,15 @@ class BaseFile < ApplicationRecord
     day&.update_me_async
   end
 
+  def reprocess!
+    Shrine::PromoteJob.perform_now(
+      Video.last.file_attacher.class.to_s,
+      self,
+      'file',
+      Video.last.file_attacher.file_data
+    )
+  end
+
   def mark_as_delete!
     update_column :mark_as_deleted_on, Time.zone.now
     day&.update_me_async
@@ -130,11 +139,15 @@ class BaseFile < ApplicationRecord
       caption: caption,
       description: description,
       versions: file_derivatives.except(:screenshots).transform_values(&:url),
-      download_url: "/download/#{id}/#{attributes['file']}",
+      download_url: "/download/#{id}/#{CGI.escape(original_filename)}",
       marked_as_deleted: !!mark_as_deleted_on,
       liked_by: liked_by.map(&:username),
-      exif: exif.slice('model', 'iso', 'exposure_time', 'aperture', 'focal_length')
+      exif: exif&.slice('model', 'iso', 'exposure_time', 'aperture', 'focal_length') || {}
     }
+  end
+
+  def original_filename
+    file.metadata['filename']
   end
 
   def processed?(type)

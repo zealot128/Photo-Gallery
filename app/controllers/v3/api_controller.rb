@@ -30,6 +30,16 @@ module V3
       }
     end
 
+    def facets
+      search = V3::Search.new(params.transform_keys(&:underscore).permit!.except('controller', 'action').to_h)
+      render json: {
+        labels: search.label_facets.map { |k, v| { name: k, count: v } },
+        people: search.people_facets.map { |k| { person: k, count: k.image_count } },
+        cameras: search.camera_facets.map { |k, v| { name: k, count: v } },
+        apertures: search.aperture_facets.map { |k, v| { name: k, count: v } },
+      }
+    end
+
     def overview
       search = V3::Search.new(params.transform_keys(&:underscore).permit!.except('controller', 'action').to_h)
       render json: {

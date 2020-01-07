@@ -11,6 +11,10 @@
         | App
       b-dropdown-item(has-link): a(href='/photos')
         | Alte App
+      b-dropdown-item(has-link): a(@click.prevent='openStatusModal = true')
+        | Status
+    b-modal(:active.sync='openStatusModal')
+      status-modal(v-if='openStatusModal')
     b-modal(:active.sync="shareModalOpen")
       .card: .card-content
         .panel
@@ -28,14 +32,21 @@
 
 <script>
 import Api from 'picapp/api';
+import StatusModal from './status-modal'
+
 export default {
+  components: { StatusModal },
   props: ['currentPage'],
   data() {
     return {
       dropdownnavMenuOpen: false,
       shareModalOpen: false,
+      openStatusModal: false,
       shares: [],
     }
+  },
+  computed: {
+    api() { return new Api() },
   },
   methods: {
     openModal() {
@@ -43,9 +54,6 @@ export default {
       this.shareModalOpen = true
       this.dropdownnavMenuOpen = false
     },
-  },
-  computed: {
-    api() { return new Api() },
   }
 }
 </script>

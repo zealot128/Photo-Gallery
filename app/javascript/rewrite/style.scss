@@ -1,0 +1,16 @@
+@import '~rewrite/style/framework';
+@import '~rewrite/style/buttons';
+
+.face-preview {
+  width: 100px;
+}
+.face-preview img {
+  width: 100px;
+  border: 1px solid #777;
+  border-radius: 3px;
+  padding: 2px;
+  background: #000;
+}
+.face-preview.selected img {
+  border-color: var(--primary);
+}

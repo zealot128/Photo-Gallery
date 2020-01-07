@@ -36,7 +36,8 @@
       td Usage in current time frame
       td.text-right
         | #{budget.calculated_spend.actual_spend.amount.to_f.round} #{budget.calculated_spend.actual_spend.unit}
-    tr
-      td Forecast
-      td.text-right
-        | #{budget.calculated_spend.forecasted_spend.amount.to_f.round} #{budget.calculated_spend.forecasted_spend.unit}
+    - if budget.calculated_spend.forecasted_spend
+      tr
+        td Forecast
+        td.text-right
+          | #{budget.calculated_spend.forecasted_spend.amount.to_f.round} #{budget.calculated_spend.forecasted_spend.unit}
