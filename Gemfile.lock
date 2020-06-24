@@ -195,7 +195,7 @@ GEM
       pry (>= 0.9.10)
     puma (4.3.1)
       nio4r (~> 2.0)
-    rack (2.0.8)
+    rack (2.2.3)
     rack-proxy (0.6.2)
       rack
     rack-raw-upload (1.1.1)
