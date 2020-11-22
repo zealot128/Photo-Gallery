@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 2020_07_26_154843) do
 
   create_table "days", id: :serial, force: :cascade do |t|
     t.date "date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "locations"
     t.string "montage"
     t.integer "month_id"
@@ -130,12 +130,12 @@ ActiveRecord::Schema.define(version: 2020_07_26_154843) do
     t.float "lat"
     t.float "lng"
     t.integer "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "location"
     t.string "md5"
-    t.integer "year", limit: 2
-    t.integer "month", limit: 2
+    t.integer "year"
+    t.integer "month"
     t.integer "day_id"
     t.string "caption"
     t.text "description"
@@ -175,8 +175,8 @@ ActiveRecord::Schema.define(version: 2020_07_26_154843) do
     t.string "name"
     t.string "type"
     t.string "token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["token"], name: "index_shares_on_token", unique: true
     t.index ["type"], name: "index_shares_on_type"
@@ -192,10 +192,10 @@ ActiveRecord::Schema.define(version: 2020_07_26_154843) do
 
   create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
-    t.string "taggable_type"
     t.integer "taggable_id"
-    t.string "tagger_type"
+    t.string "taggable_type"
     t.integer "tagger_id"
+    t.string "tagger_type"
     t.string "context", limit: 128
     t.datetime "created_at"
     t.index ["context"], name: "index_taggings_on_context"
@@ -234,8 +234,8 @@ ActiveRecord::Schema.define(version: 2020_07_26_154843) do
     t.string "email"
     t.string "password_hash"
     t.string "password_salt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "last_ip"
     t.datetime "last_upload"
     t.boolean "allowed_ip_storing"

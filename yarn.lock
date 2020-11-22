@@ -879,11 +879,6 @@
     webpack-cli "^3.3.11"
     webpack-sources "^1.4.3"
 
-"@stencil/core@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.2.0.tgz#f92b480a387bce688a368b2fb23207f1acd45bc2"
-  integrity sha512-2V+DEUs9wvkcgnIIs0huye/M1v7x6qEzeOjp056RQlB08U1I4ex3vnBoE0/CrR35wK3ZZv2JYPOfBUuqR+6AAg==
-
 "@tsconfig/svelte@^1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@tsconfig/svelte/-/svelte-1.0.10.tgz#30ec7feeee0bdf38b12a50f0686f8a2e7b6b9dc0"
@@ -951,21 +946,6 @@
   integrity sha512-2XZovu4NwcqmtZtsBR5XYLw18T8cBCnU2USFHTnYLLHz9fkhnoEMoDsqShJIOFsFhn5aJHjweiUUdTrDGujegA==
   dependencies:
     "@types/node" "*"
-
-"@vime/core@^4.7.3":
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/@vime/core/-/core-4.7.3.tgz#b102e756b20cd14a529567a711b4967db72769de"
-  integrity sha512-4VtrL/PBON1gxgA5bPLDI1DC2XOjdkwSpg6IWrwY9lnM09x2Pg6Vso3BA6JllhkrWTXVab22fVk/eYqgUa3soQ==
-  dependencies:
-    "@stencil/core" "2.2.0"
-    stencil-wormhole "^3.2.2"
-
-"@vime/svelte@^4.7.3":
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/@vime/svelte/-/svelte-4.7.3.tgz#b6d8d79a3741938a3bd15ed489da701f0a7e9cef"
-  integrity sha512-nY3XQJChnHe11vbkd0mMr5utaX2pZ2CGWY3k0x4SDwFQTohPM/w/NGDeM3ItNmbydWhN1iJASpz3zGfEHzpuHw==
-  dependencies:
-    "@vime/core" "^4.7.3"
 
 "@vue/component-compiler-utils@^3.1.0":
   version "3.1.1"
@@ -8412,11 +8392,6 @@ stdout-stream@^1.4.0:
   integrity sha512-j4emi03KXqJWcIeF8eIXkjMFN1Cmb8gUlDYGeBALLPo5qdyTfA9bOtl8m33lRoC+vFMkP3gl0WsDr6+gzxbbTA==
   dependencies:
     readable-stream "^2.0.1"
-
-stencil-wormhole@^3.2.2:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/stencil-wormhole/-/stencil-wormhole-3.4.0.tgz#7cdcd571a40024dcd1f944e0b18cb6a4630e84d9"
-  integrity sha512-TXqH4dUzHtJfWAVF7lU36AyeI3H/0Mj0lFJOPzWxZVb+nDmAsNlu8GUxA7zn4/DgZDNS3eenB8H1pFUkMTkgDw==
 
 stream-browserify@^2.0.1:
   version "2.0.1"

@@ -14,7 +14,8 @@ gem 'acts-as-taggable-on'
 ### Utils
 gem 'ruby-progressbar'
 gem 'parallel', require: false
-gem "rails-settings-cached"
+gem "rails-settings-cached", '~> 0.6'
+gem 'request_store'
 
 ### Image analysis / conversion
 gem 'carrierwave'
@@ -101,3 +102,4 @@ end
 gem 'silencer'
 
 gem "good_job", "~> 1.0"
+# gem "good_job", path: '../good_job'

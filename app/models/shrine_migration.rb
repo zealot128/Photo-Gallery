@@ -4,30 +4,27 @@ module ShrineMigration
   def migrate!
     uploader = old_file
     attacher = Shrine::Attacher.from_model(self, :file)
-    storage = {
-      preview: Setting['storage.default'].to_sym,
-      thumb: Setting['storage.default'].to_sym,
-      medium: Setting['storage.default'].to_sym,
-      large: Setting['storage.large'].to_sym,
-      original: Setting['storage.original'].to_sym
-    }
-    attacher.set _shrine_file(uploader, storage[:original])
+    storage = Setting.storage_for(:original)
+    attacher.set _shrine_file(uploader, storage)
     uploader.versions.each do |version_name, version|
-      attacher.merge_derivatives(version_name => _shrine_file(version, storage[version_name.to_sym]))
+      storage = Setting.storage_for(version_name.to_sym)
+      attacher.merge_derivatives(version_name => _shrine_file(version, storage))
     end
     save!
   end
 
-  def _shrine_file(uploader, storage)
+  def _shrine_file(uploader, storage_key)
     name     = uploader.mounted_as
     filename = read_attribute(name)
-    path     = uploader.
+
+    storage = Shrine.find_storage(storage_key)
+    path = uploader.
       store_path(filename).
-      remove(Shrine.storages[storage].prefix.to_s).
+      remove(storage.prefix.to_s).
       remove(%r{^/})
 
     Shrine.uploaded_file(
-      storage:  storage,
+      storage:  storage_key,
       id:       path,
       metadata: { "filename" => filename }
     )

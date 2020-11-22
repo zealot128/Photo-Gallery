@@ -31,7 +31,7 @@ class Video < BaseFile
   has_many :video_thumbnails, dependent: :destroy
 
   def exif
-    meta_data.dig('ffprobe', 'tags').merge(
+    (meta_data.dig('ffprobe', 'tags') || {}).merge(
       {
         duration: duration,
         durationHuman: duration_human

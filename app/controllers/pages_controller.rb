@@ -3,7 +3,7 @@ class PagesController < ApplicationController
     @share = Share.where(name: "Public").first || Share.create!(name: "Public")
     @photos = @share.photos.order("shot_at desc")
     if current_user
-      redirect_to '/v3'
+      redirect_to '/v4'
     end
   end
 

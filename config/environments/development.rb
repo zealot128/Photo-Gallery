@@ -56,4 +56,5 @@ Rails.application.configure do
 
   #### CUSTOM #####
   config.active_job.queue_adapter = :good_job
+  config.cache_store = :memory_store
 end

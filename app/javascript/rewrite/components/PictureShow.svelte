@@ -40,7 +40,7 @@
 
 <DeleteDialog file={currentFile} on:delete />
 <div class="meta">
-  <a class="button" href={currentFile.data.download_url}>
+  <a class="button" href={currentFile.data.download_url} target="_blank">
     Download
     <small>{currentFile.data.file_size_formatted}</small>
   </a>
