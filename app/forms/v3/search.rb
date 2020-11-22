@@ -128,7 +128,10 @@ class V3::Search
   end
 
   add_filter(:apertures) do |sql|
-    sql.where("(file_data #>> '{metadata,exif,aperture}')::float in (?)", apertures)
+    min, max = parsed(apertures)
+    min ||= 0
+    max ||= 999_999_999_999
+    sql.where("(file_data #>> '{metadata,exif,aperture}')::float between ? and ?", min, max)
   end
 
   add_filter(:file_size) do |sql|

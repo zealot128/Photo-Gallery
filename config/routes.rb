@@ -103,4 +103,5 @@ SimpleGallery::Application.routes.draw do
 
   get '/', to: 'pages#index', as: 'root'
   post '/', to: 'upload#create'
+  mount GoodJob::Engine => 'good_job', constraints: AdminRestriction
 end

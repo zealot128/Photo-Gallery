@@ -7,6 +7,7 @@ Rewrite Svelte:
 
 ## Weiter
 
+- Video rotate
 - Datum ändern
 - MassChange Date
 - Share
@@ -20,5 +21,4 @@ Rewrite Svelte:
   * Neues Face malen
 
 - Web testen
-
 

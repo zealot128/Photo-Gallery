@@ -13,7 +13,7 @@ RSpec.describe Photo do
     photo.reload
     expect(photo.md5).to eq(Digest::MD5.hexdigest(picture.read))
 
-    expect(File.exist?("public/photos/test/photos/original/2010/2010-04-10/tiger-62a1a217cc144075488a2399c175909d.jpg")).to be == true
+    expect(File.exist?("public/test/photos/original/2010/2010-04-10/tiger-62a1a217cc144075488a2399c175909d.jpg")).to be == true
     expect(File.exist?(photo.file.to_io)).to be == true
 
     expect(photo.file_derivatives).to be_present
@@ -63,7 +63,7 @@ RSpec.describe Photo do
 
     path = Photo.find(photo.id).file.to_io.path
     expect(File.exist?(path)).to be == true
-    expect(path).to include 'photos/test/photos/original/2012/2012-10-01/tiger-62a1a217cc144075488a2399c175909d.jpg'
+    expect(path).to include 'test/photos/original/2012/2012-10-01/tiger-62a1a217cc144075488a2399c175909d.jpg'
 
     old_path = path.gsub('/2012/', '/2010/').gsub('2012-10-01', day.date.to_s)
 

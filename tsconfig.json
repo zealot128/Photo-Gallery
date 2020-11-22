@@ -1,0 +1,20 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "include": ["app/javascript/**/*"],
+  "exclude": ["node_modules/*", "public/*"],
+  "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6", "dom"],
+    "module": "es6",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "app/javascript/*"]
+    },
+    "sourceMap": true,
+    "target": "es6",
+    "noEmit": true
+  }
+}
