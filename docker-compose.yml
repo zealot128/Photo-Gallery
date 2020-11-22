@@ -18,12 +18,18 @@ services:
         - ADDITIONAL_PACKAGES=nodejs yarn python2 build-base git
         - RAILS_ENV=development
     environment:
-      - REDIS_SIDEKIQ_URL=redis://redis:6379/0
       - REDIS_CACHE_URL=redis://redis:6379/2
       - SECRET_KEY_BASE=f0ee8496d1ddeb69fa0980d0580ff0f174262e61b53e8a318c990a193661f45f84b07a995d33ca8749eb6e0085d375201d319ed0fdaab9aa469e3b9b96f269d6
       - DATABASE_URL='postgresql://postgres:mysecretpassword@db/pictures'
       - RAILS_ENV=development
       - RAILS_MAX_THREADS
+      - AWS_ACCOUNT_ID
+      - AWS_ACCESS_KEY_ID
+      - AWS_ACCESS_KEY_SECRET
+      - AWS_REGION
+      - AWS_BUCKET
+      - AWS_ACL
+      - REKOGNITION_COLLECTION
     ports:
       - "3000"
     links:
@@ -37,7 +43,7 @@ services:
 
   worker:
     <<: *app_base
-    command: bundle exec sidekiq -C config/sidekiq.yml
+    command: bundle exec good_job start
     ports: []
     depends_on:
       - app

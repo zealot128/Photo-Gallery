@@ -12,16 +12,16 @@ defaults: &defaults
     default: 'file'
 
   aws:
-    account_id: ''
-    access_key_id: ''
-    access_key_secret: ''
-    region: 'eu-west-1'
-    bucket: ''
-    acl: 'private'
+    account_id: <%= ENV['AWS_ACCOUNT_ID'] %>
+    access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+    access_key_secret: <%= ENV['AWS_ACCESS_KEY_SECRET'] %>
+    region: <%= ENV['AWS_REGION'] || 'eu-west-1' %>
+    bucket: <%= ENV['AWS_BUCKET'] || 'private' %>
+    acl: <%= ENV['AWS_ACL'] || 'private' %>
 
   rekognition:
     enabled: true
-    rekognition_collection: 'swi-pictures2-prodution'
+    rekognition_collection: <%= ENV['REKOGNITION_COLLECTION'] %>
     # When querying labels = tags for images, take the top 20 tags which have a
     # confidence of more than 40%
     labels:
