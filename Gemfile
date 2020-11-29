@@ -51,7 +51,7 @@ gem 'rack-raw-upload'
 gem 'filelock'
 gem 'sys-filesystem'
 gem 'whenever'
-gem 'pry'
+gem 'pry-rails'
 
 ### Frontend
 gem 'font-awesome-rails'
@@ -90,7 +90,6 @@ end
 
 group :development, :test do
   gem 'puma'
-  gem 'pry-rails'
   # gem 'vcr'
   # gem 'webmock'
 end
