@@ -83,7 +83,7 @@ Rails.application.configure do
 
   #### CUSTOM ####
   config.i18n.fallbacks = true
-  config.active_job.queue_adapter = :good_job
+  config.active_job.queue_adapter = GoodJob::Adapter.new(execution_mode: :external)
   config.log_level = :info
   case Setting['proxy']
   when 'nginx'
@@ -91,4 +91,5 @@ Rails.application.configure do
   when 'apache'
     config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
   end
+  config.assets.js_compressor = Uglifier.new(harmony: true)
 end

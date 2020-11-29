@@ -269,8 +269,6 @@ GEM
     puma (4.3.1)
       nio4r (~> 2.0)
     rack (2.2.3)
-    rack-protection (2.0.7)
-      rack
     rack-proxy (0.6.5)
       rack
     rack-raw-upload (1.1.1)
@@ -428,7 +426,7 @@ GEM
     tilt (2.0.5)
     tzinfo (1.2.8)
       thread_safe (~> 0.1)
-    uglifier (3.0.0)
+    uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.6.0)
     webpacker (5.1.1)

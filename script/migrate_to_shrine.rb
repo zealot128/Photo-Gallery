@@ -16,5 +16,8 @@ sql.find_each do |bf|
     end
   end
   bf.save
+rescue StandardError => e
+  warn e.inspect
+  warn "File: #{bf.id}"
 end
 
