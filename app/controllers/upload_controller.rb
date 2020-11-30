@@ -14,7 +14,7 @@ class UploadController < ApplicationController
         @user.enable_ip_based_login request
       rescue StandardError => e
         exception = e
-        ExceptionNotifier.notify_exception(exception, env: request.env) if defined?(ExceptionNotifier)
+        Raven.capture_exception(exception) if defined?(Raven)
         render status: :internal_server_error, text: "Server Error", layout: false
         return
       end

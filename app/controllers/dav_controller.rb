@@ -15,7 +15,7 @@ class DavController < UploadController
       @photo = BaseFile.create_from_upload(file, @user)
     rescue StandardError => e
       exception = e
-      ExceptionNotifier.notify_exception(exception, env: request.env) if defined?(ExceptionNotifier)
+      Raven.capture_exception(exception) if defined?(Raven)
       render status: :internal_server_error, text: "Server Error (#{e.inspect})\n\n#{e.backtrace.inspect}", layout: false
       return
     end

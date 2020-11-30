@@ -46,7 +46,7 @@ class PhotosController < ApplicationController
     begin
       photo = BaseFile.create_from_upload(params[:file], current_user)
     rescue StandardError => e
-      ExceptionNotifier.notify_exception(e, env: request.env) if defined?(ExceptionNotifier)
+      Raven.capture_exception(exception) if defined?(Raven)
       exception = e
     end
     if exception

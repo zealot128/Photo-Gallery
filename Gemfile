@@ -94,10 +94,7 @@ group :development, :test do
   # gem 'webmock'
 end
 
-group :production do
-  gem 'exception_notification'
-  # gem 'lograge'
-end
+gem "sentry-raven"
 gem 'silencer'
 
 gem "good_job", "~> 1.0"
