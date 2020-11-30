@@ -2,7 +2,8 @@
   "presets": [
     ["@babel/preset-env", {
       "targets": {
-        "browsers": "> 10%"
+         "browsers": "> 1%",
+         "esmodules": true
       },
       "modules": false,
       "useBuiltIns": "usage",
