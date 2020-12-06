@@ -16,6 +16,9 @@ class SystemStatus
         Check.new(title: "FFMPeg installed", status: Setting.vips_installed? ? 'success' : 'error', optional: false),
         Check.new(title: "VIPS installed", status: Setting.vips_installed? ? 'success' : 'error', optional: false),
         Check.new(title: "Tesseract installed", status: Setting.tesseract_installed? ? 'success' : 'danger'),
+      ],
+      "AWS" => [
+        rekognition_check,
       ]
     }
   end
@@ -35,5 +38,17 @@ class SystemStatus
                 'danger'
               end
     )
+  end
+
+  def rekognition_check
+    unless RekognitionClient.rekognition_collection
+      return Check.new(title: "Face Rekognition: No face rekognition collection set", status: 'danger', optional: true)
+    end
+
+    RekognitionClient.collection
+
+    Check.new(title: "Face Rekognition: Collection access successful", status: 'success', optional: true)
+  rescue StandardError => e
+    Check.new(title: "Face Rekognition: Error while accessing: #{e.inspect}", status: 'danger', optional: true)
   end
 end
