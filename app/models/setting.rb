@@ -26,6 +26,10 @@ class Setting < RailsSettings::Base
     end
   end
 
+  def self.image_processing
+    Setting.vips_installed? ? ImageProcessing::Vips : ImageProcessing::MiniMagick
+  end
+
   def self.definitions
     ts = I18n.t('settings')
     def_descend(ts, [])

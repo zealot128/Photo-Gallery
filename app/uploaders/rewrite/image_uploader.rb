@@ -13,7 +13,7 @@ module Rewrite
     end
 
     Attacher.derivatives do |original|
-      base = Setting.vips_installed? ? ImageProcessing::Vips : ImageProcessing::MiniMagick
+      base = Setting.image_processing
 
       magick = base.source(original)
         .convert("jpg")

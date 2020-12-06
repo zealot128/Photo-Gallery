@@ -1,7 +1,7 @@
 class S3Import
   class S3Api
     def initialize(max: 5)
-      @client = Aws::S3::Client.new(CarrierWave::Uploader::Base.aws_credentials)
+      @client = Aws::S3::Client.new()
       @bucket = Setting['aws.bucket']
       @max = 5
     end
