@@ -14,9 +14,7 @@
 #
 
 class ImageFace < ApplicationRecord
-  AUTO_ASSIGN_THRESHOLD = Setting['rekognition.faces.auto_assign.threshold']
-  AUTO_ASSIGN_MAX_FACES = Setting['rekognition.faces.auto_assign.max_faces']
-  AUTO_ASSIGN_MIN_EXISTING_FACES = Setting['rekognition.faces.auto_assign.min_existing_faces']
+  include Rewrite::FaceUploader::Attachment.new(:file)
 
   belongs_to :base_file
   belongs_to :person, optional: true
@@ -28,7 +26,7 @@ class ImageFace < ApplicationRecord
   attr_accessor :similarity
 
   after_destroy do
-    RekognitionClient.delete_faces(aws_id)
+    REKOGNITION_CLIENT.delete_faces(aws_id)
   rescue StandardError => e
     p e unless Rails.env.production?
     nil
@@ -55,15 +53,7 @@ class ImageFace < ApplicationRecord
     return unless Setting['rekognition.faces.auto_assign.enabled']
     return if person
 
-    similar = RekognitionClient.search_faces(aws_id, threshold: AUTO_ASSIGN_THRESHOLD, max_faces: AUTO_ASSIGN_MAX_FACES)
-    if similar.face_matches.count >= AUTO_ASSIGN_MIN_EXISTING_FACES
-      aws_ids = similar.face_matches.map { |i| i.face.face_id }
-      face_histogram = ImageFace.unscoped.where(aws_id: aws_ids).map(&:person_id).compact.group_by(&:itself).map { |a, b| [a, b.count] }.to_h
-      if face_histogram.length == 1 && face_histogram.values.first >= AUTO_ASSIGN_MIN_EXISTING_FACES
-        person_id = face_histogram.keys.first
-        update person_id: person_id
-      end
-    end
+    REKOGNITION_CLIENT.auto_assign_face(self)
   end
 
   def as_json(opts = {})

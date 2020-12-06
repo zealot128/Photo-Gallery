@@ -12,7 +12,6 @@ defaults: &defaults
     default: 'file'
 
   aws:
-    account_id: <%= ENV['AWS_ACCOUNT_ID'] %>
     access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
     access_key_secret: <%= ENV['AWS_ACCESS_KEY_SECRET'] %>
     region: <%= ENV['AWS_REGION'] || 'eu-west-1' %>
@@ -21,7 +20,6 @@ defaults: &defaults
 
   rekognition:
     enabled: true
-    rekognition_collection: <%= ENV['REKOGNITION_COLLECTION'] %>
     # When querying labels = tags for images, take the top 20 tags which have a
     # confidence of more than 40%
     labels:
@@ -29,6 +27,7 @@ defaults: &defaults
       min_confidence: 40
 
     faces:
+      rekognition_collection: <%= ENV['AWS_REKOGNITION_COLLECTION'] %>
       enabled: true
       auto_assign:
         # Auto-assign new faces, if:

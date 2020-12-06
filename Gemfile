@@ -71,6 +71,7 @@ source 'https://rails-assets.org' do
 end
 
 group :development do
+  gem 'dotenv-rails'
   gem 'pludoni_rspec', git: 'https://github.com/pludoni/pludoni_rspec.git'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false

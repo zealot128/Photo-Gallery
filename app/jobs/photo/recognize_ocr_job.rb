@@ -2,8 +2,7 @@ class Photo::RecognizeOcrJob < ApplicationJob
   queue_as :default
 
   def perform(photo)
-    aws = RekognitionClient.ocr(photo)
-    text = aws.text_detections.map(&:detected_text).join(' ')
+    text = REKOGNITION_CLIENT.ocr(photo)
     if text.strip.present? && text.length > 10
       ocr_result || photo.build_ocr_result
       ocr_result.text = text

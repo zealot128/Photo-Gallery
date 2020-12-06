@@ -179,7 +179,7 @@ RSpec.describe Photo do
     end
   end
 
-  specify 'Migration' do
+  xspecify 'Migration' do
     photo = Photo.create!(old_file: File.open(picture), shot_at: '2010-04-10T12:00', md5: Digest::MD5.hexdigest(picture.read))
     expect(File.exist?("public/test/photos/thumb/2010/2010-04-10/thumb_tiger.jpg")).to be == true
     photo.migrate!
