@@ -18,8 +18,6 @@ class Day < ActiveRecord::Base
 
   validates :date, presence: true
 
-  mount_uploader :montage, MontageUploader
-
   before_save :assign_month
 
   def make_montage

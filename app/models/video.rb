@@ -26,7 +26,6 @@
 #
 
 class Video < BaseFile
-  mount_uploader :old_file, VideoUploader
   include Rewrite::VideoUploader::Attachment.new(:file)
   has_many :video_thumbnails, dependent: :destroy
 

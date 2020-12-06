@@ -4,9 +4,4 @@ class Admin::UploadLogsController < ApplicationController
   def index
     @logs = UploadLog.order('created_at desc').limit(100)
   end
-
-  def aws
-    @aws = AwsStatistics.new
-    @datapoints = @aws.bucket_size_bytes.datapoints.sort_by{|i| i.timestamp}.reverse
-  end
 end

@@ -40,10 +40,12 @@ if Rails.env.test?
 end
 Shrine.storage(/aws/) do
   Shrine::Storage::S3.new(
-    bucket: s.call('aws.bucket'),
-    access_key_id: s.call('aws.access_key_id'),
-    secret_access_key: s.call('aws.access_key_secret'),
-    region: s.call('aws.region')
+    bucket: ENV['STORAGE_BUCKET'],
+    endpoint: ENV['STORAGE_ENDPOINT'],
+    access_key_id: ENV['STORAGE_ACCESS_KEY_ID'],
+    secret_access_key: ENV['STORAGE_ACCESS_KEY_SECRET'],
+    region: ENV['STORAGE_REGION'],
+    force_path_style: ENV['STORAGE_FORCE_PATH_STYLE'].present?
   )
 end
 
