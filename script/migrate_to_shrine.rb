@@ -10,9 +10,7 @@ sql.find_each do |bf|
     attacher = file_attacher
     attacher.file.open do
       attacher.refresh_metadata!(background: true) # extract metadata
-      if bf.is_a?(Video)
-        attacher.create_derivatives
-      end
+      attacher.create_derivatives
     end
   end
   bf.save

@@ -18,11 +18,11 @@ class Setting < RailsSettings::Base
 
   def self.storage_for(type)
     if type.to_sym == :large
-      Setting['storage.large'].to_sym
+      (ENV['STORE_LARGE'] || Setting['storage.large']).to_sym
     elsif type.to_sym == :original
-      Setting['storage.original'].to_sym
+      (ENV['STORE_ORIGINAL'] || Setting['storage.original']).to_sym
     else
-      Setting['storage.default'].to_sym
+      (ENV['STORE_DEFAULT'] || Setting['storage.default']).to_sym
     end
   end
 

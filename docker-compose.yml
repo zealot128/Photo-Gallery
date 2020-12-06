@@ -2,54 +2,88 @@ version: '3.4'
 services:
   db:
     image: "postgres:12-alpine"
-    environment:
-      - POSTGRES_PASSWORD=mysecretpassword
+    env_file: .env
     volumes:
       - db-data:/var/lib/postgresql/data
 
-  redis:
-    image: redis:alpine
-
   app: &app_base
-    image: dockerrails_app_development
     build:
       context: .
       args:
         - ADDITIONAL_PACKAGES=nodejs yarn python2 build-base git
-        - RAILS_ENV=development
+        - RAILS_ENV=production
     environment:
-      - REDIS_CACHE_URL=redis://redis:6379/2
-      - SECRET_KEY_BASE=f0ee8496d1ddeb69fa0980d0580ff0f174262e61b53e8a318c990a193661f45f84b07a995d33ca8749eb6e0085d375201d319ed0fdaab9aa469e3b9b96f269d6
-      - DATABASE_URL='postgresql://postgres:mysecretpassword@db/pictures'
-      - RAILS_ENV=development
+      - RAILS_ENV=production
       - RAILS_MAX_THREADS
-      - AWS_ACCOUNT_ID
-      - AWS_ACCESS_KEY_ID
-      - AWS_ACCESS_KEY_SECRET
-      - AWS_REGION
-      - AWS_BUCKET
-      - AWS_ACL
       - REKOGNITION_COLLECTION
+    env_file: .env
     ports:
       - "3000"
     links:
       - db
-      - redis
     volumes:
-      - .:/app
-      - gem-cache:/usr/local/bundle/gems/
       - node-modules-cache:/app/node_modules
-      - local-photos:/app/public/photos
-
-  worker:
-    <<: *app_base
-    command: bundle exec good_job start
-    ports: []
     depends_on:
-      - app
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`pics2.stefanwienert.de`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=letsencrypt"
+
+  # worker:
+  #   <<: *app_base
+  #   command: bundle exec good_job start
+  #   ports: []
+  #   depends_on:
+  #     - app
+  #   labels: []
+
+  traefik:
+    image: "traefik:v2.0.0-rc3"
+    container_name: "traefik"
+    env_file: .env
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.letsencrypt.acme.email=info@stefanwienert.de"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "letsencrypt:/letsencrypt"
+  # s3:
+  #   image: minio/minio
+  #   environment:
+  #     - MINIO_ACCESS_KEY
+  #     - MINIO_SECRET_KEY
+  #   expose:
+  #     - "9000"
+  #   command: server /data
+  #   volumes:
+  #     - s3-data:/data
+  #   env_file: .env
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+  #     interval: 30s
+  #     timeout: 20s
+  #     retries: 3
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.whoami.rule=Host(`storage.stefanwienert.de`)"
+  #     - "traefik.http.routers.whoami.entrypoints=web"
 
 volumes:
+  # s3-data:
   db-data:
-  local-photos:
-  gem-cache:
   node-modules-cache:
+  letsencrypt:

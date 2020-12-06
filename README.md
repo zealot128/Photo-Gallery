@@ -119,3 +119,25 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
+## Docker
+
+Adjust .env
+
+- docker-compose build
+- docker-compose run app rails db:create
+- docker-compose run app rails db:schema:load
+
+Import existing dump
+
+``gunzip < /backup/databases/pics_production/2020-12-06:04:00:01.sql.gz | docker-compose exec -T db psql --username postgres pictures``
+
+Dump database:
+
+create/rotate daily snapshot
+
+```
+docker-compose exec -T db pg_dump --username postgres pictures | gzip > /backup/databases/pics_production/`date +\%F:\%T`.sql.gz && cd /backup/databases/pics_production && rm -f `ls -t | awk 'NR>7'
+```
+
+Backup

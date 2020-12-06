@@ -56,8 +56,9 @@ RUN apk add --update --no-cache \
     postgresql-client \
     vips-dev \
     vips \
+    curl bash \
     ffmpeg \
-    tesseract-ocr tesseract-ocr-data-ger \
+    tesseract-ocr tesseract-ocr-data-deu \
     imagemagick \
     $ADDITIONAL_PACKAGES \
     tzdata \
@@ -66,11 +67,16 @@ RUN apk add --update --no-cache \
 # Add user
 RUN addgroup -g 1000 -S app \
  && adduser -u 1000 -S app -G app
+
 USER app
+
+RUN ls /usr/local
 
 # Copy app with gems from former build stage
 COPY --from=Builder /usr/local/bundle/ /usr/local/bundle/
 COPY --from=Builder --chown=app:app /app /app
+
+RUN ls /usr/local/bundle/gems
 
 # Set Rails env
 ENV RAILS_LOG_TO_STDOUT true

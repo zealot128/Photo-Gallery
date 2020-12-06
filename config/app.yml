@@ -42,10 +42,10 @@ defaults: &defaults
         min_existing_faces: 10
 
   # Experimental
-  ocr:
-    enabled: false
-  elasticsearch:
-    enabled: false
+  # ocr:
+  #   enabled: false
+  # elasticsearch:
+  #   enabled: false
 
 development:
   <<: *defaults
