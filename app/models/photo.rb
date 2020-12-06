@@ -26,7 +26,6 @@
 #
 
 class Photo < BaseFile
-  mount_uploader :old_file, ImageUploader
   include Rewrite::ImageUploader::Attachment.new(:file)
 
   def exif

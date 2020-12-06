@@ -19,11 +19,9 @@ gem 'request_store'
 
 ### Image analysis / conversion
 gem 'carrierwave'
-gem 'carrierwave-aws'
 gem 'carrierwave-vips'
+gem 'aws-sdk-s3'
 gem 'aws-sdk-rekognition'
-gem 'aws-sdk-cloudwatch'
-gem 'aws-sdk-budgets'
 gem "shrine", "~> 3.0"
 gem "image_processing", "~> 1.8"
 gem 'marcel'

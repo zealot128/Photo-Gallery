@@ -23,7 +23,6 @@ class ImageFace < ApplicationRecord
 
   after_create :crop_bounding_box
   after_create :auto_assign_person
-  mount_uploader :file, MontageUploader
 
   # For image face controller transient value
   attr_accessor :similarity
