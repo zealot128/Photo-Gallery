@@ -19,7 +19,7 @@ class RekognitionClient::Aws
     end
 
     def find_similar_faces(face, threshold:, max_faces:)
-      similar = search_faces(face.aws_id, threshold: threshold.to_i, max_faces: max.to_i)
+      similar = search_faces(face.aws_id, threshold: threshold.to_i, max_faces: max_faces.to_i)
       out = similar.face_matches.map { |i| [i.face.face_id, [i.similarity, i.face.confidence]] }.to_h
       ImageFace.where(aws_id: out.keys).tap { |faces|
         faces.each do |face|
@@ -37,11 +37,11 @@ class RekognitionClient::Aws
     end
 
     def auto_assign_face(face)
-      similar = RekognitionClient.search_faces(face.aws_id, threshold: AUTO_ASSIGN_THRESHOLD, max_faces: AUTO_ASSIGN_MAX_FACES)
-      if similar.face_matches.count >= AUTO_ASSIGN_MIN_EXISTING_FACES
+      similar = search_faces(face.aws_id, threshold: RekognitionClient::Base::AUTO_ASSIGN_THRESHOLD, max_faces: RekognitionClient::Base::AUTO_ASSIGN_MAX_FACES)
+      if similar.face_matches.count >= RekognitionClient::Base::AUTO_ASSIGN_MIN_EXISTING_FACES
         aws_ids = similar.face_matches.map { |i| i.face.face_id }
         face_histogram = ImageFace.unscoped.where(aws_id: aws_ids).map(&:person_id).compact.group_by(&:itself).map { |a, b| [a, b.count] }.to_h
-        if face_histogram.length == 1 && face_histogram.values.first >= AUTO_ASSIGN_MIN_EXISTING_FACES
+        if face_histogram.length == 1 && face_histogram.values.first >= RekognitionClient::Base::AUTO_ASSIGN_MIN_EXISTING_FACES
           person_id = face_histogram.keys.first
           face.update person_id: person_id
         end

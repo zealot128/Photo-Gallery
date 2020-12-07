@@ -8,7 +8,9 @@ class Shrine::PromoteJob < ApplicationJob
       attacher.create_derivatives
     end
     attacher.atomic_promote
-    record.enqueue_jobs
+    if record.respond_to?(:enqueue_jobs)
+      record.enqueue_jobs
+    end
 
   rescue Shrine::AttachmentChanged, ActiveRecord::RecordNotFound
     # attachment has changed or record has been deleted, nothing to do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_26_154843) do
+ActiveRecord::Schema.define(version: 2020_12_07_182631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_07_26_154843) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "confidence"
+    t.jsonb "file_data"
     t.index ["base_file_id"], name: "index_image_faces_on_base_file_id"
     t.index ["person_id"], name: "index_image_faces_on_person_id"
   end

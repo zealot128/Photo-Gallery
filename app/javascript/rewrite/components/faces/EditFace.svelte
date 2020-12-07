@@ -51,11 +51,13 @@
 </script>
 
 <div style="display: flex; align-items: center;">
-  <Textfield
-    autocomplete="off"
-    placeholder="Person Name"
-    required
-    bind:value={personName} />
+  <form on:submit|preventDefault={save}>
+    <Textfield
+      autocomplete="off"
+      placeholder="Person Name"
+      required
+      bind:value={personName} />
+  </form>
   <a
     class="button"
     class:disabled={!personName || personName.length < 2}
