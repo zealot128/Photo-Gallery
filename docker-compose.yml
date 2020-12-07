@@ -1,12 +1,23 @@
 version: '3.4'
+x-production: &production
+  restart: always
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "100k"
+      max-file: "20"
 services:
   db:
+    <<: *production
     image: "postgres:12-alpine"
     env_file: .env
     volumes:
       - db-data:/var/lib/postgresql/data
 
   app: &app_base
+    <<: *production
+    restart: always
+    image: rails_image
     build:
       context: .
       args:
@@ -27,19 +38,21 @@ services:
       - db
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`pics2.stefanwienert.de`)"
+      - "traefik.http.routers.app.rule=Host(`pics.stefanwienert.de`)"
       - "traefik.http.routers.app.entrypoints=websecure"
       - "traefik.http.routers.app.tls.certresolver=letsencrypt"
 
-  # worker:
-  #   <<: *app_base
-  #   command: bundle exec good_job start
-  #   ports: []
-  #   depends_on:
-  #     - app
-  #   labels: []
+  worker:
+    <<: *app_base
+    command: bundle exec good_job start
+    ports: []
+    depends_on:
+      - app
+    labels: []
 
   traefik:
+    <<: *production
+    restart: always
     image: "traefik:v2.0.0-rc3"
     container_name: "traefik"
     env_file: .env
@@ -51,7 +64,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      # - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.letsencrypt.acme.email=info@stefanwienert.de"
       - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
     ports:

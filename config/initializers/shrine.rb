@@ -57,6 +57,21 @@ Shrine.storage(/s3_external/) do
     force_path_style: ENV['STORAGE_FORCE_PATH_STYLE'].present?
   }.delete_if { |k, v| v.nil? })
 end
+if ENV['STORAGE_BUCKET']
+  config = {
+    bucket: ENV['STORAGE_BUCKET'],
+    endpoint: ENV['STORAGE_ENDPOINT'],
+    access_key_id: ENV['STORAGE_ACCESS_KEY_ID'],
+    secret_access_key: ENV['STORAGE_ACCESS_KEY_SECRET'],
+    region: ENV['STORAGE_REGION'],
+    force_path_style: ENV['STORAGE_FORCE_PATH_STYLE'].present?
+  }.delete_if { |k, v| v.nil? }
+  Shrine.storages = {
+    cache: Shrine::Storage::S3.new(prefix: "cache", **config),
+    file: Shrine::Storage::S3.new(prefix: "other", **config),
+    derivatives: Shrine::Storage::S3.new(prefix: "derivatives", **config),
+  }
+end
 
 Shrine.plugin :backgrounding # upload + metadata in bg
 Shrine::Attacher.promote_block do
