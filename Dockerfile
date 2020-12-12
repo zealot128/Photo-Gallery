@@ -16,6 +16,7 @@ RUN apk add --update --no-cache \
     vips-dev \
     vips \
     git \
+    exiftool \
     imagemagick \
     nodejs \
     yarn \
