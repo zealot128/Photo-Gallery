@@ -3,5 +3,6 @@ class Day::UpdateJob < ApplicationJob
 
   def perform(day)
     day.update_me
+  rescue Shrine::FileNotFound
   end
 end
