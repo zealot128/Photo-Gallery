@@ -16,7 +16,6 @@ RUN apk add --update --no-cache \
     vips-dev \
     vips \
     git \
-    exiftool \
     imagemagick \
     nodejs \
     yarn \
@@ -59,6 +58,7 @@ RUN apk add --update --no-cache \
     vips \
     curl bash \
     ffmpeg \
+    exiftool \
     tesseract-ocr tesseract-ocr-data-deu \
     imagemagick \
     $ADDITIONAL_PACKAGES \

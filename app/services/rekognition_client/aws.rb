@@ -67,8 +67,6 @@ class RekognitionClient::Aws
     end
 
     def labels(photo, max_labels: Setting['rekognition.labels.max_labels'], min_confidence: Setting['rekognition.labels.min_confidence'])
-      return [] unless photo.file.storage_key == :aws
-
       resp = client.detect_labels(
         image: image_or_s3(photo),
         max_labels: max_labels,
@@ -83,7 +81,7 @@ class RekognitionClient::Aws
     end
 
     def image_or_s3(photo)
-      if photo.file.storage_key == :AWS
+      if photo.file.storage_key.to_s[/aws/i]
         {
           s3_object: {
             bucket: Setting['aws.bucket'],
