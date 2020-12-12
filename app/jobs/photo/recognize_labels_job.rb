@@ -5,7 +5,7 @@ class Photo::RecognizeLabelsJob < ApplicationJob
   queue_as :default
 
   def perform(photo)
-    REKOGNITION_CLIENT.label(photo)
+    REKOGNITION_CLIENT.label_photo(photo)
     photo.processed_successfully! :labels
     labels = photo.image_labels.pluck(:name)
     if Setting['rekognition.faces.enabled'] and (ALLOWED_FACES_TAGS & labels).any?

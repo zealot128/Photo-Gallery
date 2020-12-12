@@ -15,7 +15,7 @@ class UploadController < ApplicationController
       rescue StandardError => e
         exception = e
         Raven.capture_exception(exception) if defined?(Raven)
-        render status: :internal_server_error, text: "Server Error", layout: false
+        render status: :internal_server_error, json: { error: "Server Error", exception: e, backtrace: e.backtrace.take(20) }, layout: false
         return
       end
       UploadLog.handle_file(@photo, file, self, exception)

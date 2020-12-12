@@ -10,6 +10,8 @@ SimpleGallery::Application.routes.draw do
 
   get 'pages/index'
 
+  get 'admin' => 'photos'
+
   get 'user/edit' => 'users#edit', :as => :edit_current_user
   get 'signup' => 'users#new', :as => :signup
   delete 'logout' => 'sessions#destroy', :as => :logout
