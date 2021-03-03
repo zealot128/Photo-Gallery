@@ -15,7 +15,7 @@
     "mdi": "^2.0.46",
     "moment": "^2.19.1",
     "precss": "^2.0.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "regenerator-runtime": "^0.13.7",
     "sugar-date": "^2.0.4",
