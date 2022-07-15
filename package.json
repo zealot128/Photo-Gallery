@@ -19,7 +19,7 @@
     "pug-plain-loader": "^1.0.0",
     "regenerator-runtime": "^0.13.7",
     "sugar-date": "^2.0.4",
-    "svelte": "^3.24.0",
+    "svelte": "^3.49.0",
     "svelte-check": "^1.1.15",
     "svelte-dropzone": "https://github.com/trifel/svelte-dropzone.git",
     "svelte-infinite-scroll": "^1.4.1",
